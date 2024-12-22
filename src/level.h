@@ -26,8 +26,8 @@ INCBIN_EXTERN(birabuto_tiles_bin)
 #include "../res/level_1_1.h"
 INCBIN_EXTERN(map_1_1)
 
-//#include "../res/level_1_2.h"
-//INCBIN_EXTERN(map_1_2)
+#include "../res/level_1_2.h"
+INCBIN_EXTERN(map_1_2)
 
 //#include "../res/level_1_3.h"
 //INCBIN_EXTERN(map_1_3)
@@ -143,7 +143,7 @@ inline uint8_t bkg_load_column(uint8_t start_at, uint8_t nb) {
 }
 
 
-void next_level();
+void level_set_current();
 void load_current_level();
 void set_level_1_1();
 void set_level_1_2();
