@@ -10,7 +10,6 @@
 #include <gb/metasprites.h>
 #include <gbdk/incbin.h>
 #include <gbdk/platform.h>
-#include <gbdk/rledecompress.h>
 
 #include "global.h"
 
@@ -23,14 +22,12 @@ INCBIN_EXTERN(birabuto_tiles_bin)
 
 
 // maps
-#include "../res/level_1_1.h"
-INCBIN_EXTERN(map_1_1)
-
-#include "../res/level_1_2.h"
-INCBIN_EXTERN(map_1_2)
-
-//#include "../res/level_1_3.h"
-//INCBIN_EXTERN(map_1_3)
+#include "levels/level_1_1_0.h"
+//#include "levels/level_1_1_1.h"
+//#include "levels/level_1_2_0.h"
+//#include "levels/level_1_2_1.h"
+//#include "levels/level_1_3_0.h"
+//#include "levels/level_1_3_1.h"
 
 #define NB_LEVELS 3
 #define LEVEL_HEIGHT 16
@@ -117,36 +114,12 @@ static inline bool is_tile_solid(uint8_t tile) {
     return tile <= MAX_TILE && solid_tiles[tile];
 }
 
-
-inline uint8_t bkg_load_column(uint8_t start_at, uint8_t nb) {
-  uint8_t col = 0;
-
-  while (col < nb && rle_decompress(coldata, LEVEL_HEIGHT)) {
-    // Copy column to map_buffer
-    for (uint8_t row = 0; row < LEVEL_HEIGHT; row++) {
-      uint16_t index = (row * MAP_BUFFER_WIDTH) + set_column_at;
-      map_buffer[index] = coldata[row];
-    }
-
-    set_column_at = (set_column_at + 1) % MAP_BUFFER_WIDTH;
-
-    // Get hardware map tile X column
-    uint8_t map_x_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
-
-    // Draw current column
-    set_bkg_tiles(map_x_column, 0, 1, LEVEL_HEIGHT, coldata);
-
-    col++;
-  }
-
-  return col;
-}
-
+uint8_t level_load_column(uint8_t start_at, uint8_t nb);
 
 void level_set_current();
 void load_current_level();
-void set_level_1_1();
-void set_level_1_2();
-void set_level_1_3();
+void set_level_1_1_0() NONBANKED;
+void set_level_1_2_0();
+void set_level_1_3_0();
 
 #endif

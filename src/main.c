@@ -2,7 +2,6 @@
 #include <gb/metasprites.h>
 #include <gbdk/incbin.h>
 #include <gbdk/platform.h>
-#include <gbdk/rledecompress.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -22,18 +21,7 @@
 #include "text.h"
 #include "level.h"
 #include "player.h"
-
-#pragma bank 255 
-#include "../res/level_1_1.h"
-INCBIN(map_1_1, "res/level_1_1_map.bin.rle")
-
-#include "../res/level_1_2.h"
-INCBIN(map_1_2, "res/level_1_2_map.bin.rle")
-
-//#include "../res/level_1_3.h"
-//INCBIN(map_1_3, "res/level_1_3_map.bin.rle")
-
-
+ 
 #include "../res/common.h"
 INCBIN(common_tiles_bin, "res/common_tiles.bin")
 
@@ -151,7 +139,7 @@ void die() {
   if(lives == 0){
     lives = INITIAL_LIVES;
     current_map = 0;
-    set_level_1_1();
+    set_level_1_1_0();
   }
 
   hud_update_lives();
@@ -189,7 +177,7 @@ void main(void) {
   set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
-  set_level_1_1();
+  set_level_1_1_0();
   load_current_level();
   
   score = 0;
@@ -221,7 +209,11 @@ void main(void) {
   // enemy_new(70, 136, ENEMY_TYPE_KOOPA);
 
   // text and common bkg data
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
+  SWITCH_ROM(_current_bank);
+  
   set_bkg_data(common_TILE_ORIGIN, INCBIN_SIZE(common_tiles_bin) >> 4, common_tiles_bin);
 
 
@@ -240,69 +232,7 @@ void main(void) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
 
-    if (joypad_current & J_RIGHT) {
-      if (vel_x < player_max_speed) {
-        vel_x += 1;
-        if(display_jump_frame == FALSE){
-          mario_flip = FALSE;
-          }
-        if (vel_x < 0) {
-          display_slide_frame = TRUE;
-        } else {
-          display_slide_frame = FALSE;
-        }
-      } else if (vel_x > player_max_speed) {
-        vel_x -= 1;
-      }
-    } else if (vel_x > 0) {
-      vel_x -= 1;
-    }
 
-    if ((joypad_current & J_LEFT)) {
-      if (abs(vel_x) < player_max_speed) {
-        vel_x -= 1;
-        if(display_jump_frame == FALSE){
-          mario_flip = TRUE;
-        }
-        if (vel_x > 0) {
-          display_slide_frame = TRUE;
-        } else {
-          display_slide_frame = FALSE;
-        }
-      } else if (abs(vel_x) > player_max_speed) {
-        vel_x += 1;
-      }
-    } else if (vel_x < 0) {
-      vel_x += 1;
-    }
-
-    if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
-        touch_ground) {
-      is_jumping = TRUE;
-      display_jump_frame = TRUE;
-      vel_y = -JUMP_SPEED;
-      sound_play_jump();
-    }
-
-    // pause
-    if (joypad_current & J_START && !(joypad_previous & J_START)) {
-      pause();
-    }
-
-    if (joypad_current & J_B) {
-      player_max_speed = PLAYER_MAX_SPEED_RUN;
-    } else {
-      player_max_speed = PLAYER_MAX_SPEED_WALK;
-    }
-
-    if (is_jumping) {
-      vel_y += GRAVITY_JUMP;
-      if (vel_y > TERMINAL_VELOCITY) {
-        vel_y = TERMINAL_VELOCITY;
-      }
-    } else {
-      vel_y = GRAVITY;
-    }
 
 
     player_move();

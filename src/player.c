@@ -97,6 +97,70 @@ void player_move() BANKED
     y_top_draw = player_draw_y - MARIO_HALF_WIDTH;
     y_bottom_draw = player_draw_y - 1;
 
+    if (joypad_current & J_RIGHT) {
+      if (vel_x < player_max_speed) {
+        vel_x += 1;
+        if(display_jump_frame == FALSE){
+          mario_flip = FALSE;
+          }
+        if (vel_x < 0) {
+          display_slide_frame = TRUE;
+        } else {
+          display_slide_frame = FALSE;
+        }
+      } else if (vel_x > player_max_speed) {
+        vel_x -= 1;
+      }
+    } else if (vel_x > 0) {
+      vel_x -= 1;
+    }
+
+    if ((joypad_current & J_LEFT)) {
+      if (abs(vel_x) < player_max_speed) {
+        vel_x -= 1;
+        if(display_jump_frame == FALSE){
+          mario_flip = TRUE;
+        }
+        if (vel_x > 0) {
+          display_slide_frame = TRUE;
+        } else {
+          display_slide_frame = FALSE;
+        }
+      } else if (abs(vel_x) > player_max_speed) {
+        vel_x += 1;
+      }
+    } else if (vel_x < 0) {
+      vel_x += 1;
+    }
+
+    if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
+        touch_ground) {
+      is_jumping = TRUE;
+      display_jump_frame = TRUE;
+      vel_y = -JUMP_SPEED;
+      sound_play_jump();
+    }
+
+    // pause
+    if (joypad_current & J_START && !(joypad_previous & J_START)) {
+      pause();
+    }
+
+    if (joypad_current & J_B) {
+      player_max_speed = PLAYER_MAX_SPEED_RUN;
+    } else {
+      player_max_speed = PLAYER_MAX_SPEED_WALK;
+    }
+
+    if (is_jumping) {
+      vel_y += GRAVITY_JUMP;
+      if (vel_y > TERMINAL_VELOCITY) {
+        vel_y = TERMINAL_VELOCITY;
+      }
+    } else {
+      vel_y = GRAVITY;
+    }
+    
     // apply velocity to player coords
     if (vel_x != 0) {
       player_x_subpixel_next = player_x_subpixel + vel_x;
@@ -143,7 +207,7 @@ void player_move() BANKED
           player_draw_x = DEVICE_SCREEN_PX_WIDTH_HALF;
 
           if (camera_x >> 3 >= next_col_chunk_load) {
-            nb_col = bkg_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH,
+            nb_col = level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH,
                                      nb_col);
 
             if (nb_col == 0) {
