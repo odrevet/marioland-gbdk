@@ -1,13 +1,6 @@
-#include <gb/gb.h>
-#include <gb/metasprites.h>
-#include <gbdk/incbin.h>
-#include <gbdk/platform.h>
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <gbdk/platform.h>
+#include <gb/metasprites.h>
 
 #include "graphics/enemies.h"
 #include "graphics/text.h"
@@ -36,8 +29,6 @@ void interruptLCD() {
 }
 
 void interruptVBL() { SHOW_WIN; }
-
-
 
 void main(void) {
   STAT_REG = 0x40;
