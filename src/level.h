@@ -14,20 +14,17 @@
 #include "global.h"
 
 // tilesets
-#include "../res/common.h"
-INCBIN_EXTERN(common_tiles_bin)
-
-#include "../res/birabuto.h"
-INCBIN_EXTERN(birabuto_tiles_bin)
-
+#include "graphics/common.h"
+#include "graphics/birabuto.h"
+#include "graphics/muda.h"
 
 // maps
 #include "levels/level_1_1_0.h"
-//#include "levels/level_1_1_1.h"
-//#include "levels/level_1_2_0.h"
-//#include "levels/level_1_2_1.h"
-//#include "levels/level_1_3_0.h"
-//#include "levels/level_1_3_1.h"
+#include "levels/level_1_1_1.h"
+#include "levels/level_1_2_0.h"
+#include "levels/level_1_2_1.h"
+#include "levels/level_1_3_0.h"
+#include "levels/level_1_3_1.h"
 
 #define NB_LEVELS 3
 #define LEVEL_HEIGHT 16
@@ -52,7 +49,7 @@ extern uint8_t current_level;
 
 extern const unsigned char* current_map;
 extern int current_map_tile_origin;
-extern const unsigned char*  current_map_tiles_bin;
+extern const unsigned char*  current_map_tiles;
 extern size_t current_map_size;
 extern size_t current_map_width;
 
@@ -118,8 +115,15 @@ uint8_t level_load_column(uint8_t start_at, uint8_t nb);
 
 void level_set_current();
 void load_current_level();
+
+void level_load_tileset_birabuto() NONBANKED;
+void level_load_tileset_muda() NONBANKED;
+
 void set_level_1_1_0() NONBANKED;
-void set_level_1_2_0();
-void set_level_1_3_0();
+//void set_level_1_1_1() NONBANKED;
+void set_level_1_2_0() NONBANKED;
+//void set_level_1_2_1() NONBANKED;
+void set_level_1_3_0() NONBANKED;
+//void set_level_1_3_1() NONBANKED;
 
 #endif

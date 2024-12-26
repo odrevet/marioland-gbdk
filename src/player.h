@@ -52,6 +52,8 @@ extern uint8_t tile_next_2;
 
 extern uint8_t scroll;
 
+void update_frame_counter();
+
 inline bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
 inline void on_get_coin(uint8_t x, uint8_t y) {

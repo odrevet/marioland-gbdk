@@ -12,6 +12,7 @@
 #include "graphics/enemies.h"
 #include "graphics/text.h"
 #include "graphics/mario.h"
+#include "graphics/common.h"
 
 #include "enemy.h"
 #include "global.h"
@@ -21,30 +22,12 @@
 #include "text.h"
 #include "level.h"
 #include "player.h"
+#include "game.h"
  
-#include "../res/common.h"
-INCBIN(common_tiles_bin, "res/common_tiles.bin")
-
-#include "../res/birabuto.h"
-INCBIN(birabuto_tiles_bin, "res/birabuto_tiles.bin")
-
-
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
-
-
-
-#define INITIAL_LIVES 3
 
 // music
 extern const hUGESong_t overworld;
-
-void update_frame_counter() {
-  frame_counter++;
-  if (frame_counter == LOOP_PER_ANIMATION_FRAME) {
-    frame_counter = 0;
-    player_frame = (player_frame % 3) + 1;
-  }
-}
 
 void interruptLCD() {
   while (STAT_REG & 3)
@@ -54,97 +37,7 @@ void interruptLCD() {
 
 void interruptVBL() { SHOW_WIN; }
 
-void pause() {
-  hUGE_mute_channel(0, HT_CH_MUTE);
-  hUGE_mute_channel(1, HT_CH_MUTE);
-  hUGE_mute_channel(2, HT_CH_MUTE);
-  hUGE_mute_channel(3, HT_CH_MUTE);
 
-  sound_play_bump();
-  text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
-
-#if defined(DEBUG)
-  // debug a column of background
-  char buffer[WINDOW_SIZE + 1];
-  char fmt[] = "%d.%d.%d.%d.%d.%d.%d..";
-  uint8_t col = player_draw_x / TILE_SIZE;
-  
-  for (uint8_t row = 0; row < 7; row++) {
-    uint16_t index = (row * MAP_BUFFER_WIDTH) + col;
-    sprintf(buffer, fmt, 
-            map_buffer[index], 
-            map_buffer[index + MAP_BUFFER_WIDTH], 
-            map_buffer[index + 2 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 3 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 4 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 5 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 6 * MAP_BUFFER_WIDTH]);
-    text_print_string_win(0, row, buffer);
-  }
-#endif
-
-
-  vsync();
-
-  while (1) {
-    joypad_previous = joypad_current;
-    joypad_current = joypad();
-    if (joypad_current & J_START && !(joypad_previous & J_START)) {
-      break;
-    }
-  }
-
-  hUGE_mute_channel(0, HT_CH_PLAY);
-  hUGE_mute_channel(1, HT_CH_PLAY);
-  hUGE_mute_channel(2, HT_CH_PLAY);
-  hUGE_mute_channel(3, HT_CH_PLAY);
-
-  text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "     ");
-  hud_update_time();
-}
-
-
-
-void init() {
-  time = TIME_INITIAL_VALUE;
-
-  camera_x = 0;
-  camera_x_subpixel = 0;
-  SCX_REG = 0;
-
-  player_x_subpixel = 43 << 4;
-  player_y_subpixel = (16 * TILE_SIZE) << 4;
-  player_draw_x = player_x_subpixel >> 4;
-  player_draw_y = player_y_subpixel >> 4;
-
-  vel_x = 0;
-  vel_y = 0;
-
-  display_jump_frame = FALSE;
-  display_slide_frame = FALSE;
-
-  frame_counter = 0;
-  mario_flip = FALSE;
-}
-
-void die() {
-  hUGE_mute_channel(0, HT_CH_PLAY);
-  hUGE_mute_channel(1, HT_CH_PLAY);
-  hUGE_mute_channel(2, HT_CH_PLAY);
-  hUGE_mute_channel(3, HT_CH_PLAY);
-
-  init();
-
-  lives--;
-  if(lives == 0){
-    lives = INITIAL_LIVES;
-    current_map = 0;
-    set_level_1_1_0();
-  }
-
-  hud_update_lives();
-  load_current_level();
-}
 
 void main(void) {
   STAT_REG = 0x40;
@@ -210,11 +103,14 @@ void main(void) {
 
   // text and common bkg data
   uint8_t _current_bank = CURRENT_BANK;
+
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
-  SWITCH_ROM(_current_bank);
   
-  set_bkg_data(common_TILE_ORIGIN, INCBIN_SIZE(common_tiles_bin) >> 4, common_tiles_bin);
+  SWITCH_ROM(BANK(common));
+  set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
+
+  SWITCH_ROM(_current_bank);
 
 
   DISPLAY_ON;
@@ -223,17 +119,12 @@ void main(void) {
   SHOW_SPRITES;
   SPRITES_8x16;
 
-
-
   while (1) {
     vsync();
 
     // inputs
     joypad_previous = joypad_current;
     joypad_current = joypad();
-
-
-
 
     player_move();
 

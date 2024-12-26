@@ -1,5 +1,6 @@
 #include "level.h"
 #include "global.h"
+#include "graphics/birabuto.h"
 #include <stddef.h>
 
 uint16_t camera_x;
@@ -13,7 +14,7 @@ bool level_end_reached;
 uint8_t current_level;
 
 int current_map_tile_origin;
-const unsigned char*  current_map_tiles_bin;
+const unsigned char*  current_map_tiles;
 size_t current_map_size;
 size_t current_map_width;
 
@@ -61,16 +62,40 @@ void load_current_level()
   camera_x = 0;
   camera_x_subpixel = 0;
   level_end_reached = false;
-  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles_bin);
+
   level_load_column(0, DEVICE_SCREEN_WIDTH + COLUMN_CHUNK_SIZE);
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }
 
+void level_load_tileset_birabuto() NONBANKED
+{
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(birabuto));
+
+  current_map_tiles = birabuto_tiles;
+  current_map_tile_origin = birabuto_TILE_ORIGIN;
+  current_map_size = birabuto_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+
+  SWITCH_ROM(_current_bank);
+}
+
+void level_load_tileset_muda() NONBANKED
+{
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(birabuto));
+
+  current_map_tiles = muda_tiles;
+  current_map_tile_origin = muda_TILE_ORIGIN;
+  current_map_size = birabuto_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+  
+  SWITCH_ROM(_current_bank);
+}
+
 void set_level_1_1_0() NONBANKED
 {
-  current_map_tile_origin = birabuto_TILE_ORIGIN;
-  current_map_tiles_bin = birabuto_tiles_bin;
-  current_map_size = INCBIN_SIZE(birabuto_tiles_bin) >> 4;
+  level_load_tileset_birabuto();
 
   uint8_t _current_bank = CURRENT_BANK;
   SWITCH_ROM(BANK(level_1_1_0));
@@ -81,21 +106,42 @@ void set_level_1_1_0() NONBANKED
   SWITCH_ROM(_current_bank);
 }
 
-void set_level_1_2_0()
+void set_level_1_1_1() NONBANKED
 {
-  //current_map = map_1_2_0;
-  //current_map_tile_origin = birabuto_TILE_ORIGIN;
-  //current_map_tiles_bin = birabuto_tiles_bin;
-  //current_map_size = INCBIN_SIZE(birabuto_tiles_bin) >> 4;
-  //current_map_width = level_1_2_0_WIDTH;
+  level_load_tileset_birabuto();
+
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(level_1_1_1));
+
+  current_map = level_1_1_1_map;
+  current_map_width = level_1_1_1_WIDTH;
+
+  SWITCH_ROM(_current_bank);
 }
 
-void set_level_1_3_0()
+void set_level_1_2_0() NONBANKED
 {
-  //current_map = map_1_3_0;
-  //current_map_tile_origin = birabuto_TILE_ORIGIN;
-  //current_map_tiles_bin = birabuto_tiles_bin;
-  //current_map_size = INCBIN_SIZE(birabuto_tiles_bin) >> 4;
-  //current_map_width = level_1_3_0_WIDTH;
+  level_load_tileset_birabuto();
+
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(level_1_1_0));
+
+  current_map = level_1_1_0_map;
+  current_map_width = level_1_1_0_WIDTH;
+
+  SWITCH_ROM(_current_bank);
+}
+
+void set_level_1_3_0() NONBANKED
+{
+  level_load_tileset_birabuto();
+
+  uint8_t _current_bank = CURRENT_BANK;
+  SWITCH_ROM(BANK(level_1_3_0));
+
+  current_map = level_1_3_0_map;
+  current_map_width = level_1_3_0_WIDTH;
+
+  SWITCH_ROM(_current_bank);
 }
 

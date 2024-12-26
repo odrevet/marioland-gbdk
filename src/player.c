@@ -45,37 +45,13 @@ uint8_t tile_next_2;
 
 uint8_t scroll;
 
-void hud_update_coins() {
-  char coins_str[3];
 
-  if (coins < 10) {
-    coins_str[0] = '0'; // Add leading zero
-    itoa(coins, coins_str + 1, 10);
-  } else {
-    itoa(coins, coins_str, 10);
+void update_frame_counter() {
+  frame_counter++;
+  if (frame_counter == LOOP_PER_ANIMATION_FRAME) {
+    frame_counter = 0;
+    player_frame = (player_frame % 3) + 1;
   }
-
-  text_print_string_win(9, 1, coins_str);
-}
-
-void hud_update_score() {
-  char score_str[5];
-  itoa(score, score_str, 10);
-  text_print_string_win(3, 1, score_str);
-}
-
-void hud_update_time() {
-  char time_str[4];
-  itoa(time / 40, time_str, 10);
-  text_print_string_win(DEVICE_SCREEN_WIDTH - 3, 1, "000");
-  text_print_string_win(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
-}
-
-void hud_update_lives() {
-  char lives_str[4];
-  itoa(lives, lives_str, 10);
-  // text_print_string_win(8, 0, "00");
-  text_print_string_win(7, 0, lives_str);
 }
 
 void player_draw() {

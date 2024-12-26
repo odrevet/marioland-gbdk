@@ -1,17 +1,10 @@
-# sprite
-png2asset "assets/sprites/mario.png" -o "src/graphics/mario.c" -sw 16 -sh 16
-png2asset "assets/sprites/enemies.png" -o "src/graphics/enemies.c" -sw 16 -sh 16
-
 text_tiles_count=40
 common_tiles_count=40
 birabuto_tiles_count=60
 muda_tiles_count=60
 
-# background
-png2asset "assets/text.png" -o "src/graphics/text.c" -keep_palette_order -map -tiles_only -noflip -b 255
-png2asset "assets/tilesets/common.png" -o "res/common.c" -map -bin -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $text_tiles_count
-png2asset "assets/tilesets/birabuto.png" -o "res/birabuto.c" -map -bin -tiles_only -noflip  -keep_duplicate_tiles -b 255 -tile_origin $(($text_tiles_count + $common_tiles_count))
-#png2asset "assets/tilesets/muda.png" -o "res/muda" -map -bin -tiles_only -noflip  -keep_duplicate_tiles -b 255 -tile_origin $(($text_tiles_count + $common_tiles_count))
+common_tileset_starts=$text_tiles_count
+level_tileset_starts=$(($common_tileset_starts + $common_tiles_count))
 
 convert_level_asset() {
     local level_number=$1
@@ -33,6 +26,16 @@ convert_level_asset() {
             -tile_origin "$text_tiles_count" -b 255
     done
 }
+
+# sprite
+png2asset "assets/sprites/mario.png" -o "src/graphics/mario.c" -sw 16 -sh 16
+png2asset "assets/sprites/enemies.png" -o "src/graphics/enemies.c" -sw 16 -sh 16
+
+# background
+png2asset "assets/text.png" -o "src/graphics/text.c" -keep_palette_order -map -tiles_only -noflip -b 255
+png2asset "assets/tilesets/common.png" -o "src/graphics/common.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $common_tileset_starts
+png2asset "assets/tilesets/birabuto.png" -o "src/graphics/birabuto.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $(($text_tiles_count + $common_tiles_count))
+png2asset "assets/tilesets/muda.png" -o "src/graphics/muda.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $(($text_tiles_count + $common_tiles_count))
 
 echo "level 1_1"
 convert_level_asset 1_1 birabuto
