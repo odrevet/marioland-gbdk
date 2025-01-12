@@ -34,11 +34,9 @@
 extern uint8_t coldata[LEVEL_HEIGHT];
 // map buffer in RAM to check collision without access VRAM
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + COLUMN_CHUNK_SIZE)
-#define MAP_BUFFER_HEIGHT (LEVEL_HEIGHT)
-#define MAP_BUFFER_SIZE (MAP_BUFFER_WIDTH * MAP_BUFFER_HEIGHT)
+#define MAP_BUFFER_HEIGHT LEVEL_HEIGHT
 
-
-extern uint8_t map_buffer[MAP_BUFFER_SIZE];
+extern uint8_t map_buffer[MAP_BUFFER_HEIGHT][MAP_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
 extern uint16_t camera_x_subpixel;
@@ -80,9 +78,9 @@ enum tileset_index {
 };
 
 inline uint8_t get_tile(uint8_t x, uint8_t y) {
-  uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
-                   (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
-  return map_buffer[index];
+  //uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
+  //                 (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
+  return map_buffer[y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y][(x + camera_x) / TILE_SIZE];
 }
 
 #define MAX_TILE 255

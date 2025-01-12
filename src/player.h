@@ -59,7 +59,7 @@ inline bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 inline void on_get_coin(uint8_t x, uint8_t y) {
   uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
                    (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
-  map_buffer[index] = TILE_EMPTY;
+  //map_buffer[index] = TILE_EMPTY;
 
   set_bkg_tile_xy(((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH,
                   y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y, TILE_EMPTY);

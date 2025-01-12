@@ -7,7 +7,7 @@ uint16_t camera_x;
 uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char* current_map;
-uint8_t map_buffer[MAP_BUFFER_SIZE];
+uint8_t map_buffer[MAP_BUFFER_HEIGHT][MAP_BUFFER_WIDTH];
 uint8_t coldata[LEVEL_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
@@ -20,19 +20,18 @@ size_t current_map_width;
 
 uint8_t level_load_column(uint8_t start_at, uint8_t nb)
 {
-  uint8_t col = start_at;    
+  uint8_t col = start_at;
   while (col < nb) {
-    for (int i = 0; i < LEVEL_HEIGHT; i++) {
-        int pos = (i * (current_map_width / TILE_SIZE)) + col;
-        map_buffer[i] = current_map[pos];
-        coldata[i] = current_map[pos];
+    uint8_t map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+
+    for (int row = 0; row < LEVEL_HEIGHT; row++) {
+        int pos = (row * (current_map_width / TILE_SIZE)) + col;
+        map_buffer[row][map_column] = current_map[pos];
+        coldata[row] = current_map[pos];
     }
 
-    // Get hardware map tile X column
-    uint8_t map_x_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
-
     // Draw current column
-    set_bkg_tiles(map_x_column, 0, 1, LEVEL_HEIGHT, coldata);
+    set_bkg_tiles(map_column, 0, 1, LEVEL_HEIGHT, coldata);
 
     col++;
   };
