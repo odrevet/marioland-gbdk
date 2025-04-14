@@ -7,7 +7,7 @@ uint16_t camera_x;
 uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
-uint8_t map_buffer[DEVICE_SCREEN_BUFFER_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
+uint8_t map_buffer[LEVEL_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
@@ -17,8 +17,6 @@ int current_map_tile_origin;
 const unsigned char *current_map_tiles;
 size_t current_map_size;
 size_t current_map_width;
-
-#include <gbdk/emu_debug.h>
 
 uint8_t level_load_column(uint8_t start_at, uint8_t nb) {
   uint8_t col = 0;
@@ -30,13 +28,7 @@ uint8_t level_load_column(uint8_t start_at, uint8_t nb) {
       map_buffer[row][map_column] = current_map[pos];
       coldata[row] = current_map[pos];
     }
-
-    EMU_printf("At %d: %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
-      map_column, coldata[0], coldata[1], coldata[2], coldata[3],
-      coldata[4], coldata[5], coldata[6], coldata[7],
-      coldata[8], coldata[10], coldata[11], coldata[12],
-      coldata[13], coldata[14], coldata[15]);
-
+    
     // Draw current column
     set_bkg_tiles(map_column, 0, 1, LEVEL_HEIGHT, coldata);
 

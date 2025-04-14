@@ -2,8 +2,6 @@
 
 #include "player.h"
 
-#include <gbdk/emu_debug.h>
-
 uint8_t x_right_draw;
 uint8_t x_left_draw;
 uint8_t y_top_draw;
@@ -193,8 +191,6 @@ void player_move() BANKED
             } else {
               next_col_chunk_load += nb_col;
             }
-
-            EMU_printf("scroll %d camera_x %d next %d nbcol %d\n",scroll, camera_x >> 3, next_col_chunk_load, nb_col);
           }
         }
       }

@@ -36,7 +36,7 @@ extern uint8_t coldata[LEVEL_HEIGHT];
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
 #define MAP_BUFFER_HEIGHT LEVEL_HEIGHT
 
-extern uint8_t map_buffer[DEVICE_SCREEN_BUFFER_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
+extern uint8_t map_buffer[MAP_BUFFER_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
 extern uint16_t camera_x_subpixel;
@@ -78,9 +78,13 @@ enum tileset_index {
 };
 
 inline uint8_t get_tile(uint8_t x, uint8_t y) {
-  //uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
-  //                 (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
-  return map_buffer[y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y][(x + camera_x) / TILE_SIZE];
+  if(y <= 16){
+    return TILE_EMPTY;
+  }
+
+  uint8_t tile_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
+  uint8_t tile_y = (y / TILE_SIZE) - DEVICE_SPRITE_OFFSET_Y;
+  return map_buffer[tile_y][tile_x];
 }
 
 #define MAX_TILE 255
