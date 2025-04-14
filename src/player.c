@@ -2,6 +2,8 @@
 
 #include "player.h"
 
+#include <gbdk/emu_debug.h>
+
 uint8_t x_right_draw;
 uint8_t x_left_draw;
 uint8_t y_top_draw;
@@ -183,8 +185,7 @@ void player_move() BANKED
           player_draw_x = DEVICE_SCREEN_PX_WIDTH_HALF;
 
           if (camera_x >> 3 >= next_col_chunk_load) {
-            nb_col = level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH,
-                                     nb_col);
+            nb_col = level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, nb_col);
 
             if (nb_col == 0) {
               level_end_reached = true;
@@ -192,6 +193,8 @@ void player_move() BANKED
             } else {
               next_col_chunk_load += nb_col;
             }
+
+            EMU_printf("scroll %d camera_x %d next %d nbcol %d\n",scroll, camera_x >> 3, next_col_chunk_load, nb_col);
           }
         }
       }

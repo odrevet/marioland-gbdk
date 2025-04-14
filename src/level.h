@@ -28,15 +28,15 @@
 
 #define NB_LEVELS 3
 #define LEVEL_HEIGHT 16
-#define COLUMN_CHUNK_SIZE 1 // how many map columns to decompress at a time
+#define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
 
 // buffer worth of one column to hold map data when decrompressing
 extern uint8_t coldata[LEVEL_HEIGHT];
 // map buffer in RAM to check collision without access VRAM
-#define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + COLUMN_CHUNK_SIZE)
+#define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
 #define MAP_BUFFER_HEIGHT LEVEL_HEIGHT
 
-extern uint8_t map_buffer[MAP_BUFFER_HEIGHT][MAP_BUFFER_WIDTH];
+extern uint8_t map_buffer[DEVICE_SCREEN_BUFFER_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
 extern uint16_t camera_x_subpixel;
