@@ -115,10 +115,10 @@ void set_level_1_2_0() NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t _current_bank = CURRENT_BANK;
-  SWITCH_ROM(BANK(level_1_1_0));
+  SWITCH_ROM(BANK(level_1_2_0));
 
-  current_map = level_1_1_0_map;
-  current_map_width = level_1_1_0_WIDTH;
+  current_map = level_1_2_0_map;
+  current_map_width = level_1_2_0_WIDTH;
 
   SWITCH_ROM(_current_bank);
 }
