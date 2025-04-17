@@ -58,10 +58,10 @@ void main(void) {
   player_draw_y = player_y_subpixel >> 4;
 
   set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
-  set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
+  //set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
-  set_level_1_1_0();
+  set_level_1_1_1();
   load_current_level();
   
   score = 0;
@@ -93,7 +93,7 @@ void main(void) {
   // enemy_new(70, 136, ENEMY_TYPE_KOOPA);
 
   // text and common bkg data
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
 
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
@@ -101,7 +101,7 @@ void main(void) {
   SWITCH_ROM(BANK(common));
   set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 
 
   DISPLAY_ON;
@@ -145,22 +145,6 @@ void main(void) {
     }
 
 
-    // print DEBUG text
-#if defined(DEBUG)
-    char buffer[WINDOW_SIZE + 1];
-    sprintf(buffer, 
-            "%d.%d.%d.%d.%d.\n.%d.%d.%d.%d.", 
-            (uint16_t)player_x_subpixel,
-            (uint16_t)player_y_subpixel, 
-            player_draw_x, 
-            vel_x, 
-            vel_y,
-            camera_x, 
-            scroll, 
-            current_map_width, 
-            level_end_reached);
-    text_print_string_win(0, 0, buffer);
-#else
     time--;
     hud_update_time();
     if (time == 0) {
@@ -168,7 +152,6 @@ void main(void) {
       lives--;
       hud_update_lives();
     }
-#endif
 
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {

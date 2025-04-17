@@ -17,8 +17,14 @@ int current_map_tile_origin;
 const unsigned char *current_map_tiles;
 size_t current_map_size;
 size_t current_map_width;
+uint8_t level_bank;
 
-uint8_t level_load_column(uint8_t start_at, uint8_t nb) {
+#include <gbdk/emu_debug.h>
+
+uint8_t level_load_column(uint8_t start_at, uint8_t nb) NONBANKED {
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(level_bank);
+  
   uint8_t col = 0;
   while (col < nb) {
     uint8_t map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
@@ -35,10 +41,11 @@ uint8_t level_load_column(uint8_t start_at, uint8_t nb) {
     col++;
   };
 
+  SWITCH_ROM(previous_bank);
   return col;
 }
 
-void level_set_current() {
+void level_set_current() NONBANKED {
   switch (current_level) {
   case 0:
     set_level_1_1_0();
@@ -53,18 +60,21 @@ void level_set_current() {
   load_current_level();
 }
 
-void load_current_level() {
+void load_current_level() NONBANKED {
   set_column_at = 0;
   camera_x = 0;
   camera_x_subpixel = 0;
   level_end_reached = false;
 
+
   level_load_column(0, MAP_BUFFER_WIDTH);
+
+
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }
 
 void level_load_tileset_birabuto() NONBANKED {
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(birabuto));
 
   current_map_tiles = birabuto_tiles;
@@ -72,11 +82,11 @@ void level_load_tileset_birabuto() NONBANKED {
   current_map_size = birabuto_TILE_COUNT;
   set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }
 
 void level_load_tileset_muda() NONBANKED {
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(birabuto));
 
   current_map_tiles = muda_tiles;
@@ -84,53 +94,57 @@ void level_load_tileset_muda() NONBANKED {
   current_map_size = birabuto_TILE_COUNT;
   set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }
 
 void set_level_1_1_0() NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_1_0));
 
   current_map = level_1_1_0_map;
   current_map_width = level_1_1_0_WIDTH;
+  level_bank = BANK(level_1_1_0);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }
 
 void set_level_1_1_1() NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_1_1));
 
   current_map = level_1_1_1_map;
   current_map_width = level_1_1_1_WIDTH;
+  level_bank = BANK(level_1_1_1);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }
 
 void set_level_1_2_0() NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_2_0));
 
   current_map = level_1_2_0_map;
   current_map_width = level_1_2_0_WIDTH;
+  level_bank = BANK(level_1_2_0);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }
 
 void set_level_1_3_0() NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t _current_bank = CURRENT_BANK;
+  uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_3_0));
 
   current_map = level_1_3_0_map;
   current_map_width = level_1_3_0_WIDTH;
+  level_bank = BANK(level_1_3_0);
 
-  SWITCH_ROM(_current_bank);
+  SWITCH_ROM(previous_bank);
 }

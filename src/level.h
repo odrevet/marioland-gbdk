@@ -24,7 +24,7 @@
 #include "levels/level_1_2_0.h"
 #include "levels/level_1_2_1.h"
 #include "levels/level_1_3_0.h"
-#include "levels/level_1_3_1.h"
+//#include "levels/level_1_3_1.h"
 
 #define NB_LEVELS 3
 #define LEVEL_HEIGHT 16
@@ -50,6 +50,7 @@ extern int current_map_tile_origin;
 extern const unsigned char*  current_map_tiles;
 extern size_t current_map_size;
 extern size_t current_map_width;
+extern uint8_t level_bank;
 
 
 enum tileset_index {
@@ -113,16 +114,16 @@ static inline bool is_tile_solid(uint8_t tile) {
     return tile <= MAX_TILE && solid_tiles[tile];
 }
 
-uint8_t level_load_column(uint8_t start_at, uint8_t nb);
+uint8_t level_load_column(uint8_t start_at, uint8_t nb) NONBANKED;
 
-void level_set_current();
-void load_current_level();
+void level_set_current() NONBANKED;
+void load_current_level() NONBANKED;
 
 void level_load_tileset_birabuto() NONBANKED;
 void level_load_tileset_muda() NONBANKED;
 
 void set_level_1_1_0() NONBANKED;
-//void set_level_1_1_1() NONBANKED;
+void set_level_1_1_1() NONBANKED;
 void set_level_1_2_0() NONBANKED;
 //void set_level_1_2_1() NONBANKED;
 void set_level_1_3_0() NONBANKED;
