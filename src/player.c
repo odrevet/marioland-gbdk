@@ -45,7 +45,6 @@ uint8_t tile_next_2;
 
 uint8_t scroll;
 
-#include <gbdk/emu_debug.h>
 
 void update_frame_counter() {
   frame_counter++;

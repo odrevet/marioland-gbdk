@@ -6,7 +6,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define muda_TILE_ORIGIN 80
+#define muda_TILE_ORIGIN 96
 #define muda_TILE_W 8
 #define muda_TILE_H 8
 #define muda_WIDTH 80

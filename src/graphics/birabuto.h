@@ -6,7 +6,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define birabuto_TILE_ORIGIN 80
+#define birabuto_TILE_ORIGIN 96
 #define birabuto_TILE_W 8
 #define birabuto_TILE_H 8
 #define birabuto_WIDTH 80

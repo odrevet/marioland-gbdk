@@ -19,12 +19,11 @@ size_t current_map_size;
 size_t current_map_width;
 uint8_t level_bank;
 
-#include <gbdk/emu_debug.h>
 
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(level_bank);
-  
+
   uint8_t col = 0;
   while (col < nb) {
     uint8_t map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
@@ -34,7 +33,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
       map_buffer[row][map_column] = current_map[pos];
       coldata[row] = current_map[pos];
     }
-    
+
     // Draw current column
     set_bkg_tiles(map_column, 0, 1, LEVEL_HEIGHT, coldata);
 
@@ -56,6 +55,9 @@ void level_set_current() NONBANKED {
   case 2:
     set_level_1_3();
     break;
+  case 3:
+    set_level_2_1();
+    break;
   }
   load_current_level();
 }
@@ -66,9 +68,7 @@ void load_current_level() NONBANKED {
   camera_x_subpixel = 0;
   level_end_reached = false;
 
-
   level_load_column(0, MAP_BUFFER_WIDTH);
-
 
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }
@@ -87,11 +87,11 @@ void level_load_tileset_birabuto() NONBANKED {
 
 void level_load_tileset_muda() NONBANKED {
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(birabuto));
+  SWITCH_ROM(BANK(muda));
 
   current_map_tiles = muda_tiles;
   current_map_tile_origin = muda_TILE_ORIGIN;
-  current_map_size = birabuto_TILE_COUNT;
+  current_map_size = muda_TILE_COUNT;
   set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
 
   SWITCH_ROM(previous_bank);
@@ -132,6 +132,19 @@ void set_level_1_3() NONBANKED {
   current_map = level_1_3_map;
   current_map_width = level_1_3_WIDTH;
   level_bank = BANK(level_1_3);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_2_1() NONBANKED {
+  level_load_tileset_muda();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_2_1));
+
+  current_map = level_2_1_map;
+  current_map_width = level_2_1_WIDTH;
+  level_bank = BANK(level_2_1);
 
   SWITCH_ROM(previous_bank);
 }

@@ -9,9 +9,9 @@
 #define common_TILE_ORIGIN 40
 #define common_TILE_W 8
 #define common_TILE_H 8
-#define common_WIDTH 80
+#define common_WIDTH 112
 #define common_HEIGHT 32
-#define common_TILE_COUNT 40
+#define common_TILE_COUNT 56
 #define common_PALETTE_COUNT 1
 #define common_COLORS_PER_PALETTE 4
 #define common_TOTAL_COLORS 4
@@ -19,6 +19,6 @@
 BANKREF_EXTERN(common)
 
 extern const palette_color_t common_palettes[4];
-extern const uint8_t common_tiles[640];
+extern const uint8_t common_tiles[896];
 
 #endif

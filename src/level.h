@@ -20,17 +20,15 @@
 
 // maps
 #include "levels/level_1_1.h"
-#include "levels/level_1_1.h"
-#include "levels/level_1_2.h"
 #include "levels/level_1_2.h"
 #include "levels/level_1_3.h"
-//#include "levels/level_1_3_1.h"
+#include "levels/level_2_1.h"
 
-#define NB_LEVELS 3
+#define NB_LEVELS 4
 #define LEVEL_HEIGHT 16
 #define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
 
-// buffer worth of one column to hold map data when decrompressing
+// buffer worth of one column to hold map data when loading/scrolling
 extern uint8_t coldata[LEVEL_HEIGHT];
 // map buffer in RAM to check collision without access VRAM
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
@@ -123,8 +121,9 @@ void level_load_tileset_birabuto() NONBANKED;
 void level_load_tileset_muda() NONBANKED;
 
 void set_level_1_1() NONBANKED;
-void set_level_1_2_0() NONBANKED;
-void set_level_1_3_0() NONBANKED;
+void set_level_1_2() NONBANKED;
+void set_level_1_3() NONBANKED;
+void set_level_2_1() NONBANKED;
 
 
 #endif
