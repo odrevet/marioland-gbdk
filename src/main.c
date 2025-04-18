@@ -61,7 +61,7 @@ void main(void) {
   //set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
-  set_level_1_1_1();
+  set_level_1_1();
   load_current_level();
   
   score = 0;
@@ -155,7 +155,7 @@ void main(void) {
 
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
-      die();
+      //die();
     }
 
     // if reach end of level

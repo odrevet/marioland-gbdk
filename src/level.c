@@ -21,7 +21,7 @@ uint8_t level_bank;
 
 #include <gbdk/emu_debug.h>
 
-uint8_t level_load_column(uint8_t start_at, uint8_t nb) NONBANKED {
+uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(level_bank);
   
@@ -48,13 +48,13 @@ uint8_t level_load_column(uint8_t start_at, uint8_t nb) NONBANKED {
 void level_set_current() NONBANKED {
   switch (current_level) {
   case 0:
-    set_level_1_1_0();
+    set_level_1_1();
     break;
   case 1:
-    set_level_1_2_0();
+    set_level_1_2();
     break;
   case 2:
-    set_level_1_3_0();
+    set_level_1_3();
     break;
   }
   load_current_level();
@@ -97,54 +97,41 @@ void level_load_tileset_muda() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_1_0() NONBANKED {
+void set_level_1_1() NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_1_0));
+  SWITCH_ROM(BANK(level_1_1));
 
-  current_map = level_1_1_0_map;
-  current_map_width = level_1_1_0_WIDTH;
-  level_bank = BANK(level_1_1_0);
+  current_map = level_1_1_map;
+  current_map_width = level_1_1_WIDTH;
+  level_bank = BANK(level_1_1);
 
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_1_1() NONBANKED {
+void set_level_1_2() NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_1_1));
+  SWITCH_ROM(BANK(level_1_2));
 
-  current_map = level_1_1_1_map;
-  current_map_width = level_1_1_1_WIDTH;
-  level_bank = BANK(level_1_1_1);
+  current_map = level_1_2_map;
+  current_map_width = level_1_2_WIDTH;
+  level_bank = BANK(level_1_2);
 
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_2_0() NONBANKED {
+void set_level_1_3() NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_2_0));
+  SWITCH_ROM(BANK(level_1_3));
 
-  current_map = level_1_2_0_map;
-  current_map_width = level_1_2_0_WIDTH;
-  level_bank = BANK(level_1_2_0);
-
-  SWITCH_ROM(previous_bank);
-}
-
-void set_level_1_3_0() NONBANKED {
-  level_load_tileset_birabuto();
-
-  uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_3_0));
-
-  current_map = level_1_3_0_map;
-  current_map_width = level_1_3_0_WIDTH;
-  level_bank = BANK(level_1_3_0);
+  current_map = level_1_3_map;
+  current_map_width = level_1_3_WIDTH;
+  level_bank = BANK(level_1_3);
 
   SWITCH_ROM(previous_bank);
 }

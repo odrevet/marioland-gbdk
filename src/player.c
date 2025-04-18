@@ -45,6 +45,7 @@ uint8_t tile_next_2;
 
 uint8_t scroll;
 
+#include <gbdk/emu_debug.h>
 
 void update_frame_counter() {
   frame_counter++;
@@ -185,6 +186,8 @@ void player_move() BANKED
           if (camera_x >> 3 >= next_col_chunk_load) {
             nb_col = level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, nb_col);
 
+
+            // WIP detect level end from level width
             if (nb_col == 0) {
               level_end_reached = true;
               nb_col = COLUMN_CHUNK_SIZE;

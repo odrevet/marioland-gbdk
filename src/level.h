@@ -19,11 +19,11 @@
 #include "graphics/muda.h"
 
 // maps
-#include "levels/level_1_1_0.h"
-#include "levels/level_1_1_1.h"
-#include "levels/level_1_2_0.h"
-#include "levels/level_1_2_1.h"
-#include "levels/level_1_3_0.h"
+#include "levels/level_1_1.h"
+#include "levels/level_1_1.h"
+#include "levels/level_1_2.h"
+#include "levels/level_1_2.h"
+#include "levels/level_1_3.h"
 //#include "levels/level_1_3_1.h"
 
 #define NB_LEVELS 3
@@ -114,7 +114,7 @@ static inline bool is_tile_solid(uint8_t tile) {
     return tile <= MAX_TILE && solid_tiles[tile];
 }
 
-uint8_t level_load_column(uint8_t start_at, uint8_t nb) NONBANKED;
+uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 
 void level_set_current() NONBANKED;
 void load_current_level() NONBANKED;
@@ -122,11 +122,9 @@ void load_current_level() NONBANKED;
 void level_load_tileset_birabuto() NONBANKED;
 void level_load_tileset_muda() NONBANKED;
 
-void set_level_1_1_0() NONBANKED;
-void set_level_1_1_1() NONBANKED;
+void set_level_1_1() NONBANKED;
 void set_level_1_2_0() NONBANKED;
-//void set_level_1_2_1() NONBANKED;
 void set_level_1_3_0() NONBANKED;
-//void set_level_1_3_1() NONBANKED;
+
 
 #endif

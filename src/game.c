@@ -84,7 +84,7 @@ void die() {
   if(lives == 0){
     lives = INITIAL_LIVES;
     current_map = 0;
-    set_level_1_1_0();
+    set_level_1_1();
   }
 
   hud_update_lives();

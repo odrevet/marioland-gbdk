@@ -12,19 +12,12 @@ convert_level_asset() {
 
     level_image="assets/levels/raw_${level_number}.png"
     
-    for page in 0 1; do
-        local x_offset=$((page * 1200))
-        # split the image
-        convert $level_image -strip -crop 1200x+${x_offset}+0 +repage +adjoin "assets/levels/${level_number}_${page}.png"
-        
-        # convert image to bin
-        png2asset "assets/levels/${level_number}_${page}.png" \
-            -o "src/levels/level_${level_number}_${page}.c" \
-            -source_tileset "assets/tilesets/common.png" \
-            -source_tileset "assets/tilesets/${source_tileset}.png" \
-            -map -noflip -keep_duplicate_tiles \
-            -tile_origin "$text_tiles_count" -b 255
-    done
+    png2asset "assets/levels/${level_number}.png" \
+    -o "src/levels/level_${level_number}.c" \
+    -source_tileset "assets/tilesets/common.png" \
+    -source_tileset "assets/tilesets/${source_tileset}.png" \
+    -map -noflip -keep_duplicate_tiles \
+    -tile_origin "$text_tiles_count" -b 255
 }
 
 # sprite
