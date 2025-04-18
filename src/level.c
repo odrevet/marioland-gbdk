@@ -19,7 +19,6 @@ size_t current_map_size;
 size_t current_map_width;
 uint8_t level_bank;
 
-
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(level_bank);
@@ -57,6 +56,9 @@ void level_set_current() NONBANKED {
     break;
   case 3:
     set_level_2_1();
+    break;
+  case 4:
+    set_level_2_2();
     break;
   }
   load_current_level();
@@ -145,6 +147,19 @@ void set_level_2_1() NONBANKED {
   current_map = level_2_1_map;
   current_map_width = level_2_1_WIDTH;
   level_bank = BANK(level_2_1);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_2_2() NONBANKED {
+  level_load_tileset_muda();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_2_2));
+
+  current_map = level_2_2_map;
+  current_map_width = level_2_2_WIDTH;
+  level_bank = BANK(level_2_2);
 
   SWITCH_ROM(previous_bank);
 }

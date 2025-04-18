@@ -35,3 +35,4 @@ convert_level_asset 1_1 birabuto
 convert_level_asset 1_2 birabuto
 convert_level_asset 1_3 birabuto
 convert_level_asset 2_1 muda
+convert_level_asset 2_2 muda

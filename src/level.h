@@ -23,8 +23,9 @@
 #include "levels/level_1_2.h"
 #include "levels/level_1_3.h"
 #include "levels/level_2_1.h"
+#include "levels/level_2_2.h"
 
-#define NB_LEVELS 4
+#define NB_LEVELS 5
 #define LEVEL_HEIGHT 16
 #define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
 
@@ -124,6 +125,7 @@ void set_level_1_1() NONBANKED;
 void set_level_1_2() NONBANKED;
 void set_level_1_3() NONBANKED;
 void set_level_2_1() NONBANKED;
+void set_level_2_2() NONBANKED;
 
 
 #endif
