@@ -2,7 +2,7 @@ An atempt to re-implement super mario land using GBDK
 
 # images color mode
 
-Images has 4 indexed colors from: fff 555 aaa 000
+Images has 4 indexed colors from: fff 555 aaa 000 (exported as `assets/palette.txt`)
 
 Colors must match between the tileset and the level map, otherwise png2asset will not match tiles in the tileset. 
 
@@ -17,3 +17,4 @@ If needed, adjust each color of the palette using the color map window
 
 * Windows → Dockable Dialogs → Colormap
 
+or apply `assets/palette.txt`
