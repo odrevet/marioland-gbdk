@@ -17,8 +17,8 @@
 #include "graphics/common.h"
 #include "graphics/birabuto.h"
 #include "graphics/muda.h"
-//#include "graphics/chai.h"
-//#include "graphics/easton.h"
+#include "graphics/chai.h"
+#include "graphics/easton.h"
 
 // maps
 #include "levels/level_1_1.h"

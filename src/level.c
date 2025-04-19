@@ -120,7 +120,7 @@ void level_load_tileset_muda() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-/*
+
 void level_load_tileset_chai() NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(chai));
@@ -144,7 +144,7 @@ void level_load_tileset_easton() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-*/
+
 
 void set_level_1_1() NONBANKED {
   level_load_tileset_birabuto();
