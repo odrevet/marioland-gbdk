@@ -54,11 +54,11 @@ convert_level_asset 2_3 muda
 #echo "3_1"
 #convert_level_asset 3_1 easton
 
-#echo "3_2"
-#convert_level_asset 3_2 easton
+echo "3_2"
+convert_level_asset 3_2 easton
 
-#echo "3_3"
-#convert_level_asset 3_3 easton
+echo "3_3"
+convert_level_asset 3_3 easton
 
 #echo "4_1"
 #convert_level_asset 4_1 chai

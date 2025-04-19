@@ -63,28 +63,15 @@ void level_set_current() NONBANKED {
   case 5:
     set_level_2_3();
     break;
-//  case 6:
-//    set_level_3_1();
-//    break;
-//  case 7:
-//    set_level_3_2();
-//    break;
-//  case 8:
-//    set_level_3_3();
-//    break;
-//  case 9:
-//    set_level_4_1();
-//    break;
-//  case 10:
-//    set_level_4_2();
-//    break;
-//  case 11:
-//    set_level_4_3();
-//    break;
+  case 6:
+    set_level_3_2();
+    break;
+  case 7:
+    set_level_3_3();
+    break;
   }
   load_current_level();
 }
-
 
 void load_current_level() NONBANKED {
   set_column_at = 0;
@@ -144,7 +131,6 @@ void level_load_tileset_easton() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-
 
 void set_level_1_1() NONBANKED {
   level_load_tileset_birabuto();
@@ -236,7 +222,7 @@ void set_level_3_1() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-
+*/
 void set_level_3_2() NONBANKED {
   level_load_tileset_easton();
 
@@ -262,7 +248,7 @@ void set_level_3_3() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-
+/*
 void set_level_4_1() NONBANKED {
   level_load_tileset_chai();
 
