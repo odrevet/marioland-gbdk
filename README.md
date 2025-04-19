@@ -1,4 +1,10 @@
-An atempt to re-implement super mario land using GBDK
+An attempt to recreate Super Mario Land using GBDK.
+
+The project prioritizes code readability over optimization.
+
+The resulting ROM is significantly larger than the original, as level data is generated from PNG-based tables.
+
+The main goal remains to produce a playable game.
 
 # images color mode
 
