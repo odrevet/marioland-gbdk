@@ -138,7 +138,7 @@ void set_level_1_3() NONBANKED;
 void set_level_2_1() NONBANKED;
 void set_level_2_2() NONBANKED;
 void set_level_2_3() NONBANKED;
-//void set_level_3_1() NONBANKED;
+void set_level_3_1() NONBANKED;
 //void set_level_3_2() NONBANKED;
 //void set_level_3_3() NONBANKED;
 //void set_level_4_1() NONBANKED;
