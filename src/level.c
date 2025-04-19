@@ -63,9 +63,28 @@ void level_set_current() NONBANKED {
   case 5:
     set_level_2_3();
     break;
+//  case 6:
+//    set_level_3_1();
+//    break;
+//  case 7:
+//    set_level_3_2();
+//    break;
+//  case 8:
+//    set_level_3_3();
+//    break;
+//  case 9:
+//    set_level_4_1();
+//    break;
+//  case 10:
+//    set_level_4_2();
+//    break;
+//  case 11:
+//    set_level_4_3();
+//    break;
   }
   load_current_level();
 }
+
 
 void load_current_level() NONBANKED {
   set_column_at = 0;
@@ -101,6 +120,31 @@ void level_load_tileset_muda() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
+/*
+void level_load_tileset_chai() NONBANKED {
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(chai));
+
+  current_map_tiles = chai_tiles;
+  current_map_tile_origin = chai_TILE_ORIGIN;
+  current_map_size = chai_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void level_load_tileset_easton() NONBANKED {
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(easton));
+
+  current_map_tiles = easton_tiles;
+  current_map_tile_origin = easton_TILE_ORIGIN;
+  current_map_size = easton_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+
+  SWITCH_ROM(previous_bank);
+}
+*/
 
 void set_level_1_1() NONBANKED {
   level_load_tileset_birabuto();
@@ -179,3 +223,81 @@ void set_level_2_3() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
+/*
+void set_level_3_1() NONBANKED {
+  level_load_tileset_easton();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_3_1));
+
+  current_map = level_3_1_map;
+  current_map_width = level_3_1_WIDTH;
+  level_bank = BANK(level_3_1);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_3_2() NONBANKED {
+  level_load_tileset_easton();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_3_2));
+
+  current_map = level_3_2_map;
+  current_map_width = level_3_2_WIDTH;
+  level_bank = BANK(level_3_2);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_3_3() NONBANKED {
+  level_load_tileset_easton();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_3_3));
+
+  current_map = level_3_3_map;
+  current_map_width = level_3_3_WIDTH;
+  level_bank = BANK(level_3_3);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_4_1() NONBANKED {
+  level_load_tileset_chai();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_1));
+
+  current_map = level_4_1_map;
+  current_map_width = level_4_1_WIDTH;
+  level_bank = BANK(level_4_1);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_4_2() NONBANKED {
+  level_load_tileset_chai();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_2));
+
+  current_map = level_4_2_map;
+  current_map_width = level_4_2_WIDTH;
+  level_bank = BANK(level_4_2);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_4_3() NONBANKED {
+  level_load_tileset_chai();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_3));
+
+  current_map = level_4_3_map;
+  current_map_width = level_4_3_WIDTH;
+  level_bank = BANK(level_4_3);
+
+  SWITCH_ROM(previous_bank);
+}*/
