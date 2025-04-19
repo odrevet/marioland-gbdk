@@ -31,8 +31,20 @@ level_tiles_origin=$(($text_tiles_count + $common_tiles_count))
 png2asset "assets/tilesets/birabuto.png" -o "src/graphics/birabuto.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 png2asset "assets/tilesets/muda.png" -o "src/graphics/muda.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 
+echo "1_1"
 convert_level_asset 1_1 birabuto
+
+echo "1_2"
 convert_level_asset 1_2 birabuto
+
+echo "1_3"
 convert_level_asset 1_3 birabuto
+
+echo "2_1"
 convert_level_asset 2_1 muda
+
+echo "2_2"
 convert_level_asset 2_2 muda
+
+echo "2_3"
+convert_level_asset 2_3 muda

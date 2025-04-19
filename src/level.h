@@ -24,8 +24,10 @@
 #include "levels/level_1_3.h"
 #include "levels/level_2_1.h"
 #include "levels/level_2_2.h"
+#include "levels/level_2_3.h"
 
-#define NB_LEVELS 5
+
+#define NB_LEVELS 6
 #define LEVEL_HEIGHT 16
 #define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
 

@@ -60,6 +60,9 @@ void level_set_current() NONBANKED {
   case 4:
     set_level_2_2();
     break;
+  case 5:
+    set_level_2_3();
+    break;
   }
   load_current_level();
 }
@@ -160,6 +163,19 @@ void set_level_2_2() NONBANKED {
   current_map = level_2_2_map;
   current_map_width = level_2_2_WIDTH;
   level_bank = BANK(level_2_2);
+
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_2_3() NONBANKED {
+  level_load_tileset_muda();
+
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_2_3));
+
+  current_map = level_2_3_map;
+  current_map_width = level_2_3_WIDTH;
+  level_bank = BANK(level_2_3);
 
   SWITCH_ROM(previous_bank);
 }
