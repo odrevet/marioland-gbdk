@@ -8,14 +8,6 @@ uint8_t y_top_draw;
 uint8_t y_bottom_draw;
 
 
-uint8_t coins;
-uint16_t score;
-uint8_t joy;
-uint16_t time;
-uint8_t lives;
-uint8_t joypad_previous, joypad_current;
-uint8_t nb_col = COLUMN_CHUNK_SIZE;
-
 // player coords and movements
 uint16_t player_x_subpixel;
 uint16_t player_y_subpixel;
