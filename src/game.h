@@ -22,7 +22,6 @@
 #include "hUGEDriver.h"
 #include "sound.h"
 #include "text.h"
-#include "level.h"
 #include "player.h"
 
 void init();
@@ -30,6 +29,7 @@ void pause();
 void die();
 
 void hud_update_coins();
+void hud_update_level(char major, char minor);
 void hud_update_score();
 void hud_update_time();
 void hud_update_lives();
