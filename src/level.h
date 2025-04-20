@@ -8,10 +8,10 @@
 
 #include <gb/gb.h>
 #include <gb/metasprites.h>
-#include <gbdk/incbin.h>
 #include <gbdk/platform.h>
 
 #include "global.h"
+#include "hud.h"
 
 // tilesets
 #include "graphics/common.h"

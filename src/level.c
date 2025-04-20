@@ -47,51 +47,67 @@ void level_set_current() NONBANKED {
   switch (current_level) {
       case 0:
           set_level_1_1();
+          hud_set_level('1', '1');
           break;
       case 1:
           set_level_1_2();
+          hud_set_level('1', '2');
           break;
       case 2:
           set_level_1_3();
+          hud_set_level('1', '3');
           break;
       case 3:
           set_level_2_1();
+          hud_set_level('2', '1');
           break;
       case 4:
           set_level_2_2();
+          hud_set_level('2', '2');
           break;
       case 5:
           set_level_2_3();
+          hud_set_level('2', '3');
           break;
       case 6:
           set_level_3_1_1();
+          hud_set_level('3', '1');
           break;
       case 7:
           set_level_3_1_2();
+          hud_set_level('3', '1');
           break;
       case 8:
           set_level_3_2();
+          hud_set_level('3', '2');
           break;
       case 9:
           set_level_3_3();
+          hud_set_level('3', '3');
           break;
       case 10:
           set_level_4_1_1();
+          hud_set_level('4', '1');
           break;
       case 11:
           set_level_4_1_2();
+          hud_set_level('4', '1');
           break;
       case 12:
           set_level_4_2_1();
+          hud_set_level('4', '2');
           break;
       case 13:
           set_level_4_2_2();
+          hud_set_level('4', '2');
           break;
       case 14:
           set_level_4_3_1();
+          hud_set_level('4', '3');
           break;
       case 15:
           set_level_4_3_2();
+          hud_set_level('4', '3');
           break;
   }
   load_current_level();

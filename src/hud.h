@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef HUD_H
+#define HUD_H
 
 #include <gb/gb.h>
 #include <gb/metasprites.h>
@@ -17,18 +17,12 @@
 
 #include "enemy.h"
 #include "global.h"
+#include "graphics/text.h"
 #include "hUGEDriver.h"
 #include "sound.h"
 #include "text.h"
-#include "player.h"
 
-void init();
-void pause(); 
-void die();
 
-void hud_update_coins();
-void hud_update_score();
-void hud_update_time();
-void hud_update_lives();
+void hud_set_level(char major, char minor);
 
 #endif
