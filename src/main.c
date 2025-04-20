@@ -1,26 +1,26 @@
 
-#include <gbdk/platform.h>
 #include <gb/metasprites.h>
+#include <gbdk/platform.h>
 
-#include "graphics/enemies.h"
-#include "graphics/text.h"
-#include "graphics/mario.h"
 #include "graphics/common.h"
+#include "graphics/enemies.h"
+#include "graphics/mario.h"
+#include "graphics/text.h"
 
 #include "enemy.h"
+#include "game.h"
 #include "global.h"
 #include "graphics/text.h"
 #include "hUGEDriver.h"
-#include "sound.h"
-#include "text.h"
 #include "level.h"
 #include "player.h"
-#include "game.h"
- 
+#include "sound.h"
+#include "text.h"
+
+#include "songs/overworld.h"
+
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
 
-// music
-extern const hUGESong_t overworld;
 
 void interruptLCD() {
   while (STAT_REG & 3)
@@ -29,6 +29,13 @@ void interruptLCD() {
 }
 
 void interruptVBL() { SHOW_WIN; }
+
+void play_sound_vbl(void) NONBANKED {
+  uint8_t _previous_bank = _current_bank;
+  SWITCH_ROM(BANK(overworld_bank));
+  hUGE_dosound();
+  SWITCH_ROM(_previous_bank);
+}
 
 void main(void) {
   STAT_REG = 0x40;
@@ -44,8 +51,11 @@ void main(void) {
 
   sound_init();
   __critical {
+    uint8_t _previous_bank = _current_bank;
+    SWITCH_ROM(BANK(overworld_bank));
     hUGE_init(&overworld);
-    add_VBL(hUGE_dosound);
+    add_VBL(play_sound_vbl);
+    SWITCH_ROM(_previous_bank);
   };
 
   // joypad
@@ -58,12 +68,12 @@ void main(void) {
   player_draw_y = player_y_subpixel >> 4;
 
   set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
-  //set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
+  // set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
   set_level_1_1();
   load_current_level();
-  
+
   score = 0;
   lives = INITIAL_LIVES;
   coins = 0;
@@ -97,12 +107,11 @@ void main(void) {
 
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
-  
+
   SWITCH_ROM(BANK(common));
   set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
 
   SWITCH_ROM(previous_bank);
-
 
   DISPLAY_ON;
   SHOW_BKG;
@@ -118,7 +127,6 @@ void main(void) {
     joypad_current = joypad();
 
     player_move();
-
 
     // set player frame
     if (display_jump_frame) {
@@ -136,14 +144,12 @@ void main(void) {
     // enemy_update();
     // enemy_draw(SPRITE_START_ENEMIES);
 
-
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
       load_current_level();
     }
-
 
     time--;
     hud_update_time();
@@ -155,11 +161,12 @@ void main(void) {
 
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
-      //die();
+      // die();
     }
 
     // if reach end of level
-    if(level_end_reached && player_draw_x >= (DEVICE_SCREEN_WIDTH - 2) * TILE_SIZE){
+    if (level_end_reached &&
+        player_draw_x >= (DEVICE_SCREEN_WIDTH - 2) * TILE_SIZE) {
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
