@@ -1,5 +1,3 @@
-#pragma bank 255
-
 #include "player.h"
 
 
@@ -52,6 +50,7 @@ void update_frame_counter() {
   }
 }
 
+
 void player_draw() {
   metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
@@ -64,7 +63,7 @@ void player_draw() {
   }
 }
 
-void player_move() BANKED {
+void player_move() {
   x_right_draw = player_draw_x + MARIO_HALF_WIDTH - 1;
   x_left_draw = player_draw_x - MARIO_HALF_WIDTH;
   y_top_draw = player_draw_y - MARIO_HALF_WIDTH;
