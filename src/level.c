@@ -45,30 +45,54 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
 
 void level_set_current() NONBANKED {
   switch (current_level) {
-  case 0:
-    set_level_1_1();
-    break;
-  case 1:
-    set_level_1_2();
-    break;
-  case 2:
-    set_level_1_3();
-    break;
-  case 3:
-    set_level_2_1();
-    break;
-  case 4:
-    set_level_2_2();
-    break;
-  case 5:
-    set_level_2_3();
-    break;
-  case 6:
-    set_level_3_2();
-    break;
-  case 7:
-    set_level_3_3();
-    break;
+      case 0:
+          set_level_1_1();
+          break;
+      case 1:
+          set_level_1_2();
+          break;
+      case 2:
+          set_level_1_3();
+          break;
+      case 3:
+          set_level_2_1();
+          break;
+      case 4:
+          set_level_2_2();
+          break;
+      case 5:
+          set_level_2_3();
+          break;
+      case 6:
+          set_level_3_1_1();
+          break;
+      case 7:
+          set_level_3_1_2();
+          break;
+      case 8:
+          set_level_3_2();
+          break;
+      case 9:
+          set_level_3_3();
+          break;
+      case 10:
+          set_level_4_1_1();
+          break;
+      case 11:
+          set_level_4_1_2();
+          break;
+      case 12:
+          set_level_4_2_1();
+          break;
+      case 13:
+          set_level_4_2_2();
+          break;
+      case 14:
+          set_level_4_3_1();
+          break;
+      case 15:
+          set_level_4_3_2();
+          break;
   }
   load_current_level();
 }
@@ -209,20 +233,27 @@ void set_level_2_3() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-/*
-void set_level_3_1() NONBANKED {
+
+void set_level_3_1_1() NONBANKED {
   level_load_tileset_easton();
-
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_3_1));
-
-  current_map = level_3_1_map;
-  current_map_width = level_3_1_WIDTH;
-  level_bank = BANK(level_3_1);
-
+  SWITCH_ROM(BANK(level_3_1_1));
+  current_map = level_3_1_1_map;
+  current_map_width = level_3_1_1_WIDTH;
+  level_bank = BANK(level_3_1_1);
   SWITCH_ROM(previous_bank);
 }
-*/
+
+void set_level_3_1_2() NONBANKED {
+  level_load_tileset_easton();
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_3_1_2));
+  current_map = level_3_1_2_map;
+  current_map_width = level_3_1_2_WIDTH;
+  level_bank = BANK(level_3_1_2);
+  SWITCH_ROM(previous_bank);
+}
+
 void set_level_3_2() NONBANKED {
   level_load_tileset_easton();
 
@@ -248,42 +279,63 @@ void set_level_3_3() NONBANKED {
 
   SWITCH_ROM(previous_bank);
 }
-/*
-void set_level_4_1() NONBANKED {
+
+void set_level_4_1_1() NONBANKED {
   level_load_tileset_chai();
-
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_1));
-
-  current_map = level_4_1_map;
-  current_map_width = level_4_1_WIDTH;
-  level_bank = BANK(level_4_1);
-
+  SWITCH_ROM(BANK(level_4_1_1));
+  current_map = level_4_1_1_map;
+  current_map_width = level_4_1_1_WIDTH;
+  level_bank = BANK(level_4_1_1);
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_4_2() NONBANKED {
+void set_level_4_1_2() NONBANKED {
   level_load_tileset_chai();
-
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_2));
-
-  current_map = level_4_2_map;
-  current_map_width = level_4_2_WIDTH;
-  level_bank = BANK(level_4_2);
-
+  SWITCH_ROM(BANK(level_4_1_2));
+  current_map = level_4_1_2_map;
+  current_map_width = level_4_1_2_WIDTH;
+  level_bank = BANK(level_4_1_2);
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_4_3() NONBANKED {
+void set_level_4_2_1() NONBANKED {
   level_load_tileset_chai();
-
   uint8_t previous_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_3));
-
-  current_map = level_4_3_map;
-  current_map_width = level_4_3_WIDTH;
-  level_bank = BANK(level_4_3);
-
+  SWITCH_ROM(BANK(level_4_2_1));
+  current_map = level_4_2_1_map;
+  current_map_width = level_4_2_1_WIDTH;
+  level_bank = BANK(level_4_2_1);
   SWITCH_ROM(previous_bank);
-}*/
+}
+
+void set_level_4_2_2() NONBANKED {
+  level_load_tileset_chai();
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_2_2));
+  current_map = level_4_2_2_map;
+  current_map_width = level_4_2_2_WIDTH;
+  level_bank = BANK(level_4_2_2);
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_4_3_1() NONBANKED {
+  level_load_tileset_chai();
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_3_1));
+  current_map = level_4_3_1_map;
+  current_map_width = level_4_3_1_WIDTH;
+  level_bank = BANK(level_4_3_1);
+  SWITCH_ROM(previous_bank);
+}
+
+void set_level_4_3_2() NONBANKED {
+  level_load_tileset_chai();
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(level_4_3_2));
+  current_map = level_4_3_2_map;
+  current_map_width = level_4_3_2_WIDTH;
+  level_bank = BANK(level_4_3_2);
+  SWITCH_ROM(previous_bank);
+}

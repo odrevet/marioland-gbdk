@@ -51,8 +51,9 @@ convert_level_asset 2_2 muda
 echo "2_3"
 convert_level_asset 2_3 muda
 
-#echo "3_1"
-#convert_level_asset 3_1 easton
+echo "3_1"
+convert_level_asset 3_1_1 easton
+convert_level_asset 3_1_2 easton
 
 echo "3_2"
 convert_level_asset 3_2 easton
@@ -60,14 +61,17 @@ convert_level_asset 3_2 easton
 echo "3_3"
 convert_level_asset 3_3 easton
 
-#echo "4_1"
-#convert_level_asset 4_1 chai
+echo "4_1"
+convert_level_asset 4_1_1 chai
+convert_level_asset 4_1_2 chai
 
-#echo "4_2"
-#convert_level_asset 4_2 chai
+echo "4_2"
+convert_level_asset 4_2_1 chai
+convert_level_asset 4_2_2 chai
 
-#echo "4_3"
-#convert_level_asset 4_3 chai
+echo "4_3"
+convert_level_asset 4_3_1 chai
+convert_level_asset 4_3_2 chai
 
 echo "Gates"
 png2asset "assets/levels/gates.png" \
