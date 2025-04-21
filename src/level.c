@@ -33,6 +33,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
 
   if (coins == 100) {
     lives++;
+    hud_update_lives();
     coins = 0;
   }
 
