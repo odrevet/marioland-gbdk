@@ -42,7 +42,7 @@ uint8_t tile_next_2;
 
 uint8_t scroll;
 
-void update_frame_counter() {
+void update_frame_counter(void) {
   frame_counter++;
   if (frame_counter == LOOP_PER_ANIMATION_FRAME) {
     frame_counter = 0;
@@ -51,7 +51,7 @@ void update_frame_counter() {
 }
 
 
-void player_draw() {
+void player_draw(void) {
   metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
     move_metasprite_flipx(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
@@ -63,7 +63,7 @@ void player_draw() {
   }
 }
 
-void player_move() {
+void player_move(void) {
   x_right_draw = player_draw_x + MARIO_HALF_WIDTH - 1;
   x_left_draw = player_draw_x - MARIO_HALF_WIDTH;
   y_top_draw = player_draw_y - MARIO_HALF_WIDTH;

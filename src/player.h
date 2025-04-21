@@ -52,7 +52,7 @@ extern uint8_t tile_next_2;
 
 extern uint8_t scroll;
 
-void update_frame_counter();
+void update_frame_counter(void);
 
 inline bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
@@ -78,6 +78,8 @@ inline void on_get_coin(uint8_t x, uint8_t y) {
   hud_update_score();
 }
 
-void player_move() BANKED;
+void player_draw(void);
+
+void player_move(void);
 
 #endif 

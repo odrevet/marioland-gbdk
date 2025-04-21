@@ -43,7 +43,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   return col;
 }
 
-void level_set_current() NONBANKED {
+void level_set_current(void) NONBANKED {
   switch (current_level) {
       case 0:
           set_level_1_1();
@@ -97,7 +97,7 @@ void level_set_current() NONBANKED {
   load_current_level();
 }
 
-void load_current_level() NONBANKED {
+void load_current_level(void) NONBANKED {
   set_column_at = 0;
   camera_x = 0;
   camera_x_subpixel = 0;
@@ -108,7 +108,7 @@ void load_current_level() NONBANKED {
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }
 
-void level_load_tileset_birabuto() NONBANKED {
+void level_load_tileset_birabuto(void) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(birabuto));
 
@@ -120,7 +120,7 @@ void level_load_tileset_birabuto() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void level_load_tileset_muda() NONBANKED {
+void level_load_tileset_muda(void) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(muda));
 
@@ -132,7 +132,7 @@ void level_load_tileset_muda() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void level_load_tileset_chai() NONBANKED {
+void level_load_tileset_chai(void) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(chai));
 
@@ -144,7 +144,7 @@ void level_load_tileset_chai() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void level_load_tileset_easton() NONBANKED {
+void level_load_tileset_easton(void) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(easton));
 
@@ -156,7 +156,7 @@ void level_load_tileset_easton() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_1() NONBANKED {
+void set_level_1_1(void) NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
@@ -169,7 +169,7 @@ void set_level_1_1() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_2() NONBANKED {
+void set_level_1_2(void) NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
@@ -182,7 +182,7 @@ void set_level_1_2() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_1_3() NONBANKED {
+void set_level_1_3(void) NONBANKED {
   level_load_tileset_birabuto();
 
   uint8_t previous_bank = _current_bank;
@@ -195,7 +195,7 @@ void set_level_1_3() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_2_1() NONBANKED {
+void set_level_2_1(void) NONBANKED {
   level_load_tileset_muda();
 
   uint8_t previous_bank = _current_bank;
@@ -208,7 +208,7 @@ void set_level_2_1() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_2_2() NONBANKED {
+void set_level_2_2(void) NONBANKED {
   level_load_tileset_muda();
 
   uint8_t previous_bank = _current_bank;
@@ -221,7 +221,7 @@ void set_level_2_2() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_2_3() NONBANKED {
+void set_level_2_3(void) NONBANKED {
   level_load_tileset_muda();
 
   uint8_t previous_bank = _current_bank;
@@ -234,7 +234,7 @@ void set_level_2_3() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_3_1() NONBANKED {
+void set_level_3_1(void) NONBANKED {
   level_load_tileset_easton();
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_3_1));
@@ -244,7 +244,7 @@ void set_level_3_1() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_3_2() NONBANKED {
+void set_level_3_2(void) NONBANKED {
   level_load_tileset_easton();
 
   uint8_t previous_bank = _current_bank;
@@ -257,7 +257,7 @@ void set_level_3_2() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_3_3() NONBANKED {
+void set_level_3_3(void) NONBANKED {
   level_load_tileset_easton();
 
   uint8_t previous_bank = _current_bank;
@@ -270,7 +270,7 @@ void set_level_3_3() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_4_1() NONBANKED {
+void set_level_4_1(void) NONBANKED {
   level_load_tileset_chai();
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_1));
@@ -280,7 +280,7 @@ void set_level_4_1() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_4_2() NONBANKED {
+void set_level_4_2(void) NONBANKED {
   level_load_tileset_chai();
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_2));
@@ -290,7 +290,7 @@ void set_level_4_2() NONBANKED {
   SWITCH_ROM(previous_bank);
 }
 
-void set_level_4_3() NONBANKED {
+void set_level_4_3(void) NONBANKED {
   level_load_tileset_chai();
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_3));

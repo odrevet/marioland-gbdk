@@ -31,7 +31,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   }
 }
 
-void enemy_update() {
+void enemy_update(void) {
   for (uint8_t index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
 

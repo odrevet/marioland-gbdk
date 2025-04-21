@@ -22,7 +22,7 @@
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
 
 
-void interruptLCD() {
+void interruptLCD(void) {
   while (STAT_REG & 3)
     ;
   HIDE_WIN;

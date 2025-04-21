@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-void sound_init();
-void sound_play_jump();
-void sound_play_bump();
-void sound_play_coin();
+void sound_init(void);
+void sound_play_jump(void);
+void sound_play_bump(void);
+void sound_play_coin(void);
 
 #endif

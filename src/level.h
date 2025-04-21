@@ -124,26 +124,26 @@ static inline bool is_tile_solid(uint8_t tile) {
 
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 
-void level_set_current() NONBANKED;
-void load_current_level() NONBANKED;
+void level_set_current(void) NONBANKED;
+void load_current_level(void) NONBANKED;
 
-void level_load_tileset_birabuto() NONBANKED;
-void level_load_tileset_muda() NONBANKED;
-void level_load_tileset_easton() NONBANKED;
-void level_load_tileset_chai() NONBANKED;
+void level_load_tileset_birabuto(void) NONBANKED;
+void level_load_tileset_muda(void) NONBANKED;
+void level_load_tileset_easton(void) NONBANKED;
+void level_load_tileset_chai(void) NONBANKED;
 
-void set_level_1_1() NONBANKED;
-void set_level_1_2() NONBANKED;
-void set_level_1_3() NONBANKED;
-void set_level_2_1() NONBANKED;
-void set_level_2_2() NONBANKED;
-void set_level_2_3() NONBANKED;
-void set_level_3_1() NONBANKED;
-void set_level_3_2() NONBANKED;
-void set_level_3_3() NONBANKED;
-void set_level_4_1() NONBANKED;
-void set_level_4_2() NONBANKED;
-void set_level_4_3() NONBANKED;
+void set_level_1_1(void) NONBANKED;
+void set_level_1_2(void) NONBANKED;
+void set_level_1_3(void) NONBANKED;
+void set_level_2_1(void) NONBANKED;
+void set_level_2_2(void) NONBANKED;
+void set_level_2_3(void) NONBANKED;
+void set_level_3_1(void) NONBANKED;
+void set_level_3_2(void) NONBANKED;
+void set_level_3_3(void) NONBANKED;
+void set_level_4_1(void) NONBANKED;
+void set_level_4_2(void) NONBANKED;
+void set_level_4_3(void) NONBANKED;
 
 
 #endif

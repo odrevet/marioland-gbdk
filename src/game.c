@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-void init() {
+void init(void) {
   time = TIME_INITIAL_VALUE;
 
   camera_x = 0;
@@ -23,7 +23,7 @@ void init() {
   mario_flip = FALSE;
 }
 
-void pause() {
+void pause(void) {
   hUGE_mute_channel(0, HT_CH_MUTE);
   hUGE_mute_channel(1, HT_CH_MUTE);
   hUGE_mute_channel(2, HT_CH_MUTE);
@@ -72,7 +72,7 @@ void pause() {
   hud_update_time();
 }
 
-void die() {
+void die(void) {
   hUGE_mute_channel(0, HT_CH_PLAY);
   hUGE_mute_channel(1, HT_CH_PLAY);
   hUGE_mute_channel(2, HT_CH_PLAY);
@@ -91,7 +91,7 @@ void die() {
   load_current_level();
 }
 
-void hud_update_coins() {
+void hud_update_coins(void) {
   char coins_str[3];
 
   if (coins < 10) {
@@ -104,23 +104,22 @@ void hud_update_coins() {
   text_print_string_win(9, 1, coins_str);
 }
 
-void hud_update_score() {
+void hud_update_score(void) {
   char score_str[5];
   itoa(score, score_str, 10);
   text_print_string_win(3, 1, score_str);
 }
 
-void hud_update_time() {
+void hud_update_time(void) {
   char time_str[4];
   itoa(time / 40, time_str, 10);
   text_print_string_win(DEVICE_SCREEN_WIDTH - 3, 1, "000");
   text_print_string_win(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
 }
 
-void hud_update_lives() {
+void hud_update_lives(void) {
   char lives_str[4];
   itoa(lives, lives_str, 10);
-  // text_print_string_win(8, 0, "00");
   text_print_string_win(7, 0, lives_str);
 }
 
