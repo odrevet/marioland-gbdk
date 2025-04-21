@@ -63,6 +63,7 @@ extern uint8_t level_bank;
 
 #define MAX_TILE 255
 
+// Common tiles (shared across all worlds)
 enum tileset_index_common {
   TILE_EMPTY = 0x27,
   TILE_INTEROGATION_BLOCK = 0x28,
@@ -77,12 +78,7 @@ enum tileset_index_common {
   SWITCH = 0x3D
 };
 
-static const bool solid_tiles_common[MAX_TILE] = {
-    [TILE_INTEROGATION_BLOCK] = true, [BREAKABLE_BLOCK] = true,
-    [TILE_UNBREAKABLE] = true,        [PIPE_TOP_LEFT] = true,
-    [PIPE_TOP_RIGHT] = true,          [PIPE_CENTER_LEFT] = true,
-    [PIPE_CENTER_RIGHT] = true,       [TILE_EMPTIED] = true};
-
+// Birabuto world tiles
 enum tileset_index_birabuto {
   TILE_FLOOR = 0x75,
   OBLIC_LINE_LEFT = 0x68,
@@ -98,12 +94,7 @@ enum tileset_index_birabuto {
   PALM_TREE_RIGHT = 0x7B
 };
 
-static const bool solid_tiles_birabuto[MAX_TILE] = {
-    [TILE_FLOOR] = true,     [STONE_LEFT] = true,     [STONE_RIGHT] = true,
-    [TILED_FLOOR] = true,    [STONE_BIS_LEFT] = true, [STONE_BIS_RIGHT] = true,
-    [BRICK_BLOCK] = true,    [PALM_TREE_LEFT] = true, [PALM_TREE_CENTER] = true,
-    [PALM_TREE_RIGHT] = true};
-
+// Muda world tiles
 enum tileset_index_muda {
   MUDA_PLATEFORM_LEFT = 0x83,
   MUDA_PLATEFORM_CENTER = 0x84,
@@ -119,14 +110,7 @@ enum tileset_index_muda {
   HALF_BIG_BLOCK_TOP_RIGHT = 0X9B
 };
 
-static const bool solid_tiles_muda[MAX_TILE] = {
-    [MUDA_PLATEFORM_LEFT] = true,     [MUDA_PLATEFORM_CENTER] = true,
-    [MUDA_PLATEFORM_RIGHT] = true,    [BIG_BLOCK_TOP_LEFT] = true,
-    [BIG_BLOCK_TOP_RIGHT] = true,     [BIG_BLOCK_BOTTOM_LEFT] = true,
-    [BIG_BLOCK_BOTTOM_RIGHT] = true,  [OCEAN_FLOOR_LEFT] = true,
-    [OCEAN_FLOOR_RIGHT] = true,       [MUDA_BRIDGE] = true,
-    [HALF_BIG_BLOCK_TOP_LEFT] = true, [HALF_BIG_BLOCK_TOP_RIGHT] = true};
-
+// Easton world tiles
 enum tileset_index_easton {
   EASTON_FLOOR_1 = 0x9D,
   EASTON_FLOOR_2 = 0x9C,
@@ -144,23 +128,6 @@ enum tileset_index_easton {
   EASTON_STONE_PLATEFORM_RIGHT = 0xA2,
 };
 
-static const bool solid_tiles_easton[MAX_TILE] = {
-    [EASTON_FLOOR_1] = true,
-    [EASTON_FLOOR_2] = true,
-    [EASTON_STONE_PLATEFORM_1] = true,
-    [EASTON_STONE_PLATEFORM_2] = true,
-    [EASTON_STONE_PLATEFORM_3] = true,
-    [EASTON_STONE_PLATEFORM_4] = true,
-    [EASTON_STONE_PLATEFORM_BOTTOM] = true,
-    [EASTON_LARGE_BLACK_BLOCK_TOP_LEFT] = true,
-    [EASTON_LARGE_BLACK_BLOCK_TOP_RIGHT] = true,
-    [EASTON_LARGE_BLACK_BLOCK_BOTOM_LEFT] = true,
-    [EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT] = true, 
-    [EASTON_BLOCK] = true,
-    [EASTON_STONE_PLATEFORM_LEFT] = true,
-    [EASTON_STONE_PLATEFORM_RIGHT] = true, 
-};
-/*
 enum tileset_index_chai {
   CHAI_FLOOR_LEFT = 0x88,
   CHAI_FLOOR_MIDDLE_1 = 0x89,
@@ -171,16 +138,6 @@ enum tileset_index_chai {
   CHAI_BLOCK = 0x63
 };
 
-static const bool solid_tiles_chai[MAX_TILE] = {
-    [CHAI_FLOOR_LEFT] = true,
-    [CHAI_FLOOR_MIDDLE_1] = true,
-    [CHAI_FLOOR_MIDDLE_2] = true,
-    [CHAI_FLOOR_MIDDLE_RIGHT] = true,
-    [CHAI_GREY_BLOCK] = true,
-    [CHAI_PIPE] = true,
-    [CHAI_BLOCK] = true
-};
-*/
 inline uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y <= 16) {
     return TILE_EMPTY;
@@ -192,15 +149,85 @@ inline uint8_t get_tile(uint8_t x, uint8_t y) {
 }
 
 static inline bool is_tile_solid(uint8_t tile) {
-  return solid_tiles_common[tile] ||
-         (((current_level >= 0 && current_level <= 2) &&
-           solid_tiles_birabuto[tile]) ||
-          ((current_level >= 3 && current_level <= 5) &&
-           solid_tiles_muda[tile]) ||
-          ((current_level >= 6 && current_level <= 8) &&
-          solid_tiles_easton[tile])/* ||
-          ((current_level >= 9 && current_level <= 12) &&
-          solid_tiles_chai[tile])*/);
+  // check common solid tiles
+  switch (tile) {
+    case TILE_INTEROGATION_BLOCK:
+    case BREAKABLE_BLOCK:
+    case TILE_UNBREAKABLE:
+    case PIPE_TOP_LEFT:
+    case PIPE_TOP_RIGHT:
+    case PIPE_CENTER_LEFT:
+    case PIPE_CENTER_RIGHT:
+    case TILE_EMPTIED:
+      return true;
+  }
+  
+  // check world specific tiles
+  if (current_level >= 0 && current_level <= 2) {
+    // Birabuto world
+    return (
+      (tile == TILE_FLOOR) ||
+      (tile == STONE_LEFT) ||
+      (tile == STONE_RIGHT) ||
+      (tile == TILED_FLOOR) ||
+      (tile == STONE_BIS_LEFT) ||
+      (tile == STONE_BIS_RIGHT) ||
+      (tile == BRICK_BLOCK) ||
+      (tile == PALM_TREE_LEFT) ||
+      (tile == PALM_TREE_CENTER) ||
+      (tile == PALM_TREE_RIGHT)
+    );
+  }
+  else if (current_level >= 3 && current_level <= 5) {
+    // Muda world
+    return (
+      (tile == MUDA_PLATEFORM_LEFT) ||
+      (tile == MUDA_PLATEFORM_CENTER) ||
+      (tile == MUDA_PLATEFORM_RIGHT) ||
+      (tile == BIG_BLOCK_TOP_LEFT) ||
+      (tile == BIG_BLOCK_TOP_RIGHT) ||
+      (tile == BIG_BLOCK_BOTTOM_LEFT) ||
+      (tile == BIG_BLOCK_BOTTOM_RIGHT) ||
+      (tile == OCEAN_FLOOR_LEFT) ||
+      (tile == OCEAN_FLOOR_RIGHT) ||
+      (tile == MUDA_BRIDGE) ||
+      (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
+      (tile == HALF_BIG_BLOCK_TOP_RIGHT)
+    );
+  }
+  else if (current_level >= 6 && current_level <= 8) {
+    // Easton world
+    return (
+      (tile == EASTON_FLOOR_1) ||
+      (tile == EASTON_FLOOR_2) ||
+      (tile == EASTON_STONE_PLATEFORM_1) ||
+      (tile == EASTON_STONE_PLATEFORM_2) ||
+      (tile == EASTON_STONE_PLATEFORM_3) ||
+      (tile == EASTON_STONE_PLATEFORM_4) ||
+      (tile == EASTON_STONE_PLATEFORM_BOTTOM) ||
+      (tile == EASTON_LARGE_BLACK_BLOCK_TOP_LEFT) ||
+      (tile == EASTON_LARGE_BLACK_BLOCK_TOP_RIGHT) ||
+      (tile == EASTON_LARGE_BLACK_BLOCK_BOTOM_LEFT) ||
+      (tile == EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT) ||
+      (tile == EASTON_BLOCK) ||
+      (tile == EASTON_STONE_PLATEFORM_LEFT) ||
+      (tile == EASTON_STONE_PLATEFORM_RIGHT)
+    );
+  }
+  else if (current_level >= 9 && current_level <= 12) {
+    // Chai world
+    return (
+      (tile == CHAI_FLOOR_LEFT) ||
+      (tile == CHAI_FLOOR_MIDDLE_1) ||
+      (tile == CHAI_FLOOR_MIDDLE_2) ||
+      (tile == CHAI_FLOOR_MIDDLE_RIGHT) ||
+      (tile == CHAI_GREY_BLOCK) ||
+      (tile == CHAI_PIPE) ||
+      (tile == CHAI_BLOCK)
+    );
+  }
+  
+  return false;
 }
 
 bool is_coin(uint8_t tile);
