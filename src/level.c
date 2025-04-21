@@ -19,10 +19,12 @@ uint8_t level_bank;
 bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
 void on_get_coin(uint8_t x, uint8_t y) {
-  map_buffer[x][y] = TILE_EMPTY;
+  uint8_t index_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
+  uint8_t index_y = y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y;
 
-  set_bkg_tile_xy(((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH,
-                  y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y, TILE_EMPTY);
+  map_buffer[index_y][index_x] = TILE_EMPTY;
+
+  set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
   sound_play_coin();
 
