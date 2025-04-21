@@ -5,7 +5,7 @@ uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
-  if (enemy_count < ENEMY_MAX) {
+  /*if (enemy_count < ENEMY_MAX) {
     uint8_t current_frame;
     int16_t vel_x;
     switch (type) {
@@ -28,11 +28,11 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
                      .flip = FALSE};
     enemies[enemy_count] = enemy;
     enemy_count++;
-  }
+  }*/
 }
 
 void enemy_update(void) {
-  for (uint8_t index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
+  /*for (uint8_t index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
 
     switch (enemies[index_enemy].type) {
@@ -53,7 +53,7 @@ void enemy_update(void) {
       break;
     }
     enemies[index_enemy].frame_counter++;
-  }
+  }*/
 }
 
 void enemy_draw(int start) {

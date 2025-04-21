@@ -28,7 +28,7 @@ void interruptLCD(void) {
   HIDE_WIN;
 }
 
-void interruptVBL() { SHOW_WIN; }
+void interruptVBL(void) { SHOW_WIN; }
 
 void play_sound_vbl(void) NONBANKED {
   uint8_t _previous_bank = _current_bank;
