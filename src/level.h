@@ -135,7 +135,15 @@ enum tileset_index_chai {
   CHAI_FLOOR_MIDDLE_RIGHT = 0x8B,
   CHAI_GREY_BLOCK = 0x93,
   CHAI_PIPE = 0xAF,
-  CHAI_BLOCK = 0x63
+  CHAI_PIPE_LEFT = 0xB6,
+  CHAI_PIPE_RIGHT = 0xB7,
+  CHAI_PIPE_BOTTOM_LEFT = 0xB8,
+  CHAI_PIPE_BOTTOM_RIGHT = 0xB9,
+  CHAI_BLOCK = 0x63,
+  CHAI_BRICK_BLOCK = 0x83,
+  CHAI_BLACK_BLOCK_LEFT = 0x96,
+  CHAI_BLACK_BLOCK_RIGHT = 0x97,
+  CHAI_FIRE_BLOCK = 0x9C
 };
 
 inline uint8_t get_tile(uint8_t x, uint8_t y) {
@@ -223,7 +231,15 @@ static inline bool is_tile_solid(uint8_t tile) {
       (tile == CHAI_FLOOR_MIDDLE_RIGHT) ||
       (tile == CHAI_GREY_BLOCK) ||
       (tile == CHAI_PIPE) ||
-      (tile == CHAI_BLOCK)
+      (tile == CHAI_PIPE_LEFT) ||
+      (tile == CHAI_PIPE_RIGHT) ||
+      (tile == CHAI_PIPE_BOTTOM_LEFT) ||
+      (tile == CHAI_PIPE_BOTTOM_RIGHT) ||
+      (tile == CHAI_BLOCK) || 
+      (tile == CHAI_BRICK_BLOCK) ||
+      (tile == CHAI_BLACK_BLOCK_LEFT) ||
+      (tile == CHAI_BLACK_BLOCK_RIGHT) ||
+      (tile == CHAI_FIRE_BLOCK) 
     );
   }
   
