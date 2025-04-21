@@ -11,18 +11,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "graphics/enemies.h"
-#include "graphics/text.h"
-#include "graphics/mario.h"
-
-#include "enemy.h"
-#include "global.h"
-#include "graphics/text.h"
-#include "hUGEDriver.h"
-#include "sound.h"
+#include "player.h"
 #include "text.h"
 
 
 void hud_set_level(char major, char minor);
+void hud_update_coins(void);
+void hud_update_score(void);
+void hud_update_time(void);
+void hud_update_lives(void);
 
 #endif

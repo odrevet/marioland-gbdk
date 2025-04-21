@@ -53,33 +53,7 @@ extern uint8_t tile_next_2;
 extern uint8_t scroll;
 
 void update_frame_counter(void);
-
-inline bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
-
-inline void on_get_coin(uint8_t x, uint8_t y) {
-  uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
-                   (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
-  //map_buffer[index] = TILE_EMPTY;
-
-  set_bkg_tile_xy(((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH,
-                  y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y, TILE_EMPTY);
-
-  sound_play_coin();
-
-  coins++;
-  score += 100;
-
-  if (coins == 100) {
-    lives++;
-    coins = 0;
-  }
-
-  hud_update_coins();
-  hud_update_score();
-}
-
 void player_draw(void);
-
 void player_move(void);
 
 #endif 

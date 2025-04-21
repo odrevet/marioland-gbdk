@@ -26,9 +26,4 @@ void init(void);
 void pause(void); 
 void die(void);
 
-void hud_update_coins(void);
-void hud_update_score(void);
-void hud_update_time(void);
-void hud_update_lives(void);
-
 #endif

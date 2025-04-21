@@ -19,6 +19,30 @@ size_t current_map_size;
 size_t current_map_width;
 uint8_t level_bank;
 
+bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
+
+void on_get_coin(uint8_t x, uint8_t y) {
+  uint16_t index = ((y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y) * MAP_BUFFER_WIDTH) + 
+                   (((x + camera_x) / TILE_SIZE) % MAP_BUFFER_WIDTH);
+  //map_buffer[index] = TILE_EMPTY;
+
+  set_bkg_tile_xy(((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH,
+                  y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y, TILE_EMPTY);
+
+  sound_play_coin();
+
+  coins++;
+  score += 100;
+
+  if (coins == 100) {
+    lives++;
+    coins = 0;
+  }
+
+  hud_update_coins();
+  hud_update_score();
+}
+
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(level_bank);

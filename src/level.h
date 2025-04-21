@@ -119,9 +119,12 @@ static inline bool is_tile_solid(uint8_t tile) {
         [STONE_BAR] = true,
         [STONE_TILE_FLOOR] = true
     };
-    return tile <= MAX_TILE && solid_tiles[tile];
+    return tile <= MAX_TILE && solid_tiles[tile] == true;
 }
 
+bool is_coin(uint8_t tile);
+
+void on_get_coin(uint8_t x, uint8_t y);
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 
 void level_set_current(void) NONBANKED;
