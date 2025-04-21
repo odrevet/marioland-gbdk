@@ -10,17 +10,16 @@
 #define level_4_3_TILE_W 8
 #define level_4_3_TILE_H 8
 #define level_4_3_WIDTH 3840
-#define level_4_3_HEIGHT 144
-#define level_4_3_TILE_COUNT 3
+#define level_4_3_HEIGHT 128
+#define level_4_3_TILE_COUNT 0
 #define level_4_3_PALETTE_COUNT 1
 #define level_4_3_COLORS_PER_PALETTE 4
 #define level_4_3_TOTAL_COLORS 4
 #define level_4_3_MAP_ATTRIBUTES 0
-extern const unsigned char level_4_3_map[8640];
+extern const unsigned char level_4_3_map[7680];
 #define level_4_3_map_attributes level_4_3_map
 
 BANKREF_EXTERN(level_4_3)
 
-extern const uint8_t level_4_3_tiles[48];
 
 #endif
