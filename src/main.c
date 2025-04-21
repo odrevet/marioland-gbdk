@@ -162,6 +162,7 @@ void main(void) {
 
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
+      player_y_subpixel = 0;
       // die();
     }
 
