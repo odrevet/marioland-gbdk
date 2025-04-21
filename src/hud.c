@@ -22,9 +22,9 @@ void hud_set_level(char major, char minor) {
   }
   
   void hud_update_score(void) {
-    char score_str[5];
+    char score_str[6];  // 5 digits + \0. the units digit is always 0
     itoa(score, score_str, 10);
-    text_print_string_win(3, 1, score_str);
+    text_print_string_win(5 - strlen(score_str), 1, score_str);
   }
   
   void hud_update_time(void) {

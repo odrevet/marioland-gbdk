@@ -29,7 +29,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
   sound_play_coin();
 
   coins++;
-  score += 100;
+  score += 10;
 
   if (coins == 100) {
     lives++;

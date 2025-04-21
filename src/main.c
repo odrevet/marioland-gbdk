@@ -69,7 +69,7 @@ void main(void) {
   player_draw_y = player_y_subpixel >> 4;
 
   set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
-  // set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
+  set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
   set_level_1_1();
