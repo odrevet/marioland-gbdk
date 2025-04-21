@@ -1,5 +1,4 @@
 #include "text.h"
-#include "graphics/text.h"
 
 void text_print_char_win(uint8_t x, uint8_t y, unsigned char chr) {
   uint8_t tile;

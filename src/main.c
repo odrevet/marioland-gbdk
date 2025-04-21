@@ -12,16 +12,15 @@
 #include "game.h"
 #include "global.h"
 #include "graphics/text.h"
-#include "hUGEDriver.h"
+#include "musics/hUGEDriver.h"
+#include "musics/music_overworld.h"
+#include "musicmanager.h"
+
 #include "level.h"
 #include "player.h"
-#include "sound.h"
 #include "text.h"
 
-#include "songs/overworld.h"
-
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
-
 
 void interruptLCD(void) {
   while (STAT_REG & 3)
@@ -33,7 +32,7 @@ void interruptVBL(void) { SHOW_WIN; }
 
 void play_sound_vbl(void) NONBANKED {
   uint8_t _previous_bank = _current_bank;
-  SWITCH_ROM(BANK(overworld_bank));
+  SWITCH_ROM(BANK(music_overworld));
   hUGE_dosound();
   SWITCH_ROM(_previous_bank);
 }
@@ -50,13 +49,23 @@ void main(void) {
   set_interrupts(VBL_IFLAG | LCD_IFLAG);
   enable_interrupts();
 
-  sound_init();
-  __critical {
-    uint8_t _previous_bank = _current_bank;
-    SWITCH_ROM(BANK(overworld_bank));
-    hUGE_init(&overworld);
-    add_VBL(play_sound_vbl);
-    SWITCH_ROM(_previous_bank);
+  music_init();
+
+  CRITICAL {
+    // set up the game boy timer
+    music_setup_timer();
+    // add music and SFX driver ISR to the low priority timer chain
+    add_low_priority_TIM(music_play_isr);
+  }
+  // enable the timer interrupt
+  set_interrupts(IE_REG | TIM_IFLAG);
+
+  __critical{
+      uint8_t _previous_bank = _current_bank;
+      SWITCH_ROM(BANK(music_overworld));
+      hUGE_init(&music_overworld);
+      add_VBL(play_sound_vbl);
+      SWITCH_ROM(_previous_bank);
   };
 
   // joypad
@@ -67,9 +76,6 @@ void main(void) {
   player_y_subpixel = (16 * TILE_SIZE) << 4;
   player_draw_x = player_x_subpixel >> 4;
   player_draw_y = player_y_subpixel >> 4;
-
-  set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
-  set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   init();
   set_level_1_1();
@@ -103,8 +109,11 @@ void main(void) {
   // enemy_new(50, 136, ENEMY_TYPE_GOOMBA);
   // enemy_new(70, 136, ENEMY_TYPE_KOOPA);
 
-  // text and common bkg data
+  // set sprite and background data
   uint8_t previous_bank = _current_bank;
+
+  SWITCH_ROM(BANK(mario));
+  set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
 
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);

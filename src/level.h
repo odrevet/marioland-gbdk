@@ -12,7 +12,11 @@
 
 #include "global.h"
 #include "hud.h"
-#include "sound.h"
+
+
+#include "musicmanager.h"
+#include "sfxplayer.h"
+#include "sounds/coin.h"
 
 // tilesets
 #include "graphics/birabuto.h"

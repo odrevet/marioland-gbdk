@@ -10,7 +10,10 @@
 #include "level.h"
 #include "text.h"
 
-#include "graphics/enemies.h"
+#include "musicmanager.h"
+#include "sfxplayer.h"
+#include "sounds/jump_small.h"
+
 #include "graphics/text.h"
 #include "graphics/mario.h"
 

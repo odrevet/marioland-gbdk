@@ -52,6 +52,9 @@ void update_frame_counter(void) {
 
 
 void player_draw(void) {
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(mario));
+
   const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
     move_metasprite_flipx(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
@@ -61,6 +64,8 @@ void player_draw(void) {
     move_metasprite_ex(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
                        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   }
+  
+  SWITCH_ROM(previous_bank);
 }
 
 void player_move(void) {
@@ -110,12 +115,12 @@ void player_move(void) {
     is_jumping = TRUE;
     display_jump_frame = TRUE;
     vel_y = -JUMP_SPEED;
-    sound_play_jump();
+    music_play_sfx(BANK(jump_small), jump_small, SFX_MUTE_MASK(jump_small), MUSIC_SFX_PRIORITY_NORMAL);
   }
 
   // pause
   if (joypad_current & J_START && !(joypad_previous & J_START)) {
-    pause();
+    state_pause();
   }
 
   if (joypad_current & J_B) {
@@ -267,7 +272,7 @@ void player_move(void) {
 
         current_jump = 0;
         is_jumping = FALSE;
-        sound_play_bump();
+        // play bump sound here
       } else {
         if (is_coin(tile_left_top)) {
           on_get_coin(x_left_draw, next_pos);

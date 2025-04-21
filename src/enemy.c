@@ -1,9 +1,9 @@
 #include "enemy.h"
 #include <stdint.h>
-
+/*
 uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
-/*
+
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   if (enemy_count < ENEMY_MAX) {
     uint8_t current_frame;

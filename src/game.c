@@ -22,13 +22,12 @@ void init(void) {
   mario_flip = FALSE;
 }
 
-void pause(void) {
+void state_pause(void) {
   hUGE_mute_channel(0, HT_CH_MUTE);
   hUGE_mute_channel(1, HT_CH_MUTE);
   hUGE_mute_channel(2, HT_CH_MUTE);
   hUGE_mute_channel(3, HT_CH_MUTE);
 
-  sound_play_bump();
   text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
 
   vsync();

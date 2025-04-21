@@ -1,12 +1,7 @@
 #pragma bank 255
 
-#include "../hUGEDriver.h"
+#include "hUGEDriver.h"
 #include <stddef.h>
-
-#include "overworld.h"
-
-
-BANKREF(overworld_bank)
 
 static const unsigned char order_cnt = 74;
 
@@ -2407,6 +2402,5 @@ static const unsigned char waves[] = {
     1,35,69,103,137,171,205,239,254,220,186,152,118,84,50,16,
 };
 
-const hUGESong_t overworld = {2, &order_cnt, order1, order2, order3,order4, duty_instruments, wave_instruments, noise_instruments, NULL, waves};
-
-
+const void __at(255) __bank_music_overworld;
+const hUGESong_t music_overworld = {2, &order_cnt, order1, order2, order3,order4, duty_instruments, wave_instruments, noise_instruments, NULL, waves};

@@ -11,19 +11,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "graphics/enemies.h"
 #include "graphics/text.h"
 #include "graphics/mario.h"
 
 #include "enemy.h"
 #include "global.h"
-#include "hUGEDriver.h"
-#include "sound.h"
+#include "musics/hUGEDriver.h"
 #include "text.h"
 #include "player.h"
 
 void init(void);
-void pause(void); 
+void state_pause(void); 
 void die(void);
 
 #endif
