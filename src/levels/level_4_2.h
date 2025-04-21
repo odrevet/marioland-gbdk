@@ -11,7 +11,7 @@
 #define level_4_2_TILE_H 8
 #define level_4_2_WIDTH 3040
 #define level_4_2_HEIGHT 128
-#define level_4_2_TILE_COUNT 23
+#define level_4_2_TILE_COUNT 15
 #define level_4_2_PALETTE_COUNT 1
 #define level_4_2_COLORS_PER_PALETTE 4
 #define level_4_2_TOTAL_COLORS 4
@@ -21,6 +21,6 @@ extern const unsigned char level_4_2_map[6080];
 
 BANKREF_EXTERN(level_4_2)
 
-extern const uint8_t level_4_2_tiles[368];
+extern const uint8_t level_4_2_tiles[240];
 
 #endif
