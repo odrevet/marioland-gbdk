@@ -1,5 +1,6 @@
 
-#include <gb/metasprites.h>
+#include <gb/gb.h>
+#include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
 
 #include "graphics/common.h"

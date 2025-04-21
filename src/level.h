@@ -7,11 +7,12 @@
 #include <stdlib.h>
 
 #include <gb/gb.h>
-#include <gb/metasprites.h>
+#include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
 
 #include "global.h"
 #include "hud.h"
+#include "sound.h"
 
 // tilesets
 #include "graphics/common.h"
@@ -67,7 +68,7 @@ enum tileset_index {
   TILE_EMPTIED = 0x29,
   BREAKABLE_BLOCK = 0x2A,
   TILE_UNBREAKABLE = 0x2B,
-  TILE_COIN = 0x33,
+  TILE_COIN = 0x37,
   PIPE_TOP_LEFT = 0x30,
   PIPE_TOP_RIGHT = 0x31,
   PIPE_CENTER_LEFT = 0x3A,
@@ -119,7 +120,7 @@ static inline bool is_tile_solid(uint8_t tile) {
         [STONE_BAR] = true,
         [STONE_TILE_FLOOR] = true
     };
-    return tile <= MAX_TILE && solid_tiles[tile] == true;
+    return solid_tiles[tile] == true;
 }
 
 bool is_coin(uint8_t tile);

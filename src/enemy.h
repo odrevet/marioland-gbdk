@@ -2,7 +2,7 @@
 #define ENEMY_H
 
 #include <gb/gb.h>
-#include <gb/metasprites.h>
+#include <gbdk/metasprites.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

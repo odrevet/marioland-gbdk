@@ -52,7 +52,7 @@ void update_frame_counter(void) {
 
 
 void player_draw(void) {
-  metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
+  const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
     move_metasprite_flipx(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
                           player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y -

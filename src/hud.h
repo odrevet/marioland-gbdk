@@ -2,7 +2,6 @@
 #define HUD_H
 
 #include <gb/gb.h>
-#include <gb/metasprites.h>
 #include <gbdk/platform.h>
 
 #include <stdbool.h>

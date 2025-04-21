@@ -1,6 +1,5 @@
 #include "game.h"
 
-
 void init(void) {
   time = TIME_INITIAL_VALUE;
 
@@ -31,27 +30,6 @@ void pause(void) {
 
   sound_play_bump();
   text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
-
-#if defined(DEBUG)
-  // debug a column of background
-  char buffer[WINDOW_SIZE + 1];
-  char fmt[] = "%d.%d.%d.%d.%d.%d.%d..";
-  uint8_t col = player_draw_x / TILE_SIZE;
-  
-  for (uint8_t row = 0; row < 7; row++) {
-    uint16_t index = (row * MAP_BUFFER_WIDTH) + col;
-    sprintf(buffer, fmt, 
-            map_buffer[index], 
-            map_buffer[index + MAP_BUFFER_WIDTH], 
-            map_buffer[index + 2 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 3 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 4 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 5 * MAP_BUFFER_WIDTH], 
-            map_buffer[index + 6 * MAP_BUFFER_WIDTH]);
-    text_print_string_win(0, row, buffer);
-  }
-#endif
-
 
   vsync();
 
