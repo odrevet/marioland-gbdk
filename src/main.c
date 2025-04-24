@@ -12,9 +12,9 @@
 #include "game.h"
 #include "global.h"
 #include "graphics/text.h"
-#include "musics/hUGEDriver.h"
-#include "musics/music_overworld.h"
+
 #include "musicmanager.h"
+#include "musics/music_overworld.h"
 
 #include "level.h"
 #include "player.h"
@@ -29,13 +29,6 @@ void interruptLCD(void) {
 }
 
 void interruptVBL(void) { SHOW_WIN; }
-
-void play_sound_vbl(void) NONBANKED {
-  uint8_t _previous_bank = _current_bank;
-  SWITCH_ROM(BANK(music_overworld));
-  hUGE_dosound();
-  SWITCH_ROM(_previous_bank);
-}
 
 void main(void) {
   STAT_REG = 0x40;
@@ -60,13 +53,7 @@ void main(void) {
   // enable the timer interrupt
   set_interrupts(IE_REG | TIM_IFLAG);
 
-  __critical{
-      uint8_t _previous_bank = _current_bank;
-      SWITCH_ROM(BANK(music_overworld));
-      hUGE_init(&music_overworld);
-      add_VBL(play_sound_vbl);
-      SWITCH_ROM(_previous_bank);
-  };
+  music_load(BANK(music_overworld), &music_overworld);
 
   // joypad
   joypad_previous, joypad_current = 0;
