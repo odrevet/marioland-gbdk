@@ -16,8 +16,8 @@
 
 #include "musicmanager.h"
 #include "sfxplayer.h"
-#include "sounds/coin.h"
-#include "sounds/oneup.h"
+#include "sounds/sound_coin.h"
+#include "sounds/sound_oneup.h"
 
 // tilesets
 #include "graphics/birabuto.h"

@@ -26,7 +26,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
 
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
-  music_play_sfx(BANK(coin), coin, SFX_MUTE_MASK(coin), MUSIC_SFX_PRIORITY_NORMAL);
+  music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin), MUSIC_SFX_PRIORITY_NORMAL);
   
   coins++;
   score += 10;
@@ -35,7 +35,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
     lives++;
     hud_update_lives();
     coins = 0;
-    music_play_sfx(BANK(oneup), oneup, SFX_MUTE_MASK(oneup), MUSIC_SFX_PRIORITY_NORMAL);
+    music_play_sfx(BANK(sound_oneup), sound_oneup, SFX_MUTE_MASK(sound_oneup), MUSIC_SFX_PRIORITY_NORMAL);
   }
 
   hud_update_coins();

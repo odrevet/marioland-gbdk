@@ -115,7 +115,7 @@ void player_move(void) {
     is_jumping = TRUE;
     display_jump_frame = TRUE;
     vel_y = -JUMP_SPEED;
-    music_play_sfx(BANK(jump_small), jump_small, SFX_MUTE_MASK(jump_small), MUSIC_SFX_PRIORITY_NORMAL);
+    music_play_sfx(BANK(sound_jump_small), sound_jump_small, SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
   }
 
   // pause
@@ -273,7 +273,7 @@ void player_move(void) {
         current_jump = 0;
         is_jumping = FALSE;
         
-        music_play_sfx(BANK(bump), bump, SFX_MUTE_MASK(bump), MUSIC_SFX_PRIORITY_NORMAL);
+        music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump), MUSIC_SFX_PRIORITY_NORMAL);
 
       } else {
         if (is_coin(tile_left_top)) {
