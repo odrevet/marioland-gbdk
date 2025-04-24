@@ -14,6 +14,7 @@
 #include "sfxplayer.h"
 #include "sounds/sound_jump_small.h"
 #include "sounds/sound_bump.h"
+#include "sounds/sound_pause.h"
 
 #include "graphics/text.h"
 #include "graphics/mario.h"

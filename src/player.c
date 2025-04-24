@@ -120,6 +120,7 @@ void player_move(void) {
 
   // pause
   if (joypad_current & J_START && !(joypad_previous & J_START)) {
+    music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause), MUSIC_SFX_PRIORITY_NORMAL);
     state_pause();
   }
 
