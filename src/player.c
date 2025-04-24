@@ -166,8 +166,7 @@ void player_move(void) {
         if (is_coin(tile_next_1)) {
           on_get_coin(next_pos, y_top_draw);
         }
-
-        if (is_coin(tile_next_2)) {
+        else if (is_coin(tile_next_2)) {
           on_get_coin(next_pos, y_bottom_draw);
         }
         player_x_subpixel = player_x_subpixel_next;
@@ -220,8 +219,7 @@ void player_move(void) {
           if (is_coin(tile_next_1)) {
             on_get_coin(next_pos, y_top_draw);
           }
-
-          if (is_coin(tile_next_2)) {
+          else if (is_coin(tile_next_2)) {
             on_get_coin(next_pos, y_bottom_draw);
           }
 
@@ -253,8 +251,7 @@ void player_move(void) {
         if (is_coin(tile_left_bottom)) {
           on_get_coin(x_left_draw, next_pos);
         }
-
-        if (is_coin(tile_right_bottom)) {
+        else if (is_coin(tile_right_bottom)) {
           on_get_coin(x_right_draw, next_pos);
         }
 
@@ -282,8 +279,7 @@ void player_move(void) {
         if (is_coin(tile_left_top)) {
           on_get_coin(x_left_draw, next_pos);
         }
-
-        if (is_coin(tile_right_top)) {
+        else if (is_coin(tile_right_top)) {
           on_get_coin(x_right_draw, next_pos);
         }
         player_y_subpixel = player_y_subpixel_next;
