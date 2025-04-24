@@ -26,7 +26,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
 
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
-  //music_play_sfx(BANK(coin), coin, SFX_MUTE_MASK(coin), MUSIC_SFX_PRIORITY_NORMAL);
+  music_play_sfx(BANK(coin), coin, SFX_MUTE_MASK(coin), MUSIC_SFX_PRIORITY_NORMAL);
   
   coins++;
   score += 10;
