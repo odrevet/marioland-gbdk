@@ -64,7 +64,7 @@ void player_draw(void) {
     move_metasprite_ex(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
                        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   }
-  
+
   SWITCH_ROM(previous_bank);
 }
 
@@ -272,7 +272,9 @@ void player_move(void) {
 
         current_jump = 0;
         is_jumping = FALSE;
-        // play bump sound here
+        
+        music_play_sfx(BANK(bump), bump, SFX_MUTE_MASK(bump), MUSIC_SFX_PRIORITY_NORMAL);
+
       } else {
         if (is_coin(tile_left_top)) {
           on_get_coin(x_left_draw, next_pos);

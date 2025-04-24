@@ -13,6 +13,7 @@
 #include "musicmanager.h"
 #include "sfxplayer.h"
 #include "sounds/jump_small.h"
+#include "sounds/bump.h"
 
 #include "graphics/text.h"
 #include "graphics/mario.h"
