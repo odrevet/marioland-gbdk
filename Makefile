@@ -16,4 +16,10 @@ $(BINS):	$(CSOURCES)
 	$(LCC) $(CFLAGS) -o $@ hUGEDriver.o $(CSOURCES) $(CPPFLAGS)
 
 clean:
-	rm -f src/graphics/* src/levels/* $(BINS)
+	src/levels/* $(BINS)
+
+clean_graphics:
+	rm -f src/graphics/*
+
+clean_sounds:
+	rm -f src/sounds/*
