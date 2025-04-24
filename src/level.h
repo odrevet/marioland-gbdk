@@ -13,11 +13,15 @@
 #include "global.h"
 #include "hud.h"
 
-
-#include "musicmanager.h"
+// sounds
 #include "sfxplayer.h"
 #include "sounds/sound_coin.h"
 #include "sounds/sound_oneup.h"
+
+// musics
+#include "musicmanager.h"
+#include "musics/music_overworld.h"
+#include "musics/music_castle.h"
 
 // tilesets
 #include "graphics/birabuto.h"

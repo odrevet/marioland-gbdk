@@ -13,8 +13,6 @@
 #include "global.h"
 #include "graphics/text.h"
 
-#include "musicmanager.h"
-#include "musics/music_overworld.h"
 
 #include "level.h"
 #include "player.h"
@@ -53,8 +51,6 @@ void main(void) {
   // enable the timer interrupt
   set_interrupts(IE_REG | TIM_IFLAG);
 
-  music_load(BANK(music_overworld), &music_overworld);
-
   // joypad
   joypad_previous, joypad_current = 0;
 
@@ -65,8 +61,8 @@ void main(void) {
   player_draw_y = player_y_subpixel >> 4;
 
   init();
-  set_level_1_1();
-  load_current_level();
+  current_level = 0;
+  level_set_current();
 
   score = 0;
   lives = INITIAL_LIVES;
@@ -85,12 +81,6 @@ void main(void) {
   set_win_tile_xy(7, 1, TILE_COIN);
   hud_update_time();
   hud_update_lives();
-
-  // Set music channels channel
-  hUGE_mute_channel(0, HT_CH_PLAY);
-  hUGE_mute_channel(1, HT_CH_PLAY);
-  hUGE_mute_channel(2, HT_CH_PLAY);
-  hUGE_mute_channel(3, HT_CH_PLAY);
 
   // spawn enemies
   // enemy_new(50, 136, ENEMY_TYPE_GOOMBA);

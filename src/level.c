@@ -71,50 +71,62 @@ void level_set_current(void) NONBANKED {
       case 0:
           set_level_1_1();
           hud_set_level('1', '1');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 1:
           set_level_1_2();
           hud_set_level('1', '2');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 2:
           set_level_1_3();
           hud_set_level('1', '3');
+          music_load(BANK(music_castle), &music_castle);
           break;
       case 3:
           set_level_2_1();
           hud_set_level('2', '1');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 4:
           set_level_2_2();
           hud_set_level('2', '2');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 5:
           set_level_2_3();
           hud_set_level('2', '3');
+          music_load(BANK(music_castle), &music_castle);
           break;
       case 6:
           set_level_3_1();
           hud_set_level('3', '1');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 7:
           set_level_3_2();
           hud_set_level('3', '2');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 8:
           set_level_3_3();
           hud_set_level('3', '3');
+          music_load(BANK(music_castle), &music_castle);
           break;
       case 9:
           set_level_4_1();
           hud_set_level('4', '1');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 10:
           set_level_4_2();
           hud_set_level('4', '2');
+          music_load(BANK(music_overworld), &music_overworld);
           break;
       case 11:
           set_level_4_3();
           hud_set_level('4', '3');
+          music_load(BANK(music_castle), &music_castle);
           break;
   }
   load_current_level();
