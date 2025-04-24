@@ -15,8 +15,8 @@ convert_level_asset() {
 }
 
 # sprite
-png2asset "assets/sprites/mario.png" -o "src/graphics/mario.c" -sw 16 -sh 16
-png2asset "assets/sprites/enemies.png" -o "src/graphics/enemies.c" -sw 16 -sh 16
+png2asset "assets/sprites/mario.png" -o "src/graphics/mario.c" -sw 16 -sh 16 -b 255
+png2asset "assets/sprites/enemies.png" -o "src/graphics/enemies.c" -sw 16 -sh 16 -b 255
 
 # background
 png2asset "assets/text.png" -o "src/graphics/text.c" -keep_palette_order -map -tiles_only -noflip -b 255
