@@ -71,14 +71,14 @@ convert_level_asset 4_3 chai
 
 echo "Gates"
 png2asset "assets/levels/gates.png" \
--o "src/levels/gates.c" \
+-o "src/levels/level_gates.c" \
 -source_tileset "assets/tilesets/common.png" \
 -map -noflip -keep_duplicate_tiles \
 -tile_origin "$text_tiles_count" -b 255
 
 echo "Room"
 png2asset "assets/levels/room.png" \
--o "src/levels/gates.c" \
+-o "src/levels/level_room.c" \
 -source_tileset "assets/tilesets/common.png" \
 -map -noflip -keep_duplicate_tiles \
 -tile_origin "$text_tiles_count" -b 255
