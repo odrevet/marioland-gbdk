@@ -113,7 +113,9 @@ void main(void) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
 
+    SWITCH_ROM(BANK(player));
     player_move();
+    SWITCH_ROM(previous_bank);
 
     // set player frame
     if (display_jump_frame) {

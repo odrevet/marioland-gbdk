@@ -19,6 +19,8 @@
 #include "graphics/text.h"
 #include "graphics/mario.h"
 
+BANKREF_EXTERN(player)
+
 extern uint8_t coins;
 extern uint16_t score;
 extern uint8_t joy;
@@ -57,8 +59,8 @@ extern uint8_t tile_next_2;
 
 extern uint8_t scroll;
 
-void update_frame_counter(void);
-void player_draw(void);
-void player_move(void);
+void update_frame_counter(void) NONBANKED;
+void player_draw(void) NONBANKED;
+void player_move(void) BANKED;
 
 #endif 

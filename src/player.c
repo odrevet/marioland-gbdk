@@ -1,5 +1,8 @@
+#pragma bank 255
+
 #include "player.h"
 
+BANKREF(player)
 
 uint8_t x_right_draw;
 uint8_t x_left_draw;
@@ -42,7 +45,7 @@ uint8_t tile_next_2;
 
 uint8_t scroll;
 
-void update_frame_counter(void) {
+void update_frame_counter(void) NONBANKED {
   frame_counter++;
   if (frame_counter == LOOP_PER_ANIMATION_FRAME) {
     frame_counter = 0;
@@ -50,8 +53,7 @@ void update_frame_counter(void) {
   }
 }
 
-
-void player_draw(void) {
+void player_draw(void) NONBANKED {
   uint8_t previous_bank = _current_bank;
   SWITCH_ROM(BANK(mario));
 
@@ -68,7 +70,7 @@ void player_draw(void) {
   SWITCH_ROM(previous_bank);
 }
 
-void player_move(void) {
+void player_move(void) BANKED {
   x_right_draw = player_draw_x + MARIO_HALF_WIDTH - 1;
   x_left_draw = player_draw_x - MARIO_HALF_WIDTH;
   y_top_draw = player_draw_y - MARIO_HALF_WIDTH;
@@ -115,13 +117,15 @@ void player_move(void) {
     is_jumping = TRUE;
     display_jump_frame = TRUE;
     vel_y = -JUMP_SPEED;
-    music_play_sfx(BANK(sound_jump_small), sound_jump_small, SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
+    music_play_sfx(BANK(sound_jump_small), sound_jump_small,
+                   SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
   }
 
   // pause
   if (joypad_current & J_START && !(joypad_previous & J_START)) {
     music_pause(TRUE);
-    music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause), MUSIC_SFX_PRIORITY_NORMAL);
+    music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause),
+                   MUSIC_SFX_PRIORITY_NORMAL);
     state_pause();
     music_pause(FALSE);
   }
@@ -165,8 +169,7 @@ void player_move(void) {
       } else {
         if (is_coin(tile_next_1)) {
           on_get_coin(next_pos, y_top_draw);
-        }
-        else if (is_coin(tile_next_2)) {
+        } else if (is_coin(tile_next_2)) {
           on_get_coin(next_pos, y_bottom_draw);
         }
         player_x_subpixel = player_x_subpixel_next;
@@ -189,7 +192,8 @@ void player_move(void) {
 
           // detect level end from level width
           next_col_chunk_load++;
-          if (next_col_chunk_load == current_map_width / 8 - DEVICE_SCREEN_WIDTH) {
+          if (next_col_chunk_load ==
+              current_map_width / 8 - DEVICE_SCREEN_WIDTH) {
             level_end_reached = true;
           }
         }
@@ -218,8 +222,7 @@ void player_move(void) {
         } else {
           if (is_coin(tile_next_1)) {
             on_get_coin(next_pos, y_top_draw);
-          }
-          else if (is_coin(tile_next_2)) {
+          } else if (is_coin(tile_next_2)) {
             on_get_coin(next_pos, y_bottom_draw);
           }
 
@@ -250,8 +253,7 @@ void player_move(void) {
       } else {
         if (is_coin(tile_left_bottom)) {
           on_get_coin(x_left_draw, next_pos);
-        }
-        else if (is_coin(tile_right_bottom)) {
+        } else if (is_coin(tile_right_bottom)) {
           on_get_coin(x_right_draw, next_pos);
         }
 
@@ -272,14 +274,14 @@ void player_move(void) {
 
         current_jump = 0;
         is_jumping = FALSE;
-        
-        music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump), MUSIC_SFX_PRIORITY_NORMAL);
+
+        music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump),
+                       MUSIC_SFX_PRIORITY_NORMAL);
 
       } else {
         if (is_coin(tile_left_top)) {
           on_get_coin(x_left_draw, next_pos);
-        }
-        else if (is_coin(tile_right_top)) {
+        } else if (is_coin(tile_right_top)) {
           on_get_coin(x_right_draw, next_pos);
         }
         player_y_subpixel = player_y_subpixel_next;
