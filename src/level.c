@@ -121,7 +121,7 @@ void on_get_coin(uint8_t x, uint8_t y) {
 void level_load_objects(uint16_t col) NONBANKED {
   for (int i = 0; i < level_1_1_lookup_size; i++) {
     level_object *obj = level_1_1_lookup+i;
-    if ((obj->x >> 3) >= col && (obj->x >> 3) < (col + DEVICE_SCREEN_WIDTH / 8)) {
+    if (obj->x == col) {
       EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x, obj->y);
       if (obj->type == OBJECT_TYPE_ENEMY) {
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
