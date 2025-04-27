@@ -189,6 +189,7 @@ void player_move(void) BANKED {
 
         if (camera_x >> 3 >= next_col_chunk_load) {
           level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1);
+          level_load_objects(next_col_chunk_load);
 
           // detect level end from level width
           next_col_chunk_load++;

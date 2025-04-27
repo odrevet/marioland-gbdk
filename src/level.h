@@ -12,6 +12,7 @@
 
 #include "global.h"
 #include "hud.h"
+#include "lookup_tables.h"
 
 // sounds
 #include "sfxplayer.h"
@@ -43,6 +44,8 @@
 #include "levels/level_4_1.h"
 #include "levels/level_4_2.h"
 #include "levels/level_4_3.h"
+
+#include <gbdk/emu_debug.h>
 
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16
@@ -165,6 +168,8 @@ bool is_tile_solid(uint8_t tile);
 bool is_coin(uint8_t tile);
 
 void on_get_coin(uint8_t x, uint8_t y);
+
+void level_load_objects(uint16_t col)NONBANKED;
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 
 void level_set_current(void) NONBANKED;

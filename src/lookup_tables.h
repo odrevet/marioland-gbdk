@@ -3,7 +3,6 @@
 
 #include "enemy.h"
 #include "powerup.h"
-#include <cstdint>
 
 typedef enum {
     OBJECT_TYPE_ENEMY,
@@ -17,9 +16,7 @@ typedef struct {
     uint8_t id;
 } level_object;
 
-level_object level_1_1_lookup[] = {
-    {3, 3, OBJECT_TYPE_ENEMY, ENEMY_GOOMBA},
-    {6, 3, OBJECT_TYPE_POWERUP, POWERUP_MUSHROOM}
-};
+extern level_object level_1_1_lookup[];
+extern const size_t level_1_1_lookup_size;
 
 #endif

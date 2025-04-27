@@ -154,7 +154,7 @@ void main(void) {
 
     // if reach end of level
     if (level_end_reached &&
-        player_draw_x >= (DEVICE_SCREEN_WIDTH - 2) * TILE_SIZE) {
+        player_draw_x >= (DEVICE_SCREEN_WIDTH - 1) * TILE_SIZE) {
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
