@@ -37,15 +37,18 @@ void enemy_update(void) {
   uint8_t index_enemy = 0;
   while (index_enemy < enemy_count) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
+    enemies[index_enemy].draw_x =
+        (enemies[index_enemy].x - camera_x_subpixel) >> 4;
+    enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    if ((int8_t)enemies[index_enemy].x < 0) {
+    /*if ((int8_t)enemies[index_enemy].draw_x < 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];
       }
       enemy_count--;
       hide_sprites_range(1, MAX_HARDWARE_SPRITES);
       continue;
-    }
+    }*/
 
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBA:
@@ -78,16 +81,16 @@ void enemy_draw() {
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
-EMU_printf("Draw x %d cam %d -> %d\n", enemies[index_enemy].x, camera_x, enemies[index_enemy].x - camera_x);
+    EMU_printf("Draw x %d y %d\n", enemies[index_enemy].draw_x, enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
       move_metasprite_flipx(enemy_metasprite, SPRITE_START_ENEMIES, 0, 1,
-                            enemies[index_enemy].x - camera_x,
-                            enemies[index_enemy].y);
+                            enemies[index_enemy].draw_x,
+                            enemies[index_enemy].draw_y);
     } else {
       move_metasprite_ex(enemy_metasprite, SPRITE_START_ENEMIES, 0, 1,
-                         enemies[index_enemy].x - camera_x,
-                         enemies[index_enemy].y);
+                         enemies[index_enemy].draw_x,
+                         enemies[index_enemy].draw_y);
     }
   }
   SWITCH_ROM(previous_bank);
