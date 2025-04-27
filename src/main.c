@@ -8,11 +8,9 @@
 #include "graphics/mario.h"
 #include "graphics/text.h"
 
-#include "enemy.h"
 #include "game.h"
 #include "global.h"
 #include "graphics/text.h"
-
 
 #include "level.h"
 #include "player.h"
@@ -82,15 +80,14 @@ void main(void) {
   hud_update_time();
   hud_update_lives();
 
-  // spawn enemies
-  // enemy_new(50, 136, ENEMY_TYPE_GOOMBA);
-  // enemy_new(70, 136, ENEMY_TYPE_KOOPA);
-
   // set sprite and background data
   uint8_t previous_bank = _current_bank;
 
   SWITCH_ROM(BANK(mario));
   set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
+
+  SWITCH_ROM(BANK(enemies));
+  set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
 
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
@@ -128,8 +125,8 @@ void main(void) {
       player_frame = 0;
     }
 
-    // enemy_update();
-    // enemy_draw(SPRITE_START_ENEMIES);
+    enemy_update();
+    enemy_draw();
 
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();

@@ -1,19 +1,20 @@
 #include "enemy.h"
+#include "level.h"
 #include <stdint.h>
-/*
+
 uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   if (enemy_count < ENEMY_MAX) {
     uint8_t current_frame;
-    int16_t vel_x;
+    int16_t vel_x = 0;
     switch (type) {
-    case ENEMY_TYPE_GOOMBA:
+    case ENEMY_GOOMBA:
       current_frame = 0;
-      vel_x = -8;
+      vel_x = -1;
       break;
-    case ENEMY_TYPE_KOOPA:
+    case ENEMY_KOOPA:
       current_frame = 2;
       vel_x = -10;
       break;
@@ -31,19 +32,30 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   }
 }
 
+#include <gbdk/emu_debug.h>
 void enemy_update(void) {
-  for (uint8_t index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
+  uint8_t index_enemy = 0;
+  while (index_enemy < enemy_count) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
 
+    if ((int8_t)enemies[index_enemy].x < 0) {
+      for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
+        enemies[j] = enemies[j + 1];
+      }
+      enemy_count--;
+      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+      continue;
+    }
+
     switch (enemies[index_enemy].type) {
-    case ENEMY_TYPE_GOOMBA:
+    case ENEMY_GOOMBA:
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
         enemies[index_enemy].flip = !enemies[index_enemy].flip;
       }
       break;
-    case ENEMY_TYPE_KOOPA:
+    case ENEMY_KOOPA:
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
@@ -53,24 +65,30 @@ void enemy_update(void) {
       break;
     }
     enemies[index_enemy].frame_counter++;
+    index_enemy++;
   }
 }
 
-void enemy_draw(int start) {
+void enemy_draw() {
+  uint8_t previous_bank = _current_bank;
+  SWITCH_ROM(BANK(enemies));
+
   for (int index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
-    uint16_t draw_x = enemies[index_enemy].x >> 4;
-    int enemy_draw_x_camera_offset = draw_x - camera_x;
+
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
+EMU_printf("Draw x %d cam %d -> %d\n", enemies[index_enemy].x, camera_x, enemies[index_enemy].x - camera_x);
+
     if (enemies[index_enemy].flip) {
-      move_metasprite_vflip(enemy_metasprite, start, start + index_enemy * 4,
-                            enemy_draw_x_camera_offset, enemies[index_enemy].y);
+      move_metasprite_flipx(enemy_metasprite, SPRITE_START_ENEMIES, 0, 1,
+                            enemies[index_enemy].x - camera_x,
+                            enemies[index_enemy].y);
     } else {
-      move_metasprite(enemy_metasprite, start, start + index_enemy * 4,
-                      enemy_draw_x_camera_offset, enemies[index_enemy].y);
+      move_metasprite_ex(enemy_metasprite, SPRITE_START_ENEMIES, 0, 1,
+                         enemies[index_enemy].x - camera_x,
+                         enemies[index_enemy].y);
     }
   }
+  SWITCH_ROM(previous_bank);
 }
-
-*/

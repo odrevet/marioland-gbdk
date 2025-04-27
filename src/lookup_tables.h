@@ -6,7 +6,8 @@
 
 typedef enum {
     OBJECT_TYPE_ENEMY,
-    OBJECT_TYPE_POWERUP
+    OBJECT_TYPE_POWERUP,
+    OBJECT_TYPE_PLATFORM
 } object_type;
 
 typedef struct {
