@@ -10,7 +10,7 @@
 #include <string.h>
 
 #include "global.h"
-/*
+
 #define ENEMY_MAX 4
 #define ENEMY_LOOP_PER_ANIMATION_FRAME 15
 
@@ -32,6 +32,7 @@ typedef struct enemy_t {
 extern uint8_t enemy_count;
 extern enemy_t enemies[ENEMY_MAX];
 
+/*
 void enemy_new(uint16_t x, uint16_t y, uint8_t type);
 void enemy_update(void);
 void enemy_draw(int start);*/
