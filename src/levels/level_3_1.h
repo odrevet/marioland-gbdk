@@ -9,14 +9,14 @@
 #define level_3_1_TILE_ORIGIN 40
 #define level_3_1_TILE_W 8
 #define level_3_1_TILE_H 8
-#define level_3_1_WIDTH 3520
+#define level_3_1_WIDTH 3680
 #define level_3_1_HEIGHT 128
 #define level_3_1_TILE_COUNT 0
 #define level_3_1_PALETTE_COUNT 1
 #define level_3_1_COLORS_PER_PALETTE 4
 #define level_3_1_TOTAL_COLORS 4
 #define level_3_1_MAP_ATTRIBUTES 0
-extern const unsigned char level_3_1_map[7040];
+extern const unsigned char level_3_1_map[7360];
 #define level_3_1_map_attributes level_3_1_map
 
 BANKREF_EXTERN(level_3_1)

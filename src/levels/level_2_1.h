@@ -9,14 +9,14 @@
 #define level_2_1_TILE_ORIGIN 40
 #define level_2_1_TILE_W 8
 #define level_2_1_TILE_H 8
-#define level_2_1_WIDTH 2400
+#define level_2_1_WIDTH 2560
 #define level_2_1_HEIGHT 128
 #define level_2_1_TILE_COUNT 0
 #define level_2_1_PALETTE_COUNT 1
 #define level_2_1_COLORS_PER_PALETTE 4
 #define level_2_1_TOTAL_COLORS 4
 #define level_2_1_MAP_ATTRIBUTES 0
-extern const unsigned char level_2_1_map[4800];
+extern const unsigned char level_2_1_map[5120];
 #define level_2_1_map_attributes level_2_1_map
 
 BANKREF_EXTERN(level_2_1)

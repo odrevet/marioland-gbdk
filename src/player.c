@@ -193,7 +193,7 @@ void player_move(void) BANKED {
           // detect level end from level width
           next_col_chunk_load++;
           if (next_col_chunk_load ==
-              current_map_width / 8 - DEVICE_SCREEN_WIDTH) {
+              current_map_width / 8 - DEVICE_SCREEN_WIDTH + 1) {
             level_end_reached = true;
           }
         }

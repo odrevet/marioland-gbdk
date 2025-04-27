@@ -84,12 +84,15 @@ enum tileset_index_common {
   PIPE_TOP_RIGHT = 0x31,
   PIPE_CENTER_LEFT = 0x3E,
   PIPE_CENTER_RIGHT = 0x3F, 
-  SWITCH = 0x3D
+  SWITCH = 0x3D,
+  METAL_BLOCK_LEFT = 0x56,
+  METAL_BLOCK_RIGHT = 0x57
 };
 
 // Birabuto world tiles
 enum tileset_index_birabuto {
   TILE_FLOOR = 0x75,
+  TILE_FLOOR_BIS = 0x7F,
   OBLIC_LINE_LEFT = 0x68,
   OBLIC_LINE_RIGHT = 0x69,
   STONE_LEFT = 0x5C,
@@ -176,6 +179,8 @@ static inline bool is_tile_solid(uint8_t tile) {
     case PIPE_CENTER_LEFT:
     case PIPE_CENTER_RIGHT:
     case TILE_EMPTIED:
+    case METAL_BLOCK_LEFT:
+    case METAL_BLOCK_RIGHT:
       return true;
   }
   
@@ -184,6 +189,7 @@ static inline bool is_tile_solid(uint8_t tile) {
     // Birabuto world
     return (
       (tile == TILE_FLOOR) ||
+      (tile == TILE_FLOOR_BIS) ||
       (tile == STONE_LEFT) ||
       (tile == STONE_RIGHT) ||
       (tile == TILED_FLOOR) ||
