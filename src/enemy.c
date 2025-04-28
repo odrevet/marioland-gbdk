@@ -43,14 +43,14 @@ void enemy_update(void) {
 
     EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel, enemies[index_enemy].draw_x);
 
-    /*if ((int8_t)enemies[index_enemy].draw_x < 0) {
+    if ((int8_t)enemies[index_enemy].draw_x == 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];
       }
       enemy_count--;
       hide_sprites_range(1, MAX_HARDWARE_SPRITES);
       continue;
-    }*/
+    }
 
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBA:
