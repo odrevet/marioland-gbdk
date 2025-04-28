@@ -172,7 +172,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = level_1_1_lookup;
     level_lookup_size = level_1_1_lookup_size;
-    enemy_count = 0;
     break;
   case 1:
     set_level_1_2();
@@ -180,7 +179,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 2:
     set_level_1_3();
@@ -188,7 +186,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_castle), &music_castle);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 3:
     set_level_2_1();
@@ -196,7 +193,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 4:
     set_level_2_2();
@@ -204,7 +200,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 5:
     set_level_2_3();
@@ -212,7 +207,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_castle), &music_castle);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 6:
     set_level_3_1();
@@ -220,7 +214,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 7:
     set_level_3_2();
@@ -228,7 +221,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 8:
     set_level_3_3();
@@ -236,7 +228,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_castle), &music_castle);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 9:
     set_level_4_1();
@@ -244,7 +235,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 10:
     set_level_4_2();
@@ -252,7 +242,6 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   case 11:
     set_level_4_3();
@@ -260,9 +249,9 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_castle), &music_castle);
     level_lookup = NULL;
     level_lookup_size = 0;
-    enemy_count = 0;
     break;
   }
+  enemy_count = 0;
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   load_current_level();
 }
