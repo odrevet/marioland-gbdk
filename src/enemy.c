@@ -8,7 +8,7 @@ enemy_t enemies[ENEMY_MAX];
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   if (enemy_count < ENEMY_MAX) {
     uint8_t current_frame;
-    int16_t vel_x = 0;
+    int8_t vel_x = 0;
     switch (type) {
     case ENEMY_GOOMBA:
       current_frame = 0;

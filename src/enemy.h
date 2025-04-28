@@ -23,8 +23,8 @@ typedef struct enemy_t {
   uint16_t y;
   uint8_t draw_x;
   uint8_t draw_y;
-  uint8_t vel_x;
-  uint8_t vel_y;
+  int8_t vel_x;
+  int8_t vel_y;
   uint8_t type;
   uint8_t frame_counter;
   uint8_t current_frame;
