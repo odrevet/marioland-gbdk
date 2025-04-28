@@ -11,6 +11,7 @@ uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
 uint8_t current_level;
+uint8_t map_column;
 
 int current_map_tile_origin;
 const unsigned char *current_map_tiles;
@@ -146,7 +147,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
 
   uint8_t col = 0;
   while (col < nb) {
-    uint8_t map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+    map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       int pos = (row * (current_map_width / TILE_SIZE)) + col + start_at;

@@ -72,6 +72,7 @@ extern const unsigned char *current_map_tiles;
 extern size_t current_map_size;
 extern size_t current_map_width;
 extern uint8_t level_bank;
+extern uint8_t map_column; // the index where to load next map column
 
 extern level_object* level_lookup;
 extern size_t level_lookup_size;
