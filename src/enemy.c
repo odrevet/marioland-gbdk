@@ -16,7 +16,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
       break;
     case ENEMY_KOOPA:
       current_frame = 2;
-      vel_x = -10;
+      vel_x = -1;
       break;
     }
     enemy_t enemy = {.x = x,
@@ -39,7 +39,7 @@ void enemy_update(void) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
     enemies[index_enemy].draw_x =
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
-    enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
+    enemies[index_enemy].draw_y = enemies[index_enemy].y;
 
     /*if ((int8_t)enemies[index_enemy].draw_x < 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {

@@ -18,6 +18,9 @@ size_t current_map_size;
 size_t current_map_width;
 uint8_t level_bank;
 
+level_object *level_lookup;
+size_t level_lookup_size;
+
 uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y <= 16) {
     return TILE_EMPTY;
@@ -121,12 +124,12 @@ void on_get_coin(uint8_t x, uint8_t y) {
 }
 
 void level_load_objects(uint16_t col) NONBANKED {
-  for (int i = 0; i < level_1_1_lookup_size; i++) {
-    level_object *obj = level_1_1_lookup+i;
+  for (int i = 0; i < level_lookup_size; i++) {
+    level_object *obj = level_lookup+i;
     if (obj->x == col) {
-      EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x, obj->y);
+      EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       if (obj->type == OBJECT_TYPE_ENEMY) {
-          enemy_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4, obj->type);
+          enemy_new((obj->x >> 4) * TILE_SIZE, obj->y * TILE_SIZE, obj->type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         //powerup_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4, obj->type);
       }
@@ -167,63 +170,100 @@ void level_set_current(void) NONBANKED {
     set_level_1_1();
     hud_set_level('1', '1');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = level_1_1_lookup;
+    level_lookup_size = level_1_1_lookup_size;
+    enemy_count = 0;
     break;
   case 1:
     set_level_1_2();
     hud_set_level('1', '2');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 2:
     set_level_1_3();
     hud_set_level('1', '3');
     music_load(BANK(music_castle), &music_castle);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 3:
     set_level_2_1();
     hud_set_level('2', '1');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 4:
     set_level_2_2();
     hud_set_level('2', '2');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 5:
     set_level_2_3();
     hud_set_level('2', '3');
     music_load(BANK(music_castle), &music_castle);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 6:
     set_level_3_1();
     hud_set_level('3', '1');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 7:
     set_level_3_2();
     hud_set_level('3', '2');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 8:
     set_level_3_3();
     hud_set_level('3', '3');
     music_load(BANK(music_castle), &music_castle);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 9:
     set_level_4_1();
     hud_set_level('4', '1');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 10:
     set_level_4_2();
     hud_set_level('4', '2');
     music_load(BANK(music_overworld), &music_overworld);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   case 11:
     set_level_4_3();
     hud_set_level('4', '3');
     music_load(BANK(music_castle), &music_castle);
+    level_lookup = NULL;
+    level_lookup_size = 0;
+    enemy_count = 0;
     break;
   }
+  hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   load_current_level();
 }
 

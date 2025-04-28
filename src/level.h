@@ -73,7 +73,8 @@ extern size_t current_map_size;
 extern size_t current_map_width;
 extern uint8_t level_bank;
 
-#define MAX_TILE 255
+extern level_object* level_lookup;
+extern size_t level_lookup_size;
 
 // Common tiles (shared across all worlds)
 enum tileset_index_common {
