@@ -129,7 +129,7 @@ void level_load_objects(uint16_t col) NONBANKED {
     if (obj->x == col) {
       EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       if (obj->type == OBJECT_TYPE_ENEMY) {
-          enemy_new((obj->x >> 4) * TILE_SIZE, obj->y * TILE_SIZE, obj->type);
+          enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         //powerup_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4, obj->type);
       }
