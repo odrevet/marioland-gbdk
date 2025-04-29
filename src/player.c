@@ -1,3 +1,4 @@
+#include <stdint.h>
 #pragma bank 255
 
 #include "player.h"
@@ -53,21 +54,26 @@ void update_frame_counter(void) NONBANKED {
   }
 }
 
-void player_draw(void) NONBANKED {
+uint8_t player_draw(void) NONBANKED {
+  uint8_t nb_sprites;
+
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(mario));
 
   const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
-    move_metasprite_flipx(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
-                          player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y -
-                              TILE_SIZE);
+    nb_sprites = move_metasprite_flipx(
+        mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
+        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   } else {
-    move_metasprite_ex(mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
-                       player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
+    nb_sprites = move_metasprite_ex(
+        mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
+        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   }
 
   SWITCH_ROM(_saved_bank);
+
+  return nb_sprites;
 }
 
 void player_move(void) BANKED {

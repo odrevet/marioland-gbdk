@@ -87,11 +87,11 @@ void enemy_draw() {
                enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
-      move_metasprite_flipx(enemy_metasprite, enemies_TILE_ORIGIN, 0, 2,
+      move_metasprite_flipx(enemy_metasprite, enemies_TILE_ORIGIN, 0, MARIO_SPRITE_COUNT,
                          enemies[index_enemy].draw_x,
                          enemies[index_enemy].draw_y);
     } else {
-      move_metasprite_ex(enemy_metasprite, enemies_TILE_ORIGIN, 0, 2,
+      move_metasprite_ex(enemy_metasprite, enemies_TILE_ORIGIN, 0, MARIO_SPRITE_COUNT,
                          enemies[index_enemy].draw_x,
                          enemies[index_enemy].draw_y);
     }

@@ -12,12 +12,12 @@
 
 #include "musicmanager.h"
 #include "sfxplayer.h"
-#include "sounds/sound_jump_small.h"
 #include "sounds/sound_bump.h"
+#include "sounds/sound_jump_small.h"
 #include "sounds/sound_pause.h"
 
-#include "graphics/text.h"
 #include "graphics/mario.h"
+#include "graphics/text.h"
 
 BANKREF_EXTERN(player)
 
@@ -52,7 +52,6 @@ extern uint8_t frame_counter;
 extern bool mario_flip;
 extern uint8_t current_gravity;
 
-
 extern uint8_t next_pos;
 extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;
@@ -60,7 +59,7 @@ extern uint8_t tile_next_2;
 extern uint8_t scroll;
 
 void update_frame_counter(void) NONBANKED;
-void player_draw(void) NONBANKED;
+uint8_t player_draw(void) NONBANKED;
 void player_move(void) BANKED;
 
-#endif 
+#endif
