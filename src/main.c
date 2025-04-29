@@ -84,10 +84,10 @@ void main(void) {
   uint8_t _saved_bank = _current_bank;
 
   SWITCH_ROM(BANK(mario));
-  set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
+  set_sprite_data(mario_TILE_ORIGIN, mario_TILE_COUNT, mario_tiles);
 
   SWITCH_ROM(BANK(enemies));
-  set_sprite_data(SPRITE_START_ENEMIES, enemies_TILE_COUNT, enemies_tiles);
+  set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
 
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);

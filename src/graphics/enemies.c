@@ -53,17 +53,25 @@ const uint8_t enemies_tiles[128] = {
 };
 
 const metasprite_t enemies_metasprite0[] = {
-	METASPR_ITEM(-8, -8, 0, S_PAL(0)),
-	METASPR_ITEM(0, 8, 2, S_PAL(0)),
+	METASPR_ITEM(-8, -4, 0, S_PAL(0)),
 	METASPR_TERM
 };
 
 const metasprite_t enemies_metasprite1[] = {
-	METASPR_ITEM(-8, -8, 4, S_PAL(0)),
-	METASPR_ITEM(0, 8, 6, S_PAL(0)),
+	METASPR_ITEM(-8, -4, 2, S_PAL(0)),
 	METASPR_TERM
 };
 
-const metasprite_t* const enemies_metasprites[2] = {
-	enemies_metasprite0, enemies_metasprite1
+const metasprite_t enemies_metasprite2[] = {
+	METASPR_ITEM(-8, -4, 4, S_PAL(0)),
+	METASPR_TERM
+};
+
+const metasprite_t enemies_metasprite3[] = {
+	METASPR_ITEM(-8, -4, 6, S_PAL(0)),
+	METASPR_TERM
+};
+
+const metasprite_t* const enemies_metasprites[4] = {
+	enemies_metasprite0, enemies_metasprite1, enemies_metasprite2, enemies_metasprite3
 };
