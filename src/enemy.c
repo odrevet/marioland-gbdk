@@ -75,7 +75,7 @@ void enemy_update(void) {
 }
 
 void enemy_draw() {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(enemies));
 
   for (int index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
@@ -96,5 +96,5 @@ void enemy_draw() {
                          enemies[index_enemy].draw_y);
     }
   }
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }

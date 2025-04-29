@@ -69,8 +69,9 @@ extern uint8_t current_level;
 extern const unsigned char *current_map;
 extern int current_map_tile_origin;
 extern const unsigned char *current_map_tiles;
-extern size_t current_map_size;
+extern size_t current_map_tile_count;
 extern size_t current_map_width;
+extern size_t current_map_width_in_tiles;
 extern uint8_t level_bank;
 extern uint8_t map_column; // the index where to load next map column
 

@@ -81,7 +81,7 @@ void main(void) {
   hud_update_lives();
 
   // set sprite and background data
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
 
   SWITCH_ROM(BANK(mario));
   set_sprite_data(SPRITE_START_MARIO, mario_TILE_COUNT, mario_tiles);
@@ -95,7 +95,7 @@ void main(void) {
   SWITCH_ROM(BANK(common));
   set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 
   DISPLAY_ON;
   SHOW_BKG;

@@ -54,7 +54,7 @@ void update_frame_counter(void) NONBANKED {
 }
 
 void player_draw(void) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(mario));
 
   const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
@@ -67,7 +67,7 @@ void player_draw(void) NONBANKED {
                        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   }
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void player_move(void) BANKED {
@@ -194,7 +194,7 @@ void player_move(void) BANKED {
           // detect level end from level width
           next_col_chunk_load++;
           if (next_col_chunk_load ==
-              current_map_width / 8 - DEVICE_SCREEN_WIDTH + 1) {
+              current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
             level_end_reached = true;
           }
         }

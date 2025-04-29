@@ -1,5 +1,6 @@
 #include "level.h"
 #include "global.h"
+#include "levels/level_1_1.h"
 #include "lookup_tables.h"
 
 uint16_t camera_x;
@@ -15,8 +16,9 @@ uint8_t map_column;
 
 int current_map_tile_origin;
 const unsigned char *current_map_tiles;
-size_t current_map_size;
+size_t current_map_tile_count;
 size_t current_map_width;
+size_t current_map_width_in_tiles;
 uint8_t level_bank;
 
 level_object *level_lookup;
@@ -142,7 +144,7 @@ void level_load_objects(uint16_t col) NONBANKED {
 }
 
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_bank);
 
   uint8_t col = 0;
@@ -150,7 +152,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
-      int pos = (row * (current_map_width / TILE_SIZE)) + col + start_at;
+      int pos = (row * current_map_width_in_tiles) + col + start_at;
       map_buffer[row][map_column] = current_map[pos];
       coldata[row] = current_map[pos];
     }
@@ -161,7 +163,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     col++;
   };
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
   return col;
 }
 
@@ -269,193 +271,205 @@ void load_current_level(void) NONBANKED {
 }
 
 void level_load_tileset_birabuto(void) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(birabuto));
 
   current_map_tiles = birabuto_tiles;
   current_map_tile_origin = birabuto_TILE_ORIGIN;
-  current_map_size = birabuto_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+  current_map_tile_count = birabuto_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void level_load_tileset_muda(void) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(muda));
 
   current_map_tiles = muda_tiles;
   current_map_tile_origin = muda_TILE_ORIGIN;
-  current_map_size = muda_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+  current_map_tile_count = muda_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void level_load_tileset_chai(void) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(chai));
 
   current_map_tiles = chai_tiles;
   current_map_tile_origin = chai_TILE_ORIGIN;
-  current_map_size = chai_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+  current_map_tile_count = chai_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void level_load_tileset_easton(void) NONBANKED {
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(easton));
 
   current_map_tiles = easton_tiles;
   current_map_tile_origin = easton_TILE_ORIGIN;
-  current_map_size = easton_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_size, current_map_tiles);
+  current_map_tile_count = easton_TILE_COUNT;
+  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_1_1(void) NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_1));
 
   current_map = level_1_1_map;
   current_map_width = level_1_1_WIDTH;
+  current_map_width_in_tiles = level_1_1_WIDTH >> 3;
   level_bank = BANK(level_1_1);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_1_2(void) NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_2));
 
   current_map = level_1_2_map;
   current_map_width = level_1_2_WIDTH;
+  current_map_width_in_tiles = level_1_2_WIDTH >> 3;
   level_bank = BANK(level_1_2);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_1_3(void) NONBANKED {
   level_load_tileset_birabuto();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_1_3));
 
   current_map = level_1_3_map;
   current_map_width = level_1_3_WIDTH;
+  current_map_width_in_tiles = level_1_3_WIDTH >> 3;
   level_bank = BANK(level_1_3);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_2_1(void) NONBANKED {
   level_load_tileset_muda();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_2_1));
 
   current_map = level_2_1_map;
   current_map_width = level_2_1_WIDTH;
+  current_map_width_in_tiles = level_2_1_WIDTH >> 3;
   level_bank = BANK(level_2_1);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_2_2(void) NONBANKED {
   level_load_tileset_muda();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_2_2));
 
   current_map = level_2_2_map;
   current_map_width = level_2_2_WIDTH;
+  current_map_width_in_tiles = level_2_2_WIDTH >> 3;
   level_bank = BANK(level_2_2);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_2_3(void) NONBANKED {
   level_load_tileset_muda();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_2_3));
 
   current_map = level_2_3_map;
   current_map_width = level_2_3_WIDTH;
+  current_map_width_in_tiles = level_2_3_WIDTH >> 3;
   level_bank = BANK(level_2_3);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_3_1(void) NONBANKED {
   level_load_tileset_easton();
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_3_1));
   current_map = level_3_1_map;
   current_map_width = level_3_1_WIDTH;
+  current_map_width_in_tiles = level_3_1_WIDTH >> 3;
   level_bank = BANK(level_3_1);
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_3_2(void) NONBANKED {
   level_load_tileset_easton();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_3_2));
 
   current_map = level_3_2_map;
   current_map_width = level_3_2_WIDTH;
+  current_map_width_in_tiles = level_3_2_WIDTH >> 3;
   level_bank = BANK(level_3_2);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_3_3(void) NONBANKED {
   level_load_tileset_easton();
 
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_3_3));
 
   current_map = level_3_3_map;
   current_map_width = level_3_3_WIDTH;
+  current_map_width_in_tiles = level_3_3_WIDTH >> 3;
   level_bank = BANK(level_3_3);
 
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_4_1(void) NONBANKED {
   level_load_tileset_chai();
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_1));
   current_map = level_4_1_map;
   current_map_width = level_4_1_WIDTH;
+  current_map_width_in_tiles = level_4_1_WIDTH >> 3;
   level_bank = BANK(level_4_1);
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_4_2(void) NONBANKED {
   level_load_tileset_chai();
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_2));
   current_map = level_4_2_map;
   current_map_width = level_4_2_WIDTH;
+  current_map_width_in_tiles = level_4_2_WIDTH >> 3;
   level_bank = BANK(level_4_2);
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
 
 void set_level_4_3(void) NONBANKED {
   level_load_tileset_chai();
-  uint8_t previous_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(level_4_3));
   current_map = level_4_3_map;
   current_map_width = level_4_3_WIDTH;
+  current_map_width_in_tiles = level_4_3_WIDTH >> 3;
   level_bank = BANK(level_4_3);
-  SWITCH_ROM(previous_bank);
+  SWITCH_ROM(_saved_bank);
 }
