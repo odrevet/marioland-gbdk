@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "global.h"
 #include "level.h"
 #include <stdint.h>
 
@@ -41,7 +42,8 @@ void enemy_update(void) {
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y;
 
-    EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel, enemies[index_enemy].draw_x);
+    EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel,
+               enemies[index_enemy].draw_x);
 
     if ((int8_t)enemies[index_enemy].draw_x == 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
@@ -75,11 +77,12 @@ void enemy_update(void) {
 }
 
 void enemy_draw() {
+  uint8_t base_sprite = MARIO_SPRITE_COUNT;
+
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(enemies));
 
   for (int index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
-
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
@@ -87,13 +90,13 @@ void enemy_draw() {
                enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
-      move_metasprite_flipx(enemy_metasprite, enemies_TILE_ORIGIN, 0, MARIO_SPRITE_COUNT,
-                         enemies[index_enemy].draw_x,
-                         enemies[index_enemy].draw_y);
+      base_sprite += move_metasprite_flipx(
+          enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
+          enemies[index_enemy].draw_x, enemies[index_enemy].draw_y);
     } else {
-      move_metasprite_ex(enemy_metasprite, enemies_TILE_ORIGIN, 0, MARIO_SPRITE_COUNT,
-                         enemies[index_enemy].draw_x,
-                         enemies[index_enemy].draw_y);
+      base_sprite += move_metasprite_ex(
+          enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
+          enemies[index_enemy].draw_x, enemies[index_enemy].draw_y);
     }
   }
   SWITCH_ROM(_saved_bank);
