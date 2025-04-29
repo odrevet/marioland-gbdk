@@ -76,7 +76,7 @@ void enemy_update(void) {
   }
 }
 
-void enemy_draw() {
+uint8_t enemy_draw() {
   uint8_t base_sprite = MARIO_SPRITE_COUNT;
 
   uint8_t _saved_bank = _current_bank;
@@ -100,4 +100,6 @@ void enemy_draw() {
     }
   }
   SWITCH_ROM(_saved_bank);
+
+  return base_sprite;
 }
