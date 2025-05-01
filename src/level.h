@@ -79,6 +79,9 @@ extern uint8_t map_column; // the index where to load next map column
 extern level_object *level_lookup;
 extern size_t level_lookup_size;
 
+extern level_block_object *level_block_lookup;
+extern size_t level_block_lookup_size;
+
 // Common tiles (shared across all worlds)
 enum tileset_index_common {
   TILE_EMPTY = 0x27,

@@ -8,7 +8,7 @@ level_object level_1_1_lookup[] = {
 const size_t level_1_1_lookup_size = sizeof(level_1_1_lookup) / sizeof(level_object);
 
 
-level_object level_1_1_blocks_lookup[] = {
+level_block_object level_1_1_blocks_lookup[] = {
     {22, 9, POWERUP_MUSHROOM}
 };
 

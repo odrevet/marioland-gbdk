@@ -24,6 +24,9 @@ uint8_t level_bank;
 level_object *level_lookup;
 size_t level_lookup_size;
 
+level_block_object *level_block_lookup;
+size_t level_block_lookup_size;
+
 uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y <= 16) {
     return TILE_EMPTY;
@@ -136,6 +139,15 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
 
   // WIP : check block content in lookup table
+  for (int i = 0; i < level_block_lookup_size; i++) {
+    level_block_object *obj = level_block_lookup+i;
+    if (obj->x == index_x && obj->y == index_y) {
+      EMU_printf("BLOCK OBJECT\n");
+      break;
+    }
+  }
+
+
   music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                  MUSIC_SFX_PRIORITY_NORMAL);
 
@@ -203,6 +215,8 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = level_1_1_lookup;
     level_lookup_size = level_1_1_lookup_size;
+    level_block_lookup = level_1_1_blocks_lookup;
+    level_block_lookup_size = level_1_1_blocks_lookup_size;
     break;
   case 1:
     set_level_1_2();
