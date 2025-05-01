@@ -102,8 +102,8 @@ bool is_tile_solid(uint8_t tile) {
 bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
 void on_get_coin_background(uint8_t x, uint8_t y) {
-  uint8_t index_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
-  uint8_t index_y = y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y;
+  uint8_t index_x = TILE_INDEX_X(x, camera_x);
+  uint8_t index_y = TILE_INDEX_Y(y);
 
   map_buffer[index_y][index_x] = TILE_EMPTY;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
@@ -131,53 +131,44 @@ void on_get_coin() {
 }
 
 void on_interogation_block_hit(uint8_t x, uint8_t y) {
-  uint8_t index_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
-  uint8_t index_y = y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y;
+  uint8_t index_x = TILE_INDEX_X(x, camera_x);
+  uint8_t index_y = TILE_INDEX_Y(y);
 
+  // update map buffer and vram with an emptied block
   map_buffer[index_y][index_x] = TILE_EMPTIED;
-
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
 
-  // WIP : check block content in lookup table
+  // check block content in lookup table
+  bool lookup_found = FALSE;
   for (int i = 0; i < level_block_lookup_size; i++) {
-    level_block_object *obj = level_block_lookup+i;
+    level_block_object *obj = level_block_lookup + i;
     if (obj->x == index_x && obj->y == index_y) {
-      EMU_printf("BLOCK OBJECT\n");
+      lookup_found = TRUE;
+      EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
       break;
     }
   }
 
-
-  music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
-                 MUSIC_SFX_PRIORITY_NORMAL);
-
-  coins++;
-  score += 10;
-
-  if (coins == 100) {
-    lives++;
-    hud_update_lives();
-    coins = 0;
-    music_play_sfx(BANK(sound_oneup), sound_oneup, SFX_MUTE_MASK(sound_oneup),
-                   MUSIC_SFX_PRIORITY_NORMAL);
+  // coin by default, if block coord not found in lookup table
+  if (lookup_found == FALSE) {
+    on_get_coin();
   }
-
-  hud_update_coins();
-  hud_update_score();
 }
 
 void level_load_objects(uint16_t col) NONBANKED {
   for (int i = 0; i < level_lookup_size; i++) {
-    level_object *obj = level_lookup+i;
+    level_object *obj = level_lookup + i;
     if (obj->x == col) {
-      EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE, obj->y * TILE_SIZE);
+      EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE,
+                 obj->y * TILE_SIZE);
       if (obj->type == OBJECT_TYPE_ENEMY) {
-          enemy_new((obj->x * TILE_SIZE) << 4, obj->y * TILE_SIZE, obj->type);
+        enemy_new((obj->x * TILE_SIZE) << 4, obj->y * TILE_SIZE, obj->type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
-        //powerup_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4, obj->type);
-      }
-      else if (obj->type == OBJECT_TYPE_PLATFORM) {
-        //platform_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4, obj->type);
+        // powerup_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4,
+        // obj->type);
+      } else if (obj->type == OBJECT_TYPE_PLATFORM) {
+        // platform_new((obj->x * TILE_SIZE) << 4, (obj->y * TILE_SIZE) << 4,
+        // obj->type);
       }
     }
   }
@@ -319,7 +310,8 @@ void level_load_tileset_birabuto(void) NONBANKED {
   current_map_tiles = birabuto_tiles;
   current_map_tile_origin = birabuto_TILE_ORIGIN;
   current_map_tile_count = birabuto_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
+  set_bkg_data(current_map_tile_origin, current_map_tile_count,
+               current_map_tiles);
 
   SWITCH_ROM(_saved_bank);
 }
@@ -331,7 +323,8 @@ void level_load_tileset_muda(void) NONBANKED {
   current_map_tiles = muda_tiles;
   current_map_tile_origin = muda_TILE_ORIGIN;
   current_map_tile_count = muda_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
+  set_bkg_data(current_map_tile_origin, current_map_tile_count,
+               current_map_tiles);
 
   SWITCH_ROM(_saved_bank);
 }
@@ -343,7 +336,8 @@ void level_load_tileset_chai(void) NONBANKED {
   current_map_tiles = chai_tiles;
   current_map_tile_origin = chai_TILE_ORIGIN;
   current_map_tile_count = chai_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
+  set_bkg_data(current_map_tile_origin, current_map_tile_count,
+               current_map_tiles);
 
   SWITCH_ROM(_saved_bank);
 }
@@ -355,7 +349,8 @@ void level_load_tileset_easton(void) NONBANKED {
   current_map_tiles = easton_tiles;
   current_map_tile_origin = easton_TILE_ORIGIN;
   current_map_tile_count = easton_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
+  set_bkg_data(current_map_tile_origin, current_map_tile_count,
+               current_map_tiles);
 
   SWITCH_ROM(_saved_bank);
 }
