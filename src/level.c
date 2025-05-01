@@ -100,14 +100,17 @@ bool is_tile_solid(uint8_t tile) {
 
 bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
-void on_get_coin(uint8_t x, uint8_t y) {
+void on_get_coin_background(uint8_t x, uint8_t y) {
   uint8_t index_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
   uint8_t index_y = y / TILE_SIZE - DEVICE_SPRITE_OFFSET_Y;
 
   map_buffer[index_y][index_x] = TILE_EMPTY;
-
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
+  on_get_coin();
+}
+
+void on_get_coin() {
   music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                  MUSIC_SFX_PRIORITY_NORMAL);
 

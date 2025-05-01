@@ -22,8 +22,8 @@
 
 // musics
 #include "musicmanager.h"
-#include "musics/music_overworld.h"
 #include "musics/music_castle.h"
+#include "musics/music_overworld.h"
 
 // tilesets
 #include "graphics/birabuto.h"
@@ -76,7 +76,7 @@ extern size_t current_map_width_in_tiles;
 extern uint8_t level_bank;
 extern uint8_t map_column; // the index where to load next map column
 
-extern level_object* level_lookup;
+extern level_object *level_lookup;
 extern size_t level_lookup_size;
 
 // Common tiles (shared across all worlds)
@@ -90,7 +90,7 @@ enum tileset_index_common {
   PIPE_TOP_LEFT = 0x30,
   PIPE_TOP_RIGHT = 0x31,
   PIPE_CENTER_LEFT = 0x3E,
-  PIPE_CENTER_RIGHT = 0x3F, 
+  PIPE_CENTER_RIGHT = 0x3F,
   SWITCH = 0x3D,
   METAL_GATE = 0x3C,
   METAL_BLOCK_LEFT = 0x56,
@@ -171,10 +171,22 @@ bool is_tile_solid(uint8_t tile);
 
 bool is_coin(uint8_t tile);
 
-void on_get_coin(uint8_t x, uint8_t y);
+/**
+ * when a background tile is a coin, replace it with a blank tile and call
+ * on_get_coin
+ */
+void on_get_coin_background(uint8_t x, uint8_t y);
+
+/**
+ * play sfx. increment coin counter.
+ * check if 100 coins reached and give a bonus life if so.
+ * update score.
+ * update HUD
+ */
+void on_get_coin();
 void on_interogation_block_hit(uint8_t x, uint8_t y);
 
-void level_load_objects(uint16_t col)NONBANKED;
+void level_load_objects(uint16_t col) NONBANKED;
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 
 void level_set_current(void) NONBANKED;

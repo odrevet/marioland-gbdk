@@ -174,9 +174,9 @@ void player_move(void) BANKED {
 
       } else {
         if (is_coin(tile_next_1)) {
-          on_get_coin(next_pos, y_top_draw);
+          on_get_coin_background(next_pos, y_top_draw);
         } else if (is_coin(tile_next_2)) {
-          on_get_coin(next_pos, y_bottom_draw);
+          on_get_coin_background(next_pos, y_bottom_draw);
         }
         player_x_subpixel = player_x_subpixel_next;
         player_draw_x = player_x_subpixel >> 4;
@@ -228,9 +228,9 @@ void player_move(void) BANKED {
           player_x_subpixel = player_draw_x << 4;
         } else {
           if (is_coin(tile_next_1)) {
-            on_get_coin(next_pos, y_top_draw);
+            on_get_coin_background(next_pos, y_top_draw);
           } else if (is_coin(tile_next_2)) {
-            on_get_coin(next_pos, y_bottom_draw);
+            on_get_coin_background(next_pos, y_bottom_draw);
           }
 
           player_x_subpixel = player_x_subpixel_next;
@@ -259,9 +259,9 @@ void player_move(void) BANKED {
         display_jump_frame = FALSE;
       } else {
         if (is_coin(tile_left_bottom)) {
-          on_get_coin(x_left_draw, next_pos);
+          on_get_coin_background(x_left_draw, next_pos);
         } else if (is_coin(tile_right_bottom)) {
-          on_get_coin(x_right_draw, next_pos);
+          on_get_coin_background(x_right_draw, next_pos);
         }
 
         touch_ground = FALSE;
@@ -292,9 +292,9 @@ void player_move(void) BANKED {
         }
       } else {
         if (is_coin(tile_left_top)) {
-          on_get_coin(x_left_draw, next_pos);
+          on_get_coin_background(x_left_draw, next_pos);
         } else if (is_coin(tile_right_top)) {
-          on_get_coin(x_right_draw, next_pos);
+          on_get_coin_background(x_right_draw, next_pos);
         }
         player_y_subpixel = player_y_subpixel_next;
       }
