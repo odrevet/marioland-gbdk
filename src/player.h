@@ -4,7 +4,7 @@
 #include <gb/gb.h>
 #include <gbdk/platform.h>
 
-#include <string.h>
+#include <stdint.h>
 
 #include "global.h"
 #include "level.h"

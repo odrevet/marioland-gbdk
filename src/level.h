@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -171,6 +172,7 @@ bool is_tile_solid(uint8_t tile);
 bool is_coin(uint8_t tile);
 
 void on_get_coin(uint8_t x, uint8_t y);
+void on_interogation_block_hit(uint8_t x, uint8_t y);
 
 void level_load_objects(uint16_t col)NONBANKED;
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;

@@ -11,7 +11,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
     uint8_t current_frame;
     int8_t vel_x = 0;
     switch (type) {
-    case ENEMY_GOOMBA:
+    case ENEMY_GOOMBO:
       current_frame = 0;
       vel_x = -1;
       break;
@@ -55,7 +55,7 @@ void enemy_update(void) {
     }
 
     switch (enemies[index_enemy].type) {
-    case ENEMY_GOOMBA:
+    case ENEMY_GOOMBO:
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;

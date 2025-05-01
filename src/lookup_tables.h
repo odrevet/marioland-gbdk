@@ -12,12 +12,21 @@ typedef enum {
 
 typedef struct {
     uint16_t x;
-    uint16_t y;
+    uint8_t y;
     object_type type;
     uint8_t id;
 } level_object;
 
+typedef struct {
+    uint16_t x;
+    uint8_t y;
+    uint8_t id;
+} level_block_object;
+
 extern level_object level_1_1_lookup[];
 extern const size_t level_1_1_lookup_size;
+
+extern level_block_object level_1_1_lookup_blocks[];
+extern const size_t level_1_1_lookup_blocks_size;
 
 #endif

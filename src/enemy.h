@@ -16,7 +16,7 @@
 #define ENEMY_MAX 4
 #define ENEMY_LOOP_PER_ANIMATION_FRAME 15
 
-enum enemy_type { ENEMY_GOOMBA, ENEMY_KOOPA };
+enum enemy_type { ENEMY_GOOMBO, ENEMY_KOOPA, ENEMY_FLY };
 
 typedef struct enemy_t {
   uint16_t x;
@@ -33,7 +33,6 @@ typedef struct enemy_t {
 
 extern uint8_t enemy_count;
 extern enemy_t enemies[ENEMY_MAX];
-
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type);
 void enemy_update(void);

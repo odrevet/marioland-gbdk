@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include "level.h"
 #pragma bank 255
 
 #include "player.h"
@@ -285,6 +285,11 @@ void player_move(void) BANKED {
         music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump),
                        MUSIC_SFX_PRIORITY_NORMAL);
 
+        if (tile_left_top == TILE_INTEROGATION_BLOCK) {
+          on_interogation_block_hit(x_left_draw, next_pos);
+        } else if (tile_right_top == TILE_INTEROGATION_BLOCK) {
+          on_interogation_block_hit(x_right_draw, next_pos);
+        }
       } else {
         if (is_coin(tile_left_top)) {
           on_get_coin(x_left_draw, next_pos);
