@@ -140,13 +140,12 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // check block content in lookup table
   bool lookup_found = FALSE;
-  for (int i = 0; i < level_block_lookup_size; i++) {
-    level_block_object *obj = level_block_lookup + i;
-    if (obj->x == index_x && obj->y == index_y) {
-      lookup_found = TRUE;
-      EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
-      break;
-    }
+  for (int i = 0; i < level_block_lookup_size && !lookup_found; i++) {
+      level_block_object *obj = level_block_lookup + i;
+      if (obj->x == index_x && obj->y == index_y) {
+          lookup_found = TRUE;
+          EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
+      }
   }
 
   // coin by default, if block coord not found in lookup table
