@@ -10,14 +10,14 @@ typedef enum {
     OBJECT_TYPE_PLATFORM
 } object_type;
 
-typedef struct {
+typedef struct level_object {
     uint16_t x;
     uint8_t y;
     object_type type;
     uint8_t id;
 } level_object;
 
-typedef struct {
+typedef struct level_block_object {
     uint16_t x;
     uint8_t y;
     uint8_t id;
