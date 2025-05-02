@@ -29,54 +29,55 @@ echo "common sprites"
 png2asset "assets/sprites/common.png" -o "src/graphics/sprite_common.c" -sw 8 -sh 8 -spr8x8 -tile_origin $tile_origin -b 255
 
 # background
+tile_origin=0
 echo "text background"
 png2asset "assets/text.png" -o "src/graphics/text.c" -keep_palette_order -map -tiles_only -noflip -b 255
-text_tiles_count=$(get_define_value text_TILE_COUNT "src/graphics/text.h")
+tile_origin=$((tile_origin + $(get_define_value text_TILE_COUNT "src/graphics/text.h")))
 
-common_tileset_origin=$text_tiles_count
+echo "1_1"
+convert_level_asset 1_1 birabuto $tile_origin
+
+echo "1_2"
+convert_level_asset 1_2 birabuto $tile_origin
+
+echo "1_3"
+convert_level_asset 1_3 birabuto $tile_origin
+
+echo "2_1"
+convert_level_asset 2_1 muda $tile_origin
+
+echo "2_2"
+convert_level_asset 2_2 muda $tile_origin
+
+echo "2_3"
+convert_level_asset 2_3 muda $tile_origin
+
+echo "3_1"
+convert_level_asset 3_1 easton $tile_origin
+
+echo "3_2"
+convert_level_asset 3_2 easton $tile_origin
+
+echo "3_3"
+convert_level_asset 3_3 easton $tile_origin
+
+echo "4_1"
+convert_level_asset 4_1 chai $tile_origin
+
+echo "4_2"
+convert_level_asset 4_2 chai $tile_origin
+
+echo "4_3"
+convert_level_asset 4_3 chai $tile_origin
 
 echo "common background"
-png2asset "assets/tilesets/common.png" -o "src/graphics/common.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $common_tileset_origin
+png2asset "assets/tilesets/common.png" -o "src/graphics/common.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $tile_origin
 common_tiles_count=$(get_define_value common_TILE_COUNT "src/graphics/common.h")
 
-level_tiles_origin=$(($text_tiles_count + $common_tiles_count))
+level_tiles_origin=$(($tile_origin + $common_tiles_count))
 png2asset "assets/tilesets/birabuto.png" -o "src/graphics/birabuto.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 png2asset "assets/tilesets/muda.png" -o "src/graphics/muda.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 png2asset "assets/tilesets/easton.png" -o "src/graphics/easton.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 png2asset "assets/tilesets/chai.png" -o "src/graphics/chai.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 
-echo "1_1"
-convert_level_asset 1_1 birabuto $common_tileset_origin
 
-echo "1_2"
-convert_level_asset 1_2 birabuto $common_tileset_origin
-
-echo "1_3"
-convert_level_asset 1_3 birabuto $common_tileset_origin
-
-echo "2_1"
-convert_level_asset 2_1 muda $common_tileset_origin
-
-echo "2_2"
-convert_level_asset 2_2 muda $common_tileset_origin
-
-echo "2_3"
-convert_level_asset 2_3 muda $common_tileset_origin
-
-echo "3_1"
-convert_level_asset 3_1 easton $common_tileset_origin
-
-echo "3_2"
-convert_level_asset 3_2 easton $common_tileset_origin
-
-echo "3_3"
-convert_level_asset 3_3 easton $common_tileset_origin
-
-echo "4_1"
-convert_level_asset 4_1 chai $common_tileset_origin
-
-echo "4_2"
-convert_level_asset 4_2 chai $common_tileset_origin
-
-echo "4_3"
-convert_level_asset 4_3 chai $common_tileset_origin
