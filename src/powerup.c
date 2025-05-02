@@ -30,8 +30,8 @@ uint8_t powerup_draw(uint8_t base_sprite) {
   metasprite_t *sprite_common_metasprite =
       sprite_common_metasprites[draw_index];
 
-  EMU_printf("DRAW OBJECT %d at %d %d\n", powerup.type, powerup.draw_x,
-             powerup.draw_y);
+  //EMU_printf("DRAW OBJECT %d at %d %d\n", powerup.type, powerup.draw_x,
+  //           powerup.draw_y);
 
   base_sprite +=
       move_metasprite_ex(sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0,

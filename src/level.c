@@ -144,7 +144,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
       level_block_object *obj = level_block_lookup + i;
       if (obj->x == index_x && obj->y == index_y) {
           lookup_found = TRUE;
-          EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
+          //EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
           powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
       }
   }
@@ -159,8 +159,8 @@ void level_load_objects(uint16_t col) NONBANKED {
   for (int i = 0; i < level_lookup_size; i++) {
     level_object *obj = level_lookup + i;
     if (obj->x == col) {
-      EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE,
-                 obj->y * TILE_SIZE);
+      //EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE,
+      //           obj->y * TILE_SIZE);
       if (obj->type == OBJECT_TYPE_ENEMY) {
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {

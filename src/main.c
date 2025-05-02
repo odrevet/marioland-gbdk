@@ -3,11 +3,12 @@
 #include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
 
+#include "gb/metasprites.h"
 #include "graphics/common.h"
 #include "graphics/enemies.h"
 #include "graphics/mario.h"
-#include "graphics/text.h"
 #include "graphics/sprite_common.h"
+#include "graphics/text.h"
 
 #include "game.h"
 #include "global.h"
@@ -27,6 +28,20 @@ void interruptLCD(void) {
 }
 
 void interruptVBL(void) { SHOW_WIN; }
+
+bool powerups_collide() {
+  uint8_t p1_left = powerup.draw_x;
+  uint8_t p1_right = powerup.draw_x + 4;
+  uint8_t p1_top = powerup.draw_y;
+  uint8_t p1_bottom = powerup.draw_y + 4;
+
+  if (p1_right <= x_left_draw || p1_left >= x_right_draw ||
+      p1_bottom <= y_top_draw || p1_top >= y_bottom_draw) {
+    return false;
+  }
+
+  return true;
+}
 
 void main(void) {
   STAT_REG = 0x40;
@@ -93,7 +108,8 @@ void main(void) {
   set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
 
   SWITCH_ROM(BANK(sprite_common));
-  set_sprite_data(sprite_common_TILE_ORIGIN, sprite_common_TILE_COUNT, sprite_common_tiles);
+  set_sprite_data(sprite_common_TILE_ORIGIN, sprite_common_TILE_COUNT,
+                  sprite_common_tiles);
 
   // background
   SWITCH_ROM(BANK(text));
@@ -147,6 +163,18 @@ void main(void) {
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
       load_current_level();
+    }
+
+    // check if mario collids with a power up
+    if (powerup_active && powerups_collide()) {
+      EMU_printf("Power up collids\n");
+      powerup_active = FALSE;
+      hide_metasprite(sprite_common_metasprites[0], base_sprite - 1);
+      powerup.x = 0;
+      powerup.draw_x = 0;
+      powerup.y = 0;
+      powerup.draw_y = 0;
+      powerup_draw(base_sprite - 1);
     }
 
     time--;

@@ -21,6 +21,11 @@
 
 BANKREF_EXTERN(player)
 
+extern uint8_t x_right_draw;
+extern uint8_t x_left_draw;
+extern uint8_t y_top_draw;
+extern uint8_t y_bottom_draw;
+
 extern uint8_t coins;
 extern uint16_t score;
 extern uint8_t joy;
