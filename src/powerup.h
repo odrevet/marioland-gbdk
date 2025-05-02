@@ -11,7 +11,9 @@
 #include <string.h>
 
 #include "global.h"
-//#include "graphics/powerups.h"
+#include "graphics/sprite_common.h"
+
+#include <gbdk/emu_debug.h>
 
 enum powerup_type {
   POWERUP_MUSHROOM,
@@ -31,6 +33,7 @@ typedef struct powerup_t {
 } powerup_t;
 
 // a single power up at a time available
+extern bool powerup_active;
 extern powerup_t powerup;
 
 void powerup_new(uint16_t x, uint16_t y, uint8_t type);

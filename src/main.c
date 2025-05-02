@@ -7,14 +7,14 @@
 #include "graphics/enemies.h"
 #include "graphics/mario.h"
 #include "graphics/text.h"
+#include "graphics/sprite_common.h"
 
 #include "game.h"
 #include "global.h"
-#include "graphics/text.h"
 
+#include "enemy.h"
 #include "level.h"
 #include "player.h"
-#include "enemy.h"
 #include "powerup.h"
 #include "text.h"
 
@@ -85,12 +85,17 @@ void main(void) {
   // set sprite and background data
   uint8_t _saved_bank = _current_bank;
 
+  // sprite
   SWITCH_ROM(BANK(mario));
   set_sprite_data(mario_TILE_ORIGIN, mario_TILE_COUNT, mario_tiles);
 
   SWITCH_ROM(BANK(enemies));
   set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
 
+  SWITCH_ROM(BANK(sprite_common));
+  set_sprite_data(sprite_common_TILE_ORIGIN, sprite_common_TILE_COUNT, sprite_common_tiles);
+
+  // background
   SWITCH_ROM(BANK(text));
   set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
 
@@ -105,7 +110,7 @@ void main(void) {
   SHOW_SPRITES;
   SPRITES_8x16;
 
-  uint8_t base_sprite = 0;  // base hardware sprite
+  uint8_t base_sprite = 0; // base hardware sprite
 
   while (1) {
     vsync();
@@ -132,7 +137,9 @@ void main(void) {
     enemy_update();
     base_sprite = player_draw(base_sprite);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
-    base_sprite = powerup_draw(base_sprite);
+    if (powerup_active) {
+      base_sprite = powerup_draw(base_sprite);
+    }
 
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();

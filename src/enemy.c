@@ -42,8 +42,8 @@ void enemy_update(void) {
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y;
 
-    EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel,
-               enemies[index_enemy].draw_x);
+    //EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel,
+    //           enemies[index_enemy].draw_x);
 
     if ((int8_t)enemies[index_enemy].draw_x == 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
@@ -84,8 +84,8 @@ uint8_t enemy_draw(uint8_t base_sprite) {
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
-    EMU_printf("Draw x %d y %d\n", enemies[index_enemy].draw_x,
-               enemies[index_enemy].draw_y);
+    //EMU_printf("Draw x %d y %d\n", enemies[index_enemy].draw_x,
+    //           enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(
