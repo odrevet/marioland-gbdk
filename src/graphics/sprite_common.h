@@ -11,10 +11,10 @@
 #define sprite_common_TILE_H 8
 #define sprite_common_WIDTH 8
 #define sprite_common_HEIGHT 8
-#define sprite_common_TILE_COUNT 15
-#define sprite_common_PALETTE_COUNT 2
+#define sprite_common_TILE_COUNT 14
+#define sprite_common_PALETTE_COUNT 1
 #define sprite_common_COLORS_PER_PALETTE 4
-#define sprite_common_TOTAL_COLORS 8
+#define sprite_common_TOTAL_COLORS 4
 #define sprite_common_PIVOT_X 4
 #define sprite_common_PIVOT_Y 4
 #define sprite_common_PIVOT_W 8
@@ -23,7 +23,7 @@ extern const metasprite_t* const sprite_common_metasprites[15];
 
 BANKREF_EXTERN(sprite_common)
 
-extern const palette_color_t sprite_common_palettes[8];
-extern const uint8_t sprite_common_tiles[240];
+extern const palette_color_t sprite_common_palettes[4];
+extern const uint8_t sprite_common_tiles[224];
 
 #endif
