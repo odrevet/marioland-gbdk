@@ -26,7 +26,7 @@ png2asset "assets/sprites/enemies.png" -o "src/graphics/enemies.c" -sw 8 -sh 16 
 tile_origin+=$(get_define_value enemies_TILE_COUNT "src/graphics/enemies.h")
 
 echo "common sprites"
-png2asset "assets/sprites/sprite_common.png" -o "src/graphics/sprite_common.c" -sw 8 -sh 8 -tile_origin $tile_origin -b 255 -spr8x8
+png2asset "assets/sprites/common.png" -o "src/graphics/sprite_common.c" -sw 8 -sh 8 -tile_origin $tile_origin -b 255 -spr8x8
 
 # background
 echo "text background"
