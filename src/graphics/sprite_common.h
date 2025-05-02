@@ -6,7 +6,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define sprite_common_TILE_ORIGIN 268
+#define sprite_common_TILE_ORIGIN 34
 #define sprite_common_TILE_W 8
 #define sprite_common_TILE_H 8
 #define sprite_common_WIDTH 8
