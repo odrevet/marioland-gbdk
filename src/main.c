@@ -108,7 +108,7 @@ void main(void) {
   SHOW_BKG;
   SHOW_WIN;
   SHOW_SPRITES;
-  SPRITES_8x16;
+  SPRITES_8x8;
 
   uint8_t base_sprite = 0; // base hardware sprite
 
@@ -138,6 +138,7 @@ void main(void) {
     base_sprite = player_draw(base_sprite);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
     if (powerup_active) {
+      powerup_update();
       base_sprite = powerup_draw(base_sprite);
     }
 

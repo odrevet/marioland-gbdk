@@ -144,8 +144,8 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
       level_block_object *obj = level_block_lookup + i;
       if (obj->x == index_x && obj->y == index_y) {
           lookup_found = TRUE;
-          EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x >> 3, obj->y >> 3);
-          powerup_new((obj->x << 3), (obj->y << 3), obj->id);
+          EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
+          powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
       }
   }
 

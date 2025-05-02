@@ -6,12 +6,12 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define enemies_TILE_ORIGIN 26
+#define enemies_TILE_ORIGIN 23
 #define enemies_TILE_W 8
-#define enemies_TILE_H 16
+#define enemies_TILE_H 8
 #define enemies_WIDTH 8
 #define enemies_HEIGHT 16
-#define enemies_TILE_COUNT 8
+#define enemies_TILE_COUNT 6
 #define enemies_PALETTE_COUNT 1
 #define enemies_COLORS_PER_PALETTE 4
 #define enemies_TOTAL_COLORS 4
@@ -24,6 +24,6 @@ extern const metasprite_t* const enemies_metasprites[4];
 BANKREF_EXTERN(enemies)
 
 extern const palette_color_t enemies_palettes[4];
-extern const uint8_t enemies_tiles[128];
+extern const uint8_t enemies_tiles[96];
 
 #endif

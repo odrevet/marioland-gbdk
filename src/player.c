@@ -61,11 +61,11 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
   if (mario_flip) {
     base_sprite += move_metasprite_flipx(
-        mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
+        mario_metasprite, 0, 0, 0, player_draw_x + DEVICE_SPRITE_PX_OFFSET_X,
         player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   } else {
     base_sprite += move_metasprite_ex(
-        mario_metasprite, 0, 0, 0, player_draw_x + TILE_SIZE,
+        mario_metasprite, 0, 0, 0, player_draw_x + DEVICE_SPRITE_PX_OFFSET_X,
         player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
   }
 

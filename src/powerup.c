@@ -1,4 +1,5 @@
 #include "powerup.h"
+#include "level.h"
 
 bool powerup_active = FALSE;
 powerup_t powerup;
@@ -6,15 +7,16 @@ powerup_t powerup;
 void powerup_new(uint16_t x, uint16_t y, uint8_t type) {
   powerup.x = x;
   powerup.y = y;
-  powerup.draw_x = x;
-  powerup.draw_y = y;
 
   powerup.type = type;
 
   powerup_active = TRUE;
 }
 
-void powerup_update(void) {}
+void powerup_update(void) {
+  powerup.draw_x = ((powerup.x - camera_x_subpixel) >> 4) + DEVICE_SPRITE_PX_OFFSET_X + 4;
+  powerup.draw_y = (powerup.y >> 4) + DEVICE_SPRITE_PX_OFFSET_Y + TILE_SIZE + 4;
+}
 
 uint8_t powerup_draw(uint8_t base_sprite) {
   uint8_t _saved_bank = _current_bank;
@@ -24,7 +26,8 @@ uint8_t powerup_draw(uint8_t base_sprite) {
   metasprite_t *sprite_common_metasprite =
       sprite_common_metasprites[draw_index];
 
-  EMU_printf("DRAW OBJECT %d at %d %d\n", powerup.type, powerup.draw_x, powerup.draw_y);
+  EMU_printf("DRAW OBJECT %d at %d %d\n", powerup.type, powerup.draw_x,
+             powerup.draw_y);
 
   base_sprite +=
       move_metasprite_ex(sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0,

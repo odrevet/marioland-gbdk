@@ -8,10 +8,10 @@
 
 #define mario_TILE_ORIGIN 0
 #define mario_TILE_W 8
-#define mario_TILE_H 16
+#define mario_TILE_H 8
 #define mario_WIDTH 16
 #define mario_HEIGHT 16
-#define mario_TILE_COUNT 26
+#define mario_TILE_COUNT 23
 #define mario_PALETTE_COUNT 1
 #define mario_COLORS_PER_PALETTE 4
 #define mario_TOTAL_COLORS 4
@@ -24,6 +24,6 @@ extern const metasprite_t* const mario_metasprites[7];
 BANKREF_EXTERN(mario)
 
 extern const palette_color_t mario_palettes[4];
-extern const uint8_t mario_tiles[416];
+extern const uint8_t mario_tiles[368];
 
 #endif

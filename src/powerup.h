@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "global.h"
+
 #include "graphics/sprite_common.h"
 
 #include <gbdk/emu_debug.h>
