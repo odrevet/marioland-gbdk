@@ -36,6 +36,6 @@ extern enemy_t enemies[ENEMY_MAX];
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type);
 void enemy_update(void);
-uint8_t enemy_draw();
+uint8_t enemy_draw(uint8_t base_sprite);
 
 #endif

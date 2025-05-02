@@ -59,7 +59,7 @@ extern uint8_t tile_next_2;
 extern uint8_t scroll;
 
 void update_frame_counter(void) NONBANKED;
-uint8_t player_draw(void) NONBANKED;
+uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
 
 #endif

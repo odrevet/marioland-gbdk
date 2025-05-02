@@ -14,6 +14,8 @@
 
 #include "level.h"
 #include "player.h"
+#include "enemy.h"
+#include "powerup.h"
 #include "text.h"
 
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
@@ -103,6 +105,8 @@ void main(void) {
   SHOW_SPRITES;
   SPRITES_8x16;
 
+  uint8_t base_sprite = 0;  // base hardware sprite
+
   while (1) {
     vsync();
 
@@ -126,7 +130,9 @@ void main(void) {
     }
 
     enemy_update();
-    enemy_draw();
+    base_sprite = player_draw(base_sprite);
+    base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
+    base_sprite = powerup_draw(base_sprite);
 
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();
@@ -157,7 +163,5 @@ void main(void) {
       level_set_current();
       load_current_level();
     }
-
-    player_draw();
   }
 }
