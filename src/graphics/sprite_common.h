@@ -6,12 +6,12 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define sprite_common_TILE_ORIGIN 29
+#define sprite_common_TILE_ORIGIN 30
 #define sprite_common_TILE_W 8
 #define sprite_common_TILE_H 8
 #define sprite_common_WIDTH 8
 #define sprite_common_HEIGHT 8
-#define sprite_common_TILE_COUNT 14
+#define sprite_common_TILE_COUNT 13
 #define sprite_common_PALETTE_COUNT 1
 #define sprite_common_COLORS_PER_PALETTE 4
 #define sprite_common_TOTAL_COLORS 4
@@ -24,6 +24,6 @@ extern const metasprite_t* const sprite_common_metasprites[15];
 BANKREF_EXTERN(sprite_common)
 
 extern const palette_color_t sprite_common_palettes[4];
-extern const uint8_t sprite_common_tiles[224];
+extern const uint8_t sprite_common_tiles[208];
 
 #endif

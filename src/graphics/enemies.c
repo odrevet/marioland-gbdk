@@ -13,7 +13,7 @@ const palette_color_t enemies_palettes[4] = {
 	
 };
 
-const uint8_t enemies_tiles[96] = {
+const uint8_t enemies_tiles[112] = {
 	0x00,0x3c,0x00,0x7e,
 	0x00,0xdb,0x00,0xdb,
 	0x00,0xff,0x3c,0x00,
@@ -42,7 +42,12 @@ const uint8_t enemies_tiles[96] = {
 0x00,0x90,0x08,0xe0,
 	0x10,0x2e,0x10,0x2d,
 	0x10,0x6f,0x19,0x06,
-	0x0e,0x10,0x00,0x37
+	0x0e,0x10,0x00,0x37,
+	
+0x00,0x00,0x00,0x3c,
+	0x00,0x66,0x00,0x5e,
+	0x00,0x5e,0x00,0x7e,
+	0x00,0x3c,0x00,0x00
 	
 };
 
@@ -68,6 +73,11 @@ const metasprite_t enemies_metasprite3[] = {
 	METASPR_TERM
 };
 
-const metasprite_t* const enemies_metasprites[4] = {
-	enemies_metasprite0, enemies_metasprite1, enemies_metasprite2, enemies_metasprite3
+const metasprite_t enemies_metasprite4[] = {
+	METASPR_ITEM(0, -4, 6, S_PAL(0)),
+	METASPR_TERM
+};
+
+const metasprite_t* const enemies_metasprites[5] = {
+	enemies_metasprite0, enemies_metasprite1, enemies_metasprite2, enemies_metasprite3, enemies_metasprite4
 };
