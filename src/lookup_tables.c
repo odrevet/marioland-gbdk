@@ -2,7 +2,8 @@
 #include "powerup.h"
 
 level_object level_1_1_lookup[] = {
-    {15, 17, OBJECT_TYPE_ENEMY, ENEMY_GOOMBO}
+    {15, 17, OBJECT_TYPE_ENEMY, ENEMY_GOOMBO},
+    {63, 11, OBJECT_TYPE_ENEMY, ENEMY_GOOMBO}
 };
 
 const size_t level_1_1_lookup_size = sizeof(level_1_1_lookup) / sizeof(level_object);

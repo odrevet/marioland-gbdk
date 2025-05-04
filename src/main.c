@@ -2,8 +2,10 @@
 #include <gb/gb.h>
 #include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
+#include <stdint.h>
 
 #include "gb/metasprites.h"
+#include "graphics/birabuto_torch.h"
 #include "graphics/common.h"
 #include "graphics/enemies.h"
 #include "graphics/mario.h"
@@ -127,6 +129,8 @@ void main(void) {
   SPRITES_8x8;
 
   uint8_t base_sprite = 0; // base hardware sprite
+  uint8_t background_animation_counter = 0;
+  uint8_t anim_frame_counter = 0;
 
   while (1) {
     vsync();
@@ -198,6 +202,27 @@ void main(void) {
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
       load_current_level();
+    }
+
+    // animation
+    if (current_level == 2) {
+      uint8_t _saved_bank = _current_bank;
+      anim_frame_counter++;
+      if (anim_frame_counter >= 12) {
+        anim_frame_counter = 0;
+        background_animation_counter ^= 1; // toggle between 0 and 1
+
+        if (background_animation_counter) {
+          SWITCH_ROM(BANK(birabuto_torch));
+          set_bkg_data(TILE_TORCH, 1, birabuto_torch_tiles);
+        } else {
+          SWITCH_ROM(BANK(birabuto));
+          set_bkg_data(TILE_TORCH, 1, birabuto_tiles + 288);  // 18th tile * 16 bytes
+
+        }
+      }
+
+      SWITCH_ROM(_saved_bank);
     }
   }
 }
