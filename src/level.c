@@ -63,8 +63,7 @@ bool is_tile_solid(uint8_t tile) {
             (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK));
   } else if (current_level >= 3 && current_level <= 5) {
     // Muda world
-    return ((tile == MUDA_PLATEFORM_LEFT) || (tile == MUDA_PLATEFORM_CENTER) ||
-            (tile == MUDA_PLATEFORM_RIGHT) || (tile == BIG_BLOCK_TOP_LEFT) ||
+    return ((tile == BIG_BLOCK_TOP_LEFT) ||
             (tile == BIG_BLOCK_TOP_RIGHT) || (tile == BIG_BLOCK_BOTTOM_LEFT) ||
             (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
             (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||

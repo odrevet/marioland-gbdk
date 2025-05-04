@@ -254,7 +254,14 @@ void player_move(void) BANKED {
                                   (tile_left_bottom == PALM_TREE_RIGHT) ||
                                   (tile_right_bottom == PALM_TREE_LEFT) ||
                                   (tile_right_bottom == PALM_TREE_CENTER) ||
-                                  (tile_right_bottom == PALM_TREE_RIGHT)))) {
+                                  (tile_right_bottom == PALM_TREE_RIGHT))) ||
+          (current_level == 3 &&
+           ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
+            (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
+            (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
+            (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
+            (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
+            (tile_right_bottom == MUDA_PLATEFORM_RIGHT)))) {
         player_y_subpixel = ((next_pos / TILE_SIZE) * TILE_SIZE) << 4;
 
         touch_ground = TRUE;
