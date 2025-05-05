@@ -23,8 +23,7 @@
 
 // musics
 #include "musicmanager.h"
-#include "musics/music_castle.h"
-#include "musics/music_overworld.h"
+#include "musics/musics.h"
 
 // tilesets
 #include "graphics/birabuto.h"

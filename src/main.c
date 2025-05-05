@@ -13,6 +13,10 @@
 #include "graphics/sprite_common.h"
 #include "graphics/text.h"
 
+#include "hud.h"
+#include "musics/musics.h"
+#include "sounds/sound_coin.h"
+
 #include "game.h"
 #include "global.h"
 
@@ -202,6 +206,20 @@ void main(void) {
     // if reach end of level
     if (level_end_reached &&
         player_draw_x >= (DEVICE_SCREEN_WIDTH - 1) * TILE_SIZE) {
+
+      music_load(BANK(music_stage_clear), &music_stage_clear);
+      delay(4500);
+
+      while (time / 40 > 0) {
+        time -= 40;
+        score += 1;
+        hud_update_time();
+        hud_update_score();
+        music_play_sfx(BANK(sound_coin), sound_coin,
+                       SFX_MUTE_MASK(sound_coin),
+                       MUSIC_SFX_PRIORITY_NORMAL);
+      }
+
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
