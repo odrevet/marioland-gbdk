@@ -14,6 +14,7 @@
 #include "global.h"
 #include "hud.h"
 #include "lookup_tables.h"
+#include "coin_animated.h"
 
 // sounds
 #include "sfxplayer.h"

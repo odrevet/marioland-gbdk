@@ -4,6 +4,7 @@
 #include <gbdk/platform.h>
 #include <stdint.h>
 
+#include "coin_animated.h"
 #include "gb/metasprites.h"
 #include "graphics/birabuto_torch.h"
 #include "graphics/common.h"
@@ -162,6 +163,9 @@ void main(void) {
       base_sprite = powerup_draw(base_sprite);
     }
 
+    coin_animated_update();
+    base_sprite = coin_animated_draw(base_sprite);
+
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();
       current_level = (++current_level) % NB_LEVELS;
@@ -217,8 +221,8 @@ void main(void) {
           set_bkg_data(TILE_TORCH, 1, birabuto_torch_tiles);
         } else {
           SWITCH_ROM(BANK(birabuto));
-          set_bkg_data(TILE_TORCH, 1, birabuto_tiles + 288);  // 18th tile * 16 bytes
-
+          set_bkg_data(TILE_TORCH, 1,
+                       birabuto_tiles + 288); // 18th tile * 16 bytes
         }
       }
 

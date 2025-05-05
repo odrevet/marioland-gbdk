@@ -63,8 +63,8 @@ bool is_tile_solid(uint8_t tile) {
             (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK));
   } else if (current_level >= 3 && current_level <= 5) {
     // Muda world
-    return ((tile == BIG_BLOCK_TOP_LEFT) ||
-            (tile == BIG_BLOCK_TOP_RIGHT) || (tile == BIG_BLOCK_BOTTOM_LEFT) ||
+    return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
+            (tile == BIG_BLOCK_BOTTOM_LEFT) ||
             (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
             (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
             (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
@@ -140,17 +140,21 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   // check block content in lookup table
   bool lookup_found = FALSE;
   for (int i = 0; i < level_block_lookup_size && !lookup_found; i++) {
-      level_block_object *obj = level_block_lookup + i;
-      if (obj->x == index_x && obj->y == index_y) {
-          lookup_found = TRUE;
-          //EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
-          powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
-      }
+    level_block_object *obj = level_block_lookup + i;
+    if (obj->x == index_x && obj->y == index_y) {
+      lookup_found = TRUE;
+      // EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
+      powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
+    }
   }
 
   // coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
     on_get_coin();
+    coin_animated_array[coin_index].draw_x = index_x * TILE_SIZE;
+    coin_animated_array[coin_index].draw_y = index_y * TILE_SIZE;
+    coin_animated_array[coin_index].ttl = 20;
+    coin_index = (coin_index + 1) % NB_COIN_ANIMATED;
   }
 }
 
@@ -158,8 +162,8 @@ void level_load_objects(uint16_t col) NONBANKED {
   for (int i = 0; i < level_lookup_size; i++) {
     level_object *obj = level_lookup + i;
     if (obj->x == col) {
-      //EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE,
-      //           obj->y * TILE_SIZE);
+      // EMU_printf("SPAWN OBJECT %d at %d %d\n", obj->type, obj->x * TILE_SIZE,
+      //            obj->y * TILE_SIZE);
       if (obj->type == OBJECT_TYPE_ENEMY) {
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
