@@ -28,7 +28,7 @@ level_block_object *level_block_lookup;
 size_t level_block_lookup_size;
 
 uint8_t get_tile(uint8_t x, uint8_t y) {
-  if (y <= 16) {
+  if (y / TILE_SIZE <= 2 || y / TILE_SIZE > MAP_BUFFER_HEIGHT + 1) {
     return TILE_EMPTY;
   }
 
