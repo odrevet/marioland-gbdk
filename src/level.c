@@ -7,7 +7,7 @@ uint16_t camera_x;
 uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
-uint8_t map_buffer[LEVEL_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
+uint8_t map_buffer[LEVEL_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH] = {{TILE_EMPTY}};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
@@ -159,35 +159,28 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 }
 
 void level_load_objects(uint16_t col) NONBANKED {
-    for (int i = 0; i < level_1_1_lookup_size; i++) {
-        level_object *obj = &level_1_1_lookup[i];
+  for (int i = 0; i < level_1_1_lookup_size; i++) {
+    level_object *obj = &level_1_1_lookup[i];
 
-        if (obj->x == col) {
-            // Now we can access obj->x, obj->y, and obj->type directly
+    if (obj->x == col) {
+      // Now we can access obj->x, obj->y, and obj->type directly
 
-            if (obj->type == OBJECT_TYPE_ENEMY) {
-                // Use data from the common fields and/or from the union
-                enemy_new(obj->x * TILE_SIZE,
-                          obj->y * TILE_SIZE,
-                          obj->data.enemy.type);
-            }
-            else if (obj->type == OBJECT_TYPE_POWERUP) {
-                // Handle powerups
-            }
-            else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
-                // Handle moving platforms
-                platform_moving_new(obj->x * TILE_SIZE,
-                                   obj->y * TILE_SIZE,
-                                   obj->data.platform_moving.size,
-                                   obj->data.platform_moving.range);
-            }
-            else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
-                // Handle falling platforms
-                platform_falling_new(obj->x * TILE_SIZE,
-                                    obj->y * TILE_SIZE);
-            }
-        }
+      if (obj->type == OBJECT_TYPE_ENEMY) {
+        // Use data from the common fields and/or from the union
+        enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->data.enemy.type);
+      } else if (obj->type == OBJECT_TYPE_POWERUP) {
+        // Handle powerups
+      } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
+        // Handle moving platforms
+        platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE,
+                            obj->data.platform_moving.size,
+                            obj->data.platform_moving.range);
+      } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
+        // Handle falling platforms
+        platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
+      }
     }
+  }
 }
 
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {

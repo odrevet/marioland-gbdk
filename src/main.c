@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "coin_animated.h"
+#include "gb/hardware.h"
 #include "gb/metasprites.h"
 #include "graphics/birabuto_torch.h"
 #include "graphics/common.h"
@@ -55,6 +56,14 @@ void main(void) {
   LYC_REG = 0x0F;
 
   move_bkg(0, -MARGIN_TOP_PX);
+
+
+// Clear video buffer with empty tiles
+  uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_WIDTH * DEVICE_SCREEN_BUFFER_WIDTH] =
+      {TILE_EMPTY};
+  memset(empty_tiles, TILE_EMPTY, sizeof(empty_tiles));
+  set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_WIDTH,
+                empty_tiles);
 
   disable_interrupts();
   add_LCD(interruptLCD);
@@ -215,8 +224,7 @@ void main(void) {
         score += 1;
         hud_update_time();
         hud_update_score();
-        music_play_sfx(BANK(sound_coin), sound_coin,
-                       SFX_MUTE_MASK(sound_coin),
+        music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                        MUSIC_SFX_PRIORITY_NORMAL);
       }
 
