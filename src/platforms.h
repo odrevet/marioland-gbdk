@@ -9,23 +9,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum {
-    PLATEFORM_TYPE_MOVING,
-    PLATEFORM_TYPE_FALLING
-} PLATEFORM_TYPE;
+typedef struct platform_moving_t {
+  uint16_t x;
+  uint16_t y;
+  uint8_t draw_x;
+  uint8_t draw_y;
 
-typedef enum {
-    DIRECTION_HORIZONTAL,
-    DIRECTION_VERTICAL
-} PLATEFORM_DIRECTION;
+  int8_t vel_x;
+  int8_t vel_y;
+  uint8_t size;
+  uint8_t range;
+} platform_moving_t;
 
-typedef struct {
-    uint16_t x;
-    uint16_t y;
-    PLATEFORM_TYPE type;
-    uint8_t size;
-    PLATEFORM_DIRECTION direction;
-    uint8_t range;
-} platform;
+typedef struct platform_falling_t{
+  uint16_t x;
+  uint16_t y;
+  uint8_t draw_x;
+  uint8_t draw_y;
 
-#endif 
+  bool is_falling;
+  uint8_t ttl;
+} platform_falling_t;
+
+void platform_moving_new(uint16_t x, uint16_t y, uint8_t size, uint8_t range);
+void platform_falling_new(uint16_t x, uint16_t y);
+
+
+#endif
