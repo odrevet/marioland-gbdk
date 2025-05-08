@@ -33,7 +33,7 @@ typedef struct level_block_object {
 extern const level_object level_1_1_lookup[];
 extern const size_t level_1_1_lookup_size;
 
-extern level_block_object level_1_1_blocks_lookup[];
+extern const level_block_object level_1_1_blocks_lookup[];
 extern const size_t level_1_1_blocks_lookup_size;
 
 #endif
