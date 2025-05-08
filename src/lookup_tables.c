@@ -1,7 +1,7 @@
 #include "lookup_tables.h"
 #include "powerup.h"
 
-level_object level_1_1_lookup[] = {
+const level_object level_1_1_lookup[] = {
     {
         15,
         17,
