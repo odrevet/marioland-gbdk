@@ -1,4 +1,5 @@
 #include "level.h"
+#include "gb/gb.h"
 #include "global.h"
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"

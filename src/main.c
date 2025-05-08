@@ -228,10 +228,16 @@ void main(void) {
                        MUSIC_SFX_PRIORITY_NORMAL);
       }
 
+      HIDE_SPRITES;
+      HIDE_BKG;
+
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
       load_current_level();
+
+      SHOW_SPRITES;
+      SHOW_BKG;
     }
 
     // animation
