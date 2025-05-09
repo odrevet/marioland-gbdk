@@ -1,33 +1,43 @@
 #ifndef LOOKUP_TABLES_H
 #define LOOKUP_TABLES_H
 
+#include <stdbool.h>
+
 #include "enemy.h"
 #include "platforms.h"
 #include "powerup.h"
 
 typedef enum {
-    OBJECT_TYPE_ENEMY,
-    OBJECT_TYPE_POWERUP,
-    OBJECT_TYPE_PLATFORM_MOVING,
-    OBJECT_TYPE_PLATFORM_FALLING
+  OBJECT_TYPE_ENEMY,
+  OBJECT_TYPE_POWERUP,
+  OBJECT_TYPE_PLATFORM_MOVING,
+  OBJECT_TYPE_PLATFORM_FALLING
 } object_type;
 
 typedef struct {
-    uint16_t x;
-    uint8_t y;
-    object_type type;
+  uint8_t type;
+} enemy_params;
 
-    union {
-        enemy_t enemy;
-        platform_moving_t platform_moving;
-        platform_falling_t platform_falling;
-    } data;
+typedef struct {
+  uint8_t range;
+  plateform_direction_t direction;
+} platform_moving_params;
+
+typedef struct {
+  uint16_t x;
+  uint8_t y;
+  object_type type;
+
+  union {
+    enemy_params enemy;
+    platform_moving_params platform_moving;
+  } data;
 } level_object;
 
 typedef struct level_block_object {
-    uint16_t x;
-    uint8_t y;
-    uint8_t id;
+  uint16_t x;
+  uint8_t y;
+  uint8_t id;
 } level_block_object;
 
 extern const level_object level_1_1_lookup[];

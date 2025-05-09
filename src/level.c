@@ -29,7 +29,7 @@ level_block_object *level_block_lookup;
 size_t level_block_lookup_size;
 
 uint8_t get_tile(uint8_t x, uint8_t y) {
-  if (y / TILE_SIZE <= 2 || y / TILE_SIZE > MAP_BUFFER_HEIGHT + 1) {
+  if (y / TILE_SIZE < 2 || y / TILE_SIZE > MAP_BUFFER_HEIGHT + 1) {
     return TILE_EMPTY;
   }
 
@@ -164,20 +164,14 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_1_1_lookup[i];
 
     if (obj->x == col) {
-      // Now we can access obj->x, obj->y, and obj->type directly
-
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        // Use data from the common fields and/or from the union
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
-        // Handle powerups
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
-        // Handle moving platforms
         platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE,
-                            obj->data.platform_moving.size,
+                            obj->data.platform_moving.direction,
                             obj->data.platform_moving.range);
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
-        // Handle falling platforms
         platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       }
     }

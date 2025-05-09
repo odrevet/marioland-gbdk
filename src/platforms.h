@@ -9,6 +9,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gbdk/emu_debug.h>
+
+typedef enum {
+  DIRECTION_VERTICAL,
+  DIRECTION_HORIZONTAL,
+  DIRECTION_BOTH
+} plateform_direction_t;
+
 typedef struct {
   uint16_t x;
   uint16_t y;
@@ -28,10 +36,9 @@ typedef struct {
   uint8_t draw_y;
 
   bool is_falling;
-  uint8_t ttl;
 } platform_falling_t;
 
-void platform_moving_new(uint16_t x, uint16_t y, uint8_t size, uint8_t range);
+void platform_moving_new(uint16_t x, uint16_t y, plateform_direction_t direction, uint8_t range);
 void platform_falling_new(uint16_t x, uint16_t y);
 
 
