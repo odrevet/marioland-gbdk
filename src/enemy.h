@@ -18,7 +18,7 @@
 
 enum enemy_type { ENEMY_GOOMBO, ENEMY_KOOPA, ENEMY_FLY };
 
-typedef struct enemy_t {
+typedef struct {
   uint16_t x;
   uint16_t y;
   uint8_t draw_x;

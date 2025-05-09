@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct platform_moving_t {
+typedef struct {
   uint16_t x;
   uint16_t y;
   uint8_t draw_x;
@@ -21,7 +21,7 @@ typedef struct platform_moving_t {
   uint8_t range;
 } platform_moving_t;
 
-typedef struct platform_falling_t{
+typedef struct {
   uint16_t x;
   uint16_t y;
   uint8_t draw_x;

@@ -1,79 +1,31 @@
 #include "lookup_tables.h"
+#include "enemy.h"
 #include "powerup.h"
 
 const level_object level_1_1_lookup[] = {
     {
-        15,
-        17,
-        OBJECT_TYPE_ENEMY,
-        {
-            {
-                15,
-                17,
-                0,
-                0,
-                -1,
-                0,
-                ENEMY_GOOMBO,
-                0,
-                0,
-                1,
-                true
-            }
+        .x = 15,
+        .y = 17,
+        .type = OBJECT_TYPE_ENEMY,
+        .data.enemy = {
+            .type = ENEMY_GOOMBO
         }
     },
     {
-        63,
-        11,
-        OBJECT_TYPE_ENEMY,
-        {
-            {
-                63,
-                11,
-                0,
-                0,
-                1,
-                0,
-                ENEMY_KOOPA,
-                0,
-                0,
-                1,
-                false
-            }
-        }
-    },
-
-    // Moving platform
-    {
-        100,
-        120,
-        OBJECT_TYPE_PLATFORM_MOVING,
-        {
-            {
-                100,
-                120,
-                0,
-                0,
-                1,
-                0,
-                3,
-                6
-            }
+        .x = 63,
+        .y = 11,
+        .type = OBJECT_TYPE_ENEMY,
+        .data.enemy = {
+            .type = ENEMY_KOOPA
         }
     },
     {
-        200,
-        80,
-        OBJECT_TYPE_PLATFORM_FALLING,
-        {
-            {
-                200,
-                80,
-                0,
-                0,
-                false,
-                30
-            }
+        .x = 100,
+        .y = 120,
+        .type = OBJECT_TYPE_PLATFORM_MOVING,
+        .data.platform_moving = {
+            .size = 2,
+            .range = 6
         }
     }
 };
