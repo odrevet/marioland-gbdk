@@ -60,11 +60,11 @@ void main(void) {
 
 
 // Clear video buffer with empty tiles
-  uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_WIDTH * DEVICE_SCREEN_BUFFER_WIDTH] =
+/*  uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_WIDTH * DEVICE_SCREEN_BUFFER_WIDTH] =
       {TILE_EMPTY};
   memset(empty_tiles, TILE_EMPTY, sizeof(empty_tiles));
   set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_WIDTH,
-                empty_tiles);
+                empty_tiles);*/
 
   disable_interrupts();
   add_LCD(interruptLCD);
