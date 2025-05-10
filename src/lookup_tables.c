@@ -15,11 +15,11 @@ const level_object level_1_1_lookup[] = {
     {.x = 280,
      .y = 2,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
-     .data.platform_moving = {.range = 6, .direction = DIRECTION_VERTICAL}},
+     .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}},
     {.x = 283,
      .y = 2,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
-     .data.platform_moving = {.range = 6, .direction = DIRECTION_HORIZONTAL}}};
+     .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}}};
 
 // Size of the lookup table
 const size_t level_1_1_lookup_size =

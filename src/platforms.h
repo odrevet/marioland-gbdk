@@ -9,13 +9,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gbdk/emu_debug.h>
+#include "level.h"
+
+#include "graphics/sprite_common.h"
 
 typedef enum {
   DIRECTION_VERTICAL,
   DIRECTION_HORIZONTAL,
   DIRECTION_BOTH
-} plateform_direction_t;
+} platform_direction_t;
+
+#define PLATFORMS_MOVING_SIZE 3
+#define PLATFORMS_MOVING_RANGE 6
 
 typedef struct {
   uint16_t x;
@@ -25,7 +30,7 @@ typedef struct {
 
   int8_t vel_x;
   int8_t vel_y;
-  uint8_t size;
+  platform_direction_t platform_direction;
   uint8_t range;
 } platform_moving_t;
 
@@ -38,8 +43,16 @@ typedef struct {
   bool is_falling;
 } platform_falling_t;
 
-void platform_moving_new(uint16_t x, uint16_t y, plateform_direction_t direction, uint8_t range);
-void platform_falling_new(uint16_t x, uint16_t y);
+#define PLATFORM_MOVING_MAX 3
+extern uint8_t platform_moving_count;
+extern platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
+void platform_moving_new(uint16_t x, uint16_t y,
+                         platform_direction_t plateform_direction,
+                         uint8_t range);
+void platform_moving_update();
+uint8_t platform_moving_draw(uint8_t base_sprite);
+
+void platform_falling_new(uint16_t x, uint16_t y);
 
 #endif

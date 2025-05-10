@@ -3,6 +3,7 @@
 #include "global.h"
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"
+#include "platforms.h"
 
 uint16_t camera_x;
 uint16_t camera_x_subpixel;
@@ -169,7 +170,7 @@ void level_load_objects(uint16_t col) NONBANKED {
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
         platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE,
-                            obj->data.platform_moving.direction,
+                            obj->data.platform_moving.platform_direction,
                             obj->data.platform_moving.range);
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
         platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);

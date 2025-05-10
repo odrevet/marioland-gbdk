@@ -4,7 +4,6 @@
 #include <stdbool.h>
 
 #include "enemy.h"
-#include "platforms.h"
 #include "powerup.h"
 
 typedef enum {
@@ -20,7 +19,7 @@ typedef struct {
 
 typedef struct {
   uint8_t range;
-  plateform_direction_t direction;
+  uint8_t platform_direction;
 } platform_moving_params;
 
 typedef struct {

@@ -27,6 +27,7 @@
 #include "player.h"
 #include "powerup.h"
 #include "text.h"
+#include "platforms.h"
 
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
 
@@ -172,8 +173,11 @@ void main(void) {
     }
 
     enemy_update();
+    platform_moving_update();
+
     base_sprite = player_draw(base_sprite);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
+    base_sprite = platform_moving_draw(base_sprite);
     if (powerup_active) {
       powerup_update();
       base_sprite = powerup_draw(base_sprite);
