@@ -229,6 +229,7 @@ void main(void) {
         hud_update_score();
         music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                        MUSIC_SFX_PRIORITY_NORMAL);
+        delay(10);
       }
 
       HIDE_SPRITES;

@@ -154,7 +154,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
     on_get_coin();
     coin_animated_array[coin_index].draw_x = index_x * TILE_SIZE;
     coin_animated_array[coin_index].draw_y = index_y * TILE_SIZE;
-    coin_animated_array[coin_index].ttl = 20;
+    coin_animated_array[coin_index].ttl = COIN_ANIMATED_INITIAL_TTL;
     coin_index = (coin_index + 1) % NB_COIN_ANIMATED;
   }
 }
