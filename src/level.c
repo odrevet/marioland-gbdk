@@ -10,7 +10,7 @@ uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
 
-extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {{TILE_EMPTY}};
+uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
