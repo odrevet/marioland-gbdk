@@ -58,7 +58,7 @@ extern uint8_t coldata[LEVEL_HEIGHT];
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
 #define MAP_BUFFER_HEIGHT LEVEL_HEIGHT
 
-extern uint8_t map_buffer[MAP_BUFFER_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH];
+extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
 extern uint16_t camera_x_subpixel;

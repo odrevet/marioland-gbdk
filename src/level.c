@@ -9,7 +9,8 @@ uint16_t camera_x;
 uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
-uint8_t map_buffer[LEVEL_HEIGHT][DEVICE_SCREEN_BUFFER_WIDTH] = {{TILE_EMPTY}};
+
+extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {{TILE_EMPTY}};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
@@ -36,8 +37,9 @@ uint8_t get_tile(uint8_t x, uint8_t y) {
 
   uint8_t tile_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
   uint8_t tile_y = (y / TILE_SIZE) - DEVICE_SPRITE_OFFSET_Y;
-  return map_buffer[tile_y][tile_x];
+  return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
 }
+
 
 bool is_tile_solid(uint8_t tile) {
   // check common solid tiles
@@ -106,7 +108,7 @@ void on_get_coin_background(uint8_t x, uint8_t y) {
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
 
-  map_buffer[index_y][index_x] = TILE_EMPTY;
+  map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
   on_get_coin();
@@ -136,7 +138,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   uint8_t index_y = TILE_INDEX_Y(y);
 
   // update map buffer and vram with an emptied block
-  map_buffer[index_y][index_x] = TILE_EMPTIED;
+  map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
 
   // check block content in lookup table
@@ -145,7 +147,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
     level_block_object *obj = level_block_lookup + i;
     if (obj->x == index_x && obj->y == index_y) {
       lookup_found = TRUE;
-      // EMU_printf("BLOCK OBJECT %d at %d %d\n", obj->id, obj->x, obj->y);
       powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
     }
   }
@@ -189,8 +190,9 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       int pos = (row * current_map_width_in_tiles) + col + start_at;
-      map_buffer[row][map_column] = current_map[pos];
-      coldata[row] = current_map[pos];
+      uint8_t tile = current_map[pos];
+      map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
+      coldata[row] = tile;
     }
 
     // Draw current column
