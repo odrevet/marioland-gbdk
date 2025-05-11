@@ -12,14 +12,14 @@ const level_object level_1_1_lookup[] = {
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_KOOPA}},
-    {.x = 280,
-     .y = 2,
+    {.x = 180,
+     .y = 4,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}},
-    {.x = 283,
-     .y = 2,
+    {.x = 183,
+     .y = 8,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
-     .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}}};
+     .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_HORIZONTAL}}};
 
 // Size of the lookup table
 const size_t level_1_1_lookup_size =
