@@ -53,19 +53,19 @@ bool powerups_collide() {
   return true;
 }
 
+uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] =
+      {TILE_EMPTY};
+
 void main(void) {
   STAT_REG = 0x40;
   LYC_REG = 0x0F;
 
   move_bkg(0, -MARGIN_TOP_PX);
 
-
 // Clear video buffer with empty tiles
-/*  uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_WIDTH * DEVICE_SCREEN_BUFFER_WIDTH] =
-      {TILE_EMPTY};
   memset(empty_tiles, TILE_EMPTY, sizeof(empty_tiles));
-  set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_WIDTH,
-                empty_tiles);*/
+  set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_HEIGHT,
+                empty_tiles);
 
   disable_interrupts();
   add_LCD(interruptLCD);
