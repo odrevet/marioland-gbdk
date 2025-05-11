@@ -53,7 +53,7 @@ bool powerups_collide() {
   return true;
 }
 
-uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] =
+const uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] =
       {TILE_EMPTY};
 
 void main(void) {
