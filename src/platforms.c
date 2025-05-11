@@ -7,22 +7,26 @@ platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t platform_direction,
                          uint8_t range) {
-  platform_moving_t platform_moving = {.x = x << 4,
-                                       .y = y << 4,
-                                       .platform_direction =
-                                           platform_direction,
-                                       .range = range};
-  platforms_moving[platform_moving_count] = platform_moving;
-  platform_moving_count++;
+  if (platform_moving_count < PLATFORM_MOVING_MAX) {
+    platform_moving_t platform_moving = {.x = x << 4,
+                                         .y = y << 4,
+                                         .platform_direction =
+                                             platform_direction,
+                                         .range = range};
+    platforms_moving[platform_moving_count] = platform_moving;
+    platform_moving_count++;
+  }
 }
 
 void platform_moving_update() {
   uint8_t index_platform_moving = 0;
   while (index_platform_moving < platform_moving_count) {
-    platforms_moving[index_platform_moving].x += platforms_moving[index_platform_moving].vel_x;
+    platforms_moving[index_platform_moving].x +=
+        platforms_moving[index_platform_moving].vel_x;
     platforms_moving[index_platform_moving].draw_x =
         (platforms_moving[index_platform_moving].x - camera_x_subpixel) >> 4;
-    platforms_moving[index_platform_moving].draw_y = platforms_moving[index_platform_moving].y >> 4;
+    platforms_moving[index_platform_moving].draw_y =
+        platforms_moving[index_platform_moving].y >> 4;
     index_platform_moving++;
   }
 }
