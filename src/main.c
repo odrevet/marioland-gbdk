@@ -226,8 +226,8 @@ void main(void) {
       music_load(BANK(music_stage_clear), &music_stage_clear);
       delay(4500);
 
-      while (time / 40 > 0) {
-        time -= 40;
+      while (time >> TIME_SHIFT > 0) {
+        time -= 32; // 2 power of 5
         score += 1;
         hud_update_time();
         hud_update_score();

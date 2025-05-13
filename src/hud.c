@@ -29,7 +29,7 @@ void hud_set_level(char major, char minor) {
   
   void hud_update_time(void) {
     char time_str[4];
-    itoa(time / 40, time_str, 10);
+    itoa(time >> TIME_SHIFT, time_str, 10);
     text_print_string_win(DEVICE_SCREEN_WIDTH - 3, 1, "000");
     text_print_string_win(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
   }

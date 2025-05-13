@@ -249,19 +249,7 @@ void player_move(void) BANKED {
       uint8_t tile_right_bottom = get_tile(x_right_draw, next_pos);
 
       if (is_tile_solid(tile_left_bottom) || is_tile_solid(tile_right_bottom) ||
-          (current_level == 1 && ((tile_left_bottom == PALM_TREE_LEFT) ||
-                                  (tile_left_bottom == PALM_TREE_CENTER) ||
-                                  (tile_left_bottom == PALM_TREE_RIGHT) ||
-                                  (tile_right_bottom == PALM_TREE_LEFT) ||
-                                  (tile_right_bottom == PALM_TREE_CENTER) ||
-                                  (tile_right_bottom == PALM_TREE_RIGHT))) ||
-          (current_level == 3 &&
-           ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
-            (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
-            (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
-            (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
-            (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
-            (tile_right_bottom == MUDA_PLATEFORM_RIGHT)))) {
+          is_tile_passthought(tile_left_bottom, tile_right_bottom)) {
         player_y_subpixel = ((next_pos / TILE_SIZE) * TILE_SIZE) << 4;
 
         touch_ground = TRUE;

@@ -1,9 +1,11 @@
 #include "level.h"
+#include "coin_animated.h"
 #include "gb/gb.h"
 #include "global.h"
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"
 #include "platforms.h"
+#include <stdint.h>
 
 uint16_t camera_x;
 uint16_t camera_x_subpixel;
@@ -102,6 +104,23 @@ bool is_tile_solid(uint8_t tile) {
   return false;
 }
 
+bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom){
+  return (current_level == 1 && ((tile_left_bottom == PALM_TREE_LEFT) ||
+                                  (tile_left_bottom == PALM_TREE_CENTER) ||
+                                  (tile_left_bottom == PALM_TREE_RIGHT) ||
+                                  (tile_right_bottom == PALM_TREE_LEFT) ||
+                                  (tile_right_bottom == PALM_TREE_CENTER) ||
+                                  (tile_right_bottom == PALM_TREE_RIGHT))) ||
+          (current_level == 3 &&
+           ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
+            (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
+            (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
+            (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
+            (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
+            (tile_right_bottom == MUDA_PLATEFORM_RIGHT)));
+}
+
+
 bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
 void on_get_coin_background(uint8_t x, uint8_t y) {
@@ -154,10 +173,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   // coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
     on_get_coin();
-    coin_animated_array[coin_index].draw_x = index_x * TILE_SIZE;
-    coin_animated_array[coin_index].draw_y = index_y * TILE_SIZE;
-    coin_animated_array[coin_index].ttl = COIN_ANIMATED_INITIAL_TTL;
-    coin_index = (coin_index + 1) % NB_COIN_ANIMATED;
+    coin_animated_new(index_x, index_y);
   }
 }
 

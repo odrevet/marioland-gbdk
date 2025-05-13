@@ -38,14 +38,12 @@ void enemy_update(void) {
   uint8_t index_enemy = 0;
   while (index_enemy < enemy_count) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
+    enemies[index_enemy].y += enemies[index_enemy].vel_y;
     enemies[index_enemy].draw_x =
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    //EMU_printf("%d - %d -> %d\n", enemies[index_enemy].x, camera_x_subpixel,
-    //           enemies[index_enemy].draw_x);
-
-    if ((int8_t)enemies[index_enemy].draw_x == 0) {
+    if (enemies[index_enemy].draw_x == 0 || enemies[index_enemy].draw_y == 0) {
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];
       }
@@ -54,8 +52,10 @@ void enemy_update(void) {
       continue;
     }
 
+
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBO:
+    // set frame
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;

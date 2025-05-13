@@ -175,6 +175,7 @@ enum tileset_index_chai {
 };
 
 uint8_t get_tile(uint8_t x, uint8_t y);
+bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom);
 bool is_tile_solid(uint8_t tile);
 
 bool is_coin(uint8_t tile);
