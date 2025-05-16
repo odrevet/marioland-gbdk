@@ -6,7 +6,10 @@
 uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
 
+#include <gbdk/emu_debug.h>
+
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
+  EMU_printf("enemy new at %d %d\n", x, y);
   if (enemy_count < ENEMY_MAX) {
     uint8_t current_frame;
     int8_t vel_x = 0;
@@ -33,7 +36,6 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   }
 }
 
-#include <gbdk/emu_debug.h>
 void enemy_update(void) {
   uint8_t index_enemy = 0;
   while (index_enemy < enemy_count) {
@@ -43,7 +45,9 @@ void enemy_update(void) {
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    if (enemies[index_enemy].draw_x == 0 || enemies[index_enemy].draw_y == 0) {
+    //EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH);
+    if (enemies[index_enemy].x <= camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
+      //EMU_printf("REMOVE ENEMY\n");
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];
       }

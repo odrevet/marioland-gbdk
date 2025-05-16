@@ -12,7 +12,8 @@ uint16_t camera_x_subpixel;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
 
-uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
+uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {
+    TILE_EMPTY};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 uint8_t set_column_at;
 bool level_end_reached;
@@ -41,7 +42,6 @@ uint8_t get_tile(uint8_t x, uint8_t y) {
   uint8_t tile_y = (y / TILE_SIZE) - DEVICE_SPRITE_OFFSET_Y;
   return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
 }
-
 
 bool is_tile_solid(uint8_t tile) {
   // check common solid tiles
@@ -104,22 +104,20 @@ bool is_tile_solid(uint8_t tile) {
   return false;
 }
 
-bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom){
+bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom) {
   return (current_level == 1 && ((tile_left_bottom == PALM_TREE_LEFT) ||
-                                  (tile_left_bottom == PALM_TREE_CENTER) ||
-                                  (tile_left_bottom == PALM_TREE_RIGHT) ||
-                                  (tile_right_bottom == PALM_TREE_LEFT) ||
-                                  (tile_right_bottom == PALM_TREE_CENTER) ||
-                                  (tile_right_bottom == PALM_TREE_RIGHT))) ||
-          (current_level == 3 &&
-           ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
-            (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
-            (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
-            (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
-            (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
-            (tile_right_bottom == MUDA_PLATEFORM_RIGHT)));
+                                 (tile_left_bottom == PALM_TREE_CENTER) ||
+                                 (tile_left_bottom == PALM_TREE_RIGHT) ||
+                                 (tile_right_bottom == PALM_TREE_LEFT) ||
+                                 (tile_right_bottom == PALM_TREE_CENTER) ||
+                                 (tile_right_bottom == PALM_TREE_RIGHT))) ||
+         (current_level == 3 && ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
+                                 (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
+                                 (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
+                                 (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
+                                 (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
+                                 (tile_right_bottom == MUDA_PLATEFORM_RIGHT)));
 }
-
 
 bool is_coin(uint8_t tile) { return tile == TILE_COIN; }
 
@@ -177,21 +175,24 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   }
 }
 
+uint16_t col_from = 0;
 void level_load_objects(uint16_t col) NONBANKED {
-  for (int i = 0; i < level_1_1_lookup_size; i++) {
+  for (uint16_t i = col_from; i < level_1_1_lookup_size; i++) {
     level_object *obj = &level_1_1_lookup[i];
-
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
-        platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE,
-                            obj->data.platform_moving.platform_direction,
-                            obj->data.platform_moving.range);
+        /* platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, */
+        /*                     obj->data.platform_moving.platform_direction, */
+        /*                     obj->data.platform_moving.range); */
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
-        platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
+        //        platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       }
+    } else if (obj->x > col) {
+      col_from = i;
+      break;
     }
   }
 }
@@ -199,6 +200,8 @@ void level_load_objects(uint16_t col) NONBANKED {
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_bank);
+
+  //EMU_printf("LEVEL LOAD %d COLUMN AT %d\n", nb, start_at);
 
   uint8_t col = 0;
   while (col < nb) {

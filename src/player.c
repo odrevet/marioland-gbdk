@@ -191,9 +191,10 @@ void player_move(void) BANKED {
         player_x_subpixel = DEVICE_SCREEN_PX_WIDTH_HALF << 4;
         player_draw_x = DEVICE_SCREEN_PX_WIDTH_HALF;
 
+        level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
+                  
         if (camera_x >> 3 >= next_col_chunk_load) {
-          level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1);
-          level_load_objects(next_col_chunk_load);
+          level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1);
 
           // detect level end from level width
           next_col_chunk_load++;
