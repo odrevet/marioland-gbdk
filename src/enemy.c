@@ -16,11 +16,11 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
     switch (type) {
     case ENEMY_GOOMBO:
       current_frame = 0;
-      vel_x = -1;
+      vel_x = 0;// WIP -1;
       break;
     case ENEMY_KOOPA:
       current_frame = 1;
-      vel_x = -1;
+      vel_x = 0 ; // WIP -1;
       break;
     }
     enemy_t enemy = {.x = x << 4,

@@ -27,6 +27,18 @@ void platform_moving_update() {
         (platforms_moving[index_platform_moving].x - camera_x_subpixel) >> 4;
     platforms_moving[index_platform_moving].draw_y =
         platforms_moving[index_platform_moving].y >> 4;
+
+    if (platforms_moving[index_platform_moving].x <= camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
+      //EMU_printf("REMOVE PLATFORM\n");
+      for (uint8_t j = index_platform_moving; j < platform_moving_count - 1; j++) {
+        platforms_moving[j] = platforms_moving[j + 1];
+      }
+      platform_moving_count--;
+      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+      continue;
+    }
+
+
     index_platform_moving++;
   }
 }

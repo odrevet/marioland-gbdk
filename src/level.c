@@ -314,6 +314,7 @@ void level_set_current(void) NONBANKED {
     break;
   }
   enemy_count = 0;
+  platform_moving_count = 0;
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   load_current_level();
 }
