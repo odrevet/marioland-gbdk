@@ -184,11 +184,11 @@ void level_load_objects(uint16_t col) NONBANKED {
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
-        /* platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, */
-        /*                     obj->data.platform_moving.platform_direction, */
-        /*                     obj->data.platform_moving.range); */
+         platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, 
+                             obj->data.platform_moving.platform_direction, 
+                             obj->data.platform_moving.range); 
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
-        //        platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
+                platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       }
     } else if (obj->x > col) {
       col_from = i;

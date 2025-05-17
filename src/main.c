@@ -173,7 +173,7 @@ void main(void) {
     }
 
     enemy_update();
-    //platform_moving_update();
+    platform_moving_update();
 
     base_sprite = player_draw(base_sprite);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);

@@ -12,11 +12,11 @@ const level_object level_1_1_lookup[] = {
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_KOOPA}},
-    {.x = 180,
+    {.x = 282,
      .y = 4,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}},
-    {.x = 183,
+    {.x = 284,
      .y = 8,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_HORIZONTAL}}};
