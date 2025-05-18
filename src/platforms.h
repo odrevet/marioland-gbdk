@@ -32,6 +32,7 @@ typedef struct {
   int8_t vel_y;
   platform_direction_t platform_direction;
   uint8_t range;
+  uint8_t width;
 } platform_moving_t;
 
 typedef struct {
@@ -49,7 +50,7 @@ extern platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t plateform_direction,
-                         uint8_t range);
+                         uint8_t range, uint8_t width);
 void platform_moving_update();
 uint8_t platform_moving_draw(uint8_t base_sprite);
 

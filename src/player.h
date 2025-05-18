@@ -9,6 +9,7 @@
 #include "global.h"
 #include "level.h"
 #include "text.h"
+#include "platforms.h"
 
 #include "musicmanager.h"
 #include "sfxplayer.h"
@@ -66,5 +67,6 @@ extern uint8_t scroll;
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
+uint8_t player_is_on_platform(void);
 
 #endif

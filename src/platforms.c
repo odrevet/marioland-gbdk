@@ -1,18 +1,22 @@
 #include "platforms.h"
+#include "global.h"
 #include "graphics/common.h"
 
 uint8_t platform_moving_count = 0;
 platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
 void platform_moving_new(uint16_t x, uint16_t y,
-                         platform_direction_t platform_direction,
-                         uint8_t range) {
+                         platform_direction_t platform_direction, uint8_t range,
+                         uint8_t width) {
   if (platform_moving_count < PLATFORM_MOVING_MAX) {
-    platform_moving_t platform_moving = {.x = x << 4,
-                                         .y = y << 4,
-                                         .platform_direction =
-                                             platform_direction,
-                                         .range = range};
+    platform_moving_t platform_moving = {
+        .x = x << 4,
+        .y = y << 4,
+        .platform_direction = platform_direction,
+        .range = range,
+        .width = ((width == 0) ? PLATFORMS_MOVING_SIZE : width) * TILE_SIZE};
+
+
     platforms_moving[platform_moving_count] = platform_moving;
     platform_moving_count++;
   }
@@ -28,16 +32,17 @@ void platform_moving_update() {
     platforms_moving[index_platform_moving].draw_y =
         platforms_moving[index_platform_moving].y >> 4;
 
-    if (platforms_moving[index_platform_moving].x <= camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
-      //EMU_printf("REMOVE PLATFORM\n");
-      for (uint8_t j = index_platform_moving; j < platform_moving_count - 1; j++) {
+    if (platforms_moving[index_platform_moving].x <=
+        camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
+      // EMU_printf("REMOVE PLATFORM\n");
+      for (uint8_t j = index_platform_moving; j < platform_moving_count - 1;
+           j++) {
         platforms_moving[j] = platforms_moving[j + 1];
       }
       platform_moving_count--;
       hide_sprites_range(1, MAX_HARDWARE_SPRITES);
       continue;
     }
-
 
     index_platform_moving++;
   }
@@ -56,8 +61,8 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
     for (int i = 0; i < PLATFORMS_MOVING_SIZE; i++) {
       base_sprite += move_metasprite_ex(
           sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
-          platforms_moving[index_platform_moving].draw_x + i * common_TILE_W,
-          platforms_moving[index_platform_moving].draw_y);
+          platforms_moving[index_platform_moving].draw_x + i * common_TILE_W + DEVICE_SPRITE_PX_OFFSET_X,
+          platforms_moving[index_platform_moving].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
     }
   }
   SWITCH_ROM(_saved_bank);

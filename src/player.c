@@ -192,7 +192,7 @@ void player_move(void) BANKED {
         player_draw_x = DEVICE_SCREEN_PX_WIDTH_HALF;
 
         level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
-                  
+
         if (camera_x >> 3 >= next_col_chunk_load) {
           level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1);
 
@@ -301,4 +301,33 @@ void player_move(void) BANKED {
     }
     player_draw_y = player_y_subpixel >> 4;
   }
+
+  player_is_on_platform();
+}
+
+uint8_t player_is_on_platform(void) {
+  uint8_t i;
+
+  for (i = 0; i < platform_moving_count; i++) {
+    EMU_printf("check player %d:%d on platform %d:%d right %d \n",
+               player_draw_x, player_draw_y, platforms_moving[i].draw_x, platforms_moving[i].draw_y,
+               platforms_moving[i].draw_x + platforms_moving[i].width);
+
+    if (player_draw_y >= platforms_moving[i].draw_y &&
+        player_draw_x < platforms_moving[i].draw_x + platforms_moving[i].width &&
+        player_draw_x > platforms_moving[i].draw_x) {
+
+      EMU_printf("MATCH ! \n");
+
+      player_y_subpixel = platforms_moving[i].y;
+      vel_x += platforms_moving[i].vel_x;
+      vel_y += platforms_moving[i].vel_y;
+      touch_ground = TRUE;
+      is_jumping = FALSE;
+
+      return 1;
+    }
+  }
+
+  return 0;
 }

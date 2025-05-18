@@ -8,12 +8,12 @@ const level_object level_1_1_lookup[] = {
      .y = 17,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GOOMBO}},
-    {.x = 65,
+    /*{.x = 65,
      .y = 14,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}},
-    {.x = 66,
-     .y = 12,
+     .data.enemy = {.type = ENEMY_GOOMBO}},*/
+    {.x = 22,
+     .y = 14,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6, .platform_direction = DIRECTION_VERTICAL}},  // TEST PLATFORM
     {.x = 282,

@@ -20,6 +20,7 @@ typedef struct {
 typedef struct {
   uint8_t range;
   uint8_t platform_direction;
+  uint8_t width;
 } platform_moving_params;
 
 typedef struct {

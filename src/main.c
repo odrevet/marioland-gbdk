@@ -87,12 +87,6 @@ void main(void) {
   // joypad
   joypad_previous, joypad_current = 0;
 
-  // player
-  player_x_subpixel = 43 << 4;
-  player_y_subpixel = (16 * TILE_SIZE) << 4;
-  player_draw_x = player_x_subpixel >> 4;
-  player_draw_y = player_y_subpixel >> 4;
-
   init();
   current_level = 0;
   level_set_current();

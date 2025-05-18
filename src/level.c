@@ -186,7 +186,8 @@ void level_load_objects(uint16_t col) NONBANKED {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
          platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, 
                              obj->data.platform_moving.platform_direction, 
-                             obj->data.platform_moving.range); 
+                             obj->data.platform_moving.range,
+                             obj->data.platform_moving.width);
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
                 platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       }
