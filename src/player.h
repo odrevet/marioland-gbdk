@@ -34,7 +34,6 @@ extern uint16_t time;
 extern uint8_t lives;
 extern uint8_t level_index;
 extern uint8_t joypad_previous, joypad_current;
-extern uint8_t nb_col;
 
 // player coords and movements
 extern uint16_t player_x_subpixel;

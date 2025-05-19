@@ -189,7 +189,7 @@ void main(void) {
 
     // check if mario collids with a power up
     if (powerup_active && powerups_collide()) {
-      EMU_printf("Power up collids\n");
+      //EMU_printf("Power up collids\n");
       powerup_active = FALSE;
       hide_metasprite(sprite_common_metasprites[0], base_sprite - 1);
       powerup.x = 0;

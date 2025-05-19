@@ -16,7 +16,6 @@ uint8_t joy;
 uint16_t time;
 uint8_t lives;
 uint8_t joypad_previous, joypad_current;
-uint8_t nb_col = COLUMN_CHUNK_SIZE;
 
 // player coords and movements
 uint16_t player_x_subpixel;
@@ -309,19 +308,22 @@ uint8_t player_is_on_platform(void) {
   uint8_t i;
 
   for (i = 0; i < platform_moving_count; i++) {
-    EMU_printf("check player %d:%d on platform %d:%d right %d \n",
-               player_draw_x, player_draw_y, platforms_moving[i].draw_x, platforms_moving[i].draw_y,
-               platforms_moving[i].draw_x + platforms_moving[i].width);
+    //EMU_printf("check player %d:%d on platform %d:%d right %d \n",
+    //           player_draw_x, player_draw_y, platforms_moving[i].draw_x,
+    //           platforms_moving[i].draw_y,
+    //           platforms_moving[i].draw_x + platforms_moving[i].width);
 
-    if (player_draw_y >= platforms_moving[i].draw_y &&
-        player_draw_x < platforms_moving[i].draw_x + platforms_moving[i].width &&
-        player_draw_x > platforms_moving[i].draw_x) {
+    if (player_draw_y > platforms_moving[i].draw_y &&
+        // player_draw_y <= platforms_moving[i].draw_y + 8 &&
+        player_draw_x <=
+            platforms_moving[i].draw_x + 3 * 8 /*platforms_moving[i].width*/
+        && player_draw_x + 8 > platforms_moving[i].draw_x) {
 
-      EMU_printf("MATCH ! \n");
+      //EMU_printf("MATCH ! \n");
 
       player_y_subpixel = platforms_moving[i].y;
-      vel_x += platforms_moving[i].vel_x;
-      vel_y += platforms_moving[i].vel_y;
+      // player_x_subpixel = platforms_moving[i].x;
+
       touch_ground = TRUE;
       is_jumping = FALSE;
 

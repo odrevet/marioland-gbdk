@@ -177,19 +177,19 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 void level_load_objects(uint16_t col) NONBANKED {
-  for (uint16_t i = col_from; i < level_1_1_lookup_size; i++) {
-    level_object *obj = &level_1_1_lookup[i];
+  for (uint16_t i = col_from; i < level_lookup_size; i++) {
+    level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         enemy_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
-         platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE, 
-                             obj->data.platform_moving.platform_direction, 
-                             obj->data.platform_moving.range,
-                             obj->data.platform_moving.width);
+        platform_moving_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE,
+                            obj->data.platform_moving.platform_direction,
+                            obj->data.platform_moving.range,
+                            obj->data.platform_moving.width);
       } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
-                platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
+        platform_falling_new(obj->x * TILE_SIZE, obj->y * TILE_SIZE);
       }
     } else if (obj->x > col) {
       col_from = i;
@@ -202,7 +202,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_bank);
 
-  //EMU_printf("LEVEL LOAD %d COLUMN AT %d\n", nb, start_at);
+  // EMU_printf("LEVEL LOAD %d COLUMN AT %d\n", nb, start_at);
 
   uint8_t col = 0;
   while (col < nb) {
@@ -240,71 +240,91 @@ void level_set_current(void) NONBANKED {
     set_level_1_2();
     hud_set_level('1', '2');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_1_2_lookup;
+    level_lookup_size = level_1_2_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 2:
     set_level_1_3();
     hud_set_level('1', '3');
     music_load(BANK(music_castle), &music_castle);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_1_3_lookup;
+    level_lookup_size = level_1_3_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 3:
     set_level_2_1();
     hud_set_level('2', '1');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_2_1_lookup;
+    level_lookup_size = level_2_1_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 4:
     set_level_2_2();
     hud_set_level('2', '2');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_2_2_lookup;
+    level_lookup_size = level_2_2_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 5:
     set_level_2_3();
     hud_set_level('2', '3');
     music_load(BANK(music_castle), &music_castle);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_2_3_lookup;
+    level_lookup_size = level_2_3_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 6:
     set_level_3_1();
     hud_set_level('3', '1');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_3_1_lookup;
+    level_lookup_size = level_3_1_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 7:
     set_level_3_2();
     hud_set_level('3', '2');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_3_2_lookup;
+    level_lookup_size = level_3_2_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 8:
     set_level_3_3();
     hud_set_level('3', '3');
     music_load(BANK(music_castle), &music_castle);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_3_3_lookup;
+    level_lookup_size = level_3_3_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 9:
     set_level_4_1();
     hud_set_level('4', '1');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_4_1_lookup;
+    level_lookup_size = level_4_1_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 10:
     set_level_4_2();
     hud_set_level('4', '2');
     music_load(BANK(music_overworld), &music_overworld);
-    level_lookup = NULL;
-    level_lookup_size = 0;
+    level_lookup = level_4_2_lookup;
+    level_lookup_size = level_4_2_lookup_size;
+    level_block_lookup = NULL;
+    level_block_lookup_size = 0;
     break;
   case 11:
     set_level_4_3();
@@ -312,10 +332,13 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_castle), &music_castle);
     level_lookup = NULL;
     level_lookup_size = 0;
+    level_lookup = level_4_3_lookup;
+    level_lookup_size = level_4_3_lookup_size;
     break;
   }
   enemy_count = 0;
   platform_moving_count = 0;
+  col_from = 0;
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   load_current_level();
 }

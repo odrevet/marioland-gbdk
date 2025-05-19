@@ -31,7 +31,8 @@ typedef struct {
   int8_t vel_x;
   int8_t vel_y;
   platform_direction_t platform_direction;
-  uint8_t range;
+  uint16_t range_max;
+  uint16_t range_current;
   uint8_t width;
 } platform_moving_t;
 
