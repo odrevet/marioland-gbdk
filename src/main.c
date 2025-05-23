@@ -54,20 +54,32 @@ bool powerups_collide() {
 }
 
 bool enemy_collide() {
-    for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
-        uint8_t enemy_left = enemies[enemy_index].draw_x - 4;
-        uint8_t enemy_right = enemies[enemy_index].draw_x + 4;
-        uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
-        uint8_t enemy_bottom = enemies[enemy_index].draw_y + 4;
-        
-        EMU_printf("%d:%d:%d:%d %d:%d:%d:%d\n", enemy_left, enemy_right, enemy_top, enemy_bottom, x_left_draw, x_right_draw, y_top_draw, y_bottom_draw);
+  for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
+    uint8_t enemy_left = enemies[enemy_index].draw_x - 4;
+    uint8_t enemy_right = enemies[enemy_index].draw_x + 4;
+    uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
+    uint8_t enemy_bottom = enemies[enemy_index].draw_y + 7;
 
-        if (enemy_right > x_left_draw && enemy_left < x_right_draw &&
-            enemy_bottom > y_top_draw && enemy_top < y_bottom_draw) {
-            return true;
+    EMU_printf("E l%d:r%d:t%d:b%d M l%d:r%d:t%d:b%d\n", enemy_left, enemy_right, enemy_top,
+               enemy_bottom, x_left_draw, x_right_draw, y_top_draw,
+               y_bottom_draw);
+
+    if (enemy_right > x_left_draw && enemy_left < x_right_draw &&
+        enemy_bottom > y_top_draw && enemy_top < y_bottom_draw) {
+      if (y_bottom_draw < enemies[enemy_index].draw_y) {
+        for (uint8_t j = enemy_index; j < enemy_count - 1; j++) {
+          enemies[j] = enemies[j + 1];
         }
+        enemy_count--;
+        hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+        continue;
+      } else {
+        die();
+      }
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 const uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT *
@@ -217,8 +229,8 @@ void main(void) {
       powerup_draw(base_sprite - 1);
     }
 
-    if(enemy_collide()){
-      die();
+    if (enemy_collide()) {
+      // die();
     }
 
     time--;
