@@ -62,6 +62,7 @@ extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;
 
 extern uint8_t scroll;
+extern bool plane_mode;
 
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;

@@ -44,6 +44,7 @@ uint8_t tile_next_1;
 uint8_t tile_next_2;
 
 uint8_t scroll;
+bool plane_mode;
 
 void update_frame_counter(void) NONBANKED {
   frame_counter++;
@@ -115,8 +116,26 @@ void player_move(void) BANKED {
     vel_x += 1;
   }
 
-  if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
-      touch_ground) {
+  if (plane_mode) {
+    if ((joypad_current & J_UP)) {
+      if (abs(vel_y) < player_max_speed) {
+        vel_y -= 1;
+      }
+    } else if(joypad_previous & J_UP) {
+      vel_y = 0;
+    }
+
+    if ((joypad_current & J_DOWN)) {
+      if (abs(vel_y) < player_max_speed) {
+        vel_y += 1;
+      }
+    } else if (joypad_previous & J_DOWN){
+      vel_y = 0;
+    }
+  }
+
+  if (!plane_mode && joypad_current & J_A && !(joypad_previous & J_A) &&
+      !is_jumping && touch_ground) {
     is_jumping = TRUE;
     display_jump_frame = TRUE;
     vel_y = -JUMP_SPEED;
@@ -139,13 +158,15 @@ void player_move(void) BANKED {
     player_max_speed = PLAYER_MAX_SPEED_WALK;
   }
 
-  if (is_jumping) {
-    vel_y += GRAVITY_JUMP;
-    if (vel_y > TERMINAL_VELOCITY) {
-      vel_y = TERMINAL_VELOCITY;
+  if (!plane_mode) {
+    if (is_jumping) {
+      vel_y += GRAVITY_JUMP;
+      if (vel_y > TERMINAL_VELOCITY) {
+        vel_y = TERMINAL_VELOCITY;
+      }
+    } else {
+      vel_y = GRAVITY;
     }
-  } else {
-    vel_y = GRAVITY;
   }
 
   // apply velocity to player coords
@@ -308,10 +329,10 @@ uint8_t player_is_on_platform(void) {
   uint8_t i;
 
   for (i = 0; i < platform_moving_count; i++) {
-    //EMU_printf("check player %d:%d on platform %d:%d right %d \n",
-    //           player_draw_x, player_draw_y, platforms_moving[i].draw_x,
-    //           platforms_moving[i].draw_y,
-    //           platforms_moving[i].draw_x + platforms_moving[i].width);
+    // EMU_printf("check player %d:%d on platform %d:%d right %d \n",
+    //            player_draw_x, player_draw_y, platforms_moving[i].draw_x,
+    //            platforms_moving[i].draw_y,
+    //            platforms_moving[i].draw_x + platforms_moving[i].width);
 
     if (player_draw_y > platforms_moving[i].draw_y &&
         // player_draw_y <= platforms_moving[i].draw_y + 8 &&
@@ -319,7 +340,7 @@ uint8_t player_is_on_platform(void) {
             platforms_moving[i].draw_x + 3 * 8 /*platforms_moving[i].width*/
         && player_draw_x + 8 > platforms_moving[i].draw_x) {
 
-      //EMU_printf("MATCH ! \n");
+      // EMU_printf("MATCH ! \n");
 
       player_y_subpixel = platforms_moving[i].y;
       // player_x_subpixel = platforms_moving[i].x;
