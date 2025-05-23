@@ -88,17 +88,17 @@ uint8_t enemy_draw(uint8_t base_sprite) {
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
-    //EMU_printf("Draw x %d y %d\n", enemies[index_enemy].draw_x,
-    //           enemies[index_enemy].draw_y);
+    EMU_printf("ENEMY %d %d\n", enemies[index_enemy].draw_x,
+               enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x, enemies[index_enemy].draw_y);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X, enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
     } else {
       base_sprite += move_metasprite_ex(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x, enemies[index_enemy].draw_y);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X, enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
     }
   }
   SWITCH_ROM(_saved_bank);

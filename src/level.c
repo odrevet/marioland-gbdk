@@ -235,6 +235,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_1_1_lookup_size;
     level_block_lookup = level_1_1_blocks_lookup;
     level_block_lookup_size = level_1_1_blocks_lookup_size;
+    plane_mode = FALSE;
     break;
   case 1:
     set_level_1_2();
@@ -244,6 +245,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_1_2_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 2:
     set_level_1_3();
@@ -253,6 +255,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_1_3_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 3:
     set_level_2_1();
@@ -262,6 +265,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_2_1_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 4:
     set_level_2_2();
@@ -271,6 +275,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_2_2_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 5:
     set_level_2_3();
@@ -280,6 +285,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_2_3_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = TRUE;
     break;
   case 6:
     set_level_3_1();
@@ -289,6 +295,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_3_1_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 7:
     set_level_3_2();
@@ -298,6 +305,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_3_2_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 8:
     set_level_3_3();
@@ -307,6 +315,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_3_3_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 9:
     set_level_4_1();
@@ -316,6 +325,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_4_1_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 10:
     set_level_4_2();
@@ -325,6 +335,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = level_4_2_lookup_size;
     level_block_lookup = NULL;
     level_block_lookup_size = 0;
+    plane_mode = FALSE;
     break;
   case 11:
     set_level_4_3();
@@ -334,6 +345,7 @@ void level_set_current(void) NONBANKED {
     level_lookup_size = 0;
     level_lookup = level_4_3_lookup;
     level_lookup_size = level_4_3_lookup_size;
+    plane_mode = TRUE;
     break;
   }
   enemy_count = 0;

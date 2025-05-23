@@ -1,4 +1,5 @@
 #include "game.h"
+#include "level.h"
 
 void init(void) {
   time = TIME_INITIAL_VALUE;
@@ -61,4 +62,5 @@ void die(void) {
 
   hud_update_lives();
   load_current_level();
+  level_set_current();
 }

@@ -24,10 +24,10 @@
 
 #include "enemy.h"
 #include "level.h"
+#include "platforms.h"
 #include "player.h"
 #include "powerup.h"
 #include "text.h"
-#include "platforms.h"
 
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
 
@@ -40,21 +40,38 @@ void interruptLCD(void) {
 void interruptVBL(void) { SHOW_WIN; }
 
 bool powerups_collide() {
-  uint8_t p1_left = powerup.draw_x;
-  uint8_t p1_right = powerup.draw_x + 4;
-  uint8_t p1_top = powerup.draw_y;
-  uint8_t p1_bottom = powerup.draw_y + 4;
+  uint8_t powerup_left = powerup.draw_x - 4;
+  uint8_t powerup_right = powerup.draw_x + 4;
+  uint8_t powerup_top = powerup.draw_y - 4;
+  uint8_t powerup_bottom = powerup.draw_y;
 
-  if (p1_right <= x_left_draw || p1_left >= x_right_draw ||
-      p1_bottom <= y_top_draw || p1_top >= y_bottom_draw) {
+  if (powerup_right <= x_left_draw || powerup_left >= x_right_draw ||
+      powerup_bottom <= y_top_draw || powerup_top >= y_bottom_draw) {
     return false;
   }
 
   return true;
 }
 
-const uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] =
-      {TILE_EMPTY};
+bool enemy_collide() {
+    for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
+        uint8_t enemy_left = enemies[enemy_index].draw_x - 4;
+        uint8_t enemy_right = enemies[enemy_index].draw_x + 4;
+        uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
+        uint8_t enemy_bottom = enemies[enemy_index].draw_y + 4;
+        
+        EMU_printf("%d:%d:%d:%d %d:%d:%d:%d\n", enemy_left, enemy_right, enemy_top, enemy_bottom, x_left_draw, x_right_draw, y_top_draw, y_bottom_draw);
+
+        if (enemy_right > x_left_draw && enemy_left < x_right_draw &&
+            enemy_bottom > y_top_draw && enemy_top < y_bottom_draw) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT *
+                          DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
 
 void main(void) {
   STAT_REG = 0x40;
@@ -62,8 +79,7 @@ void main(void) {
 
   move_bkg(0, -MARGIN_TOP_PX);
 
-// Clear video buffer with empty tiles
-  memset(empty_tiles, TILE_EMPTY, sizeof(empty_tiles));
+  // Clear video buffer with empty tiles
   set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_HEIGHT,
                 empty_tiles);
 
@@ -151,12 +167,14 @@ void main(void) {
 
     player_move();
 
+    EMU_printf("MARIO %d %d\n", player_draw_x, player_draw_y);
+
     // set player frame
     if (display_jump_frame) {
       player_frame = 4;
     } else if (vel_x != 0) {
       if (display_slide_frame) {
-                music_play_sfx(BANK(sound_skid), sound_skid, SFX_MUTE_MASK(sound_skid),
+        music_play_sfx(BANK(sound_skid), sound_skid, SFX_MUTE_MASK(sound_skid),
                        MUSIC_SFX_PRIORITY_NORMAL);
         player_frame = 5;
       } else {
@@ -189,7 +207,7 @@ void main(void) {
 
     // check if mario collids with a power up
     if (powerup_active && powerups_collide()) {
-      //EMU_printf("Power up collids\n");
+      // EMU_printf("Power up collids\n");
       powerup_active = FALSE;
       hide_metasprite(sprite_common_metasprites[0], base_sprite - 1);
       powerup.x = 0;
@@ -197,6 +215,10 @@ void main(void) {
       powerup.y = 0;
       powerup.draw_y = 0;
       powerup_draw(base_sprite - 1);
+    }
+
+    if(enemy_collide()){
+      die();
     }
 
     time--;

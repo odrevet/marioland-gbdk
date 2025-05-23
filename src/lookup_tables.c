@@ -7,7 +7,7 @@
 // 1_1
 level_object level_1_1_lookup[] = {
     {.x = 22,
-     .y = 17,
+     .y = 15,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GOOMBO}},
     /*{.x = 65,
