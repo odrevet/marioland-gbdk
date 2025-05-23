@@ -18,6 +18,7 @@
 #include "musics/musics.h"
 #include "sounds/sound_coin.h"
 #include "sounds/sound_skid.h"
+#include "sounds/sound_squish.h"
 
 #include "game.h"
 #include "global.h"
@@ -60,8 +61,8 @@ bool enemy_collide() {
     uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
     uint8_t enemy_bottom = enemies[enemy_index].draw_y + 7;
 
-    EMU_printf("E l%d:r%d:t%d:b%d M l%d:r%d:t%d:b%d\n", enemy_left, enemy_right, enemy_top,
-               enemy_bottom, x_left_draw, x_right_draw, y_top_draw,
+    EMU_printf("E l%d:r%d:t%d:b%d M l%d:r%d:t%d:b%d\n", enemy_left, enemy_right,
+               enemy_top, enemy_bottom, x_left_draw, x_right_draw, y_top_draw,
                y_bottom_draw);
 
     if (enemy_right > x_left_draw && enemy_left < x_right_draw &&
@@ -72,6 +73,11 @@ bool enemy_collide() {
         }
         enemy_count--;
         hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+
+        vel_y = -44;
+        music_play_sfx(BANK(sound_squish), sound_squish, SFX_MUTE_MASK(sound_squish),
+                       MUSIC_SFX_PRIORITY_NORMAL);
+
         continue;
       } else {
         die();
