@@ -134,6 +134,10 @@ void player_move(void) BANKED {
     }
   }
 
+  if(plane_mode && joypad_current & J_A && !(joypad_previous & J_A)){
+    missile_new(x_right_draw, y_bottom_draw);
+  }
+
   if (!plane_mode && joypad_current & J_A && !(joypad_previous & J_A) &&
       !is_jumping && touch_ground) {
     is_jumping = TRUE;

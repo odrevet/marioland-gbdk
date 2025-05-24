@@ -10,6 +10,7 @@
 #include "level.h"
 #include "text.h"
 #include "platforms.h"
+#include "missile.h"
 
 #include "musicmanager.h"
 #include "sfxplayer.h"
