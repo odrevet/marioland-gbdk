@@ -44,7 +44,7 @@ uint8_t missile_draw(uint8_t base_sprite) {
        index_missile++) {
     base_sprite += move_metasprite_ex(
         sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
-        missiles[index_missile].draw_x, missiles[index_missile].draw_y);
+        missiles[index_missile].draw_x + DEVICE_SPRITE_PX_OFFSET_X, missiles[index_missile].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
   }
   SWITCH_ROM(_saved_bank);
 
