@@ -1,4 +1,6 @@
 #include "missile.h"
+#include "gb/gb.h"
+#include "level.h"
 #include <stdint.h>
 
 uint8_t missile_count;
@@ -26,8 +28,7 @@ void missile_update(void) {
     if (missiles[index_missile].active) {
       missiles[index_missile].x += missiles[index_missile].vel_x;
       missiles[index_missile].y += missiles[index_missile].vel_y;
-      missiles[index_missile].draw_x =
-          (missiles[index_missile].x) >> 4;
+      missiles[index_missile].draw_x = (missiles[index_missile].x) >> 4;
       missiles[index_missile].draw_y = missiles[index_missile].y >> 4;
 
       EMU_printf("Missile X position is %d. Draw X is %d\n",
@@ -35,6 +36,21 @@ void missile_update(void) {
       if (missiles[index_missile].draw_x >= 255) {
         missiles[index_missile].active = FALSE;
         missile_count--;
+        // hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+      } else {
+        uint8_t index_x =
+            TILE_INDEX_X(missiles[index_missile].draw_x, camera_x);
+        uint8_t index_y = TILE_INDEX_Y(missiles[index_missile].draw_y);
+        uint8_t index_map_buffer =
+            index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x;
+        if (map_buffer[index_map_buffer] == BREAKABLE_BLOCK) {
+          // update map buffer and vram with an empty tile
+          map_buffer[index_map_buffer] = TILE_EMPTY;
+          set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+
+          missiles[index_missile].active = FALSE;
+          missile_count--;
+        }
       }
     }
   }
