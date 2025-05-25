@@ -4,7 +4,6 @@
 uint8_t missile_count;
 missile_t missiles[MISSILE_MAX];
 
-
 void missile_new(uint16_t x, uint16_t y) {
   if (missile_count < MISSILE_MAX) {
     uint8_t index_missile = 0;
@@ -24,11 +23,20 @@ void missile_new(uint16_t x, uint16_t y) {
 void missile_update(void) {
   for (uint8_t index_missile = 0; index_missile < MISSILE_MAX;
        index_missile++) {
-    missiles[index_missile].x += missiles[index_missile].vel_x;
-    missiles[index_missile].y += missiles[index_missile].vel_y;
-    missiles[index_missile].draw_x =
-        (missiles[index_missile].x - camera_x_subpixel) >> 4;
-    missiles[index_missile].draw_y = missiles[index_missile].y >> 4;
+    if (missiles[index_missile].active) {
+      missiles[index_missile].x += missiles[index_missile].vel_x;
+      missiles[index_missile].y += missiles[index_missile].vel_y;
+      missiles[index_missile].draw_x =
+          (missiles[index_missile].x) >> 4;
+      missiles[index_missile].draw_y = missiles[index_missile].y >> 4;
+
+      EMU_printf("Missile X position is %d. Draw X is %d\n",
+                 missiles[index_missile].x, missiles[index_missile].draw_x);
+      if (missiles[index_missile].draw_x >= 255) {
+        missiles[index_missile].active = FALSE;
+        missile_count--;
+      }
+    }
   }
 }
 
@@ -42,9 +50,12 @@ uint8_t missile_draw(uint8_t base_sprite) {
 
   for (uint8_t index_missile = 0; index_missile < missile_count;
        index_missile++) {
-    base_sprite += move_metasprite_ex(
-        sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
-        missiles[index_missile].draw_x + DEVICE_SPRITE_PX_OFFSET_X, missiles[index_missile].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
+    if (missiles[index_missile].active) {
+      base_sprite += move_metasprite_ex(
+          sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
+          missiles[index_missile].draw_x + DEVICE_SPRITE_PX_OFFSET_X,
+          missiles[index_missile].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
+    }
   }
   SWITCH_ROM(_saved_bank);
 

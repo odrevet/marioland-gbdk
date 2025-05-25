@@ -22,8 +22,8 @@
 typedef struct missile_t {
   uint16_t x;
   uint16_t y;
-  uint8_t draw_x;
-  uint8_t draw_y;
+  uint16_t draw_x;
+  uint16_t draw_y;
   int8_t vel_x;
   int8_t vel_y;
   bool active;
