@@ -54,3 +54,15 @@ Sounds and musics from Super Mario Bros Mini https://github.com/Mico27/SuperMari
 VGM converted using VGM2GBSFX https://github.com/untoxa/VGM2GBSFX
 
 UGE converted using hUGETracker uge2source https://github.com/SuperDisk/hUGETracker
+
+
+# tests
+
+FILE parameter to build a test file under tests/
+
+
+for example: 
+
+``` 
+make FILE=background -f tests/Makefile
+```
