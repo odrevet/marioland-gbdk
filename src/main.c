@@ -1,4 +1,3 @@
-
 #include <gb/gb.h>
 #include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
