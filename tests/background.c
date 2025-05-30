@@ -66,6 +66,8 @@ void main(void) {
     if (next_col_chunk_load ==
         current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
       level_end_reached = true;
+      camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
+      SCX_REG = camera_x;
     }
 
     if (camera_x >> 3 >= next_col_chunk_load && !level_end_reached) {
