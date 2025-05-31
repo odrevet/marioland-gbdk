@@ -16,11 +16,11 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
     switch (type) {
     case ENEMY_GOOMBO:
       current_frame = 0;
-      vel_x = 0;// WIP -1;
+      vel_x = 0; // WIP -1;
       break;
     case ENEMY_KOOPA:
       current_frame = 1;
-      vel_x = 0 ; // WIP -1;
+      vel_x = 0; // WIP -1;
       break;
     }
     enemy_t enemy = {.x = x << 4,
@@ -45,9 +45,10 @@ void enemy_update(void) {
         (enemies[index_enemy].x - camera_x_subpixel) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    //EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH);
+    // EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_subpixel -
+    // DEVICE_SCREEN_PX_WIDTH);
     if (enemies[index_enemy].x <= camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
-      //EMU_printf("REMOVE ENEMY\n");
+      // EMU_printf("REMOVE ENEMY\n");
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];
       }
@@ -56,10 +57,9 @@ void enemy_update(void) {
       continue;
     }
 
-
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBO:
-    // set frame
+      // set frame
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
@@ -94,11 +94,13 @@ uint8_t enemy_draw(uint8_t base_sprite) {
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X, enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X,
+          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE * 2);
     } else {
       base_sprite += move_metasprite_ex(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X, enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X,
+          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE * 2);
     }
   }
   SWITCH_ROM(_saved_bank);

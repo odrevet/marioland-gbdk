@@ -1,3 +1,4 @@
+#include "global.h"
 #include "level.h"
 #pragma bank 255
 
@@ -62,11 +63,11 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   if (mario_flip) {
     base_sprite += move_metasprite_flipx(
         mario_metasprite, 0, 0, 0, player_draw_x + DEVICE_SPRITE_PX_OFFSET_X,
-        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
+        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE);
   } else {
     base_sprite += move_metasprite_ex(
         mario_metasprite, 0, 0, 0, player_draw_x + DEVICE_SPRITE_PX_OFFSET_X,
-        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y - TILE_SIZE);
+        player_draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE);
   }
 
   SWITCH_ROM(_saved_bank);
@@ -121,7 +122,7 @@ void player_move(void) BANKED {
       if (abs(vel_y) < player_max_speed) {
         vel_y -= 1;
       }
-    } else if(joypad_previous & J_UP) {
+    } else if (joypad_previous & J_UP) {
       vel_y = 0;
     }
 
@@ -129,12 +130,12 @@ void player_move(void) BANKED {
       if (abs(vel_y) < player_max_speed) {
         vel_y += 1;
       }
-    } else if (joypad_previous & J_DOWN){
+    } else if (joypad_previous & J_DOWN) {
       vel_y = 0;
     }
   }
 
-  if(plane_mode && joypad_current & J_A && !(joypad_previous & J_A)){
+  if (plane_mode && joypad_current & J_A && !(joypad_previous & J_A)) {
     missile_new(x_right_draw, y_bottom_draw);
   }
 
@@ -275,7 +276,7 @@ void player_move(void) BANKED {
 
       if (is_tile_solid(tile_left_bottom) || is_tile_solid(tile_right_bottom) ||
           is_tile_passthought(tile_left_bottom, tile_right_bottom)) {
-        player_y_subpixel = ((next_pos / TILE_SIZE) * TILE_SIZE) << 4;
+        player_y_subpixel = (((next_pos / TILE_SIZE) * TILE_SIZE) << 4);
 
         touch_ground = TRUE;
         current_jump = 0;

@@ -34,12 +34,12 @@ level_block_object *level_block_lookup;
 size_t level_block_lookup_size;
 
 uint8_t get_tile(uint8_t x, uint8_t y) {
-  if (y / TILE_SIZE < 2 || y / TILE_SIZE > MAP_BUFFER_HEIGHT + 1) {
+  if (y >> 3 < 2 || y >> 3 > MAP_BUFFER_HEIGHT + 1) {
     return TILE_EMPTY;
   }
 
-  uint8_t tile_x = ((x + camera_x) / TILE_SIZE) % DEVICE_SCREEN_BUFFER_WIDTH;
-  uint8_t tile_y = (y / TILE_SIZE) - DEVICE_SPRITE_OFFSET_Y;
+  uint8_t tile_x = TILE_INDEX_X(x, camera_x);
+  uint8_t tile_y = TILE_INDEX_Y(y);
   return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
 }
 

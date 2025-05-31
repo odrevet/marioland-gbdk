@@ -79,7 +79,7 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
           platforms_moving[index_platform_moving].draw_x + i * common_TILE_W +
               DEVICE_SPRITE_PX_OFFSET_X,
           platforms_moving[index_platform_moving].draw_y +
-              DEVICE_SPRITE_PX_OFFSET_Y);
+              +DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX + TILE_SIZE);
     }
   }
   SWITCH_ROM(_saved_bank);

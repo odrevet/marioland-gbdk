@@ -23,6 +23,9 @@
 
 BANKREF_EXTERN(player)
 
+#define MARIO_HEIGHT_SMALL 16
+#define MARIO_HEIGHT_BIG 32
+
 extern uint8_t x_right_draw;
 extern uint8_t x_left_draw;
 extern uint8_t y_top_draw;

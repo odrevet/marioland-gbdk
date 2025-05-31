@@ -84,7 +84,7 @@ extern size_t level_block_lookup_size;
 
 #define TILE_INDEX_X(x, camera_x)                                              \
   ((((x) + (camera_x)) >> 3) % DEVICE_SCREEN_BUFFER_WIDTH)
-#define TILE_INDEX_Y(y) (((y) >> 3) - DEVICE_SPRITE_OFFSET_Y)
+#define TILE_INDEX_Y(y) ((y) >> 3)
 
 // Common tiles (shared across all worlds)
 enum tileset_index_common {

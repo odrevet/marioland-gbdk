@@ -36,8 +36,8 @@ void main(void) {
   level_set_current();
   load_current_level();
 
-  player_draw_x = 40;
-  player_draw_y = 40;
+  player_draw_x = 4 * TILE_SIZE;
+  player_draw_y = 1 * TILE_SIZE;
 
   DISPLAY_ON;
   SHOW_BKG;

@@ -1,4 +1,5 @@
 #include "game.h"
+#include "global.h"
 #include "level.h"
 
 void init(void) {
@@ -8,8 +9,8 @@ void init(void) {
   camera_x_subpixel = 0;
   SCX_REG = 0;
 
-  player_x_subpixel = 43 << 4;
-  player_y_subpixel = (16 * TILE_SIZE) << 4;
+  player_x_subpixel = (4 * TILE_SIZE) << 4;
+  player_y_subpixel = (13 * TILE_SIZE) << 4;
   player_draw_x = player_x_subpixel >> 4;
   player_draw_y = player_y_subpixel >> 4;
 
