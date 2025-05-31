@@ -16,12 +16,6 @@ uint8_t scroll_speed;
 
 void main(void) {
   move_bkg(0, -MARGIN_TOP_PX);
-
-  unsigned char windata[WINDOW_SIZE];
-  memset(windata, 15, WINDOW_SIZE);
-  set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
-  move_win(WINDOW_X, WINDOW_Y);
-
   scroll_speed = SCROLL_SPEED_NORMAL;
 
   uint8_t _saved_bank = _current_bank;
@@ -42,18 +36,21 @@ void main(void) {
   while (1) {
     joypad_current = joypad();
 
+    // scroll on right pad press
     if (joypad_current & J_RIGHT && !level_end_reached) {
       camera_x_subpixel += scroll_speed;
       camera_x = camera_x_subpixel >> 4;
       SCX_REG = camera_x;
     }
 
+    // scroll faster when B button is pressed
     if (joypad_current & J_B) {
       scroll_speed = SCROLL_SPEED_FAST;
     } else {
       scroll_speed = SCROLL_SPEED_NORMAL;
     }
 
+    // load next level on select pressed
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       init();
       current_level = (++current_level) % NB_LEVELS;
@@ -63,6 +60,7 @@ void main(void) {
       SHOW_BKG;
     }
 
+    // check if the end of the level is reached
     if (next_col_chunk_load ==
         current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
       level_end_reached = true;
@@ -70,6 +68,7 @@ void main(void) {
       SCX_REG = camera_x;
     }
 
+    // read background data
     if (camera_x >> 3 >= next_col_chunk_load && !level_end_reached) {
       level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1);
       next_col_chunk_load++;
