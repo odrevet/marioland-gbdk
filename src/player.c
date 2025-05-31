@@ -327,7 +327,9 @@ void player_move(void) BANKED {
     player_draw_y = player_y_subpixel >> 4;
   }
 
-  player_is_on_platform();
+  if ((vel_y > 0)) {
+    player_is_on_platform();
+  }
 }
 
 uint8_t player_is_on_platform(void) {
@@ -340,7 +342,7 @@ uint8_t player_is_on_platform(void) {
     //            platforms_moving[i].draw_x + platforms_moving[i].width);
 
     if (player_draw_y > platforms_moving[i].draw_y &&
-        // player_draw_y <= platforms_moving[i].draw_y + 8 &&
+        player_draw_y <= platforms_moving[i].draw_y + 8 &&
         player_draw_x <=
             platforms_moving[i].draw_x + 3 * 8 /*platforms_moving[i].width*/
         && player_draw_x + 8 > platforms_moving[i].draw_x) {
@@ -352,6 +354,7 @@ uint8_t player_is_on_platform(void) {
 
       touch_ground = TRUE;
       is_jumping = FALSE;
+      display_jump_frame = false;
 
       return 1;
     }
