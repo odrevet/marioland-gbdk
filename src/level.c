@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 uint16_t camera_x;
-uint16_t camera_x_subpixel;
+uint16_t camera_x_upscaled;
 uint16_t next_col_chunk_load;
 const unsigned char *current_map;
 
@@ -356,7 +356,7 @@ void level_set_current(void) NONBANKED {
 void load_current_level(void) NONBANKED {
   set_column_at = 0;
   camera_x = 0;
-  camera_x_subpixel = 0;
+  camera_x_upscaled = 0;
   level_end_reached = false;
 
   level_load_column(0, MAP_BUFFER_WIDTH);

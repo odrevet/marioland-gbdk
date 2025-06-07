@@ -32,7 +32,7 @@ void platform_moving_update() {
         platforms_moving[index_platform_moving].vel_y;
 
     platforms_moving[index_platform_moving].draw_x =
-        (platforms_moving[index_platform_moving].x - camera_x_subpixel) >> 4;
+        (platforms_moving[index_platform_moving].x - camera_x_upscaled) >> 4;
     platforms_moving[index_platform_moving].draw_y =
         platforms_moving[index_platform_moving].y >> 4;
 
@@ -48,7 +48,7 @@ void platform_moving_update() {
     }
 
     if (platforms_moving[index_platform_moving].x <=
-        camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
+        camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
       // EMU_printf("REMOVE PLATFORM\n");
       for (uint8_t j = index_platform_moving; j < platform_moving_count - 1;
            j++) {

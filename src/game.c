@@ -6,7 +6,7 @@ void init(void) {
   time = TIME_INITIAL_VALUE;
 
   camera_x = 0;
-  camera_x_subpixel = 0;
+  camera_x_upscaled = 0;
   SCX_REG = 0;
 
   player_x_subpixel = (4 * TILE_SIZE) << 4;

@@ -158,8 +158,8 @@ void player_move(void) BANKED {
       // check scroll limit
       if (!level_end_reached && player_x_subpixel > scroll_limit) {
         // update camera and scroll register
-        camera_x_subpixel += 16;
-        camera_x = camera_x_subpixel >> 4;
+        camera_x_upscaled += 16;
+        camera_x = camera_x_upscaled >> 4;
         SCX_REG = camera_x;
 
         // increase the scroll limit

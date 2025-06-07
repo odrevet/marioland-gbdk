@@ -14,7 +14,7 @@ void powerup_new(uint16_t x, uint16_t y, uint8_t type) {
 }
 
 void powerup_update(void) {
-  powerup.draw_x = ((powerup.x - camera_x_subpixel) >> 4) + DEVICE_SPRITE_PX_OFFSET_X + 4;
+  powerup.draw_x = ((powerup.x - camera_x_upscaled) >> 4) + DEVICE_SPRITE_PX_OFFSET_X + 4;
   powerup.draw_y = (powerup.y >> 4) + DEVICE_SPRITE_PX_OFFSET_Y + TILE_SIZE + 4;
 
   if (powerup.draw_x >= DEVICE_SCREEN_PX_WIDTH + 8 * TILE_SIZE && powerup.draw_x <= 255) {

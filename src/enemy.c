@@ -42,12 +42,12 @@ void enemy_update(void) {
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
     enemies[index_enemy].y += enemies[index_enemy].vel_y;
     enemies[index_enemy].draw_x =
-        (enemies[index_enemy].x - camera_x_subpixel) >> 4;
+        (enemies[index_enemy].x - camera_x_upscaled) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    // EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_subpixel -
+    // EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_upscaled -
     // DEVICE_SCREEN_PX_WIDTH);
-    if (enemies[index_enemy].x <= camera_x_subpixel - DEVICE_SCREEN_PX_WIDTH) {
+    if (enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
       // EMU_printf("REMOVE ENEMY\n");
       for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
         enemies[j] = enemies[j + 1];

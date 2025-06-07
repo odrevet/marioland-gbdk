@@ -61,7 +61,7 @@ extern uint8_t coldata[LEVEL_HEIGHT];
 extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
-extern uint16_t camera_x_subpixel;
+extern uint16_t camera_x_upscaled;
 extern uint16_t next_col_chunk_load;
 extern uint8_t set_column_at;
 extern bool level_end_reached;
