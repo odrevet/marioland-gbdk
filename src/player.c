@@ -74,7 +74,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 }
 
 uint16_t scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
-#define PLAYER_SPEED 12
+#define PLAYER_SPEED 16
 #define PLAYER_DRAW_OFFSET_X 4
 #define PLAYER_DRAW_OFFSET_Y 4
 
@@ -113,7 +113,7 @@ void player_move(void) BANKED {
       current_jump = 0;
     }
   } else {
-    vel_y = 28; // gravity
+    vel_y = 42; // gravity
   }
 
   player_x_next_upscaled = player_x_upscaled + vel_x;
