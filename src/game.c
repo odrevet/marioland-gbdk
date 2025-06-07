@@ -9,10 +9,10 @@ void init(void) {
   camera_x_upscaled = 0;
   SCX_REG = 0;
 
-  player_x_subpixel = (4 * TILE_SIZE) << 4;
-  player_y_subpixel = (13 * TILE_SIZE) << 4;
-  player_draw_x = player_x_subpixel >> 4;
-  player_draw_y = player_y_subpixel >> 4;
+  player_x = (4 * TILE_SIZE) << 4;
+  player_y = (13 * TILE_SIZE) << 4;
+  player_draw_x = player_x >> 4;
+  player_draw_y = player_y >> 4;
 
   vel_x = 0;
   vel_y = 0;

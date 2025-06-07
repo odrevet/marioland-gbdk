@@ -37,12 +37,12 @@ extern uint8_t joypad_previous, joypad_current;
 extern uint16_t scroll_limit;
 
 // player coords and movements
-extern uint16_t player_x;
-extern uint16_t player_y;
+extern uint16_t player_x_upscaled;
+extern uint16_t player_y_upscaled;
 extern uint16_t player_x_next_upscaled;
 extern uint16_t player_y_next_upscaled;
-extern uint16_t player_x_subpixel;
-extern uint16_t player_y_subpixel;
+extern uint16_t player_x;
+extern uint16_t player_y;
 extern uint16_t player_x_next;
 extern uint16_t player_y_next;
 extern uint8_t player_draw_x;

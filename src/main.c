@@ -127,14 +127,14 @@ void main(void) {
   lives = INITIAL_LIVES;
   coins = 0;
 
-  player_x = (4 << 3) << 4;
-  player_y = 80 << 4;
-  player_x_next_upscaled = player_x;
-  player_y_next_upscaled = player_y;
+  player_x_upscaled = (4 << 3) << 4;
+  player_y_upscaled = 80 << 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
 
-  player_draw_x = player_x_subpixel + DEVICE_SPRITE_PX_OFFSET_X +
+  player_draw_x = player_x + DEVICE_SPRITE_PX_OFFSET_X +
                   PLAYER_DRAW_OFFSET_X - camera_x;
-  player_draw_y = player_y_subpixel + DEVICE_SPRITE_PX_OFFSET_Y +
+  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y +
                   MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
 
   // HUD
@@ -263,7 +263,7 @@ void main(void) {
 
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
-      player_y_subpixel = 0;
+      player_y = 0;
       // die();
     }
 
