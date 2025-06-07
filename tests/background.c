@@ -38,8 +38,8 @@ void main(void) {
 
     // scroll on right pad press
     if (joypad_current & J_RIGHT && !level_end_reached) {
-      camera_x_subpixel += scroll_speed;
-      camera_x = camera_x_subpixel >> 4;
+      camera_x_upscaled += scroll_speed;
+      camera_x = camera_x_upscaled >> 4;
       SCX_REG = camera_x;
     }
 
@@ -74,7 +74,7 @@ void main(void) {
       next_col_chunk_load++;
 
       EMU_printf("next col load %d camera %d camera_subpixel %d\n",
-                 next_col_chunk_load, camera_x, camera_x_subpixel);
+                 next_col_chunk_load, camera_x, camera_x_upscaled);
     }
 
     vsync();
