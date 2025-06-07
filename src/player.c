@@ -25,8 +25,6 @@ uint16_t player_x_next;
 uint16_t player_y_next;
 uint8_t player_draw_x;
 uint8_t player_draw_y;
-uint8_t player_draw_x_next;
-uint8_t player_draw_y_next;
 int8_t vel_x;
 int8_t vel_y;
 bool is_jumping = FALSE;
@@ -38,9 +36,7 @@ int8_t player_max_speed = PLAYER_MAX_SPEED_WALK;
 uint8_t player_frame = 0;
 uint8_t frame_counter = 0;
 bool mario_flip;
-uint8_t current_gravity = GRAVITY;
 
-uint8_t next_pos;
 uint8_t tile_next_1;
 uint8_t tile_next_2;
 

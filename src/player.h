@@ -47,8 +47,6 @@ extern uint16_t player_x_next;
 extern uint16_t player_y_next;
 extern uint8_t player_draw_x;
 extern uint8_t player_draw_y;
-extern uint8_t player_draw_x_next;
-extern uint8_t player_draw_y_next;
 extern int8_t vel_x;
 extern int8_t vel_y;
 extern bool is_jumping;
@@ -62,7 +60,6 @@ extern uint8_t frame_counter;
 extern bool mario_flip;
 extern uint8_t current_gravity;
 
-extern uint8_t next_pos;
 extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;
 
