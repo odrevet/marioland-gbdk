@@ -16,6 +16,7 @@
 #include "hud.h"
 #include "musics/musics.h"
 #include "sounds/sound_coin.h"
+#include "sounds/sound_pause.h"
 #include "sounds/sound_skid.h"
 #include "sounds/sound_squish.h"
 
@@ -23,8 +24,8 @@
 #include "global.h"
 
 #include "enemy.h"
-#include "missile.h"
 #include "level.h"
+#include "missile.h"
 #include "platforms.h"
 #include "player.h"
 #include "powerup.h"
@@ -41,7 +42,7 @@ void interruptLCD(void) {
 void interruptVBL(void) { SHOW_WIN; }
 
 bool powerups_collide() {
-  uint8_t powerup_left = powerup.draw_x - 4;
+  /*uint8_t powerup_left = powerup.draw_x - 4;
   uint8_t powerup_right = powerup.draw_x + 4;
   uint8_t powerup_top = powerup.draw_y - 4;
   uint8_t powerup_bottom = powerup.draw_y;
@@ -51,11 +52,11 @@ bool powerups_collide() {
     return false;
   }
 
-  return true;
+  return true;*/
 }
 
 bool enemy_collide() {
-  for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
+  /*for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
     uint8_t enemy_left = enemies[enemy_index].draw_x - 4;
     uint8_t enemy_right = enemies[enemy_index].draw_x + 4;
     uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
@@ -75,8 +76,8 @@ bool enemy_collide() {
         hide_sprites_range(1, MAX_HARDWARE_SPRITES);
 
         vel_y = -44;
-        music_play_sfx(BANK(sound_squish), sound_squish, SFX_MUTE_MASK(sound_squish),
-                       MUSIC_SFX_PRIORITY_NORMAL);
+        music_play_sfx(BANK(sound_squish), sound_squish,
+                       SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
 
         continue;
       } else {
@@ -85,21 +86,18 @@ bool enemy_collide() {
       return true;
     }
   }
-  return false;
+  return false;*/
 }
 
-const uint8_t empty_tiles[DEVICE_SCREEN_BUFFER_HEIGHT *
-                          DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
+#define PLAYER_SPEED 12
+#define PLAYER_DRAW_OFFSET_X 4
+#define PLAYER_DRAW_OFFSET_Y 4
 
 void main(void) {
   STAT_REG = 0x40;
   LYC_REG = 0x0F;
 
   move_bkg(0, -MARGIN_TOP_PX);
-
-  // Clear video buffer with empty tiles
-  set_bkg_tiles(0, 0, DEVICE_SCREEN_BUFFER_WIDTH, DEVICE_SCREEN_BUFFER_HEIGHT,
-                empty_tiles);
 
   disable_interrupts();
   add_LCD(interruptLCD);
@@ -128,6 +126,16 @@ void main(void) {
   score = 0;
   lives = INITIAL_LIVES;
   coins = 0;
+
+  player_x = (4 << 3) << 4;
+  player_y = 80 << 4;
+  player_x_next = player_x;
+  player_y_next = player_y;
+
+  player_draw_x = player_x_subpixel + DEVICE_SPRITE_PX_OFFSET_X +
+                  PLAYER_DRAW_OFFSET_X - camera_x;
+  player_draw_y = player_y_subpixel + DEVICE_SPRITE_PX_OFFSET_Y +
+                  MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
 
   // HUD
   // text
@@ -177,15 +185,19 @@ void main(void) {
   uint8_t anim_frame_counter = 0;
 
   while (1) {
-    vsync();
-
-    // inputs
     joypad_previous = joypad_current;
     joypad_current = joypad();
 
-    player_move();
+    // pause
+    if (joypad_current & J_START && !(joypad_previous & J_START)) {
+      music_pause(TRUE);
+      music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause),
+                     MUSIC_SFX_PRIORITY_NORMAL);
+      state_pause();
+      music_pause(FALSE);
+    }
 
-    EMU_printf("MARIO %d %d\n", player_draw_x, player_draw_y);
+    player_move();
 
     // set player frame
     if (display_jump_frame) {
@@ -204,9 +216,9 @@ void main(void) {
 
     enemy_update();
     platform_moving_update();
+    player_is_on_platform();
     missile_update();
-
-    base_sprite = player_draw(base_sprite);
+    player_draw(0);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
     base_sprite = platform_moving_draw(base_sprite);
     if (powerup_active) {
@@ -304,5 +316,7 @@ void main(void) {
 
       SWITCH_ROM(_saved_bank);
     }
+
+    vsync();
   }
 }

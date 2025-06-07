@@ -202,8 +202,6 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_bank);
 
-  // EMU_printf("LEVEL LOAD %d COLUMN AT %d\n", nb, start_at);
-
   uint8_t col = 0;
   while (col < nb) {
     map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);

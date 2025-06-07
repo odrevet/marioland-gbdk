@@ -8,9 +8,9 @@
 
 #include "global.h"
 #include "level.h"
-#include "text.h"
-#include "platforms.h"
 #include "missile.h"
+#include "platforms.h"
+#include "text.h"
 
 #include "musicmanager.h"
 #include "sfxplayer.h"
@@ -23,13 +23,8 @@
 
 BANKREF_EXTERN(player)
 
-#define MARIO_HEIGHT_SMALL 16
+#define MARIO_HEIGHT_SMALL 12
 #define MARIO_HEIGHT_BIG 32
-
-extern uint8_t x_right_draw;
-extern uint8_t x_left_draw;
-extern uint8_t y_top_draw;
-extern uint8_t y_bottom_draw;
 
 extern uint8_t coins;
 extern uint16_t score;
@@ -39,7 +34,13 @@ extern uint8_t lives;
 extern uint8_t level_index;
 extern uint8_t joypad_previous, joypad_current;
 
+extern uint16_t scroll_limit;
+
 // player coords and movements
+extern uint16_t player_x;
+extern uint16_t player_y;
+extern uint16_t player_x_next;
+extern uint16_t player_y_next;
 extern uint16_t player_x_subpixel;
 extern uint16_t player_y_subpixel;
 extern uint16_t player_x_subpixel_next;
@@ -54,7 +55,7 @@ extern bool is_jumping;
 extern bool display_jump_frame;
 extern bool display_slide_frame;
 extern bool touch_ground;
-extern uint8_t current_jump;
+extern uint16_t current_jump;
 extern int8_t player_max_speed;
 extern uint8_t player_frame;
 extern uint8_t frame_counter;
@@ -71,6 +72,6 @@ extern bool plane_mode;
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
-uint8_t player_is_on_platform(void);
+uint8_t player_is_on_platform(void) NONBANKED;
 
 #endif
