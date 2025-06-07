@@ -268,8 +268,7 @@ void main(void) {
     }
 
     // if reach end of level
-    if (level_end_reached &&
-        player_draw_x >= (DEVICE_SCREEN_WIDTH - 1) * TILE_SIZE) {
+    if (level_end_reached && player_draw_x >= DEVICE_SCREEN_WIDTH << 3) {
 
       music_load(BANK(music_stage_clear), &music_stage_clear);
       delay(4500);
