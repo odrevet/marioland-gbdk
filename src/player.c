@@ -17,12 +17,12 @@ uint8_t joypad_previous, joypad_current;
 // player coords and movements
 uint16_t player_x;
 uint16_t player_y;
-uint16_t player_x_next;
-uint16_t player_y_next;
+uint16_t player_x_next_upscaled;
+uint16_t player_y_next_upscaled;
 uint16_t player_x_subpixel;
 uint16_t player_y_subpixel;
-uint16_t player_x_subpixel_next;
-uint16_t player_y_subpixel_next;
+uint16_t player_x_next;
+uint16_t player_y_next;
 uint8_t player_draw_x;
 uint8_t player_draw_y;
 uint8_t player_draw_x_next;
@@ -116,34 +116,34 @@ void player_move(void) BANKED {
     vel_y = 28; // gravity
   }
 
-  player_x_next = player_x + vel_x;
-  player_y_next = player_y;
+  player_x_next_upscaled = player_x + vel_x;
+  player_y_next_upscaled = player_y;
 
-  player_x_subpixel_next = player_x_next >> 4;
-  player_y_subpixel_next = player_y_next >> 4;
+  player_x_next = player_x_next_upscaled >> 4;
+  player_y_next = player_y_next_upscaled >> 4;
 
   if (vel_x > 0) {
     // move right
-    tile_next_1 = get_tile(player_x_subpixel_next + 8 - camera_x + 1,
-                           player_y_subpixel_next + 4); // right top
-    tile_next_2 = get_tile(player_x_subpixel_next + 8 - camera_x + 1,
-                           player_y_subpixel_next + 10); // right bottom
+    tile_next_1 = get_tile(player_x_next + 8 - camera_x + 1,
+                           player_y_next + 4); // right top
+    tile_next_2 = get_tile(player_x_next + 8 - camera_x + 1,
+                           player_y_next + 10); // right bottom
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       EMU_printf("right collision. pos %d:%d next %d:%d \n", player_x_subpixel,
-                 player_y_subpixel, player_x_subpixel_next,
-                 player_y_subpixel_next);
-      player_x_subpixel = ((player_x_subpixel_next + 7) & ~7) - 1;
+                 player_y_subpixel, player_x_next,
+                 player_y_next);
+      player_x_subpixel = ((player_x_next + 7) & ~7) - 1;
       player_x = player_x_subpixel << 4;
     } else {
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_subpixel_next + 8 - camera_x + 1,
-                               player_y_subpixel_next + 4);
+        on_get_coin_background(player_x_next + 8 - camera_x + 1,
+                               player_y_next + 4);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_subpixel_next + 8 - camera_x + 1,
-                               player_y_subpixel_next + 10);
+        on_get_coin_background(player_x_next + 8 - camera_x + 1,
+                               player_y_next + 10);
       }
 
-      player_x = player_x_next;
+      player_x = player_x_next_upscaled;
       player_x_subpixel = player_x >> 4;
 
       // check if end of level reached
@@ -176,98 +176,98 @@ void player_move(void) BANKED {
     }
   } else if (vel_x < 0) {
     // move left
-    tile_next_1 = get_tile(player_x_subpixel_next - camera_x - 1,
-                           player_y_subpixel_next + 4); // left top
-    tile_next_2 = get_tile(player_x_subpixel_next - camera_x - 1,
-                           player_y_subpixel_next + 10); // left bottom
+    tile_next_1 = get_tile(player_x_next - camera_x - 1,
+                           player_y_next + 4); // left top
+    tile_next_2 = get_tile(player_x_next - camera_x - 1,
+                           player_y_next + 10); // left bottom
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      player_x_subpixel = ((player_x_subpixel_next + 7) & ~7) + 1;
+      player_x_subpixel = ((player_x_next + 7) & ~7) + 1;
       player_x = player_x_subpixel << 4;
       EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x_subpixel,
-                 player_y_subpixel, player_x_subpixel_next,
-                 player_y_subpixel_next);
+                 player_y_subpixel, player_x_next,
+                 player_y_next);
     } else {
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_subpixel_next - camera_x - 1,
-                               player_y_subpixel_next + 4);
+        on_get_coin_background(player_x_next - camera_x - 1,
+                               player_y_next + 4);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_subpixel_next - camera_x - 1,
-                               player_y_subpixel_next + 10);
+        on_get_coin_background(player_x_next - camera_x - 1,
+                               player_y_next + 10);
       }
 
-      player_x = player_x_next;
+      player_x = player_x_next_upscaled;
       player_x_subpixel = player_x >> 4;
     }
   }
 
-  player_x_next = player_x;
-  player_y_next = player_y + vel_y;
+  player_x_next_upscaled = player_x;
+  player_y_next_upscaled = player_y + vel_y;
 
-  player_x_subpixel_next = player_x_next >> 4;
-  player_y_subpixel_next = player_y_next >> 4;
+  player_x_next = player_x_next_upscaled >> 4;
+  player_y_next = player_y_next_upscaled >> 4;
 
   if (vel_y > 0) {
     // move down
-    tile_next_1 = get_tile(player_x_subpixel_next + 8 - camera_x,
-                           player_y_subpixel_next + 11); // right bottom
-    tile_next_2 = get_tile(player_x_subpixel_next - camera_x,
-                           player_y_subpixel_next + 11); // left bottom
+    tile_next_1 = get_tile(player_x_next + 8 - camera_x,
+                           player_y_next + 11); // right bottom
+    tile_next_2 = get_tile(player_x_next - camera_x,
+                           player_y_next + 11); // left bottom
 
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x_subpixel,
-                 player_y_subpixel, player_x_subpixel_next,
-                 player_y_subpixel_next);
+                 player_y_subpixel, player_x_next,
+                 player_y_next);
       touch_ground = TRUE;
       is_jumping = FALSE;
       current_jump = 0;
       display_jump_frame = FALSE;
-      player_y_subpixel = ((player_y_subpixel_next + 7) & ~7) - 4;
+      player_y_subpixel = ((player_y_next + 7) & ~7) - 4;
       player_y = player_y_subpixel << 4;
     } else {
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_subpixel_next + 8 - camera_x,
-                               player_y_subpixel_next + 11);
+        on_get_coin_background(player_x_next + 8 - camera_x,
+                               player_y_next + 11);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_subpixel_next - camera_x,
-                               player_y_subpixel_next + 11);
+        on_get_coin_background(player_x_next - camera_x,
+                               player_y_next + 11);
       }
 
-      player_y = player_y_next;
+      player_y = player_y_next_upscaled;
       player_y_subpixel = player_y >> 4;
     }
   } else if (vel_y < 0) {
     // move up
-    tile_next_1 = get_tile(player_x_subpixel_next - camera_x,
-                           player_y_subpixel_next + 4); // left top
-    tile_next_2 = get_tile(player_x_subpixel_next + 8 - camera_x,
-                           player_y_subpixel_next + 4); // right top
+    tile_next_1 = get_tile(player_x_next - camera_x,
+                           player_y_next + 4); // left top
+    tile_next_2 = get_tile(player_x_next + 8 - camera_x,
+                           player_y_next + 4); // right top
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       EMU_printf("up collision. pos %d:%d next %d:%d \n", player_x_subpixel,
-                 player_y_subpixel, player_x_subpixel_next,
-                 player_y_subpixel_next);
+                 player_y_subpixel, player_x_next,
+                 player_y_next);
       if (tile_next_1 == TILE_INTEROGATION_BLOCK) {
-        on_interogation_block_hit(player_x_subpixel_next - camera_x,
-                                  player_y_subpixel_next);
+        on_interogation_block_hit(player_x_next - camera_x,
+                                  player_y_next);
       } else if (tile_next_2 == TILE_INTEROGATION_BLOCK) {
-        on_interogation_block_hit(player_x_subpixel_next + 8 - camera_x,
-                                  player_y_subpixel_next);
+        on_interogation_block_hit(player_x_next + 8 - camera_x,
+                                  player_y_next);
       }
 
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_subpixel_next - camera_x,
-                               player_y_subpixel_next + 4);
+        on_get_coin_background(player_x_next - camera_x,
+                               player_y_next + 4);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_subpixel_next + 8 - camera_x,
-                               player_y_subpixel_next + 4);
+        on_get_coin_background(player_x_next + 8 - camera_x,
+                               player_y_next + 4);
       }
 
-      player_y = ((player_y_next >> 3) << 3) + 32;
+      player_y = ((player_y_next_upscaled >> 3) << 3) + 32;
       player_y_subpixel = player_y >> 4;
 
       vel_y = 0;
       is_jumping = FALSE;
     } else {
-      player_y = player_y_next;
+      player_y = player_y_next_upscaled;
       player_y_subpixel = player_y >> 4;
     }
   }

@@ -129,8 +129,8 @@ void main(void) {
 
   player_x = (4 << 3) << 4;
   player_y = 80 << 4;
-  player_x_next = player_x;
-  player_y_next = player_y;
+  player_x_next_upscaled = player_x;
+  player_y_next_upscaled = player_y;
 
   player_draw_x = player_x_subpixel + DEVICE_SPRITE_PX_OFFSET_X +
                   PLAYER_DRAW_OFFSET_X - camera_x;
