@@ -129,9 +129,8 @@ void player_move(void) BANKED {
     tile_next_2 = get_tile(player_x_next + 8 - camera_x + 1,
                            player_y_next + 10); // right bottom
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      EMU_printf("right collision. pos %d:%d next %d:%d \n", player_x,
-                 player_y, player_x_next,
-                 player_y_next);
+      EMU_printf("right collision. pos %d:%d next %d:%d \n", player_x, player_y,
+                 player_x_next, player_y_next);
       player_x = ((player_x_next + 7) & ~7) - 1;
       player_x_upscaled = player_x << 4;
     } else {
@@ -183,13 +182,11 @@ void player_move(void) BANKED {
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       player_x = ((player_x_next + 7) & ~7) + 1;
       player_x_upscaled = player_x << 4;
-      EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x,
-                 player_y, player_x_next,
-                 player_y_next);
+      EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x, player_y,
+                 player_x_next, player_y_next);
     } else {
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_next - camera_x - 1,
-                               player_y_next + 4);
+        on_get_coin_background(player_x_next - camera_x - 1, player_y_next + 4);
       } else if (is_coin(tile_next_2)) {
         on_get_coin_background(player_x_next - camera_x - 1,
                                player_y_next + 10);
@@ -214,9 +211,8 @@ void player_move(void) BANKED {
                            player_y_next + 11); // left bottom
 
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x,
-                 player_y, player_x_next,
-                 player_y_next);
+      EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x, player_y,
+                 player_x_next, player_y_next);
       touch_ground = TRUE;
       is_jumping = FALSE;
       current_jump = 0;
@@ -224,12 +220,13 @@ void player_move(void) BANKED {
       player_y = ((player_y_next + 7) & ~7) - 4;
       player_y_upscaled = player_y << 4;
     } else {
+      touch_ground = FALSE;
+
       if (is_coin(tile_next_1)) {
         on_get_coin_background(player_x_next + 8 - camera_x,
                                player_y_next + 11);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_next - camera_x,
-                               player_y_next + 11);
+        on_get_coin_background(player_x_next - camera_x, player_y_next + 11);
       }
 
       player_y_upscaled = player_y_next_upscaled;
@@ -242,23 +239,18 @@ void player_move(void) BANKED {
     tile_next_2 = get_tile(player_x_next + 8 - camera_x,
                            player_y_next + 4); // right top
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      EMU_printf("up collision. pos %d:%d next %d:%d \n", player_x,
-                 player_y, player_x_next,
-                 player_y_next);
+      EMU_printf("up collision. pos %d:%d next %d:%d \n", player_x, player_y,
+                 player_x_next, player_y_next);
       if (tile_next_1 == TILE_INTEROGATION_BLOCK) {
-        on_interogation_block_hit(player_x_next - camera_x,
-                                  player_y_next);
+        on_interogation_block_hit(player_x_next - camera_x, player_y_next);
       } else if (tile_next_2 == TILE_INTEROGATION_BLOCK) {
-        on_interogation_block_hit(player_x_next + 8 - camera_x,
-                                  player_y_next);
+        on_interogation_block_hit(player_x_next + 8 - camera_x, player_y_next);
       }
 
       if (is_coin(tile_next_1)) {
-        on_get_coin_background(player_x_next - camera_x,
-                               player_y_next + 4);
+        on_get_coin_background(player_x_next - camera_x, player_y_next + 4);
       } else if (is_coin(tile_next_2)) {
-        on_get_coin_background(player_x_next + 8 - camera_x,
-                               player_y_next + 4);
+        on_get_coin_background(player_x_next + 8 - camera_x, player_y_next + 4);
       }
 
       player_y_upscaled = ((player_y_next_upscaled >> 3) << 3) + 32;
@@ -275,17 +267,18 @@ void player_move(void) BANKED {
   player_x = player_x_upscaled >> 4;
   player_y = player_y_upscaled >> 4;
 
-  player_draw_x = player_x + DEVICE_SPRITE_PX_OFFSET_X +
-                  PLAYER_DRAW_OFFSET_X - camera_x;
-  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y +
-                  MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
+  player_draw_x =
+      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
+  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
+                  PLAYER_DRAW_OFFSET_Y;
 }
 
 uint8_t player_is_on_platform(void) NONBANKED {
-  // EMU_printf("plateform count: %d\n", platform_moving_count);
+  EMU_printf("plateform count: %d\n", platform_moving_count);
 
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
+    EMU_printf("%d:%d %d:%d\n", player_draw_x, player_draw_y, platforms_moving[index_platform].draw_x,platforms_moving[index_platform].draw_y);
     if (player_draw_y > platforms_moving[index_platform].draw_y &&
         player_draw_y <= platforms_moving[index_platform].draw_y + 8 &&
         player_draw_x <= platforms_moving[index_platform].draw_x +
