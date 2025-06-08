@@ -20,7 +20,7 @@ level_object level_1_1_lookup[] = {
      .data.platform_moving = {.range = 6,
                               .platform_direction =
                                   DIRECTION_HORIZONTAL}},*/ // TEST PLATFORM
-    {.x = 282,
+    {.x = 28,
      .y = 6,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
@@ -77,54 +77,59 @@ size_t level_1_2_lookup_size =
 // 1_3
 level_object level_1_3_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_1_3_lookup_size = sizeof(level_1_3_lookup) / sizeof(level_1_3_lookup[0]);
-
+size_t level_1_3_lookup_size =
+    sizeof(level_1_3_lookup) / sizeof(level_1_3_lookup[0]);
 
 // 2_1
 level_object level_2_1_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_2_1_lookup_size = sizeof(level_2_1_lookup) / sizeof(level_2_1_lookup[0]);
-
+size_t level_2_1_lookup_size =
+    sizeof(level_2_1_lookup) / sizeof(level_2_1_lookup[0]);
 
 // 2_2
 level_object level_2_2_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_2_2_lookup_size = sizeof(level_2_2_lookup) / sizeof(level_2_2_lookup[0]);
+size_t level_2_2_lookup_size =
+    sizeof(level_2_2_lookup) / sizeof(level_2_2_lookup[0]);
 
 // 2_3
 level_object level_2_3_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_2_3_lookup_size = sizeof(level_2_3_lookup) / sizeof(level_2_3_lookup[0]);
-
+size_t level_2_3_lookup_size =
+    sizeof(level_2_3_lookup) / sizeof(level_2_3_lookup[0]);
 
 // 3_1
 level_object level_3_1_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_3_1_lookup_size = sizeof(level_3_1_lookup) / sizeof(level_3_1_lookup[0]);
+size_t level_3_1_lookup_size =
+    sizeof(level_3_1_lookup) / sizeof(level_3_1_lookup[0]);
 
 // 3_2
 level_object level_3_2_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_3_2_lookup_size = sizeof(level_3_2_lookup) / sizeof(level_3_2_lookup[0]);
+size_t level_3_2_lookup_size =
+    sizeof(level_3_2_lookup) / sizeof(level_3_2_lookup[0]);
 
 // 3_3
 level_object level_3_3_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_3_3_lookup_size = sizeof(level_3_3_lookup) / sizeof(level_3_3_lookup[0]);
+size_t level_3_3_lookup_size =
+    sizeof(level_3_3_lookup) / sizeof(level_3_3_lookup[0]);
 
 // 4_1
 level_object level_4_1_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_4_1_lookup_size = sizeof(level_4_1_lookup) / sizeof(level_4_1_lookup[0]);
-
+size_t level_4_1_lookup_size =
+    sizeof(level_4_1_lookup) / sizeof(level_4_1_lookup[0]);
 
 // 4_2
 level_object level_4_2_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_4_2_lookup_size = sizeof(level_4_2_lookup) / sizeof(level_4_2_lookup[0]);
-
+size_t level_4_2_lookup_size =
+    sizeof(level_4_2_lookup) / sizeof(level_4_2_lookup[0]);
 
 // 4_3
 level_object level_4_3_lookup[] = {{.x = 0, .y = 0}};
 
-size_t level_4_3_lookup_size = sizeof(level_4_3_lookup) / sizeof(level_4_3_lookup[0]);
+size_t level_4_3_lookup_size =
+    sizeof(level_4_3_lookup) / sizeof(level_4_3_lookup[0]);

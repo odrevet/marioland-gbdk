@@ -279,17 +279,22 @@ uint8_t player_is_on_platform(void) NONBANKED {
 
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
-    EMU_printf("%d:%d %d:%d\n", player_draw_x, player_draw_y,
-               platforms_moving[index_platform].draw_x,
-               platforms_moving[index_platform].draw_y);
-    if (player_draw_y > platforms_moving[index_platform].draw_y &&
-        player_draw_y <= platforms_moving[index_platform].draw_y + 8 &&
-        player_draw_x <= platforms_moving[index_platform].draw_x +
-                             3 * 8 /*platforms_moving[i].width*/
-        && player_draw_x + 8 > platforms_moving[index_platform].draw_x) {
+    EMU_printf("x %d between %d and %d . y %d between %d and %d.\n",
+               player_x_upscaled, platforms_moving[index_platform].x,
+               platforms_moving[index_platform].x + (3 * 8 * 16),
+               player_y_upscaled, platforms_moving[index_platform].y,
+               platforms_moving[index_platform].y + (8 * 16));
+    if (player_y_upscaled > platforms_moving[index_platform].y &&
+        player_y_upscaled <= platforms_moving[index_platform].y + (8 * 16) &&
+        player_x_upscaled <= platforms_moving[index_platform].x +
+                                 (3 * 8 * 16) /*platforms_moving[i].width*/
+        && player_x_upscaled > platforms_moving[index_platform].x) {
+      EMU_printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
-      player_y = platforms_moving[index_platform].y;
-      player_x = platforms_moving[index_platform].x;
+      // player_x_upscaled = platforms_moving[index_platform].x;
+      player_y_upscaled = platforms_moving[index_platform].y - 188;
+      // player_x = player_x_upscaled >> 4;
+      player_y = player_y_upscaled >> 4;
 
       touch_ground = TRUE;
       is_jumping = FALSE;
