@@ -54,7 +54,7 @@ extern bool display_jump_frame;
 extern bool display_slide_frame;
 extern bool touch_ground;
 extern uint16_t current_jump;
-extern int8_t player_max_speed;
+
 extern uint8_t player_frame;
 extern uint8_t frame_counter;
 extern bool mario_flip;

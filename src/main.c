@@ -89,10 +89,6 @@ bool enemy_collide() {
   return false;*/
 }
 
-#define PLAYER_SPEED 12
-#define PLAYER_DRAW_OFFSET_X 4
-#define PLAYER_DRAW_OFFSET_Y 4
-
 void main(void) {
   STAT_REG = 0x40;
   LYC_REG = 0x0F;
@@ -132,10 +128,10 @@ void main(void) {
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled;
 
-  player_draw_x = player_x + DEVICE_SPRITE_PX_OFFSET_X +
-                  PLAYER_DRAW_OFFSET_X - camera_x;
-  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y +
-                  MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
+  player_draw_x =
+      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
+  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
+                  PLAYER_DRAW_OFFSET_Y;
 
   // HUD
   // text

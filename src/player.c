@@ -32,7 +32,7 @@ bool display_jump_frame;
 bool display_slide_frame;
 bool touch_ground = FALSE;
 uint16_t current_jump = 0;
-int8_t player_max_speed = PLAYER_MAX_SPEED_WALK;
+
 uint8_t player_frame = 0;
 uint8_t frame_counter = 0;
 bool mario_flip;
@@ -70,19 +70,23 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 }
 
 uint16_t scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
-#define PLAYER_SPEED 16
-#define PLAYER_DRAW_OFFSET_X 4
-#define PLAYER_DRAW_OFFSET_Y 4
-
 void player_move(void) BANKED {
   if (joypad_current & J_RIGHT) {
-    vel_x = PLAYER_SPEED;
+    if (joypad_current & J_B) {
+      vel_x = PLAYER_SPEED_WALK; // WIP find scroll when run
+    } else {
+      vel_x = PLAYER_SPEED_WALK;
+    }
 
     if (display_jump_frame == FALSE) {
       mario_flip = FALSE;
     }
   } else if (joypad_current & J_LEFT) {
-    vel_x = -PLAYER_SPEED;
+    if (joypad_current & J_B) {
+      vel_x = -PLAYER_SPEED_WALK; // WIP find scroll when run
+    } else {
+      vel_x = -PLAYER_SPEED_WALK;
+    }
     mario_flip = TRUE;
   } else {
     vel_x = 0;
@@ -93,7 +97,7 @@ void player_move(void) BANKED {
     current_jump = 0;
     is_jumping = TRUE;
     display_jump_frame = TRUE;
-    vel_y = -32;
+    vel_y = -JUMP_SPEED;
     touch_ground = FALSE;
     music_play_sfx(BANK(sound_jump_small), sound_jump_small,
                    SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
@@ -101,15 +105,15 @@ void player_move(void) BANKED {
 
   if (is_jumping) {
     EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
-    current_jump += abs(vel_y);
+    current_jump += JUMP_SPEED;
     EMU_printf("jumping current after %d\n", current_jump);
-    if (current_jump >= 512) {
+    if (current_jump >= MAX_JUMP) {
       EMU_printf("jump max reached ! _\n");
       is_jumping = FALSE;
       current_jump = 0;
     }
   } else {
-    vel_y = 42; // gravity
+    vel_y = GRAVITY;
   }
 
   player_x_next_upscaled = player_x_upscaled + vel_x;
@@ -274,7 +278,9 @@ uint8_t player_is_on_platform(void) NONBANKED {
 
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
-    EMU_printf("%d:%d %d:%d\n", player_draw_x, player_draw_y, platforms_moving[index_platform].draw_x,platforms_moving[index_platform].draw_y);
+    EMU_printf("%d:%d %d:%d\n", player_draw_x, player_draw_y,
+               platforms_moving[index_platform].draw_x,
+               platforms_moving[index_platform].draw_y);
     if (player_draw_y > platforms_moving[index_platform].draw_y &&
         player_draw_y <= platforms_moving[index_platform].draw_y + 8 &&
         player_draw_x <= platforms_moving[index_platform].draw_x +
