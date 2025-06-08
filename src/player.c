@@ -36,6 +36,7 @@ uint16_t current_jump = 0;
 uint8_t player_frame = 0;
 uint8_t frame_counter = 0;
 bool mario_flip;
+uint16_t scroll_limit;
 
 uint8_t tile_next_1;
 uint8_t tile_next_2;
@@ -69,11 +70,10 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
-uint16_t scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
 void player_move(void) BANKED {
   if (joypad_current & J_RIGHT) {
     if (joypad_current & J_B) {
-      vel_x = PLAYER_SPEED_WALK; // WIP find scroll when run
+      vel_x = PLAYER_SPEED_WALK; // WIP fix scroll when run
     } else {
       vel_x = PLAYER_SPEED_WALK;
     }
@@ -83,7 +83,7 @@ void player_move(void) BANKED {
     }
   } else if (joypad_current & J_LEFT) {
     if (joypad_current & J_B) {
-      vel_x = -PLAYER_SPEED_WALK; // WIP find scroll when run
+      vel_x = -PLAYER_SPEED_WALK; // WIP fix scroll when run
     } else {
       vel_x = -PLAYER_SPEED_WALK;
     }

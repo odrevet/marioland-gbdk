@@ -58,6 +58,8 @@ extern uint16_t current_jump;
 extern uint8_t player_frame;
 extern uint8_t frame_counter;
 extern bool mario_flip;
+extern uint16_t scroll_limit;
+
 extern uint8_t current_gravity;
 
 extern uint8_t tile_next_1;

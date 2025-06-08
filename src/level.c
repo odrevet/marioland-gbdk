@@ -5,6 +5,7 @@
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"
 #include "platforms.h"
+#include "player.h"
 #include <stdint.h>
 
 uint16_t camera_x;
@@ -346,6 +347,18 @@ void level_set_current(void) NONBANKED {
     plane_mode = TRUE;
     break;
   }
+
+  player_x_upscaled = (4 << 3) << 4;
+  player_y_upscaled = 80 << 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
+
+  player_draw_x =
+      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
+  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
+                  PLAYER_DRAW_OFFSET_Y;
+
+  scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
   enemy_count = 0;
   platform_moving_count = 0;
   col_from = 0;
