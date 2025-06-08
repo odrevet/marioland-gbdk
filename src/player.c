@@ -210,7 +210,8 @@ void player_move(void) BANKED {
     tile_next_2 = get_tile(player_x_next - camera_x,
                            player_y_next + 11); // left bottom
 
-    if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
+    if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2) ||
+        is_tile_passthought(tile_next_1, tile_next_2)) {
       EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x, player_y,
                  player_x_next, player_y_next);
       touch_ground = TRUE;
