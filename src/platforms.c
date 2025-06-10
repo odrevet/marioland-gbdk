@@ -78,7 +78,7 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
       base_sprite += move_metasprite_ex(
           sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
           platforms_moving[index_platform_moving].draw_x + i * common_TILE_W +
-              DEVICE_SPRITE_PX_OFFSET_X,
+              DEVICE_SPRITE_PX_OFFSET_X + TILE_SIZE,
           platforms_moving[index_platform_moving].draw_y +
               +DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX + TILE_SIZE);
     }

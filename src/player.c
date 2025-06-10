@@ -1,3 +1,4 @@
+#include "asm/types.h"
 #include "global.h"
 #include "level.h"
 #include <stdint.h>
@@ -30,6 +31,7 @@ int8_t vel_y;
 bool is_jumping = FALSE;
 bool display_jump_frame;
 bool display_slide_frame;
+bool display_walk_animation;
 bool touch_ground = FALSE;
 uint16_t current_jump = 0;
 
@@ -72,6 +74,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 
 void player_move(void) BANKED {
   if (joypad_current & J_RIGHT) {
+    display_walk_animation = TRUE;
     if (joypad_current & J_B) {
       vel_x = PLAYER_SPEED_WALK; // WIP fix scroll when run
     } else {
@@ -82,6 +85,7 @@ void player_move(void) BANKED {
       mario_flip = FALSE;
     }
   } else if (joypad_current & J_LEFT) {
+    display_walk_animation = TRUE;
     if (joypad_current & J_B) {
       vel_x = -PLAYER_SPEED_WALK; // WIP fix scroll when run
     } else {
@@ -90,6 +94,7 @@ void player_move(void) BANKED {
     mario_flip = TRUE;
   } else {
     vel_x = 0;
+    display_walk_animation = FALSE;
   }
 
   if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
@@ -112,7 +117,7 @@ void player_move(void) BANKED {
       is_jumping = FALSE;
       current_jump = 0;
     }
-  } else {
+  } else if (!player_is_on_platform()) {
     vel_y = GRAVITY;
   }
 
@@ -214,10 +219,8 @@ void player_move(void) BANKED {
         is_tile_passthought(tile_next_1, tile_next_2)) {
       EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x, player_y,
                  player_x_next, player_y_next);
-      touch_ground = TRUE;
-      is_jumping = FALSE;
+      player_on_touch_ground();
       current_jump = 0;
-      display_jump_frame = FALSE;
       player_y = ((player_y_next + 7) & ~7) - 4;
       player_y_upscaled = player_y << 4;
     } else {
@@ -274,7 +277,13 @@ void player_move(void) BANKED {
                   PLAYER_DRAW_OFFSET_Y;
 }
 
-uint8_t player_is_on_platform(void) NONBANKED {
+void player_on_touch_ground(void) NONBANKED {
+  touch_ground = TRUE;
+  is_jumping = FALSE;
+  display_jump_frame = FALSE;
+}
+
+bool player_is_on_platform(void) NONBANKED {
   EMU_printf("plateform count: %d\n", platform_moving_count);
 
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
@@ -284,25 +293,19 @@ uint8_t player_is_on_platform(void) NONBANKED {
                platforms_moving[index_platform].x + (3 * 8 * 16),
                player_y_upscaled, platforms_moving[index_platform].y,
                platforms_moving[index_platform].y + (8 * 16));
-    if (player_y_upscaled > platforms_moving[index_platform].y &&
-        player_y_upscaled <= platforms_moving[index_platform].y + (8 * 16) &&
+    if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
+        player_y_upscaled + 128 <=
+            platforms_moving[index_platform].y + (8 * 16) &&
         player_x_upscaled <= platforms_moving[index_platform].x +
                                  (3 * 8 * 16) /*platforms_moving[i].width*/
         && player_x_upscaled > platforms_moving[index_platform].x) {
-      EMU_printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      vel_x += platforms_moving[index_platform].vel_x;
+      vel_y = platforms_moving[index_platform].vel_y;
 
-      // player_x_upscaled = platforms_moving[index_platform].x;
-      player_y_upscaled = platforms_moving[index_platform].y - 188;
-      // player_x = player_x_upscaled >> 4;
-      player_y = player_y_upscaled >> 4;
-
-      touch_ground = TRUE;
-      is_jumping = FALSE;
-      display_jump_frame = FALSE;
-
-      return 1;
+      player_on_touch_ground();
+      return TRUE;
     }
   }
 
-  return 0;
+  return FALSE;
 }

@@ -198,21 +198,18 @@ void main(void) {
     // set player frame
     if (display_jump_frame) {
       player_frame = 4;
-    } else if (vel_x != 0) {
-      if (display_slide_frame) {
-        music_play_sfx(BANK(sound_skid), sound_skid, SFX_MUTE_MASK(sound_skid),
-                       MUSIC_SFX_PRIORITY_NORMAL);
-        player_frame = 5;
-      } else {
-        update_frame_counter();
-      }
+    } else if (display_slide_frame) {
+      music_play_sfx(BANK(sound_skid), sound_skid, SFX_MUTE_MASK(sound_skid),
+                     MUSIC_SFX_PRIORITY_NORMAL);
+      player_frame = 5;
+    } else if (display_walk_animation) {
+      update_frame_counter();
     } else {
       player_frame = 0;
     }
 
     enemy_update();
     platform_moving_update();
-    player_is_on_platform();
     missile_update();
     player_draw(0);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);

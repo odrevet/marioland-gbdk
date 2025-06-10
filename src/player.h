@@ -50,8 +50,11 @@ extern uint8_t player_draw_y;
 extern int8_t vel_x;
 extern int8_t vel_y;
 extern bool is_jumping;
+
 extern bool display_jump_frame;
 extern bool display_slide_frame;
+extern bool display_walk_animation;
+
 extern bool touch_ground;
 extern uint16_t current_jump;
 
@@ -71,6 +74,7 @@ extern bool plane_mode;
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
-uint8_t player_is_on_platform(void) NONBANKED;
+void player_on_touch_ground(void) NONBANKED;
+bool player_is_on_platform(void) NONBANKED;
 
 #endif

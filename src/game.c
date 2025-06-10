@@ -19,6 +19,7 @@ void init(void) {
 
   display_jump_frame = FALSE;
   display_slide_frame = FALSE;
+  display_walk_animation = FALSE;
 
   frame_counter = 0;
   mario_flip = FALSE;

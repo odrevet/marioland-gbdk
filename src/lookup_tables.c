@@ -20,11 +20,11 @@ level_object level_1_1_lookup[] = {
      .data.platform_moving = {.range = 6,
                               .platform_direction =
                                   DIRECTION_HORIZONTAL}},*/ // TEST PLATFORM
-    {.x = 28,
-     .y = 6,
+    {.x = 27,
+     .y = 10,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
-                              .platform_direction = DIRECTION_VERTICAL}},
+                              .platform_direction = DIRECTION_HORIZONTAL}},
     {.x = 284,
      .y = 10,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
