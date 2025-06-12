@@ -76,7 +76,7 @@ void player_move(void) BANKED {
   if (joypad_current & J_RIGHT) {
     display_walk_animation = TRUE;
     if (joypad_current & J_B) {
-      vel_x = PLAYER_SPEED_WALK; // WIP fix scroll when run
+      vel_x = PLAYER_SPEED_RUN;
     } else {
       vel_x = PLAYER_SPEED_WALK;
     }
@@ -87,7 +87,7 @@ void player_move(void) BANKED {
   } else if (joypad_current & J_LEFT) {
     display_walk_animation = TRUE;
     if (joypad_current & J_B) {
-      vel_x = -PLAYER_SPEED_WALK; // WIP fix scroll when run
+      vel_x = -PLAYER_SPEED_RUN;
     } else {
       vel_x = -PLAYER_SPEED_WALK;
     }
@@ -164,7 +164,7 @@ void player_move(void) BANKED {
       // check scroll limit
       if (!level_end_reached && player_x > scroll_limit) {
         // update camera and scroll register
-        camera_x_upscaled += 16;
+        camera_x_upscaled += vel_x;
         camera_x = camera_x_upscaled >> 4;
         SCX_REG = camera_x;
 
