@@ -6,25 +6,25 @@
 
 // 1_1
 level_object level_1_1_lookup[] = {
-    {.x = 22,
+    /*{.x = 22,
      .y = 15,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}},
+     .data.enemy = {.type = ENEMY_GOOMBO}},*/
     /*{.x = 65,
      .y = 14,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GOOMBO}},*/
-    /*{.x = 26,
+    {.x = 26,
      .y = 8,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
                               .platform_direction =
-                                  DIRECTION_HORIZONTAL}},*/ // TEST PLATFORM
-    {.x = 27,
+                                  DIRECTION_VERTICAL}}, // TEST PLATFORM
+    {.x = 280,
      .y = 10,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
-                              .platform_direction = DIRECTION_HORIZONTAL}},
+                              .platform_direction = DIRECTION_VERTICAL}},
     {.x = 284,
      .y = 10,
      .type = OBJECT_TYPE_PLATFORM_MOVING,

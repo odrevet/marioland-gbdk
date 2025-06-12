@@ -73,6 +73,19 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 }
 
 void player_move(void) BANKED {
+  if (is_jumping) {
+    EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
+    current_jump += JUMP_SPEED;
+    EMU_printf("jumping current after %d\n", current_jump);
+    if (current_jump >= MAX_JUMP) {
+      EMU_printf("jump max reached ! _\n");
+      is_jumping = FALSE;
+      current_jump = 0;
+    }
+  } else if (!player_is_on_platform()) {
+    vel_y = GRAVITY;
+  }
+
   if (joypad_current & J_RIGHT) {
     display_walk_animation = TRUE;
     if (joypad_current & J_B) {
@@ -97,8 +110,10 @@ void player_move(void) BANKED {
     display_walk_animation = FALSE;
   }
 
+  EMU_printf("IS NOT JUMPING %d IS GROUNDED %d\n", !is_jumping, touch_ground);
   if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
       touch_ground) {
+    EMU_printf("JUMP!!!!!!!!!!!!!!!!\n");
     current_jump = 0;
     is_jumping = TRUE;
     display_jump_frame = TRUE;
@@ -106,19 +121,6 @@ void player_move(void) BANKED {
     touch_ground = FALSE;
     music_play_sfx(BANK(sound_jump_small), sound_jump_small,
                    SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
-  }
-
-  if (is_jumping) {
-    EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
-    current_jump += JUMP_SPEED;
-    EMU_printf("jumping current after %d\n", current_jump);
-    if (current_jump >= MAX_JUMP) {
-      EMU_printf("jump max reached ! _\n");
-      is_jumping = FALSE;
-      current_jump = 0;
-    }
-  } else if (!player_is_on_platform()) {
-    vel_y = GRAVITY;
   }
 
   player_x_next_upscaled = player_x_upscaled + vel_x;
@@ -278,6 +280,7 @@ void player_move(void) BANKED {
 }
 
 void player_on_touch_ground(void) NONBANKED {
+  current_jump = 0;
   touch_ground = TRUE;
   is_jumping = FALSE;
   display_jump_frame = FALSE;
@@ -291,7 +294,7 @@ bool player_is_on_platform(void) NONBANKED {
     EMU_printf("x %d between %d and %d . y %d between %d and %d.\n",
                player_x_upscaled, platforms_moving[index_platform].x,
                platforms_moving[index_platform].x + (3 * 8 * 16),
-               player_y_upscaled, platforms_moving[index_platform].y,
+               player_y_upscaled + 128, platforms_moving[index_platform].y,
                platforms_moving[index_platform].y + (8 * 16));
     if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
         player_y_upscaled + 128 <=
@@ -301,6 +304,7 @@ bool player_is_on_platform(void) NONBANKED {
         && player_x_upscaled > platforms_moving[index_platform].x) {
       vel_x += platforms_moving[index_platform].vel_x;
       vel_y = platforms_moving[index_platform].vel_y;
+      EMU_printf("ON PLATEFORM\n");
 
       player_on_touch_ground();
       return TRUE;
