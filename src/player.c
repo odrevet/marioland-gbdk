@@ -180,7 +180,7 @@ void player_move(void) BANKED {
         next_col_chunk_load++;
       }
     }
-  } else if (vel_x < 0 && player_x_next > 0) {
+  } else if (vel_x < 0 && player_draw_x > 12) {
     // move left
     tile_next_1 = get_tile(player_x_next - camera_x - 1,
                            player_y_next + 4); // left top
@@ -204,7 +204,7 @@ void player_move(void) BANKED {
     }
   }
 
-  EMU_printf("PLAYER X NEXT %d\n", player_x_next);
+  EMU_printf("DRAW %d PLAYER X NEXT %d\n", player_draw_x, player_x_next);
 
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled + vel_y;
