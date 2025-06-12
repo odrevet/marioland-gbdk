@@ -73,19 +73,6 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 }
 
 void player_move(void) BANKED {
-  if (is_jumping) {
-    EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
-    current_jump += JUMP_SPEED;
-    EMU_printf("jumping current after %d\n", current_jump);
-    if (current_jump >= MAX_JUMP) {
-      EMU_printf("jump max reached ! _\n");
-      is_jumping = FALSE;
-      current_jump = 0;
-    }
-  } else if (!player_is_on_platform()) {
-    vel_y = GRAVITY;
-  }
-
   if (joypad_current & J_RIGHT) {
     display_walk_animation = TRUE;
     if (joypad_current & J_B) {
@@ -108,6 +95,19 @@ void player_move(void) BANKED {
   } else {
     vel_x = 0;
     display_walk_animation = FALSE;
+  }
+
+  if (is_jumping) {
+    EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
+    current_jump += JUMP_SPEED;
+    EMU_printf("jumping current after %d\n", current_jump);
+    if (current_jump >= MAX_JUMP) {
+      EMU_printf("jump max reached ! _\n");
+      is_jumping = FALSE;
+      current_jump = 0;
+    }
+  } else if (!player_is_on_platform()) {
+    vel_y = GRAVITY;
   }
 
   EMU_printf("IS NOT JUMPING %d IS GROUNDED %d\n", !is_jumping, touch_ground);
