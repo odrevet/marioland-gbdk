@@ -214,8 +214,11 @@ void player_move(void) BANKED {
     // move down
     tile_next_1 = get_tile(player_x_next + 8 - camera_x,
                            player_y_next + 11); // right bottom
-    tile_next_2 = get_tile(player_x_next - camera_x,
+    tile_next_2 = get_tile(player_x_next + 1 - camera_x,
                            player_y_next + 11); // left bottom
+
+    EMU_printf("COLID DOWN ? %d %d\n", is_tile_solid(tile_next_2),
+               is_tile_solid(tile_next_1));
 
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2) ||
         is_tile_passthought(tile_next_1, tile_next_2)) {
