@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Object Placement Tool
-Usage: python placement_tool.py <image_file.png>
+Usage: python placement_tool.py <image_file.png> [source_file.c]
 """
 
 import tkinter as tk
@@ -9,12 +9,17 @@ from tkinter import messagebox, simpledialog
 from PIL import Image, ImageTk
 import sys
 import os
+import re
 
 class GamePlacementTool:
-    def __init__(self, image_path):
+    def __init__(self, image_path, source_path=None):
         self.root = tk.Tk()
         self.root.title("Retro Game Object Placement Tool")
         self.root.geometry("1000x700")
+        
+        # Store source file path
+        self.source_path = source_path
+        self.existing_objects = []
         
         # Load and display image
         try:
@@ -23,6 +28,10 @@ class GamePlacementTool:
         except Exception as e:
             messagebox.showerror("Error", f"Cannot load image: {e}")
             sys.exit(1)
+        
+        # Parse existing objects from source file if provided
+        if self.source_path and os.path.exists(self.source_path):
+            self.parse_source_file()
         
         # Grid size and zoom
         self.grid_size = 8
@@ -45,6 +54,35 @@ class GamePlacementTool:
         self.root.focus_set()
         
         self.update_display()
+    
+    def parse_source_file(self):
+        """Parse the source file to extract existing object positions"""
+        try:
+            with open(self.source_path, 'r') as f:
+                content = f.read()
+            
+            # Look for the lookup table definition
+            # Pattern to match: level_object level_X_X_lookup[] = { ... };
+            pattern = r'level_object\s+\w+_lookup\[\]\s*=\s*\{(.*?)\};'
+            match = re.search(pattern, content, re.DOTALL)
+            
+            if match:
+                table_content = match.group(1)
+                # Parse individual object entries
+                # Pattern to match object entries like: {.x = 23, .y = 13, ...}
+                object_pattern = r'\{\.x\s*=\s*(\d+),\s*\.y\s*=\s*(\d+),.*?\}'
+                
+                for obj_match in re.finditer(object_pattern, table_content, re.DOTALL):
+                    x = int(obj_match.group(1))
+                    y = int(obj_match.group(2))
+                    self.existing_objects.append((x, y))
+                
+                print(f"Loaded {len(self.existing_objects)} existing objects from {self.source_path}")
+            else:
+                print(f"No lookup table found in {self.source_path}")
+                
+        except Exception as e:
+            print(f"Error parsing source file: {e}")
     
     def setup_ui(self):
         # Create main frame
@@ -88,14 +126,21 @@ class GamePlacementTool:
         tk.Button(control_frame, text="Zoom Out (-)", command=self.zoom_out).pack(side=tk.LEFT, padx=5)
         tk.Button(control_frame, text="Reset Zoom", command=self.reset_zoom).pack(side=tk.LEFT, padx=5)
         
+        # Toggle existing objects visibility
+        tk.Button(control_frame, text="Toggle Existing Objects", command=self.toggle_existing_objects).pack(side=tk.LEFT, padx=5)
+        
         # Zoom level display
         self.zoom_label = tk.Label(control_frame, text="Zoom: 100%")
         self.zoom_label.pack(side=tk.LEFT, padx=10)
         
+        # Existing objects count
+        self.objects_label = tk.Label(control_frame, text=f"Existing Objects: {len(self.existing_objects)}")
+        self.objects_label.pack(side=tk.LEFT, padx=10)
+        
         # Instructions
         instructions = tk.Label(
             info_frame,
-            text="Click on grid tiles to place objects. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | 0: reset zoom | Generated C code is copied to clipboard.",
+            text="Click on grid tiles to place objects. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | Shift+wheel: horizontal scroll | 0: reset zoom | Blue squares: existing objects | Generated C code is copied to clipboard.",
             wraplength=800
         )
         instructions.pack(pady=5)
@@ -103,6 +148,9 @@ class GamePlacementTool:
         # Status
         self.status_label = tk.Label(info_frame, text="Ready")
         self.status_label.pack()
+        
+        # Track visibility of existing objects
+        self.show_existing_objects = True
     
     def update_display(self):
         # Clear canvas
@@ -124,6 +172,10 @@ class GamePlacementTool:
         
         # Draw grid
         self.draw_grid()
+        
+        # Draw existing objects
+        if self.show_existing_objects:
+            self.draw_existing_objects()
         
         # Update scroll region
         self.canvas.configure(scrollregion=(0, 0, scaled_width, scaled_height))
@@ -157,6 +209,38 @@ class GamePlacementTool:
                 fill="red", width=1, tags="grid"
             )
     
+    def draw_existing_objects(self):
+        """Draw highlights for existing objects from the source file"""
+        if not self.existing_objects:
+            return
+        
+        # Calculate scaled dimensions
+        scaled_width = int(self.image_width * self.zoom_factor)
+        scaled_height = int(self.image_height * self.zoom_factor)
+        grid_cols = self.image_width // self.grid_size
+        grid_rows = self.image_height // self.grid_size
+        
+        for x, y in self.existing_objects:
+            # Make sure coordinates are within bounds
+            if 0 <= x < grid_cols and 0 <= y < grid_rows:
+                # Calculate rectangle coordinates
+                x1 = (x * scaled_width) // grid_cols
+                y1 = (y * scaled_height) // grid_rows
+                x2 = ((x + 1) * scaled_width) // grid_cols
+                y2 = ((y + 1) * scaled_height) // grid_rows
+                
+                # Draw existing object highlight
+                self.canvas.create_rectangle(
+                    x1, y1, x2, y2,
+                    fill="blue", stipple="gray50", outline="darkblue", width=2,
+                    tags="existing_object"
+                )
+    
+    def toggle_existing_objects(self):
+        """Toggle visibility of existing objects"""
+        self.show_existing_objects = not self.show_existing_objects
+        self.update_display()
+    
     def on_canvas_click(self, event):
         # Get canvas coordinates (accounting for scroll)
         canvas_x = self.canvas.canvasx(event.x)
@@ -178,6 +262,13 @@ class GamePlacementTool:
             grid_y = max(0, min(grid_y, grid_rows - 1))
         else:
             grid_x = grid_y = 0
+        
+        # Check if there's already an object at this position
+        if (grid_x, grid_y) in self.existing_objects:
+            self.status_label.config(
+                text=f"Object already exists at grid ({grid_x}, {grid_y})"
+            )
+            return
         
         # Prompt for object type
         object_type = self.prompt_object_type()
@@ -205,8 +296,9 @@ class GamePlacementTool:
     def generate_c_code(self, x, y, obj_type):
         # Map object types to C code templates
         templates = {
-            "ENEMY": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}}",
-            "PLATFORM": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}}",
+            "ENEMY": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}},",
+            "PLATFORM": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}},",
+            "PLATFORM_MOVING": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}},",
         }
         
         template = templates.get(obj_type, templates["ENEMY"])
@@ -261,17 +353,23 @@ class GamePlacementTool:
             self.reset_zoom()
     
     def on_mouse_wheel(self, event):
-        # Handle mouse wheel zooming (with Ctrl key for zoom, without for scroll)
-        if event.state & 0x4:  # Ctrl key is pressed
+        # Handle mouse wheel scrolling and zooming
+        # Priority order: Ctrl+wheel = zoom, Shift+wheel = horizontal scroll, wheel = vertical scroll
+        
+        if event.state & 0x4:  # Ctrl key is pressed - zoom
             if event.delta > 0 or event.num == 4:  # Zoom in
                 self.zoom_in()
             elif event.delta < 0 or event.num == 5:  # Zoom out
                 self.zoom_out()
-        else:
-            # Regular scrolling
-            if event.delta > 0 or event.num == 4:
+        elif event.state & 0x1:  # Shift key is pressed - horizontal scroll
+            if event.delta > 0 or event.num == 4:  # Scroll left
+                self.canvas.xview_scroll(-1, "units")
+            elif event.delta < 0 or event.num == 5:  # Scroll right
+                self.canvas.xview_scroll(1, "units")
+        else:  # No modifier keys - vertical scroll
+            if event.delta > 0 or event.num == 4:  # Scroll up
                 self.canvas.yview_scroll(-1, "units")
-            elif event.delta < 0 or event.num == 5:
+            elif event.delta < 0 or event.num == 5:  # Scroll down
                 self.canvas.yview_scroll(1, "units")
     
     def zoom_in(self):
@@ -332,7 +430,7 @@ class ObjectTypeDialog:
         # Create dialog window
         self.dialog = tk.Toplevel(parent)
         self.dialog.title("Select Object Type")
-        self.dialog.geometry("300x200")
+        self.dialog.geometry("350x250")
         self.dialog.transient(parent)
         
         # Center the dialog
@@ -347,16 +445,16 @@ class ObjectTypeDialog:
         button_frame = tk.Frame(self.dialog)
         button_frame.pack(pady=10)
         
-        object_types = ["ENEMY", "PLATFORM"]
+        object_types = ["ENEMY", "PLATFORM", "PLATFORM_MOVING"]
         
         for i, obj_type in enumerate(object_types):
             btn = tk.Button(
                 button_frame,
                 text=obj_type,
-                width=12,
+                width=15,
                 command=lambda t=obj_type: self.select_type(t)
             )
-            btn.grid(row=i//2, column=i%2, padx=5, pady=2)
+            btn.grid(row=i//2, column=i%2, padx=5, pady=5)
         
         # Cancel button
         cancel_btn = tk.Button(
@@ -385,18 +483,23 @@ class ObjectTypeDialog:
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python placement_tool.py <image_file.png>")
+    if len(sys.argv) < 2:
+        print("Usage: python placement_tool.py <image_file.png> [source_file.c]")
         sys.exit(1)
     
     image_path = sys.argv[1]
+    source_path = sys.argv[2] if len(sys.argv) > 2 else None
     
     if not os.path.exists(image_path):
         print(f"Error: Image file '{image_path}' not found.")
         sys.exit(1)
     
+    if source_path and not os.path.exists(source_path):
+        print(f"Warning: Source file '{source_path}' not found. Continuing without existing objects.")
+        source_path = None
+    
     # Create and run the application
-    app = GamePlacementTool(image_path)
+    app = GamePlacementTool(image_path, source_path)
     app.run()
 
 
