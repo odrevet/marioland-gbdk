@@ -55,6 +55,18 @@ VGM converted using VGM2GBSFX https://github.com/untoxa/VGM2GBSFX
 
 UGE converted using hUGETracker uge2source https://github.com/SuperDisk/hUGETracker
 
+# Scripts 
+
+## Level editor 
+
+Python script to help place level objects (enemy, platforms)
+Uses tk
+
+Copy to clipboard the code to then past into a lookup table
+
+```
+python3 scripts/level_editor.py assets/levels/2_1.png
+```
 
 # tests
 
