@@ -16,7 +16,15 @@
 #define ENEMY_MAX 4
 #define ENEMY_LOOP_PER_ANIMATION_FRAME 15
 
-enum enemy_type { ENEMY_GOOMBO, ENEMY_KOOPA, ENEMY_FLY };
+enum enemy_type {
+  ENEMY_GOOMBO,
+  ENEMY_KOOPA,
+  ENEMY_FLY,
+  ENEMY_BUNBUN,
+  ENEMY_GAO,
+  ENEMY_HONEN,
+  ENEMY_SUU
+};
 
 typedef struct {
   uint16_t x;
