@@ -13,7 +13,6 @@
 
 #include "global.h"
 #include "hud.h"
-#include "lookup_tables.h"
 #include "coin_animated.h"
 
 // sounds
@@ -45,6 +44,21 @@
 #include "levels/level_4_1.h"
 #include "levels/level_4_2.h"
 #include "levels/level_4_3.h"
+
+// lookup tables
+#include "lookup_tables.h"
+#include "lookup_tables/lookup_table_1_1.h"
+#include "lookup_tables/lookup_table_1_2.h"
+#include "lookup_tables/lookup_table_1_3.h"
+#include "lookup_tables/lookup_table_2_1.h"
+#include "lookup_tables/lookup_table_2_2.h"
+#include "lookup_tables/lookup_table_2_3.h"
+#include "lookup_tables/lookup_table_3_1.h"
+#include "lookup_tables/lookup_table_3_2.h"
+#include "lookup_tables/lookup_table_3_3.h"
+#include "lookup_tables/lookup_table_4_1.h"
+#include "lookup_tables/lookup_table_4_2.h"
+#include "lookup_tables/lookup_table_4_3.h"
 
 #include <gbdk/emu_debug.h>
 

@@ -1,10 +1,7 @@
 #ifndef LOOKUP_TABLES_H
 #define LOOKUP_TABLES_H
 
-#include <stdbool.h>
-
-#include "enemy.h"
-#include "powerup.h"
+#include <stdint.h>
 
 typedef enum {
   OBJECT_TYPE_ENEMY,
@@ -40,55 +37,6 @@ typedef struct level_block_object {
   uint8_t id;
 } level_block_object;
 
-// 1_1
-extern level_object level_1_1_lookup[];
-extern size_t level_1_1_lookup_size;
 
-extern const level_block_object level_1_1_blocks_lookup[];
-extern const size_t level_1_1_blocks_lookup_size;
-
-// 1_2
-extern level_object level_1_2_lookup[];
-extern size_t level_1_2_lookup_size;
-
-// 1_3
-extern level_object level_1_3_lookup[];
-extern size_t level_1_3_lookup_size;
-
-// 2_1
-extern level_object level_2_1_lookup[];
-extern size_t level_2_1_lookup_size;
-
-// 2_2
-extern level_object level_2_2_lookup[];
-extern size_t level_2_2_lookup_size;
-
-// 2_3
-extern level_object level_2_3_lookup[];
-extern size_t level_2_3_lookup_size;
-
-// 3_1
-extern level_object level_3_1_lookup[];
-extern size_t level_3_1_lookup_size;
-
-// 3_2
-extern level_object level_3_2_lookup[];
-extern size_t level_3_2_lookup_size;
-
-// 3_3
-extern level_object level_3_3_lookup[];
-extern size_t level_3_3_lookup_size;
-
-// 4_1
-extern level_object level_4_1_lookup[];
-extern size_t level_4_1_lookup_size;
-
-// 4_2
-extern level_object level_4_2_lookup[];
-extern size_t level_4_2_lookup_size;
-
-// 4_3
-extern level_object level_4_3_lookup[];
-extern size_t level_4_3_lookup_size;
 
 #endif

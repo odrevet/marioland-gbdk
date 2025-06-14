@@ -232,8 +232,8 @@ void level_set_current(void) NONBANKED {
     music_load(BANK(music_overworld), &music_overworld);
     level_lookup = level_1_1_lookup;
     level_lookup_size = level_1_1_lookup_size;
-    level_block_lookup = level_1_1_blocks_lookup;
-    level_block_lookup_size = level_1_1_blocks_lookup_size;
+    level_block_lookup = NULL; //level_1_1_blocks_lookup;
+    level_block_lookup_size = 0; //level_1_1_blocks_lookup_size;
     plane_mode = FALSE;
     break;
   case 1:
