@@ -56,19 +56,22 @@ bool powerups_collide() {
 }
 
 bool enemy_collide() {
-  /*for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
-    uint8_t enemy_left = enemies[enemy_index].draw_x - 4;
-    uint8_t enemy_right = enemies[enemy_index].draw_x + 4;
-    uint8_t enemy_top = enemies[enemy_index].draw_y - 4;
-    uint8_t enemy_bottom = enemies[enemy_index].draw_y + 7;
+  for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
+    uint8_t enemy_left = enemies[enemy_index].x - 4;
+    uint8_t enemy_right = enemies[enemy_index].x + 4;
+    uint8_t enemy_top = enemies[enemy_index].y - 4;
+    uint8_t enemy_bottom = enemies[enemy_index].y + 7;
 
-    EMU_printf("E l%d:r%d:t%d:b%d M l%d:r%d:t%d:b%d\n", enemy_left, enemy_right,
-               enemy_top, enemy_bottom, x_left_draw, x_right_draw, y_top_draw,
-               y_bottom_draw);
+    EMU_printf("E l%d:r%d:t%d:b%d player y %d\n", enemy_left, enemy_right, enemy_top,
+               enemy_bottom, player_y_upscaled);
 
-    if (enemy_right > x_left_draw && enemy_left < x_right_draw &&
-        enemy_bottom > y_top_draw && enemy_top < y_bottom_draw) {
-      if (y_bottom_draw < enemies[enemy_index].draw_y) {
+    if (player_y_upscaled + 128 > enemy_bottom &&
+        player_y_upscaled + 128 <=
+            enemy_top &&
+        player_x_upscaled >= enemy_left
+        && player_x_upscaled < enemy_right) {
+
+      if (player_y_upscaled + 128 < enemy_top) {
         for (uint8_t j = enemy_index; j < enemy_count - 1; j++) {
           enemies[j] = enemies[j + 1];
         }
@@ -86,7 +89,7 @@ bool enemy_collide() {
       return true;
     }
   }
-  return false;*/
+  return false;
 }
 
 void main(void) {
