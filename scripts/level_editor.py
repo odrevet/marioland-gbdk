@@ -20,6 +20,9 @@ class GamePlacementTool:
         # Store source file path
         self.source_path = source_path
         self.existing_objects = []
+        self.lookup_table_name = None
+        self.lookup_table_start = None
+        self.lookup_table_end = None
         
         # Load and display image
         try:
@@ -56,28 +59,56 @@ class GamePlacementTool:
         self.update_display()
     
     def parse_source_file(self):
-        """Parse the source file to extract existing object positions"""
+        """Parse the source file to extract existing object positions and table info"""
         try:
             with open(self.source_path, 'r') as f:
                 content = f.read()
             
             # Look for the lookup table definition
             # Pattern to match: level_object level_X_X_lookup[] = { ... };
-            pattern = r'level_object\s+\w+_lookup\[\]\s*=\s*\{(.*?)\};'
+            pattern = r'(level_object\s+(\w+_lookup)\[\]\s*=\s*\{)(.*?)(\};)'
             match = re.search(pattern, content, re.DOTALL)
             
             if match:
-                table_content = match.group(1)
-                # Parse individual object entries
-                # Pattern to match object entries like: {.x = 23, .y = 13, ...}
-                object_pattern = r'\{\.x\s*=\s*(\d+),\s*\.y\s*=\s*(\d+),.*?\}'
+                self.lookup_table_name = match.group(2)
+                self.lookup_table_start = match.start()
+                self.lookup_table_end = match.end()
+                table_content = match.group(3)
                 
-                for obj_match in re.finditer(object_pattern, table_content, re.DOTALL):
-                    x = int(obj_match.group(1))
-                    y = int(obj_match.group(2))
-                    self.existing_objects.append((x, y))
+                # Parse individual object entries with proper brace matching
+                objects_with_pos = []
+                
+                # Find all object starts
+                start_pattern = r'\{\.x\s*=\s*(\d+),\s*\.y\s*=\s*(\d+),'
+                
+                for start_match in re.finditer(start_pattern, table_content):
+                    x = int(start_match.group(1))
+                    y = int(start_match.group(2))
+                    
+                    # Find the complete object by counting braces
+                    start_pos = start_match.start()
+                    brace_count = 0
+                    pos = start_pos
+                    
+                    while pos < len(table_content):
+                        char = table_content[pos]
+                        if char == '{':
+                            brace_count += 1
+                        elif char == '}':
+                            brace_count -= 1
+                            if brace_count == 0:
+                                # Found the end of the object
+                                full_object = table_content[start_pos:pos + 1]
+                                objects_with_pos.append((x, y, full_object))
+                                break
+                        pos += 1
+                
+                # Sort by x coordinate for proper ordering
+                objects_with_pos.sort(key=lambda obj: obj[0])
+                self.existing_objects = [(x, y) for x, y, _ in objects_with_pos]
                 
                 print(f"Loaded {len(self.existing_objects)} existing objects from {self.source_path}")
+                print(f"Lookup table: {self.lookup_table_name}")
             else:
                 print(f"No lookup table found in {self.source_path}")
                 
@@ -138,9 +169,15 @@ class GamePlacementTool:
         self.objects_label.pack(side=tk.LEFT, padx=10)
         
         # Instructions
+        instructions_text = "Click on grid tiles to place objects. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | Shift+wheel: horizontal scroll | 0: reset zoom | Blue squares: existing objects"
+        if self.source_path:
+            instructions_text += " | Objects are inserted into source file automatically."
+        else:
+            instructions_text += " | Generated C code is copied to clipboard (no source file provided)."
+            
         instructions = tk.Label(
             info_frame,
-            text="Click on grid tiles to place objects. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | Shift+wheel: horizontal scroll | 0: reset zoom | Blue squares: existing objects | Generated C code is copied to clipboard.",
+            text=instructions_text,
             wraplength=800
         )
         instructions.pack(pady=5)
@@ -277,16 +314,114 @@ class GamePlacementTool:
             # Generate C code
             c_code = self.generate_c_code(grid_x, grid_y, object_type)
             
-            # Copy to clipboard
-            self.copy_to_clipboard(c_code)
-            
-            # Update status
-            self.status_label.config(
-                text=f"Placed {object_type} at grid ({grid_x}, {grid_y}) - C code copied to clipboard"
-            )
+            if self.source_path and self.lookup_table_name:
+                # Insert into source file
+                success = self.insert_into_source_file(grid_x, grid_y, c_code)
+                if success:
+                    # Add to existing objects list and update display
+                    self.existing_objects.append((grid_x, grid_y))
+                    self.existing_objects.sort(key=lambda obj: obj[0])  # Sort by x
+                    self.objects_label.config(text=f"Existing Objects: {len(self.existing_objects)}")
+                    self.update_display()
+                    
+                    self.status_label.config(
+                        text=f"Added {object_type} at grid ({grid_x}, {grid_y}) to {self.source_path}"
+                    )
+                else:
+                    self.status_label.config(
+                        text=f"Failed to insert {object_type} at grid ({grid_x}, {grid_y}) into source file"
+                    )
+            else:
+                # Fallback to clipboard if no source file
+                self.copy_to_clipboard(c_code)
+                self.status_label.config(
+                    text=f"Placed {object_type} at grid ({grid_x}, {grid_y}) - C code copied to clipboard"
+                )
             
             # Visual feedback - highlight the clicked tile
             self.highlight_tile(grid_x, grid_y)
+    
+    def insert_into_source_file(self, new_x, new_y, new_c_code):
+        """Insert the new object code into the source file at the correct position"""
+        try:
+            # Read the current file content
+            with open(self.source_path, 'r') as f:
+                content = f.read()
+            
+            # Find the lookup table again (in case file was modified)
+            pattern = r'(level_object\s+\w+_lookup\[\]\s*=\s*\{)(.*?)(\};)'
+            match = re.search(pattern, content, re.DOTALL)
+            
+            if not match:
+                print("Could not find lookup table in source file")
+                return False
+            
+            table_prefix = match.group(1)
+            table_content = match.group(2)
+            table_suffix = match.group(3)
+            
+            # Parse existing objects with proper brace matching
+            objects = []
+            start_pattern = r'\{\.x\s*=\s*(\d+),\s*\.y\s*=\s*(\d+),'
+            
+            for start_match in re.finditer(start_pattern, table_content):
+                x = int(start_match.group(1))
+                y = int(start_match.group(2))
+                
+                # Find the complete object by counting braces
+                start_pos = start_match.start()
+                brace_count = 0
+                pos = start_pos
+                
+                while pos < len(table_content):
+                    char = table_content[pos]
+                    if char == '{':
+                        brace_count += 1
+                    elif char == '}':
+                        brace_count -= 1
+                        if brace_count == 0:
+                            # Found the end of the object
+                            full_object = table_content[start_pos:pos + 1]
+                            objects.append((x, y, full_object))
+                            break
+                    pos += 1
+            
+            # Add the new object
+            objects.append((new_x, new_y, new_c_code))
+            
+            # Sort by x coordinate
+            objects.sort(key=lambda obj: obj[0])
+            
+            # Rebuild the table content
+            new_table_content = ""
+            for i, (x, y, code) in enumerate(objects):
+                if i == 0:
+                    new_table_content += "\n    " + code
+                else:
+                    new_table_content += ",\n    " + code
+            
+            # Add final newline before closing brace
+            if objects:
+                new_table_content += "\n"
+            
+            # Reconstruct the full content
+            new_content = (
+                content[:match.start()] + 
+                table_prefix + 
+                new_table_content + 
+                table_suffix + 
+                content[match.end():]
+            )
+            
+            # Write back to file
+            with open(self.source_path, 'w') as f:
+                f.write(new_content)
+            
+            return True
+            
+        except Exception as e:
+            print(f"Error inserting into source file: {e}")
+            return False
     
     def prompt_object_type(self):
         # Create a custom dialog with predefined options
@@ -294,11 +429,11 @@ class GamePlacementTool:
         return dialog.result
     
     def generate_c_code(self, x, y, obj_type):
-        # Map object types to C code templates
+        # Map object types to C code templates (without trailing comma)
         templates = {
-            "ENEMY": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}},",
-            "PLATFORM": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}},",
-            "PLATFORM_MOVING": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}},",
+            "ENEMY": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}}",
+            "PLATFORM": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}}",
+            "PLATFORM_MOVING": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}}",
         }
         
         template = templates.get(obj_type, templates["ENEMY"])
