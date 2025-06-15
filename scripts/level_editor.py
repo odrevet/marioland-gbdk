@@ -308,11 +308,13 @@ class GamePlacementTool:
             return
         
         # Prompt for object type
-        object_type = self.prompt_object_type()
+        object_data = self.prompt_object_type()
         
-        if object_type:
+        if object_data:
+            object_type, extra_data = object_data
+            
             # Generate C code
-            c_code = self.generate_c_code(grid_x, grid_y, object_type)
+            c_code = self.generate_c_code(grid_x, grid_y, object_type, extra_data)
             
             if self.source_path and self.lookup_table_name:
                 # Insert into source file
@@ -324,9 +326,11 @@ class GamePlacementTool:
                     self.objects_label.config(text=f"Existing Objects: {len(self.existing_objects)}")
                     self.update_display()
                     
-                    self.status_label.config(
-                        text=f"Added {object_type} at grid ({grid_x}, {grid_y}) to {self.source_path}"
-                    )
+                    status_text = f"Added {object_type}"
+                    if object_type == "ENEMY" and extra_data:
+                        status_text += f" ({extra_data})"
+                    status_text += f" at grid ({grid_x}, {grid_y}) to {self.source_path}"
+                    self.status_label.config(text=status_text)
                 else:
                     self.status_label.config(
                         text=f"Failed to insert {object_type} at grid ({grid_x}, {grid_y}) into source file"
@@ -334,9 +338,11 @@ class GamePlacementTool:
             else:
                 # Fallback to clipboard if no source file
                 self.copy_to_clipboard(c_code)
-                self.status_label.config(
-                    text=f"Placed {object_type} at grid ({grid_x}, {grid_y}) - C code copied to clipboard"
-                )
+                status_text = f"Placed {object_type}"
+                if object_type == "ENEMY" and extra_data:
+                    status_text += f" ({extra_data})"
+                status_text += f" at grid ({grid_x}, {grid_y}) - C code copied to clipboard"
+                self.status_label.config(text=status_text)
             
             # Visual feedback - highlight the clicked tile
             self.highlight_tile(grid_x, grid_y)
@@ -428,16 +434,22 @@ class GamePlacementTool:
         dialog = ObjectTypeDialog(self.root)
         return dialog.result
     
-    def generate_c_code(self, x, y, obj_type):
+    def generate_c_code(self, x, y, obj_type, extra_data=None):
         # Map object types to C code templates (without trailing comma)
-        templates = {
-            "ENEMY": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}}",
-            "PLATFORM": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}}",
-            "PLATFORM_MOVING": "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}}",
-        }
-        
-        template = templates.get(obj_type, templates["ENEMY"])
-        return template % (x, y)
+        if obj_type == "ENEMY":
+            enemy_type = extra_data if extra_data else "ENEMY_GOOMBO"
+            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = %s}}"
+            return template % (x, y, enemy_type)
+        elif obj_type == "PLATFORM":
+            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}}"
+            return template % (x, y)
+        elif obj_type == "PLATFORM_MOVING":
+            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}}"
+            return template % (x, y)
+        else:
+            # Default to enemy
+            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = ENEMY_GOOMBO}}"
+            return template % (x, y)
     
     def copy_to_clipboard(self, text):
         self.root.clipboard_clear()
@@ -609,8 +621,25 @@ class ObjectTypeDialog:
         self.dialog.wait_window()
     
     def select_type(self, obj_type):
-        self.result = obj_type
+        if obj_type == "ENEMY":
+            # Prompt for enemy type when ENEMY is selected
+            enemy_type = self.prompt_enemy_type()
+            if enemy_type is not None:  # None means cancelled
+                self.result = (obj_type, enemy_type)
+            # If cancelled, result stays None and dialog closes
+        else:
+            self.result = (obj_type, None)
+        
         self.dialog.destroy()
+    
+    def prompt_enemy_type(self):
+        """Prompt for specific enemy type with default value"""
+        return simpledialog.askstring(
+            "Enemy Type",
+            "Enter enemy type:",
+            initialvalue="ENEMY_GOOMBO",
+            parent=self.dialog
+        )
     
     def cancel(self):
         self.result = None
