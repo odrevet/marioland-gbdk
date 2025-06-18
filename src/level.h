@@ -90,6 +90,7 @@ extern size_t current_map_width_in_tiles;
 extern uint8_t level_bank;
 extern uint8_t map_column; // the index where to load next map column
 
+extern uint8_t level_lookup_bank;
 extern level_object *level_lookup;
 extern size_t level_lookup_size;
 

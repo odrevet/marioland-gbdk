@@ -8,7 +8,9 @@
 #include "../platforms.h"
 #include "../powerup.h"
 
-extern level_object level_3_2_lookup[];
-extern size_t level_3_2_lookup_size;
+BANKREF_EXTERN(level_3_2_lookup_bank)
+
+extern const level_object level_3_2_lookup[];
+extern const size_t level_3_2_lookup_size;
 
 #endif

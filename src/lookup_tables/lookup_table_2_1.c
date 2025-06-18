@@ -1,6 +1,10 @@
+#pragma bank 255
+
 #include "lookup_table_2_1.h"
 
-level_object level_2_1_lookup[] = {
+BANKREF(level_2_1_lookup_bank)
+
+const level_object level_2_1_lookup[] = {
     {.x = 28,
      .y = 15,
      .type = OBJECT_TYPE_ENEMY,
@@ -142,5 +146,5 @@ level_object level_2_1_lookup[] = {
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GOOMBO}}};   // WIP: falling platform
 
-size_t level_2_1_lookup_size =
+const size_t level_2_1_lookup_size =
     sizeof(level_2_1_lookup) / sizeof(level_2_1_lookup[0]);
