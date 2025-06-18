@@ -29,7 +29,7 @@ size_t current_map_width_in_tiles;
 uint8_t level_bank;
 
 uint8_t level_lookup_bank;
-level_object *level_lookup;
+const level_object *level_lookup;
 size_t level_lookup_size;
 
 level_block_object *level_block_lookup;
