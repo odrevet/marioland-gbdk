@@ -29,7 +29,9 @@ enum enemy_type {
   ENEMY_BATADON,
   ENEMY_BULLET,
   ENEMY_TOKOTOKO,
-  ENEMY_SUU
+  ENEMY_SUU,
+  ENEMY_KUMO,
+  ENEMY_HIYOIHOI
 };
 
 typedef struct {
