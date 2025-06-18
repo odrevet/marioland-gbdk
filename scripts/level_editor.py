@@ -441,7 +441,7 @@ class GamePlacementTool:
             template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_ENEMY,\n .data.enemy = {.type = %s}}"
             return template % (x, y, enemy_type)
         elif obj_type == "PLATFORM":
-            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM,\n .data.platform = {.type = PLATFORM_VERTICAL}}"
+            template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_FALLING,\n}"
             return template % (x, y)
         elif obj_type == "PLATFORM_MOVING":
             template = "{.x = %d,\n .y = %d,\n .type = OBJECT_TYPE_PLATFORM_MOVING,\n .data.platform_moving = {.range = 6,\n .platform_direction = DIRECTION_VERTICAL}}"
