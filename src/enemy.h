@@ -32,7 +32,9 @@ enum enemy_type {
   ENEMY_SUU,
   ENEMY_KUMO,
   ENEMY_HIYOIHOI,
-  ENEMY_PIONPI
+  ENEMY_PIONPI,
+  ENEMY_PONPON,
+  ENEMY_NYOLOLIN
 };
 
 typedef struct {
