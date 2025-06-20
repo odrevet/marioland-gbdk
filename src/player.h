@@ -26,6 +26,10 @@ BANKREF_EXTERN(player)
 #define MARIO_HEIGHT_SMALL 12
 #define MARIO_HEIGHT_BIG 32
 
+#define MARIO_WIDTH 8
+#define PLAYER_HORIZONTAL_MARGIN 2
+#define PLAYER_TOP_MARGIN 4
+
 extern uint8_t coins;
 extern uint16_t score;
 extern uint8_t joy;
