@@ -186,13 +186,13 @@ void player_move(void) BANKED {
     }
   } else if (vel_x < 0 && player_draw_x > 12) {
     // move left
-    tile_next_1 = get_tile(player_x_next + PLAYER_HORIZONTAL_MARGIN - camera_x,
+    tile_next_1 = get_tile(player_x_next - camera_x,
                            player_y_next + PLAYER_TOP_MARGIN); // left top
     tile_next_2 =
-        get_tile(player_x_next + PLAYER_HORIZONTAL_MARGIN - camera_x,
+        get_tile(player_x_next - camera_x,
                  player_y_next + MARIO_HEIGHT_SMALL - 1); // left bottom
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      player_x = ((player_x_next + 7) & ~7) - PLAYER_HORIZONTAL_MARGIN;
+      player_x = ((player_x_next + 7) & ~7);
       player_x_upscaled = player_x << 4;
       EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x, player_y,
                  player_x_next, player_y_next);

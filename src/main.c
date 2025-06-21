@@ -57,34 +57,31 @@ bool powerups_collide() {
 
 bool enemy_collide() {
   for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
-    uint8_t enemy_left = enemies[enemy_index].x - 4;
-    uint8_t enemy_right = enemies[enemy_index].x + 4;
-    uint8_t enemy_top = enemies[enemy_index].y - 4;
-    uint8_t enemy_bottom = enemies[enemy_index].y + 7;
+    uint16_t enemy_left = (enemies[enemy_index].x >> 4);
+    uint16_t enemy_right = (enemies[enemy_index].x >> 4) + 8;
+    uint16_t enemy_top = (enemies[enemy_index].y >> 4);
+    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + 8;
 
-    EMU_printf("E l%d:r%d:t%d:b%d player y %d\n", enemy_left, enemy_right, enemy_top,
-               enemy_bottom, player_y_upscaled);
+    EMU_printf("E left %d right %d top %d bottom %d player %d %d\n", enemy_left,
+               enemy_right, enemy_top, enemy_bottom, player_x, player_y);
 
-    if (player_y_upscaled + 128 > enemy_bottom &&
-        player_y_upscaled + 128 <=
-            enemy_top &&
-        player_x_upscaled >= enemy_left
-        && player_x_upscaled < enemy_right) {
+    if (player_x < enemy_right && player_x + 8 > enemy_left &&
+        player_y < enemy_bottom && player_y + 16 > enemy_top) {
 
-      if (player_y_upscaled + 128 < enemy_top) {
+      if (player_y + 16 <= enemy_top + 8) {
+        // TODO set active flag to false
         for (uint8_t j = enemy_index; j < enemy_count - 1; j++) {
           enemies[j] = enemies[j + 1];
         }
         enemy_count--;
         hide_sprites_range(1, MAX_HARDWARE_SPRITES);
-
-        vel_y = -44;
+        vel_y = -88; 
         music_play_sfx(BANK(sound_squish), sound_squish,
                        SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
-
         continue;
       } else {
         die();
+        // state_pause();
       }
       return true;
     }
@@ -196,6 +193,7 @@ void main(void) {
       music_pause(FALSE);
     }
 
+    enemy_collide();
     player_move();
 
     // set player frame
@@ -243,10 +241,6 @@ void main(void) {
       powerup.y = 0;
       powerup.draw_y = 0;
       powerup_draw(base_sprite - 1);
-    }
-
-    if (enemy_collide()) {
-      // die();
     }
 
     time--;

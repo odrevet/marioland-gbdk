@@ -16,11 +16,13 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
     switch (type) {
     case ENEMY_GOOMBO:
       current_frame = 0;
-      vel_x = 0; // WIP -1;
+      vel_x = 0; // WIP
+      y -= 8;
       break;
     case ENEMY_KOOPA:
       current_frame = 1;
-      vel_x = 0; // WIP -1;
+      vel_x = 0; // WIP
+      y -= 8;
       break;
     }
     enemy_t enemy = {.x = x << 4,
@@ -94,13 +96,13 @@ uint8_t enemy_draw(uint8_t base_sprite) {
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X,
-          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE * 2);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + 8);
     } else {
       base_sprite += move_metasprite_ex(
           enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X,
-          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX - TILE_SIZE * 2);
+          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + 8);
     }
   }
   SWITCH_ROM(_saved_bank);
