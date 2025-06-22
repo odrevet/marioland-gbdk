@@ -75,7 +75,13 @@ bool enemy_collide() {
         }
         enemy_count--;
         hide_sprites_range(1, MAX_HARDWARE_SPRITES);
-        vel_y = -88; 
+
+        current_jump = 0;
+        is_jumping = TRUE;
+        display_jump_frame = TRUE;
+        vel_y = -16;
+        touch_ground = FALSE;
+
         music_play_sfx(BANK(sound_squish), sound_squish,
                        SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
         continue;
