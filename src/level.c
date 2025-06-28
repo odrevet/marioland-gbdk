@@ -2,6 +2,7 @@
 #include "coin_animated.h"
 #include "gb/gb.h"
 #include "global.h"
+#include "graphics/enemies.h"
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"
 #include "platforms.h"
@@ -186,7 +187,7 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        enemy_new(obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE,
+        enemy_new(obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
                   obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
