@@ -56,10 +56,10 @@ void die(void) {
   init();
 
   lives--;
-  if(lives == 0){
+  if (lives == 0) {
     lives = INITIAL_LIVES;
     current_map = 0;
-    set_level_1_1();
+    set_level(0);
   }
 
   hud_update_lives();

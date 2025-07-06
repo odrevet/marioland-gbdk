@@ -11,9 +11,9 @@
 #include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
 
+#include "coin_animated.h"
 #include "global.h"
 #include "hud.h"
-#include "coin_animated.h"
 
 // sounds
 #include "sfxplayer.h"
@@ -94,8 +94,29 @@ extern uint8_t level_lookup_bank;
 extern const level_object *level_lookup;
 extern size_t level_lookup_size;
 
-extern level_block_object *level_block_lookup;
-extern size_t level_block_lookup_size;
+typedef struct level_t {
+  char major;
+  char minor;
+
+  uint8_t bank;
+  unsigned char *map;
+  size_t map_width;
+  size_t map_width_in_tiles;
+
+  uint8_t map_tiles_bank;
+  unsigned char *map_tiles;
+  uint8_t map_tile_origin;
+  size_t map_tiles_count;
+
+  uint8_t lookup_bank;
+  level_object *lookup;
+  const size_t lookup_size;
+
+  uint8_t music_bank;
+  hUGESong_t *music;
+} level;
+
+extern const level levels[NB_LEVELS];
 
 #define TILE_INDEX_X(x, camera_x)                                              \
   ((((x) + (camera_x)) >> 3) % DEVICE_SCREEN_BUFFER_WIDTH)
@@ -216,22 +237,6 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
 void level_set_current(void) NONBANKED;
 void load_current_level(void) NONBANKED;
 
-void level_load_tileset_birabuto(void) NONBANKED;
-void level_load_tileset_muda(void) NONBANKED;
-void level_load_tileset_easton(void) NONBANKED;
-void level_load_tileset_chai(void) NONBANKED;
-
-void set_level_1_1(void) NONBANKED;
-void set_level_1_2(void) NONBANKED;
-void set_level_1_3(void) NONBANKED;
-void set_level_2_1(void) NONBANKED;
-void set_level_2_2(void) NONBANKED;
-void set_level_2_3(void) NONBANKED;
-void set_level_3_1(void) NONBANKED;
-void set_level_3_2(void) NONBANKED;
-void set_level_3_3(void) NONBANKED;
-void set_level_4_1(void) NONBANKED;
-void set_level_4_2(void) NONBANKED;
-void set_level_4_3(void) NONBANKED;
+void set_level(uint8_t level_index) NONBANKED;
 
 #endif

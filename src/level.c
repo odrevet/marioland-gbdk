@@ -5,6 +5,8 @@
 #include "graphics/enemies.h"
 #include "levels/level_1_1.h"
 #include "lookup_tables.h"
+#include "lookup_tables/lookup_table_1_1.h"
+#include "musics/musics.h"
 #include "platforms.h"
 #include "player.h"
 #include <stdint.h>
@@ -33,8 +35,197 @@ uint8_t level_lookup_bank;
 const level_object *level_lookup;
 size_t level_lookup_size;
 
-level_block_object *level_block_lookup;
-size_t level_block_lookup_size;
+const level levels[NB_LEVELS] = {{.major = '1',
+                                  .minor = '1',
+                                  .bank = BANK(level_1_1),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_1_1_map,
+                                  .map_tiles_bank = BANK(birabuto),
+                                  .map_tile_origin = birabuto_TILE_ORIGIN,
+                                  .map_tiles = birabuto_tiles,
+                                  .map_tiles_count = birabuto_TILE_COUNT,
+                                  .map_width = level_1_1_WIDTH,
+                                  .map_width_in_tiles = level_1_1_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_1_1_lookup_bank),
+                                  .lookup = level_1_1_lookup,
+                                  .lookup_size = 15},
+
+                                 {.major = '1',
+                                  .minor = '2',
+                                  .bank = BANK(level_1_2),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_1_2_map,
+                                  .map_tiles_bank = BANK(birabuto),
+                                  .map_tile_origin = birabuto_TILE_ORIGIN,
+                                  .map_tiles = birabuto_tiles,
+                                  .map_tiles_count = birabuto_TILE_COUNT,
+                                  .map_width = level_1_2_WIDTH,
+                                  .map_width_in_tiles = level_1_2_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_1_2_lookup_bank),
+                                  .lookup = level_1_2_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '1',
+                                  .minor = '3',
+                                  .bank = BANK(level_1_3),
+                                  .map = level_1_3_map,
+                                  .map_tiles_bank = BANK(birabuto),
+                                  .map_tile_origin = birabuto_TILE_ORIGIN,
+                                  .music_bank = BANK(music_castle),
+                                  .music = &music_castle,
+                                  .map_tiles = birabuto_tiles,
+                                  .map_tiles_count = birabuto_TILE_COUNT,
+                                  .map_width = level_1_3_WIDTH,
+                                  .map_width_in_tiles = level_1_3_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_1_3_lookup_bank),
+                                  .lookup = level_1_3_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '2',
+                                  .minor = '1',
+                                  .bank = BANK(level_2_1),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_2_1_map,
+                                  .map_tiles_bank = BANK(muda),
+                                  .map_tile_origin = muda_TILE_ORIGIN,
+                                  .map_tiles = muda_tiles,
+                                  .map_tiles_count = muda_TILE_COUNT,
+                                  .map_width = level_2_1_WIDTH,
+                                  .map_width_in_tiles = level_2_1_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_2_1_lookup_bank),
+                                  .lookup = level_2_1_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '2',
+                                  .minor = '2',
+                                  .bank = BANK(level_2_2),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_2_2_map,
+                                  .map_tiles_bank = BANK(muda),
+                                  .map_tile_origin = muda_TILE_ORIGIN,
+                                  .map_tiles = muda_tiles,
+                                  .map_tiles_count = muda_TILE_COUNT,
+                                  .map_width = level_2_2_WIDTH,
+                                  .map_width_in_tiles = level_2_2_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_2_2_lookup_bank),
+                                  .lookup = level_2_2_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '2',
+                                  .minor = '3',
+                                  .bank = BANK(level_2_3),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_2_3_map,
+                                  .map_tiles_bank = BANK(muda),
+                                  .map_tile_origin = muda_TILE_ORIGIN,
+                                  .map_tiles = muda_tiles,
+                                  .map_tiles_count = muda_TILE_COUNT,
+                                  .map_width = level_2_3_WIDTH,
+                                  .map_width_in_tiles = level_2_3_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_2_3_lookup_bank),
+                                  .lookup = level_2_3_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '3',
+                                  .minor = '1',
+                                  .bank = BANK(level_3_1),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_3_1_map,
+                                  .map_tiles_bank = BANK(easton),
+                                  .map_tile_origin = easton_TILE_ORIGIN,
+                                  .map_tiles = easton_tiles,
+                                  .map_tiles_count = easton_TILE_COUNT,
+                                  .map_width = level_3_1_WIDTH,
+                                  .map_width_in_tiles = level_3_1_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_3_1_lookup_bank),
+                                  .lookup = level_3_1_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '3',
+                                  .minor = '2',
+                                  .bank = BANK(level_3_2),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_3_2_map,
+                                  .map_tiles_bank = BANK(easton),
+                                  .map_tile_origin = easton_TILE_ORIGIN,
+                                  .map_tiles = easton_tiles,
+                                  .map_tiles_count = easton_TILE_COUNT,
+                                  .map_width = level_3_2_WIDTH,
+                                  .map_width_in_tiles = level_3_2_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_3_2_lookup_bank),
+                                  .lookup = level_3_2_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '3',
+                                  .minor = '3',
+                                  .bank = BANK(level_3_3),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_3_3_map,
+                                  .map_tiles_bank = BANK(easton),
+                                  .map_tile_origin = easton_TILE_ORIGIN,
+                                  .map_tiles = easton_tiles,
+                                  .map_tiles_count = easton_TILE_COUNT,
+                                  .map_width = level_3_3_WIDTH,
+                                  .map_width_in_tiles = level_3_3_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_3_3_lookup_bank),
+                                  .lookup = level_3_3_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '4',
+                                  .minor = '1',
+                                  .bank = BANK(level_4_1),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_4_1_map,
+                                  .map_tile_origin = chai_TILE_ORIGIN,
+                                  .map_tiles_bank = BANK(chai),
+                                  .map_tiles = chai_tiles,
+                                  .map_tiles_count = chai_TILE_COUNT,
+                                  .map_width = level_4_1_WIDTH,
+                                  .map_width_in_tiles = level_4_1_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_4_1_lookup_bank),
+                                  .lookup = level_4_1_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '4',
+                                  .minor = '2',
+                                  .bank = BANK(level_4_2),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map_tiles_bank = BANK(chai),
+                                  .map = level_4_2_map,
+                                  .map_tile_origin = chai_TILE_ORIGIN,
+                                  .map_tiles = chai_tiles,
+                                  .map_tiles_count = chai_TILE_COUNT,
+                                  .map_width = level_4_2_WIDTH,
+                                  .map_width_in_tiles = level_4_2_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_4_2_lookup_bank),
+                                  .lookup = level_4_2_lookup,
+                                  .lookup_size = 0},
+
+                                 {.major = '4',
+                                  .minor = '3',
+                                  .bank = BANK(level_4_3),
+                                  .music_bank = BANK(music_overworld),
+                                  .music = &music_overworld,
+                                  .map = level_4_3_map,
+                                  .map_tiles_bank = BANK(chai),
+                                  .map_tile_origin = chai_TILE_ORIGIN,
+                                  .map_tiles = chai_tiles,
+                                  .map_tiles_count = chai_TILE_COUNT,
+                                  .map_width = level_4_3_WIDTH,
+                                  .map_width_in_tiles = level_4_3_WIDTH >> 3,
+                                  .lookup_bank = BANK(level_4_3_lookup_bank),
+                                  .lookup = level_4_3_lookup,
+                                  .lookup_size = 0}};
 
 uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y >> 3 < 2 || y >> 3 > MAP_BUFFER_HEIGHT + 1) {
@@ -163,13 +354,13 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // check block content in lookup table
   bool lookup_found = FALSE;
-  for (int i = 0; i < level_block_lookup_size && !lookup_found; i++) {
+  /*for (int i = 0; i < level_block_lookup_size && !lookup_found; i++) {
     level_block_object *obj = level_block_lookup + i;
     if (obj->x == index_x && obj->y == index_y) {
       lookup_found = TRUE;
       powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
     }
-  }
+  }*/
 
   // coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
@@ -187,7 +378,8 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        enemy_new(obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
+        enemy_new(obj->x * TILE_SIZE,
+                  (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
                   obj->data.enemy.type);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
@@ -233,165 +425,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
 }
 
 void level_set_current(void) NONBANKED {
-  switch (current_level) {
-  case 0:
-    set_level_1_1();
-    hud_set_level('1', '1');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = BANK(level_1_1_lookup_bank);
-    level_lookup = level_1_1_lookup;
-    level_lookup_size = level_1_1_lookup_size;
-    level_block_lookup = NULL;   // level_1_1_blocks_lookup;
-    level_block_lookup_size = 0; // level_1_1_blocks_lookup_size;
-
-    plane_mode = FALSE;
-    break;
-  case 1:
-    set_level_1_2();
-    hud_set_level('1', '2');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = BANK(level_1_2_lookup_bank);
-    level_lookup = level_1_2_lookup;
-    level_lookup_size = level_1_2_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 2:
-    set_level_1_3();
-    hud_set_level('1', '3');
-    music_load(BANK(music_castle), &music_castle);
-
-    level_lookup_bank = BANK(level_1_3_lookup_bank);
-    level_lookup = level_1_3_lookup;
-    level_lookup_size = level_1_3_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 3:
-    set_level_2_1();
-    hud_set_level('2', '1');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_2_1_lookup_bank));
-    level_lookup = level_2_1_lookup;
-    level_lookup_size = level_2_1_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 4:
-    set_level_2_2();
-    hud_set_level('2', '2');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_2_2_lookup_bank));
-    level_lookup = level_2_2_lookup;
-    level_lookup_size = level_2_2_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 5:
-    set_level_2_3();
-    hud_set_level('2', '3');
-    music_load(BANK(music_castle), &music_castle);
-
-    level_lookup_bank = (BANK(level_2_3_lookup_bank));
-    level_lookup = level_2_3_lookup;
-    level_lookup_size = level_2_3_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = TRUE;
-
-    break;
-  case 6:
-    set_level_3_1();
-    hud_set_level('3', '1');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_3_1_lookup_bank));
-    level_lookup = level_3_1_lookup;
-    level_lookup_size = level_3_1_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 7:
-    set_level_3_2();
-    hud_set_level('3', '2');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_3_2_lookup_bank));
-    level_lookup = level_3_2_lookup;
-    level_lookup_size = level_3_2_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 8:
-    set_level_3_3();
-    hud_set_level('3', '3');
-    music_load(BANK(music_castle), &music_castle);
-
-    level_lookup_bank = (BANK(level_3_3_lookup_bank));
-    level_lookup = level_3_3_lookup;
-    level_lookup_size = level_3_3_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 9:
-    set_level_4_1();
-    hud_set_level('4', '1');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_4_1_lookup_bank));
-    level_lookup = level_4_1_lookup;
-    level_lookup_size = level_4_1_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 10:
-    set_level_4_2();
-    hud_set_level('4', '2');
-    music_load(BANK(music_overworld), &music_overworld);
-
-    level_lookup_bank = (BANK(level_4_2_lookup_bank));
-    level_lookup = level_4_2_lookup;
-    level_lookup_size = level_4_2_lookup_size;
-    level_block_lookup = NULL;
-    level_block_lookup_size = 0;
-
-    plane_mode = FALSE;
-    break;
-  case 11:
-    set_level_4_3();
-    hud_set_level('4', '3');
-    music_load(BANK(music_castle), &music_castle);
-
-    level_lookup_bank = (BANK(level_4_3_lookup_bank));
-    level_lookup = NULL;
-    level_lookup_size = 0;
-    level_lookup = level_4_3_lookup;
-    level_lookup_size = level_4_3_lookup_size;
-
-    plane_mode = TRUE;
-    break;
-  }
+  set_level(current_level);
 
   player_x_upscaled = (4 << 3) << 4;
   player_y_upscaled = 80 << 4;
@@ -422,210 +456,32 @@ void load_current_level(void) NONBANKED {
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }
 
-void level_load_tileset_birabuto(void) NONBANKED {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(birabuto));
+void set_level(uint8_t level_index) NONBANKED {
+  hud_set_level(levels[level_index].major, levels[level_index].minor);
 
-  current_map_tiles = birabuto_tiles;
-  current_map_tile_origin = birabuto_TILE_ORIGIN;
-  current_map_tile_count = birabuto_TILE_COUNT;
+  music_load(levels[level_index].music_bank, levels[level_index].music);
+
+  uint8_t _saved_bank = _current_bank;
+
+  SWITCH_ROM(levels[level_index].map_tiles_bank);
+  current_map_tiles = levels[level_index].map_tiles;
+  current_map_tile_origin = levels[level_index].map_tile_origin;
+  current_map_tile_count = levels[level_index].map_tiles_count;
   set_bkg_data(current_map_tile_origin, current_map_tile_count,
                current_map_tiles);
 
-  SWITCH_ROM(_saved_bank);
-}
+  SWITCH_ROM(levels[level_index].bank);
+  current_map = levels[level_index].map;
+  current_map_width = levels[level_index].map_width;
+  current_map_width_in_tiles = levels[level_index].map_width_in_tiles;
+  level_bank = levels[level_index].bank;
 
-void level_load_tileset_muda(void) NONBANKED {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(muda));
+  // SWITCH_ROM(levels[level_index].lookup_bank);
+  level_lookup_bank = levels[level_index].lookup_bank;
+  level_lookup = level_1_1_lookup;           // levels[level_index].lookup;
+  level_lookup_size = level_1_1_lookup_size; // levels[level_index].lookup_size;
+  // level_block_lookup = NULL;
+  // level_block_lookup_size = 0;
 
-  current_map_tiles = muda_tiles;
-  current_map_tile_origin = muda_TILE_ORIGIN;
-  current_map_tile_count = muda_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count,
-               current_map_tiles);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void level_load_tileset_chai(void) NONBANKED {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(chai));
-
-  current_map_tiles = chai_tiles;
-  current_map_tile_origin = chai_TILE_ORIGIN;
-  current_map_tile_count = chai_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count,
-               current_map_tiles);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void level_load_tileset_easton(void) NONBANKED {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(easton));
-
-  current_map_tiles = easton_tiles;
-  current_map_tile_origin = easton_TILE_ORIGIN;
-  current_map_tile_count = easton_TILE_COUNT;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count,
-               current_map_tiles);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_1_1(void) NONBANKED {
-  level_load_tileset_birabuto();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_1));
-
-  current_map = level_1_1_map;
-  current_map_width = level_1_1_WIDTH;
-  current_map_width_in_tiles = level_1_1_WIDTH >> 3;
-  level_bank = BANK(level_1_1);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_1_2(void) NONBANKED {
-  level_load_tileset_birabuto();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_2));
-
-  current_map = level_1_2_map;
-  current_map_width = level_1_2_WIDTH;
-  current_map_width_in_tiles = level_1_2_WIDTH >> 3;
-  level_bank = BANK(level_1_2);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_1_3(void) NONBANKED {
-  level_load_tileset_birabuto();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_1_3));
-
-  current_map = level_1_3_map;
-  current_map_width = level_1_3_WIDTH;
-  current_map_width_in_tiles = level_1_3_WIDTH >> 3;
-  level_bank = BANK(level_1_3);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_2_1(void) NONBANKED {
-  level_load_tileset_muda();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_2_1));
-
-  current_map = level_2_1_map;
-  current_map_width = level_2_1_WIDTH;
-  current_map_width_in_tiles = level_2_1_WIDTH >> 3;
-  level_bank = BANK(level_2_1);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_2_2(void) NONBANKED {
-  level_load_tileset_muda();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_2_2));
-
-  current_map = level_2_2_map;
-  current_map_width = level_2_2_WIDTH;
-  current_map_width_in_tiles = level_2_2_WIDTH >> 3;
-  level_bank = BANK(level_2_2);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_2_3(void) NONBANKED {
-  level_load_tileset_muda();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_2_3));
-
-  current_map = level_2_3_map;
-  current_map_width = level_2_3_WIDTH;
-  current_map_width_in_tiles = level_2_3_WIDTH >> 3;
-  level_bank = BANK(level_2_3);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_3_1(void) NONBANKED {
-  level_load_tileset_easton();
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_3_1));
-  current_map = level_3_1_map;
-  current_map_width = level_3_1_WIDTH;
-  current_map_width_in_tiles = level_3_1_WIDTH >> 3;
-  level_bank = BANK(level_3_1);
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_3_2(void) NONBANKED {
-  level_load_tileset_easton();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_3_2));
-
-  current_map = level_3_2_map;
-  current_map_width = level_3_2_WIDTH;
-  current_map_width_in_tiles = level_3_2_WIDTH >> 3;
-  level_bank = BANK(level_3_2);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_3_3(void) NONBANKED {
-  level_load_tileset_easton();
-
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_3_3));
-
-  current_map = level_3_3_map;
-  current_map_width = level_3_3_WIDTH;
-  current_map_width_in_tiles = level_3_3_WIDTH >> 3;
-  level_bank = BANK(level_3_3);
-
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_4_1(void) NONBANKED {
-  level_load_tileset_chai();
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_1));
-  current_map = level_4_1_map;
-  current_map_width = level_4_1_WIDTH;
-  current_map_width_in_tiles = level_4_1_WIDTH >> 3;
-  level_bank = BANK(level_4_1);
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_4_2(void) NONBANKED {
-  level_load_tileset_chai();
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_2));
-  current_map = level_4_2_map;
-  current_map_width = level_4_2_WIDTH;
-  current_map_width_in_tiles = level_4_2_WIDTH >> 3;
-  level_bank = BANK(level_4_2);
-  SWITCH_ROM(_saved_bank);
-}
-
-void set_level_4_3(void) NONBANKED {
-  level_load_tileset_chai();
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(level_4_3));
-  current_map = level_4_3_map;
-  current_map_width = level_4_3_WIDTH;
-  current_map_width_in_tiles = level_4_3_WIDTH >> 3;
-  level_bank = BANK(level_4_3);
   SWITCH_ROM(_saved_bank);
 }
