@@ -2,7 +2,7 @@
 
 #include "lookup_table_1_2.h"
 
-BANKREF(level_1_2_lookup_bank)
+BANKREF(level_1_2_lookup)
 
 const level_object level_1_2_lookup[] = {
     {.x = 38,
@@ -93,6 +93,3 @@ const level_object level_1_2_lookup[] = {
      .y = 8,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.platform_direction = DIRECTION_VERTICAL}}};
-
-const size_t level_1_2_lookup_size =
-    sizeof(level_1_2_lookup) / sizeof(level_1_2_lookup[0]);

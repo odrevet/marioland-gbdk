@@ -2,7 +2,7 @@
 
 #include "lookup_table_1_3.h"
 
-BANKREF(level_1_3_lookup_bank)
+BANKREF(level_1_3_lookup)
 
 const level_object level_1_3_lookup[] = {
     {.x = 155,
@@ -26,6 +26,3 @@ const level_object level_1_3_lookup[] = {
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GAO}},
 };
-
-const size_t level_1_3_lookup_size =
-    sizeof(level_1_3_lookup) / sizeof(level_1_3_lookup[0]);

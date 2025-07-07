@@ -3,14 +3,15 @@
 
 #include <stdint.h>
 
-#include "../lookup_tables.h"
 #include "../enemy.h"
+#include "../lookup_tables.h"
 #include "../platforms.h"
 #include "../powerup.h"
 
-BANKREF_EXTERN(level_3_3_lookup_bank)
+BANKREF_EXTERN(level_3_3_lookup)
+
+#define level_3_3_lookup_ENTRY_COUNT 19
 
 extern const level_object level_3_3_lookup[];
-extern const size_t level_3_3_lookup_size;
 
 #endif

@@ -2,7 +2,7 @@
 
 #include "lookup_table_2_1.h"
 
-BANKREF(level_2_1_lookup_bank)
+BANKREF(level_2_1_lookup)
 
 const level_object level_2_1_lookup[] = {
     {.x = 28,
@@ -140,11 +140,8 @@ const level_object level_2_1_lookup[] = {
     {.x = 313,
      .y = 3,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}},   // WIP: falling platform
+     .data.enemy = {.type = ENEMY_GOOMBO}}, // WIP: falling platform
     {.x = 314,
      .y = 3,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}}};   // WIP: falling platform
-
-const size_t level_2_1_lookup_size =
-    sizeof(level_2_1_lookup) / sizeof(level_2_1_lookup[0]);
+     .data.enemy = {.type = ENEMY_GOOMBO}}}; // WIP: falling platform

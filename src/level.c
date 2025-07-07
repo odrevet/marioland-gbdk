@@ -47,9 +47,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = birabuto_TILE_COUNT,
                                   .map_width = level_1_1_WIDTH,
                                   .map_width_in_tiles = level_1_1_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_1_1_lookup_bank),
+                                  .lookup_bank = BANK(level_1_1_lookup),
                                   .lookup = level_1_1_lookup,
-                                  .lookup_size = 15},
+                                  .lookup_size = level_1_1_lookup_ENTRY_COUNT},
 
                                  {.major = '1',
                                   .minor = '2',
@@ -63,9 +63,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = birabuto_TILE_COUNT,
                                   .map_width = level_1_2_WIDTH,
                                   .map_width_in_tiles = level_1_2_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_1_2_lookup_bank),
+                                  .lookup_bank = BANK(level_1_2_lookup),
                                   .lookup = level_1_2_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_1_2_lookup_ENTRY_COUNT},
 
                                  {.major = '1',
                                   .minor = '3',
@@ -79,9 +79,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = birabuto_TILE_COUNT,
                                   .map_width = level_1_3_WIDTH,
                                   .map_width_in_tiles = level_1_3_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_1_3_lookup_bank),
+                                  .lookup_bank = BANK(level_1_3_lookup),
                                   .lookup = level_1_3_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_1_3_lookup_ENTRY_COUNT},
 
                                  {.major = '2',
                                   .minor = '1',
@@ -95,9 +95,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = muda_TILE_COUNT,
                                   .map_width = level_2_1_WIDTH,
                                   .map_width_in_tiles = level_2_1_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_2_1_lookup_bank),
+                                  .lookup_bank = BANK(level_2_1_lookup),
                                   .lookup = level_2_1_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_2_1_lookup_ENTRY_COUNT},
 
                                  {.major = '2',
                                   .minor = '2',
@@ -111,9 +111,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = muda_TILE_COUNT,
                                   .map_width = level_2_2_WIDTH,
                                   .map_width_in_tiles = level_2_2_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_2_2_lookup_bank),
+                                  .lookup_bank = BANK(level_2_2_lookup),
                                   .lookup = level_2_2_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_2_2_lookup_ENTRY_COUNT},
 
                                  {.major = '2',
                                   .minor = '3',
@@ -127,9 +127,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = muda_TILE_COUNT,
                                   .map_width = level_2_3_WIDTH,
                                   .map_width_in_tiles = level_2_3_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_2_3_lookup_bank),
+                                  .lookup_bank = BANK(level_2_3_lookup),
                                   .lookup = level_2_3_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_2_3_lookup_ENTRY_COUNT},
 
                                  {.major = '3',
                                   .minor = '1',
@@ -143,9 +143,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = easton_TILE_COUNT,
                                   .map_width = level_3_1_WIDTH,
                                   .map_width_in_tiles = level_3_1_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_3_1_lookup_bank),
+                                  .lookup_bank = BANK(level_3_1_lookup),
                                   .lookup = level_3_1_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_3_1_lookup_ENTRY_COUNT},
 
                                  {.major = '3',
                                   .minor = '2',
@@ -159,9 +159,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = easton_TILE_COUNT,
                                   .map_width = level_3_2_WIDTH,
                                   .map_width_in_tiles = level_3_2_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_3_2_lookup_bank),
+                                  .lookup_bank = BANK(level_3_2_lookup),
                                   .lookup = level_3_2_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_3_2_lookup_ENTRY_COUNT},
 
                                  {.major = '3',
                                   .minor = '3',
@@ -175,9 +175,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = easton_TILE_COUNT,
                                   .map_width = level_3_3_WIDTH,
                                   .map_width_in_tiles = level_3_3_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_3_3_lookup_bank),
+                                  .lookup_bank = BANK(level_3_3_lookup),
                                   .lookup = level_3_3_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_3_3_lookup_ENTRY_COUNT},
 
                                  {.major = '4',
                                   .minor = '1',
@@ -191,9 +191,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = chai_TILE_COUNT,
                                   .map_width = level_4_1_WIDTH,
                                   .map_width_in_tiles = level_4_1_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_4_1_lookup_bank),
+                                  .lookup_bank = BANK(level_4_1_lookup),
                                   .lookup = level_4_1_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_4_1_lookup_ENTRY_COUNT},
 
                                  {.major = '4',
                                   .minor = '2',
@@ -207,9 +207,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = chai_TILE_COUNT,
                                   .map_width = level_4_2_WIDTH,
                                   .map_width_in_tiles = level_4_2_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_4_2_lookup_bank),
+                                  .lookup_bank = BANK(level_4_2_lookup),
                                   .lookup = level_4_2_lookup,
-                                  .lookup_size = 0},
+                                  .lookup_size = level_4_2_lookup_ENTRY_COUNT},
 
                                  {.major = '4',
                                   .minor = '3',
@@ -223,9 +223,9 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map_tiles_count = chai_TILE_COUNT,
                                   .map_width = level_4_3_WIDTH,
                                   .map_width_in_tiles = level_4_3_WIDTH >> 3,
-                                  .lookup_bank = BANK(level_4_3_lookup_bank),
+                                  .lookup_bank = BANK(level_4_3_lookup),
                                   .lookup = level_4_3_lookup,
-                                  .lookup_size = 0}};
+                                  .lookup_size = level_4_3_lookup_ENTRY_COUNT}};
 
 uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y >> 3 < 2 || y >> 3 > MAP_BUFFER_HEIGHT + 1) {
@@ -476,12 +476,10 @@ void set_level(uint8_t level_index) NONBANKED {
   current_map_width_in_tiles = levels[level_index].map_width_in_tiles;
   level_bank = levels[level_index].bank;
 
-  // SWITCH_ROM(levels[level_index].lookup_bank);
+  SWITCH_ROM(levels[level_index].lookup_bank);
   level_lookup_bank = levels[level_index].lookup_bank;
-  level_lookup = level_1_1_lookup;           // levels[level_index].lookup;
-  level_lookup_size = level_1_1_lookup_size; // levels[level_index].lookup_size;
-  // level_block_lookup = NULL;
-  // level_block_lookup_size = 0;
+  level_lookup = levels[level_index].lookup;
+  level_lookup_size = levels[level_index].lookup_size;
 
   SWITCH_ROM(_saved_bank);
 }

@@ -1,7 +1,7 @@
 #pragma bank 255
 #include "lookup_table_1_1.h"
 
-BANKREF(level_1_1_lookup_bank)
+BANKREF(level_1_1_lookup)
 
 const level_object level_1_1_lookup[] = {
     {.x = 23,
@@ -70,12 +70,3 @@ const level_object level_1_1_lookup[] = {
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
                               .platform_direction = DIRECTION_HORIZONTAL}}};
-
-const size_t level_1_1_lookup_size =
-    sizeof(level_1_1_lookup) / sizeof(level_1_1_lookup[0]);
-
-level_block_object const level_1_1_blocks_lookup[] = {
-    {22, 9, POWERUP_MUSHROOM}};
-
-const size_t level_1_1_blocks_lookup_size =
-    sizeof(level_1_1_blocks_lookup) / sizeof(level_block_object);

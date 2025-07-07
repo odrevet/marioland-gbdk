@@ -31,12 +31,4 @@ typedef struct {
   } data;
 } level_object;
 
-typedef struct level_block_object {
-  uint16_t x;
-  uint8_t y;
-  uint8_t id;
-} level_block_object;
-
-
-
 #endif
