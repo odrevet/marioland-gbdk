@@ -82,5 +82,5 @@ png2asset "assets/tilesets/easton.png" -o "src/graphics/easton.c" -map -tiles_on
 png2asset "assets/tilesets/chai.png" -o "src/graphics/chai.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
 
 echo "title screen"
-png2asset "assets/title.png" -o "src/graphics/title.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $level_tiles_origin
+png2asset "assets/title.png" -o "src/graphics/title.c" -map -noflip -b 255 -tile_origin $level_tiles_origin
 
