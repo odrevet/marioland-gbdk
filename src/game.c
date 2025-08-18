@@ -25,10 +25,9 @@ void init(void) {
   mario_flip = FALSE;
 }
 
-void state_title(void)
-{
-  text_print_string_win(0, 0, "TITLE SCREEN");
-  text_print_string_win(0, 1, "PRESS START");
+void state_title(void) {
+  // text_print_string_win(0, 0, "TITLE SCREEN");
+  // text_print_string_win(0, 1, "PRESS START");
 
   vsync();
 
@@ -39,7 +38,6 @@ void state_title(void)
       break;
     }
   }
-
 }
 
 void state_pause(void) {

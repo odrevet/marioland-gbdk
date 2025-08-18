@@ -12,6 +12,7 @@
 #include "graphics/mario.h"
 #include "graphics/sprite_common.h"
 #include "graphics/text.h"
+#include "graphics/title.h"
 
 #include "hud.h"
 #include "musics/musics.h"
@@ -148,6 +149,11 @@ void main(void) {
   SWITCH_ROM(BANK(common));
   set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
 
+  // load title tiles and map
+  SWITCH_ROM(BANK(title));
+  set_bkg_data(title_TILE_ORIGIN, title_TILE_COUNT, title_tiles);
+  set_bkg_tiles(0, 0, 20, 18, title_map);
+
   SWITCH_ROM(_saved_bank);
 
   DISPLAY_ON;
@@ -192,7 +198,7 @@ void main(void) {
   set_win_tile_xy(7, 1, TILE_COIN);
   hud_update_time();
   hud_update_lives();
-  
+
   while (1) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
