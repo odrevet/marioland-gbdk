@@ -21,6 +21,7 @@
 #include "player.h"
 
 void init(void);
+void state_title(void); 
 void state_pause(void); 
 void die(void);
 

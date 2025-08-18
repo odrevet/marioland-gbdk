@@ -126,36 +126,6 @@ void main(void) {
   joypad_previous, joypad_current = 0;
 
   init();
-  current_level = 0;
-  level_set_current();
-
-  score = 0;
-  lives = INITIAL_LIVES;
-  coins = 0;
-
-  player_x_upscaled = (4 << 3) << 4;
-  player_y_upscaled = 80 << 4;
-  player_x_next_upscaled = player_x_upscaled;
-  player_y_next_upscaled = player_y_upscaled;
-
-  player_draw_x =
-      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
-  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
-                  PLAYER_DRAW_OFFSET_Y;
-
-  // HUD
-  // text
-  unsigned char windata[WINDOW_SIZE];
-  memset(windata, 15, WINDOW_SIZE);
-  set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
-  move_win(WINDOW_X, WINDOW_Y);
-  text_print_string_win(0, 0, "MARIOx00  WORLD TIME");
-  text_print_string_win(0, 1, "     0  x00 1-1  000");
-
-  // display a coin in the HUD
-  set_win_tile_xy(7, 1, TILE_COIN);
-  hud_update_time();
-  hud_update_lives();
 
   // set sprite and background data
   uint8_t _saved_bank = _current_bank;
@@ -190,6 +160,39 @@ void main(void) {
   uint8_t background_animation_counter = 0;
   uint8_t anim_frame_counter = 0;
 
+  state_title();
+
+  current_level = 0;
+  level_set_current();
+
+  score = 0;
+  lives = INITIAL_LIVES;
+  coins = 0;
+
+  player_x_upscaled = (4 << 3) << 4;
+  player_y_upscaled = 80 << 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
+
+  player_draw_x =
+      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
+  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
+                  PLAYER_DRAW_OFFSET_Y;
+
+  // HUD
+  // text
+  unsigned char windata[WINDOW_SIZE];
+  memset(windata, 15, WINDOW_SIZE);
+  set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
+  move_win(WINDOW_X, WINDOW_Y);
+  text_print_string_win(0, 0, "MARIOx00  WORLD TIME");
+  text_print_string_win(0, 1, "     0  x00 1-1  000");
+
+  // display a coin in the HUD
+  set_win_tile_xy(7, 1, TILE_COIN);
+  hud_update_time();
+  hud_update_lives();
+  
   while (1) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
