@@ -104,12 +104,9 @@ void main(void) {
   STAT_REG = 0x40;
   LYC_REG = 0x0F;
 
-  move_bkg(0, -MARGIN_TOP_PX);
-
   disable_interrupts();
-  add_LCD(interruptLCD);
-  add_VBL(interruptVBL);
   set_interrupts(VBL_IFLAG | LCD_IFLAG);
+  add_LCD(interruptLCD);
   enable_interrupts();
 
   music_init();
@@ -167,6 +164,11 @@ void main(void) {
   uint8_t anim_frame_counter = 0;
 
   state_title();
+
+  disable_interrupts();
+  add_VBL(interruptVBL);
+  move_bkg(0, -MARGIN_TOP_PX);
+  enable_interrupts();
 
   current_level = 0;
   level_set_current();
