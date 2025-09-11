@@ -1,15 +1,11 @@
-#!/usr/bin/env python3
-"""
-Object Placement Tool
-Usage: python placement_tool.py <image_file.png> [source_file.c]
-"""
-
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from PIL import Image, ImageTk
 import sys
 import os
 import re
+
+from object_type_dialog import ObjectTypeDialog
 
 class GamePlacementTool:
     def __init__(self, image_path, source_path=None):
@@ -20,9 +16,17 @@ class GamePlacementTool:
         # Store source file path
         self.source_path = source_path
         self.existing_objects = []
+        self.existing_objects_data = {}  # Store full object data keyed by (x, y)
         self.lookup_table_name = None
         self.lookup_table_start = None
         self.lookup_table_end = None
+        
+        # Drag and drop state
+        self.dragging_object = None
+        self.drag_start_pos = None
+        self.drag_current_pos = None
+        self.drag_offset_x = 0
+        self.drag_offset_y = 0
         
         # Load and display image
         try:
@@ -47,6 +51,8 @@ class GamePlacementTool:
         
         # Bind events
         self.canvas.bind("<Button-1>", self.on_canvas_click)
+        self.canvas.bind("<B1-Motion>", self.on_canvas_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_canvas_release)
         self.canvas.bind("<Configure>", self.on_canvas_configure)
         self.canvas.bind("<MouseWheel>", self.on_mouse_wheel)  # Windows/Linux
         self.canvas.bind("<Button-4>", self.on_mouse_wheel)    # Linux scroll up
@@ -106,6 +112,8 @@ class GamePlacementTool:
                 # Sort by x coordinate for proper ordering
                 objects_with_pos.sort(key=lambda obj: obj[0])
                 self.existing_objects = [(x, y) for x, y, _ in objects_with_pos]
+                # Store the full object data for each position
+                self.existing_objects_data = {(x, y): full_object for x, y, full_object in objects_with_pos}
                 
                 print(f"Loaded {len(self.existing_objects)} existing objects from {self.source_path}")
                 print(f"Lookup table: {self.lookup_table_name}")
@@ -169,9 +177,9 @@ class GamePlacementTool:
         self.objects_label.pack(side=tk.LEFT, padx=10)
         
         # Instructions
-        instructions_text = "Click on grid tiles to place objects. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | Shift+wheel: horizontal scroll | 0: reset zoom | Blue squares: existing objects"
+        instructions_text = "Click empty tiles to place objects. Drag existing objects (blue squares) to move them. Arrow keys: scroll | +/-: zoom | Ctrl+wheel: zoom | Shift+wheel: horizontal scroll | 0: reset zoom"
         if self.source_path:
-            instructions_text += " | Objects are inserted into source file automatically."
+            instructions_text += " | Objects are updated in source file automatically."
         else:
             instructions_text += " | Generated C code is copied to clipboard (no source file provided)."
             
@@ -213,6 +221,10 @@ class GamePlacementTool:
         # Draw existing objects
         if self.show_existing_objects:
             self.draw_existing_objects()
+        
+        # Draw drag preview if dragging
+        if self.dragging_object and self.drag_current_pos:
+            self.draw_drag_preview()
         
         # Update scroll region
         self.canvas.configure(scrollregion=(0, 0, scaled_width, scaled_height))
@@ -258,6 +270,10 @@ class GamePlacementTool:
         grid_rows = self.image_height // self.grid_size
         
         for x, y in self.existing_objects:
+            # Skip the object being dragged (it will be drawn in draw_drag_preview)
+            if self.dragging_object == (x, y):
+                continue
+                
             # Make sure coordinates are within bounds
             if 0 <= x < grid_cols and 0 <= y < grid_rows:
                 # Calculate rectangle coordinates
@@ -267,23 +283,56 @@ class GamePlacementTool:
                 y2 = ((y + 1) * scaled_height) // grid_rows
                 
                 # Draw existing object highlight
-                self.canvas.create_rectangle(
+                rect_id = self.canvas.create_rectangle(
                     x1, y1, x2, y2,
                     fill="blue", stipple="gray50", outline="darkblue", width=2,
-                    tags="existing_object"
+                    tags=f"existing_object_{x}_{y}"
                 )
     
-    def toggle_existing_objects(self):
-        """Toggle visibility of existing objects"""
-        self.show_existing_objects = not self.show_existing_objects
-        self.update_display()
-    
-    def on_canvas_click(self, event):
-        # Get canvas coordinates (accounting for scroll)
-        canvas_x = self.canvas.canvasx(event.x)
-        canvas_y = self.canvas.canvasy(event.y)
+    def draw_drag_preview(self):
+        """Draw a preview of the object being dragged"""
+        if not self.dragging_object or not self.drag_current_pos:
+            return
         
-        # Calculate grid coordinates using the same method as grid drawing
+        # Get the grid position under the cursor
+        grid_x, grid_y = self.canvas_to_grid_coords(self.drag_current_pos[0], self.drag_current_pos[1])
+        
+        # Calculate scaled dimensions
+        scaled_width = int(self.image_width * self.zoom_factor)
+        scaled_height = int(self.image_height * self.zoom_factor)
+        grid_cols = self.image_width // self.grid_size
+        grid_rows = self.image_height // self.grid_size
+        
+        if 0 <= grid_x < grid_cols and 0 <= grid_y < grid_rows:
+            # Calculate rectangle coordinates
+            x1 = (grid_x * scaled_width) // grid_cols
+            y1 = (grid_y * scaled_height) // grid_rows
+            x2 = ((grid_x + 1) * scaled_width) // grid_cols
+            y2 = ((grid_y + 1) * scaled_height) // grid_rows
+            
+            # Check if target position is occupied by another object
+            target_occupied = (grid_x, grid_y) in self.existing_objects and (grid_x, grid_y) != self.dragging_object
+            
+            # Draw drag preview with different color based on validity
+            if target_occupied:
+                # Red for invalid drop location
+                fill_color = "red"
+                outline_color = "darkred"
+                stipple = "gray75"
+            else:
+                # Green for valid drop location
+                fill_color = "green"
+                outline_color = "darkgreen"
+                stipple = "gray50"
+            
+            self.canvas.create_rectangle(
+                x1, y1, x2, y2,
+                fill=fill_color, stipple=stipple, outline=outline_color, width=3,
+                tags="drag_preview"
+            )
+    
+    def canvas_to_grid_coords(self, canvas_x, canvas_y):
+        """Convert canvas coordinates to grid coordinates"""
         scaled_width = int(self.image_width * self.zoom_factor)
         scaled_height = int(self.image_height * self.zoom_factor)
         grid_cols = self.image_width // self.grid_size
@@ -299,6 +348,42 @@ class GamePlacementTool:
             grid_y = max(0, min(grid_y, grid_rows - 1))
         else:
             grid_x = grid_y = 0
+        
+        return grid_x, grid_y
+    
+    def find_object_at_position(self, canvas_x, canvas_y):
+        """Find if there's an existing object at the given canvas position"""
+        grid_x, grid_y = self.canvas_to_grid_coords(canvas_x, canvas_y)
+        
+        # Check if there's an object at this grid position
+        if (grid_x, grid_y) in self.existing_objects:
+            return (grid_x, grid_y)
+        
+        return None
+    
+    def toggle_existing_objects(self):
+        """Toggle visibility of existing objects"""
+        self.show_existing_objects = not self.show_existing_objects
+        self.update_display()
+    
+    def on_canvas_click(self, event):
+        # Get canvas coordinates (accounting for scroll)
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        # Check if we clicked on an existing object
+        clicked_object = self.find_object_at_position(canvas_x, canvas_y)
+        
+        if clicked_object and self.show_existing_objects:
+            # Start dragging the existing object
+            self.dragging_object = clicked_object
+            self.drag_start_pos = (canvas_x, canvas_y)
+            self.drag_current_pos = (canvas_x, canvas_y)
+            self.status_label.config(text=f"Dragging object from grid {clicked_object}")
+            return
+        
+        # If no object was clicked, proceed with normal placement logic
+        grid_x, grid_y = self.canvas_to_grid_coords(canvas_x, canvas_y)
         
         # Check if there's already an object at this position
         if (grid_x, grid_y) in self.existing_objects:
@@ -323,6 +408,7 @@ class GamePlacementTool:
                     # Add to existing objects list and update display
                     self.existing_objects.append((grid_x, grid_y))
                     self.existing_objects.sort(key=lambda obj: obj[0])  # Sort by x
+                    self.existing_objects_data[(grid_x, grid_y)] = c_code
                     self.objects_label.config(text=f"Existing Objects: {len(self.existing_objects)}")
                     self.update_display()
                     
@@ -346,6 +432,195 @@ class GamePlacementTool:
             
             # Visual feedback - highlight the clicked tile
             self.highlight_tile(grid_x, grid_y)
+    
+    def on_canvas_drag(self, event):
+        """Handle mouse drag events"""
+        if not self.dragging_object:
+            return
+        
+        # Get canvas coordinates (accounting for scroll)
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        # Update drag position
+        self.drag_current_pos = (canvas_x, canvas_y)
+        
+        # Update the display to show drag preview
+        self.update_display()
+    
+    def on_canvas_release(self, event):
+        """Handle mouse release events"""
+        if not self.dragging_object:
+            return
+        
+        # Get canvas coordinates (accounting for scroll)
+        canvas_x = self.canvas.canvasx(event.x)
+        canvas_y = self.canvas.canvasy(event.y)
+        
+        # Get target grid position
+        target_grid_x, target_grid_y = self.canvas_to_grid_coords(canvas_x, canvas_y)
+        old_pos = self.dragging_object
+        
+        # Check if the target position is valid
+        target_occupied = (target_grid_x, target_grid_y) in self.existing_objects and (target_grid_x, target_grid_y) != old_pos
+        
+        if not target_occupied and (target_grid_x, target_grid_y) != old_pos:
+            # Valid move - update the object position
+            if self.move_object(old_pos, (target_grid_x, target_grid_y)):
+                self.status_label.config(
+                    text=f"Moved object from grid {old_pos} to grid ({target_grid_x}, {target_grid_y})"
+                )
+            else:
+                self.status_label.config(
+                    text=f"Failed to move object from grid {old_pos} to grid ({target_grid_x}, {target_grid_y})"
+                )
+        elif target_occupied:
+            self.status_label.config(
+                text=f"Cannot move to grid ({target_grid_x}, {target_grid_y}) - position occupied"
+            )
+        else:
+            # Same position - no move needed
+            self.status_label.config(text=f"Object remains at grid {old_pos}")
+        
+        # Reset drag state
+        self.dragging_object = None
+        self.drag_start_pos = None
+        self.drag_current_pos = None
+        
+        # Update display to remove drag preview
+        self.update_display()
+    
+    def move_object(self, old_pos, new_pos):
+        """Move an object from old_pos to new_pos, updating both data structures and source file"""
+        if old_pos not in self.existing_objects_data:
+            return False
+        
+        # Get the object's C code
+        old_c_code = self.existing_objects_data[old_pos]
+        
+        # Create new C code with updated position
+        # Parse the object type and extra data from the existing code
+        new_c_code = self.update_object_coordinates(old_c_code, new_pos[0], new_pos[1])
+        
+        if self.source_path and self.lookup_table_name:
+            # Update source file by removing old object and adding new one
+            success = self.update_object_in_source_file(old_pos, new_pos, new_c_code)
+            if success:
+                # Update data structures
+                self.existing_objects.remove(old_pos)
+                self.existing_objects.append(new_pos)
+                self.existing_objects.sort(key=lambda obj: obj[0])  # Sort by x
+                
+                del self.existing_objects_data[old_pos]
+                self.existing_objects_data[new_pos] = new_c_code
+                
+                return True
+        else:
+            # Just update data structures if no source file
+            self.existing_objects.remove(old_pos)
+            self.existing_objects.append(new_pos)
+            self.existing_objects.sort(key=lambda obj: obj[0])  # Sort by x
+            
+            del self.existing_objects_data[old_pos]
+            self.existing_objects_data[new_pos] = new_c_code
+            
+            # Copy new code to clipboard
+            self.copy_to_clipboard(new_c_code)
+            return True
+        
+        return False
+    
+    def update_object_coordinates(self, c_code, new_x, new_y):
+        """Update the x and y coordinates in a C code string"""
+        # Replace x coordinate
+        c_code = re.sub(r'\.x\s*=\s*\d+', f'.x = {new_x}', c_code)
+        # Replace y coordinate
+        c_code = re.sub(r'\.y\s*=\s*\d+', f'.y = {new_y}', c_code)
+        return c_code
+    
+    def update_object_in_source_file(self, old_pos, new_pos, new_c_code):
+        """Update an object's position in the source file"""
+        try:
+            # Read the current file content
+            with open(self.source_path, 'r') as f:
+                content = f.read()
+            
+            # Find the lookup table again (in case file was modified)
+            pattern = r'(level_object\s+\w+_lookup\[\]\s*=\s*\{)(.*?)(\};)'
+            match = re.search(pattern, content, re.DOTALL)
+            
+            if not match:
+                print("Could not find lookup table in source file")
+                return False
+            
+            table_prefix = match.group(1)
+            table_content = match.group(2)
+            table_suffix = match.group(3)
+            
+            # Parse existing objects with proper brace matching
+            objects = []
+            start_pattern = r'\{\.x\s*=\s*(\d+),\s*\.y\s*=\s*(\d+),'
+            
+            for start_match in re.finditer(start_pattern, table_content):
+                x = int(start_match.group(1))
+                y = int(start_match.group(2))
+                
+                # Find the complete object by counting braces
+                start_pos = start_match.start()
+                brace_count = 0
+                pos = start_pos
+                
+                while pos < len(table_content):
+                    char = table_content[pos]
+                    if char == '{':
+                        brace_count += 1
+                    elif char == '}':
+                        brace_count -= 1
+                        if brace_count == 0:
+                            # Found the end of the object
+                            full_object = table_content[start_pos:pos + 1]
+                            
+                            # If this is the object we're moving, use the new code and position
+                            if (x, y) == old_pos:
+                                objects.append((new_pos[0], new_pos[1], new_c_code))
+                            else:
+                                objects.append((x, y, full_object))
+                            break
+                    pos += 1
+            
+            # Sort by x coordinate
+            objects.sort(key=lambda obj: obj[0])
+            
+            # Rebuild the table content
+            new_table_content = ""
+            for i, (x, y, code) in enumerate(objects):
+                if i == 0:
+                    new_table_content += "\n    " + code
+                else:
+                    new_table_content += ",\n    " + code
+            
+            # Add final newline before closing brace
+            if objects:
+                new_table_content += "\n"
+            
+            # Reconstruct the full content
+            new_content = (
+                content[:match.start()] + 
+                table_prefix + 
+                new_table_content + 
+                table_suffix + 
+                content[match.end():]
+            )
+            
+            # Write back to file
+            with open(self.source_path, 'w') as f:
+                f.write(new_content)
+            
+            return True
+            
+        except Exception as e:
+            print(f"Error updating object in source file: {e}")
+            return False
     
     def insert_into_source_file(self, new_x, new_y, new_c_code):
         """Insert the new object code into the source file at the correct position"""
@@ -568,104 +843,3 @@ class GamePlacementTool:
     
     def run(self):
         self.root.mainloop()
-
-
-class ObjectTypeDialog:
-    def __init__(self, parent):
-        self.result = None
-        
-        # Create dialog window
-        self.dialog = tk.Toplevel(parent)
-        self.dialog.title("Select Object Type")
-        self.dialog.geometry("350x250")
-        self.dialog.transient(parent)
-        
-        # Center the dialog
-        self.dialog.geometry("+%d+%d" % (
-            parent.winfo_rootx() + 50,
-            parent.winfo_rooty() + 50
-        ))
-        
-        # Create buttons for object types
-        tk.Label(self.dialog, text="Select object type:", font=("Arial", 12)).pack(pady=10)
-        
-        button_frame = tk.Frame(self.dialog)
-        button_frame.pack(pady=10)
-        
-        object_types = ["ENEMY", "PLATFORM", "PLATFORM_MOVING"]
-        
-        for i, obj_type in enumerate(object_types):
-            btn = tk.Button(
-                button_frame,
-                text=obj_type,
-                width=15,
-                command=lambda t=obj_type: self.select_type(t)
-            )
-            btn.grid(row=i//2, column=i%2, padx=5, pady=5)
-        
-        # Cancel button
-        cancel_btn = tk.Button(
-            self.dialog,
-            text="Cancel",
-            command=self.cancel
-        )
-        cancel_btn.pack(pady=10)
-        
-        # Make sure the dialog is visible before grabbing focus
-        self.dialog.update_idletasks()
-        self.dialog.deiconify()
-        self.dialog.lift()
-        self.dialog.grab_set()
-        
-        # Wait for user input
-        self.dialog.wait_window()
-    
-    def select_type(self, obj_type):
-        if obj_type == "ENEMY":
-            # Prompt for enemy type when ENEMY is selected
-            enemy_type = self.prompt_enemy_type()
-            if enemy_type is not None:  # None means cancelled
-                self.result = (obj_type, enemy_type)
-            # If cancelled, result stays None and dialog closes
-        else:
-            self.result = (obj_type, None)
-        
-        self.dialog.destroy()
-    
-    def prompt_enemy_type(self):
-        """Prompt for specific enemy type with default value"""
-        return simpledialog.askstring(
-            "Enemy Type",
-            "Enter enemy type:",
-            initialvalue="ENEMY_GOOMBO",
-            parent=self.dialog
-        )
-    
-    def cancel(self):
-        self.result = None
-        self.dialog.destroy()
-
-
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: python placement_tool.py <image_file.png> [source_file.c]")
-        sys.exit(1)
-    
-    image_path = sys.argv[1]
-    source_path = sys.argv[2] if len(sys.argv) > 2 else None
-    
-    if not os.path.exists(image_path):
-        print(f"Error: Image file '{image_path}' not found.")
-        sys.exit(1)
-    
-    if source_path and not os.path.exists(source_path):
-        print(f"Warning: Source file '{source_path}' not found. Continuing without existing objects.")
-        source_path = None
-    
-    # Create and run the application
-    app = GamePlacementTool(image_path, source_path)
-    app.run()
-
-
-if __name__ == "__main__":
-    main()

@@ -62,10 +62,17 @@ UGE converted using hUGETracker uge2source https://github.com/SuperDisk/hUGETrac
 Python script to help place level objects (enemy, platforms)
 Uses tk
 
-Copy to clipboard the code to then past into a lookup table
+Dependencies to install under ubuntu
 
 ```
-python3 scripts/level_editor.py assets/levels/2_1.png
+sudo apt-get install python3-tk python3-pil python3-pil.imagetk
+```
+
+Pass the png used for game asset and a lookup table
+
+
+```
+python3 scripts/level_editor/run.py assets/levels/1_1.png src/lookup_tables/lookup_table_1_1.c
 ```
 
 # tests
