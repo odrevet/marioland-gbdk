@@ -72,8 +72,7 @@ void die(void) {
   hUGE_mute_channel(2, HT_CH_PLAY);
   hUGE_mute_channel(3, HT_CH_PLAY);
 
-  music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
-                  MUSIC_SFX_PRIORITY_NORMAL);
+  music_load(BANK(music_defeat), &music_defeat);
 
   player_frame = DEATH_ANIMATION_FRAME;  // Death pose
     
@@ -99,8 +98,8 @@ void die(void) {
       vsync();
   }
     
-  // Wait 1 second after Mario falls off screen
-  delay(1000);
+  // Wait after Mario falls off screen
+  delay(2000);
 
   init();
 

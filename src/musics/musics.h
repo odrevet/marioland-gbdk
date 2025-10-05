@@ -12,4 +12,7 @@ BANKREF_EXTERN(music_castle)
 extern const hUGESong_t music_stage_clear;
 BANKREF_EXTERN(music_stage_clear)
 
+extern const hUGESong_t music_defeat;
+BANKREF_EXTERN(music_defeat)
+
 #endif

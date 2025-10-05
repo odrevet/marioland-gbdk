@@ -20,7 +20,7 @@
 #include "text.h"
 #include "player.h"
 
-#include "sounds/sound_destroyed.h"
+#include "musics/musics.h"
 
 void init(void);
 void state_title(void); 
