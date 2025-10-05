@@ -20,6 +20,8 @@
 #include "text.h"
 #include "player.h"
 
+#include "sounds/sound_destroyed.h"
+
 void init(void);
 void state_title(void); 
 void state_pause(void); 

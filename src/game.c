@@ -72,32 +72,35 @@ void die(void) {
   hUGE_mute_channel(2, HT_CH_PLAY);
   hUGE_mute_channel(3, HT_CH_PLAY);
 
-      player_frame = DEATH_ANIMATION_FRAME;  // Death pose
+  music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
+                  MUSIC_SFX_PRIORITY_NORMAL);
+
+  player_frame = DEATH_ANIMATION_FRAME;  // Death pose
     
-    // Initialize death animation variables
-    int16_t death_vel_y = DEATH_BOUNCE_VELOCITY;
-    uint16_t death_y = player_y_upscaled;
+  // Initialize death animation variables
+  int16_t death_vel_y = DEATH_BOUNCE_VELOCITY;
+  uint16_t death_y = player_y_upscaled;
+  
+  // Freeze game and perform death animation
+  while (player_draw_y < DEVICE_SCREEN_PX_HEIGHT + 16) {
+      // Apply gravity
+      death_vel_y += DEATH_GRAVITY;
+      death_y += death_vel_y;
+      
+      // Update Mario's position
+      player_y = death_y >> 4;
+      player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + 
+                      MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
+      
+      // Draw Mario in death pose
+      player_draw(0);
+      
+      // Wait for next frame
+      vsync();
+  }
     
-    // Freeze game and perform death animation
-    while (player_draw_y < DEVICE_SCREEN_PX_HEIGHT + 16) {
-        // Apply gravity
-        death_vel_y += DEATH_GRAVITY;
-        death_y += death_vel_y;
-        
-        // Update Mario's position
-        player_y = death_y >> 4;
-        player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + 
-                        MARGIN_TOP_PX + PLAYER_DRAW_OFFSET_Y;
-        
-        // Draw Mario in death pose
-        player_draw(0);
-        
-        // Wait for next frame
-        vsync();
-    }
-    
-    // Wait 1 second after Mario falls off screen
-    delay(1000);
+  // Wait 1 second after Mario falls off screen
+  delay(1000);
 
   init();
 
