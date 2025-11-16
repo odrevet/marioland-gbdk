@@ -12,34 +12,35 @@
 
 
 void main(void) {
-  move_bkg(0, -MARGIN_TOP_PX);
-
-  uint8_t _saved_bank = _current_bank;
-
-  SWITCH_ROM(BANK(common));
-  set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
-
-  SWITCH_ROM(BANK(enemies));
-  set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
-
-  SWITCH_ROM(_saved_bank);
-
-  init();
-  current_level = 0;
-  level_set_current();
-  load_current_level();
-
-  DISPLAY_ON;
-  SHOW_BKG;
-  SHOW_SPRITES;
-  SPRITES_8x8;
-
-  enemy_new(10, 15, ENEMY_GOOMBO);
-  
-  while (1) {
-    enemy_update();
-    enemy_draw(0);
-
-    vsync();
-  }
+    move_bkg(0, -MARGIN_TOP_PX);
+    
+    uint8_t _saved_bank = _current_bank;
+    SWITCH_ROM(BANK(common));
+    set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
+    SWITCH_ROM(BANK(enemies));
+    set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
+    SWITCH_ROM(_saved_bank);
+    
+    init();
+    current_level = 0;
+    level_set_current();
+    load_current_level();
+    
+    // Initialize camera position
+    camera_x = 0;
+    camera_x_upscaled = 0;
+    
+    DISPLAY_ON;
+    SHOW_BKG;
+    SHOW_SPRITES;
+    SPRITES_8x8;
+    
+    enemy_new(7 * 8, 12 * 8, ENEMY_GOOMBO);
+    
+    while (1) {
+        EMU_printf("enemy at %d %d\n", enemies[0].x, enemies[0].y);
+        enemy_update();
+        enemy_draw(0);
+        vsync();
+    }
 }

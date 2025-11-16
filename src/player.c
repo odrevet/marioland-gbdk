@@ -99,11 +99,11 @@ void player_move(void) BANKED {
   }
 
   if (is_jumping) {
-    EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
+    //EMU_printf("jumping current before %d, add %d\n", current_jump, vel_y);
     current_jump += JUMP_SPEED;
-    EMU_printf("jumping current after %d\n", current_jump);
+    //EMU_printf("jumping current after %d\n", current_jump);
     if (current_jump >= MAX_JUMP) {
-      EMU_printf("jump max reached ! _\n");
+      //EMU_printf("jump max reached ! _\n");
       is_jumping = FALSE;
       current_jump = 0;
     }
@@ -111,10 +111,10 @@ void player_move(void) BANKED {
     vel_y = GRAVITY;
   }
 
-  EMU_printf("IS NOT JUMPING %d IS GROUNDED %d\n", !is_jumping, touch_ground);
+  //EMU_printf("IS NOT JUMPING %d IS GROUNDED %d\n", !is_jumping, touch_ground);
   if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
       touch_ground) {
-    EMU_printf("JUMP!!!!!!!!!!!!!!!!\n");
+    //EMU_printf("JUMPn");
     current_jump = 0;
     is_jumping = TRUE;
     display_jump_frame = TRUE;
@@ -139,8 +139,8 @@ void player_move(void) BANKED {
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + mario_HEIGHT - 1); // right bottom
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      EMU_printf("right collision. pos %d:%d next %d:%d \n", player_x, player_y,
-                 player_x_next, player_y_next);
+      //EMU_printf("right collision. pos %d:%d next %d:%d \n", player_x, player_y,
+      //           player_x_next, player_y_next);
       player_x = ((player_x_next + 7) & ~7) - 7;
       player_x_upscaled = player_x << 4;
     } else {
@@ -194,8 +194,8 @@ void player_move(void) BANKED {
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       player_x = ((player_x_next + 7) & ~7);
       player_x_upscaled = player_x << 4;
-      EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x, player_y,
-                 player_x_next, player_y_next);
+      //EMU_printf("left collision. pos %d:%d next %d:%d \n", player_x, player_y,
+      //           player_x_next, player_y_next);
     } else {
       if (is_coin(tile_next_1)) {
         on_get_coin_background(player_x_next - camera_x,
@@ -210,7 +210,7 @@ void player_move(void) BANKED {
     }
   }
 
-  EMU_printf("DRAW %d PLAYER X NEXT %d\n", player_draw_x, player_x_next);
+  //EMU_printf("DRAW %d PLAYER X NEXT %d\n", player_draw_x, player_x_next);
 
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled + vel_y;
@@ -228,8 +228,8 @@ void player_move(void) BANKED {
 
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2) ||
         is_tile_passthought(tile_next_1, tile_next_2)) {
-      EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x, player_y,
-                 player_x_next, player_y_next);
+      //EMU_printf("down collision. pos %d:%d next %d:%d \n", player_x, player_y,
+      //           player_x_next, player_y_next);
       player_on_touch_ground();
       player_y = ((player_y_next + 7) & ~7) - 8;
       player_y_upscaled = player_y << 4;
@@ -257,8 +257,8 @@ void player_move(void) BANKED {
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + PLAYER_TOP_MARGIN); // right top
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
-      EMU_printf("up collision. pos %d:%d next %d:%d \n", player_x, player_y,
-                 player_x_next, player_y_next);
+      //EMU_printf("up collision. pos %d:%d next %d:%d \n", player_x, player_y,
+      //           player_x_next, player_y_next);
       if (tile_next_1 == TILE_INTEROGATION_BLOCK) {
         on_interogation_block_hit(player_x_next + PLAYER_HORIZONTAL_MARGIN -
                                       camera_x,
@@ -307,15 +307,15 @@ void player_on_touch_ground(void) NONBANKED {
 }
 
 bool player_is_on_platform(void) NONBANKED {
-  EMU_printf("plateform count: %d\n", platform_moving_count);
+  //EMU_printf("plateform count: %d\n", platform_moving_count);
 
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
-    EMU_printf("x %d between %d and %d . y %d between %d and %d.\n",
-               player_x_upscaled, platforms_moving[index_platform].x,
-               platforms_moving[index_platform].x + (3 * 8 * 16),
-               player_y_upscaled + 128, platforms_moving[index_platform].y,
-               platforms_moving[index_platform].y + (8 * 16));
+    //EMU_printf("x %d between %d and %d . y %d between %d and %d.\n",
+    //           player_x_upscaled, platforms_moving[index_platform].x,
+    //           platforms_moving[index_platform].x + (3 * 8 * 16),
+    //           player_y_upscaled + 128, platforms_moving[index_platform].y,
+    //           platforms_moving[index_platform].y + (8 * 16));
     if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
         player_y_upscaled + 128 <=
             platforms_moving[index_platform].y + (8 * 16) &&
@@ -324,7 +324,7 @@ bool player_is_on_platform(void) NONBANKED {
         && player_x_upscaled > platforms_moving[index_platform].x) {
       vel_x += platforms_moving[index_platform].vel_x;
       vel_y = platforms_moving[index_platform].vel_y;
-      EMU_printf("ON PLATEFORM\n");
+      //EMU_printf("ON PLATEFORM\n");
 
       player_on_touch_ground();
       return TRUE;

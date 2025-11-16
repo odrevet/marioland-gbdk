@@ -65,15 +65,15 @@ bool enemy_collide() {
     uint16_t enemy_top = (enemies[enemy_index].y >> 4);
     uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemies_HEIGHT;
 
-    EMU_printf("Ennemy left %d right %d top %d bottom %d\n", enemy_left,
-               enemy_right, enemy_top, enemy_bottom);
-    EMU_printf("player %d %d\n", player_x, player_y);
+    //EMU_printf("Ennemy left %d right %d top %d bottom %d\n", enemy_left,
+    //           enemy_right, enemy_top, enemy_bottom);
+    //EMU_printf("player %d %d\n", player_x, player_y);
 
     if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
         player_y < enemy_bottom &&
         player_y + mario_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
-      EMU_printf("COLLID %d < %d", player_y + mario_HEIGHT,
-                 enemy_top + TILE_SIZE + 4);
+      //EMU_printf("COLLID %d < %d", player_y + mario_HEIGHT,
+      //           enemy_top + TILE_SIZE + 4);
       if (player_y + mario_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
         // TODO set active flag to false
         for (uint8_t j = enemy_index; j < enemy_count - 1; j++) {

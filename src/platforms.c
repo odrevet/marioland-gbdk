@@ -8,7 +8,7 @@ platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t platform_direction, uint8_t range,
                          uint8_t width) {
-  EMU_printf("new platform at %d:%d", x, y);
+  //EMU_printf("new platform at %d:%d", x, y);
   if (platform_moving_count < PLATFORM_MOVING_MAX) {
     platform_moving_t platform_moving = {
         .x = x << 4,

@@ -31,8 +31,8 @@ void missile_update(void) {
       missiles[index_missile].draw_x = (missiles[index_missile].x) >> 4;
       missiles[index_missile].draw_y = missiles[index_missile].y >> 4;
 
-      EMU_printf("Missile X position is %d. Draw X is %d\n",
-                 missiles[index_missile].x, missiles[index_missile].draw_x);
+      //EMU_printf("Missile X position is %d. Draw X is %d\n",
+      //           missiles[index_missile].x, missiles[index_missile].draw_x);
       if (missiles[index_missile].draw_x >= 255) {
         missiles[index_missile].active = FALSE;
         missile_count--;
