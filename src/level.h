@@ -142,6 +142,7 @@ enum tileset_index_common {
 
 // Birabuto world tiles
 enum tileset_index_birabuto {
+  GREY_BLOCK = 0x61,
   TILE_TORCH = 0x72,
   TILE_FLOOR = 0x75,
   TILE_FLOOR_BIS = 0x7F,

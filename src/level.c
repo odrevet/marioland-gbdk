@@ -260,7 +260,8 @@ bool is_tile_solid(uint8_t tile) {
     return ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
             (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
             (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
-            (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK));
+            (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) || 
+            (tile == GREY_BLOCK));
   } else if (current_level >= 3 && current_level <= 5) {
     // Muda world
     return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
