@@ -26,21 +26,24 @@ void main(void) {
     level_set_current();
     load_current_level();
     
-    // Initialize camera position
-    camera_x = 0;
-    camera_x_upscaled = 0;
-    
     DISPLAY_ON;
     SHOW_BKG;
     SHOW_SPRITES;
     SPRITES_8x8;
     
-    enemy_new(7 * 8, 12 * 8, ENEMY_GOOMBO);
+    enemy_new(7 * TILE_SIZE, 12 * TILE_SIZE, ENEMY_GOOMBO);
     
     while (1) {
         EMU_printf("enemy at %d %d\n", enemies[0].x, enemies[0].y);
         enemy_update();
         enemy_draw(0);
+
+        joypad_current = joypad();
+
+        if (joypad_current & J_START) {
+            enemy_remove(0);
+        }
+
         vsync();
     }
 }

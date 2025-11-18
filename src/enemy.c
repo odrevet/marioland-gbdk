@@ -157,6 +157,15 @@ void enemy_move_goomba(uint8_t index) {
   }
 }
 
+void enemy_remove(uint8_t index_enemy){
+      EMU_printf("REMOVE ENEMY\n");
+      for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
+        enemies[j] = enemies[j + 1];
+      }
+      enemy_count--;
+      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+}
+
 void enemy_update(void) {
   uint8_t index_enemy = 0;
   while (index_enemy < enemy_count) {
@@ -167,14 +176,9 @@ void enemy_update(void) {
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
     //EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH);
-    if (camera_x_upscaled > DEVICE_SCREEN_PX_WIDTH &&  // FIXME do not erase when enemy on first page
-       enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
-      EMU_printf("REMOVE ENEMY\n");
-      for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
-        enemies[j] = enemies[j + 1];
-      }
-      enemy_count--;
-      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+    if (camera_x_upscaled > DEVICE_SCREEN_PX_WIDTH &&  // do not erase when enemy on first page
+      enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
+      enemy_remove(index_enemy); 
       continue;
     }
 
