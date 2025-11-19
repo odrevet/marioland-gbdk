@@ -9,6 +9,7 @@
 #include "../src/global.h"
 #include "../src/level.h"
 #include "../src/enemy.h"
+#include "../src/sounds/sound_squish.h"
 
 
 void main(void) {
@@ -32,7 +33,7 @@ void main(void) {
     SPRITES_8x8;
     
     enemy_new(7 * TILE_SIZE, 12 * TILE_SIZE, ENEMY_GOOMBO);
-    
+
     while (1) {
         EMU_printf("enemy at %d %d\n", enemies[0].x, enemies[0].y);
         enemy_update();
@@ -40,8 +41,11 @@ void main(void) {
 
         joypad_current = joypad();
 
-        if (joypad_current & J_START) {
-            enemy_remove(0);
+        if (joypad_current & J_B) {
+            music_play_sfx(BANK(sound_squish), 
+                           sound_squish, 
+                           SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
+            enemy_stomp(0);
         }
 
         vsync();

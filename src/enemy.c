@@ -32,12 +32,13 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
                      .type = type,
                      .frame_counter = 0,
                      .current_frame = current_frame,
-                     .flip = FALSE};
+                     .flip = FALSE,
+                     .stomped = FALSE,
+                     .stomped_timer = 0};
     enemies[enemy_count] = enemy;
     enemy_count++;
   }
 }
-
 
 #define ENEMY_WIDTH 8
 #define ENEMY_HEIGHT 16
@@ -47,6 +48,11 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
 
 void enemy_move_goomba(uint8_t index) {
   enemy_t *goomba = &enemies[index];
+
+  // Don't move if stomped
+  if (goomba->stomped) {
+    return;
+  }
 
   // Set initial velocity if not moving
   if (goomba->vel_x == 0) {
@@ -157,35 +163,81 @@ void enemy_move_goomba(uint8_t index) {
   }
 }
 
-void enemy_remove(uint8_t index_enemy){
-      EMU_printf("REMOVE ENEMY\n");
-      for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
-        enemies[j] = enemies[j + 1];
-      }
-      enemy_count--;
-      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+void enemy_stomp(uint8_t index_enemy) {
+  EMU_printf("STOMP ENEMY %d\n", index_enemy);
+  
+  enemy_t *enemy = &enemies[index_enemy];
+  
+  // Mark as stomped
+  enemy->stomped = TRUE;
+  enemy->stomped_timer = ENEMY_STOMPED_DISPLAY_FRAMES;
+  
+  // Stop all movement
+  enemy->vel_x = 0;
+  enemy->vel_y = 0;
+  
+  // Set to stomped/crushed sprite frame
+  // The stomped frame is right after the normal frame in memory
+  switch (enemy->type) {
+    case ENEMY_GOOMBO:
+      enemy->current_frame = 1;
+      enemy->flip = FALSE;
+      break;
+    case ENEMY_KOOPA:
+      enemy->current_frame = 3;
+      break;
+    default:
+      enemy->current_frame++;
+      break;
+  }
+}
+
+void enemy_remove(uint8_t index_enemy) {
+  EMU_printf("REMOVE ENEMY\n");
+  for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
+    enemies[j] = enemies[j + 1];
+  }
+  enemy_count--;
+  hide_sprites_range(1, MAX_HARDWARE_SPRITES);
 }
 
 void enemy_update(void) {
   uint8_t index_enemy = 0;
   while (index_enemy < enemy_count) {
+    // Handle stomped enemies
+    if (enemies[index_enemy].stomped) {
+      enemies[index_enemy].stomped_timer--;
+      if (enemies[index_enemy].stomped_timer == 0) {
+        // Timer expired, remove the enemy
+        enemy_remove(index_enemy);
+        continue;
+      }
+      // Update draw position even when stomped
+      enemies[index_enemy].draw_x =
+          (enemies[index_enemy].x - camera_x_upscaled) >> 4;
+      enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
+      index_enemy++;
+      continue;
+    }
+
+    // Normal update for non-stomped enemies
     enemies[index_enemy].x += enemies[index_enemy].vel_x;
     enemies[index_enemy].y += enemies[index_enemy].vel_y;
     enemies[index_enemy].draw_x =
         (enemies[index_enemy].x - camera_x_upscaled) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
 
-    //EMU_printf("if %d <= %d\n", enemies[index_enemy].x,  camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH);
-    if (camera_x_upscaled > DEVICE_SCREEN_PX_WIDTH &&  // do not erase when enemy on first page
-      enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
-      enemy_remove(index_enemy); 
+    // Remove if off-screen to the left
+    if (camera_x_upscaled > DEVICE_SCREEN_PX_WIDTH &&
+        enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
+      enemy_remove(index_enemy);
       continue;
     }
 
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBO:
       enemy_move_goomba(index_enemy);
-      // set frame
+      // set frame animation (only when not stomped)
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
