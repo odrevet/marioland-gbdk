@@ -275,7 +275,7 @@ void main(void) {
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
       player_y = 0;
-      // die();
+      die();
     }
 
     // if reach end of level
