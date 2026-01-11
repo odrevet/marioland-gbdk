@@ -10,33 +10,41 @@ enemy_t enemies[ENEMY_MAX];
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
   EMU_printf("enemy new at %d %d\n", x, y);
-  if (enemy_count < ENEMY_MAX) {
-    uint8_t current_frame;
-    int8_t vel_x = 0;
-    switch (type) {
-    case ENEMY_GOOMBO:
-      current_frame = 0;
-      vel_x = 0; // WIP
-      y -= 8;
-      break;
-    case ENEMY_KOOPA:
-      current_frame = 1;
-      vel_x = 0; // WIP
-      y -= 8;
-      break;
+  
+  // Find first inactive enemy slot
+  for (uint8_t i = 0; i < ENEMY_MAX; i++) {
+    if (!enemies[i].active) {
+      uint8_t current_frame;
+      int8_t vel_x = 0;
+      
+      switch (type) {
+      case ENEMY_GOOMBO:
+        current_frame = 0;
+        vel_x = 0; // WIP
+        y -= 8;
+        break;
+      case ENEMY_KOOPA:
+        current_frame = 1;
+        vel_x = 0; // WIP
+        y -= 8;
+        break;
+      }
+      
+      enemies[i].x = x << 4;
+      enemies[i].y = y << 4;
+      enemies[i].vel_x = vel_x;
+      enemies[i].vel_y = 0;
+      enemies[i].type = type;
+      enemies[i].frame_counter = 0;
+      enemies[i].current_frame = current_frame;
+      enemies[i].flip = FALSE;
+      enemies[i].stomped = FALSE;
+      enemies[i].stomped_timer = 0;
+      enemies[i].active = TRUE;
+      
+      enemy_count++;
+      return;
     }
-    enemy_t enemy = {.x = x << 4,
-                     .y = y << 4,
-                     .vel_x = vel_x,
-                     .vel_y = 0,
-                     .type = type,
-                     .frame_counter = 0,
-                     .current_frame = current_frame,
-                     .flip = FALSE,
-                     .stomped = FALSE,
-                     .stomped_timer = 0};
-    enemies[enemy_count] = enemy;
-    enemy_count++;
   }
 }
 
@@ -49,8 +57,8 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
 void enemy_move_goomba(uint8_t index) {
   enemy_t *goomba = &enemies[index];
 
-  // Don't move if stomped
-  if (goomba->stomped) {
+  // Don't move if stomped or inactive
+  if (goomba->stomped || !goomba->active) {
     return;
   }
 
@@ -168,6 +176,10 @@ void enemy_stomp(uint8_t index_enemy) {
   
   enemy_t *enemy = &enemies[index_enemy];
   
+  if (!enemy->active) {
+    return;
+  }
+  
   // Mark as stomped
   enemy->stomped = TRUE;
   enemy->stomped_timer = ENEMY_STOMPED_DISPLAY_FRAMES;
@@ -193,17 +205,44 @@ void enemy_stomp(uint8_t index_enemy) {
 }
 
 void enemy_remove(uint8_t index_enemy) {
-  EMU_printf("REMOVE ENEMY\n");
-  for (uint8_t j = index_enemy; j < enemy_count - 1; j++) {
-    enemies[j] = enemies[j + 1];
+  EMU_printf("REMOVE ENEMY %d\n", index_enemy);
+  
+  if (index_enemy < ENEMY_MAX && enemies[index_enemy].active) {
+    enemies[index_enemy].active = FALSE;
+    enemy_count--;
+    hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   }
-  enemy_count--;
+}
+
+void enemy_reset_all(void) {
+  EMU_printf("RESET ALL ENEMIES\n");
+  
+  // Deactivate all enemy slots
+  for (uint8_t i = 0; i < ENEMY_MAX; i++) {
+    enemies[i].active = FALSE;
+    enemies[i].stomped = FALSE;
+    enemies[i].x = 0;
+    enemies[i].y = 0;
+    enemies[i].vel_x = 0;
+    enemies[i].vel_y = 0;
+    enemies[i].draw_x = 0;
+    enemies[i].draw_y = 0;
+  }
+  
+  // Reset enemy count
+  enemy_count = 0;
+  
+  // Hide all enemy sprites
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
 }
 
 void enemy_update(void) {
-  uint8_t index_enemy = 0;
-  while (index_enemy < enemy_count) {
+  for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
+    // Skip inactive enemies
+    if (!enemies[index_enemy].active) {
+      continue;
+    }
+    
     // Handle stomped enemies
     if (enemies[index_enemy].stomped) {
       enemies[index_enemy].stomped_timer--;
@@ -212,11 +251,10 @@ void enemy_update(void) {
         enemy_remove(index_enemy);
         continue;
       }
-      // Update draw position even when stomped
+      // Update draw position for scrolling (same as normal enemies)
       enemies[index_enemy].draw_x =
           (enemies[index_enemy].x - camera_x_upscaled) >> 4;
       enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
-      index_enemy++;
       continue;
     }
 
@@ -254,7 +292,6 @@ void enemy_update(void) {
       break;
     }
     enemies[index_enemy].frame_counter++;
-    index_enemy++;
   }
 }
 
@@ -262,7 +299,12 @@ uint8_t enemy_draw(uint8_t base_sprite) {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(enemies));
 
-  for (int index_enemy = 0; index_enemy < enemy_count; index_enemy++) {
+  for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
+    // Skip inactive enemies
+    if (!enemies[index_enemy].active) {
+      continue;
+    }
+    
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 

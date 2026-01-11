@@ -49,6 +49,7 @@ typedef struct {
   bool flip;
   bool stomped;  // Is enemy stomped/crushed
   uint8_t stomped_timer;  // Countdown timer for stomped display
+  bool active;
 } enemy_t;
 
 extern uint8_t enemy_count;

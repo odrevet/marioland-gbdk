@@ -407,10 +407,12 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
   uint8_t col = 0;
   while (col < nb) {
     map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+    const uint8_t* col_ptr = &current_map[col + start_at];
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
-      int pos = (row * current_map_width_in_tiles) + col + start_at;
-      uint8_t tile = current_map[pos];
+      //int pos = (row * current_map_width_in_tiles) + col + start_at;
+      //uint8_t tile = current_map[pos];
+      uint8_t tile = col_ptr[row * current_map_width_in_tiles];
       map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
       coldata[row] = tile;
     }

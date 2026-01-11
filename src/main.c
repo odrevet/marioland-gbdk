@@ -58,29 +58,28 @@ bool powerups_collide() {
 
 #define ENEMY_TOP_MARGIN 8
 
+// Updated enemy_collide() function for main.c
+// Replace the existing enemy_collide() function with this:
+
 bool enemy_collide() {
-  for (uint8_t enemy_index = 0; enemy_index < enemy_count; enemy_index++) {
+  for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
+    // Skip inactive or stomped enemies
+    if (!enemies[enemy_index].active || enemies[enemy_index].stomped) {
+      continue;
+    }
+    
     uint16_t enemy_left = (enemies[enemy_index].x >> 4);
     uint16_t enemy_right = (enemies[enemy_index].x >> 4) + TILE_SIZE;
     uint16_t enemy_top = (enemies[enemy_index].y >> 4);
     uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemies_HEIGHT;
 
-    //EMU_printf("Ennemy left %d right %d top %d bottom %d\n", enemy_left,
-    //           enemy_right, enemy_top, enemy_bottom);
-    //EMU_printf("player %d %d\n", player_x, player_y);
-
     if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
         player_y < enemy_bottom &&
         player_y + mario_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
-      //EMU_printf("COLLID %d < %d", player_y + mario_HEIGHT,
-      //           enemy_top + TILE_SIZE + 4);
+      
       if (player_y + mario_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
-        // TODO set active flag to false
-        for (uint8_t j = enemy_index; j < enemy_count - 1; j++) {
-          enemies[j] = enemies[j + 1];
-        }
-        enemy_count--;
-        hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+        // Stomp the enemy
+        enemy_stomp(enemy_index);
 
         current_jump = 0;
         is_jumping = TRUE;
@@ -93,6 +92,7 @@ bool enemy_collide() {
         continue;
       } else {
         die();
+        enemy_reset_all();
       }
       return true;
     }
@@ -275,7 +275,7 @@ void main(void) {
     // if fall under screen
     if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
       player_y = 0;
-      die();
+      //die();
     }
 
     // if reach end of level
