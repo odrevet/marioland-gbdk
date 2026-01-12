@@ -89,17 +89,8 @@ void enemy_move_goomba(uint8_t index) {
       goomba->vel_x = -ENEMY_GOOMBA_SPEED;
       goomba->flip = TRUE;
     } else {
-      // Check for cliff (no ground ahead when moving right)
-      uint8_t tile_ground_ahead =
-          get_tile(next_x + ENEMY_WIDTH - camera_x, current_y + ENEMY_HEIGHT);
-      if (!is_tile_solid(tile_ground_ahead)) {
-        // No ground ahead, reverse direction
-        goomba->vel_x = -ENEMY_GOOMBA_SPEED;
-        goomba->flip = TRUE;
-      } else {
-        // Safe to move
-        goomba->x = next_x_upscaled;
-      }
+      // Safe to move
+      goomba->x = next_x_upscaled;
     }
   } else if (goomba->vel_x < 0) {
     // Moving left - check left edge
@@ -113,17 +104,8 @@ void enemy_move_goomba(uint8_t index) {
       goomba->vel_x = ENEMY_GOOMBA_SPEED;
       goomba->flip = FALSE;
     } else {
-      // Check for cliff (no ground ahead when moving left)
-      uint8_t tile_ground_ahead =
-          get_tile(next_x - 1 - camera_x, current_y + ENEMY_HEIGHT);
-      if (!is_tile_solid(tile_ground_ahead)) {
-        // No ground ahead, reverse direction
-        goomba->vel_x = ENEMY_GOOMBA_SPEED;
-        goomba->flip = FALSE;
-      } else {
-        // Safe to move
-        goomba->x = next_x_upscaled;
-      }
+      // Safe to move
+      goomba->x = next_x_upscaled;
     }
   }
 
@@ -166,6 +148,126 @@ void enemy_move_goomba(uint8_t index) {
       } else {
         // Continue falling
         goomba->y = next_y_upscaled;
+      }
+    }
+  }
+}
+
+
+#define ENEMY_KOOPA_SPEED 4
+
+void enemy_move_koopa(uint8_t index) {
+  enemy_t *koopa = &enemies[index];
+
+  // Don't move if stomped or inactive
+  if (koopa->stomped || !koopa->active) {
+    return;
+  }
+
+  // Set initial velocity if not moving
+  if (koopa->vel_x == 0) {
+    koopa->vel_x = -ENEMY_KOOPA_SPEED; // Start moving left
+  }
+
+  // Calculate next position
+  uint16_t next_x_upscaled = koopa->x + koopa->vel_x;
+  uint16_t next_y_upscaled = koopa->y + koopa->vel_y;
+
+  uint16_t next_x = next_x_upscaled >> 4;
+  uint16_t next_y = next_y_upscaled >> 4;
+  uint16_t current_x = koopa->x >> 4;
+  uint16_t current_y = koopa->y >> 4;
+
+  // Horizontal movement and collision detection
+  if (koopa->vel_x > 0) {
+    // Moving right - check right edge for wall collision
+    uint8_t tile_right_top = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
+                                      current_y + ENEMY_TOP_MARGIN);
+    uint8_t tile_right_bottom = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
+                                         current_y + ENEMY_HEIGHT - 1);
+
+    if (is_tile_solid(tile_right_top) || is_tile_solid(tile_right_bottom)) {
+      // Hit wall, reverse direction
+      koopa->vel_x = -ENEMY_KOOPA_SPEED;
+      koopa->flip = TRUE;
+    } else {
+      // Check for cliff (no ground ahead when moving right)
+      uint8_t tile_ground_ahead =
+          get_tile(next_x + ENEMY_WIDTH - camera_x, current_y + ENEMY_HEIGHT);
+      if (!is_tile_solid(tile_ground_ahead)) {
+        // No ground ahead, reverse direction (Koopa turns at ledges)
+        koopa->vel_x = -ENEMY_KOOPA_SPEED;
+        koopa->flip = TRUE;
+      } else {
+        // Safe to move
+        koopa->x = next_x_upscaled;
+      }
+    }
+  } else if (koopa->vel_x < 0) {
+    // Moving left - check left edge for wall collision
+    uint8_t tile_left_top =
+        get_tile(next_x - camera_x, current_y + ENEMY_TOP_MARGIN);
+    uint8_t tile_left_bottom =
+        get_tile(next_x - camera_x, current_y + ENEMY_HEIGHT - 1);
+
+    if (is_tile_solid(tile_left_top) || is_tile_solid(tile_left_bottom)) {
+      // Hit wall, reverse direction
+      koopa->vel_x = ENEMY_KOOPA_SPEED;
+      koopa->flip = FALSE;
+    } else {
+      // Check for cliff (no ground ahead when moving left)
+      uint8_t tile_ground_ahead =
+          get_tile(next_x - 1 - camera_x, current_y + ENEMY_HEIGHT);
+      if (!is_tile_solid(tile_ground_ahead)) {
+        // No ground ahead, reverse direction (Koopa turns at ledges)
+        koopa->vel_x = ENEMY_KOOPA_SPEED;
+        koopa->flip = FALSE;
+      } else {
+        // Safe to move
+        koopa->x = next_x_upscaled;
+      }
+    }
+  }
+
+  // Apply gravity if not on ground
+  uint16_t ground_check_x = koopa->x >> 4;
+  uint16_t ground_check_y = (koopa->y >> 4) + ENEMY_HEIGHT;
+
+  uint8_t tile_ground_left =
+      get_tile(ground_check_x - camera_x, ground_check_y);
+  uint8_t tile_ground_right =
+      get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
+
+  if (!is_tile_solid(tile_ground_left) && !is_tile_solid(tile_ground_right)) {
+    // No ground beneath, apply gravity
+    koopa->vel_y = ENEMY_GRAVITY;
+  } else {
+    // On ground, stop falling
+    koopa->vel_y = 0;
+    // Snap to ground level
+    uint16_t ground_y = ((ground_check_y + 7) & ~7) - ENEMY_HEIGHT;
+    koopa->y = ground_y << 4;
+  }
+
+  // Vertical movement
+  if (koopa->vel_y != 0) {
+    next_y_upscaled = koopa->y + koopa->vel_y;
+    next_y = next_y_upscaled >> 4;
+
+    if (koopa->vel_y > 0) {
+      // Falling down - check for ground collision
+      uint8_t tile_bottom_left =
+          get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
+      uint8_t tile_bottom_right = get_tile(
+          ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
+
+      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
+        // Hit ground, stop falling
+        koopa->vel_y = 0;
+        koopa->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
+      } else {
+        // Continue falling
+        koopa->y = next_y_upscaled;
       }
     }
   }
@@ -258,9 +360,30 @@ void enemy_update(void) {
       continue;
     }
 
-    // Normal update for non-stomped enemies
-    enemies[index_enemy].x += enemies[index_enemy].vel_x;
-    enemies[index_enemy].y += enemies[index_enemy].vel_y;
+    // Update based on enemy type (DO MOVEMENT FIRST)
+    switch (enemies[index_enemy].type) {
+    case ENEMY_GOOMBO:
+      enemy_move_goomba(index_enemy);  // This handles all position updates
+      // set frame animation (only when not stomped)
+      if (enemies[index_enemy].frame_counter ==
+          ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        enemies[index_enemy].frame_counter = 0;
+        enemies[index_enemy].flip = !enemies[index_enemy].flip;
+      }
+      break;
+    case ENEMY_KOOPA:
+      enemy_move_koopa(index_enemy);  // This handles all position updates
+      
+      if (enemies[index_enemy].frame_counter ==
+          ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        enemies[index_enemy].frame_counter = 0;
+        enemies[index_enemy].current_frame =
+            (enemies[index_enemy].current_frame + 1) % 2 + 2;
+      }
+      break;
+    }
+    
+    // Update draw position AFTER movement
     enemies[index_enemy].draw_x =
         (enemies[index_enemy].x - camera_x_upscaled) >> 4;
     enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
@@ -272,25 +395,6 @@ void enemy_update(void) {
       continue;
     }
 
-    switch (enemies[index_enemy].type) {
-    case ENEMY_GOOMBO:
-      enemy_move_goomba(index_enemy);
-      // set frame animation (only when not stomped)
-      if (enemies[index_enemy].frame_counter ==
-          ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].frame_counter = 0;
-        enemies[index_enemy].flip = !enemies[index_enemy].flip;
-      }
-      break;
-    case ENEMY_KOOPA:
-      if (enemies[index_enemy].frame_counter ==
-          ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].frame_counter = 0;
-        enemies[index_enemy].current_frame =
-            (enemies[index_enemy].current_frame + 1) % 2 + 2;
-      }
-      break;
-    }
     enemies[index_enemy].frame_counter++;
   }
 }
