@@ -73,35 +73,77 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
+
+
 void player_move(void) BANKED {
-  // Horizontal movement
+  int8_t target_vel_x = 0;
+  int8_t max_speed;
+  int8_t accel;
+  int8_t decel;
+  bool on_ground = touch_ground || player_is_on_platform();
+
   if (joypad_current & J_RIGHT) {
     display_walk_animation = TRUE;
-    if (joypad_current & J_B) {
-      vel_x = PLAYER_SPEED_RUN;
-    } else {
-      vel_x = PLAYER_SPEED_WALK;
-    }
+    max_speed = (joypad_current & J_B) ? MAX_RUN_SPEED : MAX_WALK_SPEED;
+    target_vel_x = max_speed;
 
     if (display_jump_frame == FALSE) {
       mario_flip = FALSE;
     }
   } else if (joypad_current & J_LEFT) {
     display_walk_animation = TRUE;
-    if (joypad_current & J_B) {
-      vel_x = -PLAYER_SPEED_RUN;
-    } else {
-      vel_x = -PLAYER_SPEED_WALK;
-    }
+    max_speed = (joypad_current & J_B) ? MAX_RUN_SPEED : MAX_WALK_SPEED;
+    target_vel_x = -max_speed;
     mario_flip = TRUE;
   } else {
-    vel_x = 0;
     display_walk_animation = FALSE;
+  }
+
+  // Choose acceleration/deceleration based on ground state
+  if (on_ground) {
+    accel = ACCELERATION;
+    decel = DECELERATION;
+
+    // Check for skidding (changing direction at speed)
+    if ((vel_x > 8 && target_vel_x < 0) || (vel_x < -8 && target_vel_x > 0)) {
+      decel = SKID_DECELERATION;
+      display_slide_frame = TRUE;
+    } else {
+      display_slide_frame = FALSE;
+    }
+  } else {
+    accel = AIR_ACCELERATION;
+    decel = AIR_DECELERATION;
+    display_slide_frame = FALSE;
+  }
+
+  // Apply acceleration/deceleration
+  if (target_vel_x == 0) {
+    // Decelerate to stop
+    if (vel_x > 0) {
+      vel_x -= decel;
+      if (vel_x < 0)
+        vel_x = 0;
+    } else if (vel_x < 0) {
+      vel_x += decel;
+      if (vel_x > 0)
+        vel_x = 0;
+    }
+  } else if (target_vel_x > vel_x) {
+    // Accelerate right
+    vel_x += accel;
+    if (vel_x > target_vel_x)
+      vel_x = target_vel_x;
+  } else if (target_vel_x < vel_x) {
+    // Accelerate left
+    vel_x -= accel;
+    if (vel_x < target_vel_x)
+      vel_x = target_vel_x;
   }
 
   if (is_jumping) {
     current_jump++;
-    
+
     // Apply gravity based on state
     if (vel_y < 0) {
       // Moving upward
@@ -117,12 +159,12 @@ void player_move(void) BANKED {
       // Started falling
       vel_y += GRAVITY;
     }
-    
+
     // End jump state when falling for a bit
     if (vel_y >= 0 && current_jump > JUMP_MIN_FRAMES) {
       is_jumping = FALSE;
     }
-    
+
     // Force end at max frames
     if (current_jump >= JUMP_MAX_FRAMES + 10) {
       is_jumping = FALSE;
@@ -191,7 +233,8 @@ void player_move(void) BANKED {
 
       // check scroll limit
       if (!level_end_reached && player_x > scroll_limit) {
-        camera_x_upscaled += vel_x;
+        int16_t player_movement = player_x - scroll_limit;
+        camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
         SCX_REG = camera_x;
         scroll_limit = player_x;
@@ -206,10 +249,10 @@ void player_move(void) BANKED {
     }
   } else if (vel_x < 0 && player_draw_x > 12) {
     // move left
-    tile_next_1 = get_tile(player_x_next - camera_x,
-                           player_y_next + PLAYER_TOP_MARGIN);
-    tile_next_2 = get_tile(player_x_next - camera_x,
-                           player_y_next + mario_HEIGHT - 1);
+    tile_next_1 =
+        get_tile(player_x_next - camera_x, player_y_next + PLAYER_TOP_MARGIN);
+    tile_next_2 =
+        get_tile(player_x_next - camera_x, player_y_next + mario_HEIGHT - 1);
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       player_x = ((player_x_next + 7) & ~7);
       player_x_upscaled = player_x << 4;
@@ -326,8 +369,8 @@ bool player_is_on_platform(void) NONBANKED {
     if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
         player_y_upscaled + 128 <=
             platforms_moving[index_platform].y + (8 * 16) &&
-        player_x_upscaled <= platforms_moving[index_platform].x +
-                                 (3 * 8 * 16) &&
+        player_x_upscaled <=
+            platforms_moving[index_platform].x + (3 * 8 * 16) &&
         player_x_upscaled > platforms_moving[index_platform].x) {
       vel_x += platforms_moving[index_platform].vel_x;
       vel_y = platforms_moving[index_platform].vel_y;
