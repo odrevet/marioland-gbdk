@@ -1,3 +1,5 @@
+#pragma bank 255
+
 #include "enemy.h"
 #include "global.h"
 #include "level.h"
@@ -6,17 +8,19 @@
 uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
 
+BANKREF(enemy)
+
 #include <gbdk/emu_debug.h>
 
-void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
+void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
   EMU_printf("enemy new at %d %d\n", x, y);
-  
+
   // Find first inactive enemy slot
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
     if (!enemies[i].active) {
       uint8_t current_frame;
       int8_t vel_x = 0;
-      
+
       switch (type) {
       case ENEMY_GOOMBO:
         current_frame = 0;
@@ -29,7 +33,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
         y -= 8;
         break;
       }
-      
+
       enemies[i].x = x << 4;
       enemies[i].y = y << 4;
       enemies[i].vel_x = vel_x;
@@ -41,7 +45,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
       enemies[i].stomped = FALSE;
       enemies[i].stomped_timer = 0;
       enemies[i].active = TRUE;
-      
+
       enemy_count++;
       return;
     }
@@ -54,7 +58,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) {
 #define ENEMY_TOP_MARGIN 0
 #define ENEMY_GRAVITY 32
 
-void enemy_move_goomba(uint8_t index) {
+void enemy_move_goomba(uint8_t index) BANKED {
   enemy_t *goomba = &enemies[index];
 
   // Don't move if stomped or inactive
@@ -153,10 +157,9 @@ void enemy_move_goomba(uint8_t index) {
   }
 }
 
-
 #define ENEMY_KOOPA_SPEED 4
 
-void enemy_move_koopa(uint8_t index) {
+void enemy_move_koopa(uint8_t index) BANKED {
   enemy_t *koopa = &enemies[index];
 
   // Don't move if stomped or inactive
@@ -273,42 +276,134 @@ void enemy_move_koopa(uint8_t index) {
   }
 }
 
-void enemy_stomp(uint8_t index_enemy) {
-  EMU_printf("STOMP ENEMY %d\n", index_enemy);
+#define ENEMY_FLY_WAIT_FRAMES 60    // How long to wait before jumping
+#define ENEMY_FLY_JUMP_VELOCITY -48 // Upward jump velocity (negative = up)
+#define ENEMY_FLY_JUMP_SPEED 8      // Horizontal speed during jump
+
+void enemy_move_fly(uint8_t index) BANKED {
+  enemy_t *fly = &enemies[index];
+
+  // Don't move if stomped or inactive
+  if (fly->stomped || !fly->active) {
+    return;
+  }
+
+  uint16_t ground_check_x = fly->x >> 4;
+  uint16_t ground_check_y = (fly->y >> 4) + ENEMY_HEIGHT;
+
+  uint8_t tile_ground_left =
+      get_tile(ground_check_x - camera_x, ground_check_y);
+  uint8_t tile_ground_right =
+      get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
+
+  uint8_t on_ground = is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right);
+
+  // Use frame_counter as a wait timer
+  // When counter reaches ENEMY_FLY_WAIT_FRAMES and on ground, jump
+  if (on_ground && fly->frame_counter >= ENEMY_FLY_WAIT_FRAMES) {
+    EMU_printf("FLY Time to jump!\n");
+    fly->vel_y = ENEMY_FLY_JUMP_VELOCITY;
+    // Set horizontal velocity for jump (can be left or right)
+    fly->vel_x = ENEMY_FLY_JUMP_SPEED; // Change to -ENEMY_FLY_JUMP_SPEED for left
+    fly->frame_counter = 0; // Reset counter
+  }
+
+  // Stop horizontal movement when landing
+  if (on_ground && fly->vel_y == 0) {
+    fly->vel_x = 0;
+  }
+
+  // Apply gravity when in air
+  if (!on_ground) {
+    // No ground beneath, apply gravity
+    fly->vel_y += ENEMY_GRAVITY / 8; // Lighter gravity for fly
+  }
+
+  // Horizontal movement
+  if (fly->vel_x != 0) {
+    uint16_t next_x_upscaled = fly->x + fly->vel_x;
+    uint16_t next_x = next_x_upscaled >> 4;
+    uint16_t current_y = fly->y >> 4;
+
+    // Simple horizontal movement (add wall collision if needed)
+    fly->x = next_x_upscaled;
+  }
+
+  // Vertical movement
+  if (fly->vel_y != 0) {
+    uint16_t next_y_upscaled = fly->y + fly->vel_y;
+    uint16_t next_y = next_y_upscaled >> 4;
+
+    if (fly->vel_y > 0) {
+      // Falling down - check for ground collision
+      uint8_t tile_bottom_left =
+          get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
+      uint8_t tile_bottom_right = get_tile(
+          ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
+
+      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
+        // Hit ground, stop falling
+        fly->vel_y = 0;
+        fly->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
+      } else {
+        // Continue falling
+        fly->y = next_y_upscaled;
+      }
+    } else if (fly->vel_y < 0) {
+      // Moving up - check for ceiling collision
+      uint8_t tile_top_left =
+          get_tile(ground_check_x - camera_x, next_y + ENEMY_TOP_MARGIN);
+      uint8_t tile_top_right =
+          get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x,
+                   next_y + ENEMY_TOP_MARGIN);
+
+      if (is_tile_solid(tile_top_left) || is_tile_solid(tile_top_right)) {
+        // Hit ceiling, start falling
+        fly->vel_y = 0;
+      } else {
+        // Continue moving up
+        fly->y = next_y_upscaled;
+      }
+    }
+  }
   
+  EMU_printf("FLY vel %d %d\n", fly->vel_x, fly->vel_y);
+}
+
+void enemy_stomp(uint8_t index_enemy) NONBANKED {
   enemy_t *enemy = &enemies[index_enemy];
-  
+
   if (!enemy->active) {
     return;
   }
-  
+
   // Mark as stomped
   enemy->stomped = TRUE;
   enemy->stomped_timer = ENEMY_STOMPED_DISPLAY_FRAMES;
-  
+
   // Stop all movement
   enemy->vel_x = 0;
   enemy->vel_y = 0;
-  
+
   // Set to stomped/crushed sprite frame
   // The stomped frame is right after the normal frame in memory
   switch (enemy->type) {
-    case ENEMY_GOOMBO:
-      enemy->current_frame = 1;
-      enemy->flip = FALSE;
-      break;
-    case ENEMY_KOOPA:
-      enemy->current_frame = 3;
-      break;
-    default:
-      enemy->current_frame++;
-      break;
+  case ENEMY_GOOMBO:
+    enemy->current_frame = 1;
+    enemy->flip = FALSE;
+    break;
+  case ENEMY_KOOPA:
+    enemy->current_frame = 4; // Changed from 3 to 4 to use frame 5 (index 4)
+    break;
+  default:
+    enemy->current_frame++;
+    break;
   }
 }
 
-void enemy_remove(uint8_t index_enemy) {
+void enemy_remove(uint8_t index_enemy) NONBANKED {
   EMU_printf("REMOVE ENEMY %d\n", index_enemy);
-  
+
   if (index_enemy < ENEMY_MAX && enemies[index_enemy].active) {
     enemies[index_enemy].active = FALSE;
     enemy_count--;
@@ -316,9 +411,9 @@ void enemy_remove(uint8_t index_enemy) {
   }
 }
 
-void enemy_reset_all(void) {
+void enemy_reset_all(void) NONBANKED {
   EMU_printf("RESET ALL ENEMIES\n");
-  
+
   // Deactivate all enemy slots
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
     enemies[i].active = FALSE;
@@ -330,21 +425,21 @@ void enemy_reset_all(void) {
     enemies[i].draw_x = 0;
     enemies[i].draw_y = 0;
   }
-  
+
   // Reset enemy count
   enemy_count = 0;
-  
+
   // Hide all enemy sprites
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
 }
 
-void enemy_update(void) {
+void enemy_update(void) NONBANKED {
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     // Skip inactive enemies
     if (!enemies[index_enemy].active) {
       continue;
     }
-    
+
     // Handle stomped enemies
     if (enemies[index_enemy].stomped) {
       enemies[index_enemy].stomped_timer--;
@@ -360,10 +455,14 @@ void enemy_update(void) {
       continue;
     }
 
-    // Update based on enemy type (DO MOVEMENT FIRST)
+    // Update based on enemy type
+    uint8_t _saved_bank = _current_bank;
+
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBO:
-      enemy_move_goomba(index_enemy);  // This handles all position updates
+      SWITCH_ROM(BANK(enemy));
+      enemy_move_goomba(index_enemy);
+      SWITCH_ROM(_saved_bank);
       // set frame animation (only when not stomped)
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
@@ -372,8 +471,10 @@ void enemy_update(void) {
       }
       break;
     case ENEMY_KOOPA:
-      enemy_move_koopa(index_enemy);  // This handles all position updates
-      
+      SWITCH_ROM(BANK(enemy));
+      enemy_move_koopa(index_enemy);
+      SWITCH_ROM(_saved_bank);
+
       if (enemies[index_enemy].frame_counter ==
           ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
@@ -381,8 +482,14 @@ void enemy_update(void) {
             (enemies[index_enemy].current_frame + 1) % 2 + 2;
       }
       break;
+    case ENEMY_FLY:
+      SWITCH_ROM(BANK(enemy));
+      enemy_move_fly(index_enemy);
+      SWITCH_ROM(_saved_bank);
+      // TODO: Add wing flapping animation
+      break;
     }
-    
+
     // Update draw position AFTER movement
     enemies[index_enemy].draw_x =
         (enemies[index_enemy].x - camera_x_upscaled) >> 4;
@@ -399,7 +506,7 @@ void enemy_update(void) {
   }
 }
 
-uint8_t enemy_draw(uint8_t base_sprite) {
+uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(enemies));
 
@@ -408,7 +515,7 @@ uint8_t enemy_draw(uint8_t base_sprite) {
     if (!enemies[index_enemy].active) {
       continue;
     }
-    
+
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 

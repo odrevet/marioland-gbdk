@@ -1,5 +1,6 @@
 #ifndef ENEMY_H
 #define ENEMY_H
+
 #include <gb/gb.h>
 #include <gbdk/metasprites.h>
 #include <stdbool.h>
@@ -9,6 +10,8 @@
 #include <string.h>
 #include "global.h"
 #include "graphics/enemies.h"
+
+BANKREF_EXTERN(enemy)
 
 #define ENEMY_MAX 4
 #define ENEMY_LOOP_PER_ANIMATION_FRAME 15
@@ -55,10 +58,14 @@ typedef struct {
 extern uint8_t enemy_count;
 extern enemy_t enemies[ENEMY_MAX];
 
-void enemy_new(uint16_t x, uint16_t y, uint8_t type);
-void enemy_remove(uint8_t index_enemy);
-void enemy_stomp(uint8_t index_enemy);  // New function to stomp enemy
-void enemy_update(void);
-uint8_t enemy_draw(uint8_t base_sprite);
+void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED;
+void enemy_remove(uint8_t index_enemy) NONBANKED;
+void enemy_stomp(uint8_t index_enemy) NONBANKED;
+void enemy_update(void) NONBANKED;
+uint8_t enemy_draw(uint8_t base_sprite) NONBANKED;
+
+void enemy_move_goomba(uint8_t index) BANKED;
+void enemy_move_koopa(uint8_t index) BANKED;
+void enemy_move_fly(uint8_t index) BANKED;
 
 #endif
