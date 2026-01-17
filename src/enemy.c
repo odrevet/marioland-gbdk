@@ -12,6 +12,139 @@ BANKREF(enemy)
 
 #include <gbdk/emu_debug.h>
 
+// Constants
+#define ENEMY_WIDTH 8
+#define ENEMY_HEIGHT 16
+#define ENEMY_TOP_MARGIN 0
+#define ENEMY_GRAVITY 32
+#define ENEMY_GOOMBA_SPEED 4
+#define ENEMY_KOOPA_SPEED 4
+#define ENEMY_FLY_WAIT_FRAMES 60
+#define ENEMY_FLY_JUMP_VELOCITY -48
+#define ENEMY_FLY_JUMP_SPEED 8
+
+// Helper function: Check if enemy has solid ground beneath
+uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
+  uint16_t ground_check_x = enemy->x >> 4;
+  uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
+
+  uint8_t tile_ground_left = get_tile(ground_check_x - camera_x, ground_check_y);
+  uint8_t tile_ground_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
+
+  return is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right);
+}
+
+// Helper function: Check if there's ground ahead (for cliff detection)
+uint8_t enemy_has_ground_ahead(enemy_t *enemy, int8_t vel_x) BANKED {
+  uint16_t current_x = enemy->x >> 4;
+  uint16_t current_y = enemy->y >> 4;
+  
+  if (vel_x > 0) {
+    // Moving right - check one tile ahead
+    uint8_t tile = get_tile(current_x + ENEMY_WIDTH - camera_x, current_y + ENEMY_HEIGHT);
+    return is_tile_solid(tile);
+  } else if (vel_x < 0) {
+    // Moving left - check one tile ahead
+    uint8_t tile = get_tile(current_x - 1 - camera_x, current_y + ENEMY_HEIGHT);
+    return is_tile_solid(tile);
+  }
+  return FALSE;
+}
+
+// Helper function: Apply horizontal movement with wall collision
+void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKED {
+  if (enemy->vel_x == 0) return;
+
+  uint16_t next_x_upscaled = enemy->x + enemy->vel_x;
+  uint16_t next_x = next_x_upscaled >> 4;
+  uint16_t current_x = enemy->x >> 4;
+  uint16_t current_y = enemy->y >> 4;
+
+  uint8_t hit_wall = FALSE;
+  uint8_t hit_cliff = FALSE;
+
+  if (enemy->vel_x > 0) {
+    // Moving right - check right edge for wall
+    uint8_t tile_right_top = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x, current_y + ENEMY_TOP_MARGIN);
+    uint8_t tile_right_bottom = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x, current_y + ENEMY_HEIGHT - 1);
+
+    hit_wall = is_tile_solid(tile_right_top) || is_tile_solid(tile_right_bottom);
+    
+    if (check_cliffs && !hit_wall) {
+      hit_cliff = !enemy_has_ground_ahead(enemy, enemy->vel_x);
+    }
+  } else if (enemy->vel_x < 0) {
+    // Moving left - check left edge for wall
+    uint8_t tile_left_top = get_tile(next_x - camera_x, current_y + ENEMY_TOP_MARGIN);
+    uint8_t tile_left_bottom = get_tile(next_x - camera_x, current_y + ENEMY_HEIGHT - 1);
+
+    hit_wall = is_tile_solid(tile_left_top) || is_tile_solid(tile_left_bottom);
+    
+    if (check_cliffs && !hit_wall) {
+      hit_cliff = !enemy_has_ground_ahead(enemy, enemy->vel_x);
+    }
+  }
+
+  if (hit_wall || hit_cliff) {
+    // Reverse direction
+    enemy->vel_x = -enemy->vel_x;
+    enemy->flip = !enemy->flip;
+  } else {
+    // Safe to move
+    enemy->x = next_x_upscaled;
+  }
+}
+
+// Helper function: Apply gravity and vertical movement
+void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor) BANKED {
+  uint16_t ground_check_x = enemy->x >> 4;
+  uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
+
+  uint8_t on_ground = enemy_has_ground(enemy);
+
+  // Apply gravity when not on ground
+  if (!on_ground) {
+    if (gravity_divisor == 1) {
+      enemy->vel_y = ENEMY_GRAVITY;
+    } else {
+      enemy->vel_y += ENEMY_GRAVITY / gravity_divisor;
+    }
+  }
+
+  // Apply vertical movement
+  if (enemy->vel_y != 0) {
+    uint16_t next_y_upscaled = enemy->y + enemy->vel_y;
+    uint16_t next_y = next_y_upscaled >> 4;
+
+    if (enemy->vel_y > 0) {
+      // Falling down - check for ground collision
+      uint8_t tile_bottom_left = get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
+      uint8_t tile_bottom_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
+
+      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
+        // Hit ground, stop falling
+        enemy->vel_y = 0;
+        enemy->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
+      } else {
+        // Continue falling
+        enemy->y = next_y_upscaled;
+      }
+    } else if (enemy->vel_y < 0) {
+      // Moving up - check for ceiling collision
+      uint8_t tile_top_left = get_tile(ground_check_x - camera_x, next_y + ENEMY_TOP_MARGIN);
+      uint8_t tile_top_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_TOP_MARGIN);
+
+      if (is_tile_solid(tile_top_left) || is_tile_solid(tile_top_right)) {
+        // Hit ceiling, start falling
+        enemy->vel_y = 0;
+      } else {
+        // Continue moving up
+        enemy->y = next_y_upscaled;
+      }
+    }
+  }
+}
+
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
   EMU_printf("enemy new at %d %d\n", x, y);
 
@@ -52,12 +185,6 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
   }
 }
 
-#define ENEMY_WIDTH 8
-#define ENEMY_HEIGHT 16
-#define ENEMY_GOOMBA_SPEED 4
-#define ENEMY_TOP_MARGIN 0
-#define ENEMY_GRAVITY 32
-
 void enemy_move_goomba(uint8_t index) BANKED {
   enemy_t *goomba = &enemies[index];
 
@@ -71,93 +198,10 @@ void enemy_move_goomba(uint8_t index) BANKED {
     goomba->vel_x = -ENEMY_GOOMBA_SPEED; // Start moving left
   }
 
-  // Calculate next position
-  uint16_t next_x_upscaled = goomba->x + goomba->vel_x;
-  uint16_t next_y_upscaled = goomba->y + goomba->vel_y;
-
-  uint16_t next_x = next_x_upscaled >> 4;
-  uint16_t next_y = next_y_upscaled >> 4;
-  uint16_t current_x = goomba->x >> 4;
-  uint16_t current_y = goomba->y >> 4;
-
-  // Horizontal movement and collision detection
-  if (goomba->vel_x > 0) {
-    // Moving right - check right edge
-    uint8_t tile_right_top = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
-                                      current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_right_bottom = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
-                                         current_y + ENEMY_HEIGHT - 1);
-
-    if (is_tile_solid(tile_right_top) || is_tile_solid(tile_right_bottom)) {
-      // Hit wall, reverse direction
-      goomba->vel_x = -ENEMY_GOOMBA_SPEED;
-      goomba->flip = TRUE;
-    } else {
-      // Safe to move
-      goomba->x = next_x_upscaled;
-    }
-  } else if (goomba->vel_x < 0) {
-    // Moving left - check left edge
-    uint8_t tile_left_top =
-        get_tile(next_x - camera_x, current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_left_bottom =
-        get_tile(next_x - camera_x, current_y + ENEMY_HEIGHT - 1);
-
-    if (is_tile_solid(tile_left_top) || is_tile_solid(tile_left_bottom)) {
-      // Hit wall, reverse direction
-      goomba->vel_x = ENEMY_GOOMBA_SPEED;
-      goomba->flip = FALSE;
-    } else {
-      // Safe to move
-      goomba->x = next_x_upscaled;
-    }
-  }
-
-  // Apply gravity if not on ground
-  uint16_t ground_check_x = goomba->x >> 4;
-  uint16_t ground_check_y = (goomba->y >> 4) + ENEMY_HEIGHT;
-
-  uint8_t tile_ground_left =
-      get_tile(ground_check_x - camera_x, ground_check_y);
-  uint8_t tile_ground_right =
-      get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
-
-  if (!is_tile_solid(tile_ground_left) && !is_tile_solid(tile_ground_right)) {
-    // No ground beneath, apply gravity
-    goomba->vel_y = ENEMY_GRAVITY;
-  } else {
-    // On ground, stop falling
-    goomba->vel_y = 0;
-    // Snap to ground level
-    uint16_t ground_y = ((ground_check_y + 7) & ~7) - ENEMY_HEIGHT;
-    goomba->y = ground_y << 4;
-  }
-
-  // Vertical movement
-  if (goomba->vel_y != 0) {
-    next_y_upscaled = goomba->y + goomba->vel_y;
-    next_y = next_y_upscaled >> 4;
-
-    if (goomba->vel_y > 0) {
-      // Falling down - check for ground collision
-      uint8_t tile_bottom_left =
-          get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
-      uint8_t tile_bottom_right = get_tile(
-          ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
-
-      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
-        // Hit ground, stop falling
-        goomba->vel_y = 0;
-        goomba->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
-      } else {
-        // Continue falling
-        goomba->y = next_y_upscaled;
-      }
-    }
-  }
+  // Apply movement
+  enemy_apply_horizontal_movement(goomba, FALSE); // Goombas don't avoid cliffs
+  enemy_apply_vertical_movement(goomba, 1); // Full gravity
 }
-
-#define ENEMY_KOOPA_SPEED 4
 
 void enemy_move_koopa(uint8_t index) BANKED {
   enemy_t *koopa = &enemies[index];
@@ -172,113 +216,10 @@ void enemy_move_koopa(uint8_t index) BANKED {
     koopa->vel_x = -ENEMY_KOOPA_SPEED; // Start moving left
   }
 
-  // Calculate next position
-  uint16_t next_x_upscaled = koopa->x + koopa->vel_x;
-  uint16_t next_y_upscaled = koopa->y + koopa->vel_y;
-
-  uint16_t next_x = next_x_upscaled >> 4;
-  uint16_t next_y = next_y_upscaled >> 4;
-  uint16_t current_x = koopa->x >> 4;
-  uint16_t current_y = koopa->y >> 4;
-
-  // Horizontal movement and collision detection
-  if (koopa->vel_x > 0) {
-    // Moving right - check right edge for wall collision
-    uint8_t tile_right_top = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
-                                      current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_right_bottom = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x,
-                                         current_y + ENEMY_HEIGHT - 1);
-
-    if (is_tile_solid(tile_right_top) || is_tile_solid(tile_right_bottom)) {
-      // Hit wall, reverse direction
-      koopa->vel_x = -ENEMY_KOOPA_SPEED;
-      koopa->flip = TRUE;
-    } else {
-      // Check for cliff (no ground ahead when moving right)
-      uint8_t tile_ground_ahead =
-          get_tile(next_x + ENEMY_WIDTH - camera_x, current_y + ENEMY_HEIGHT);
-      if (!is_tile_solid(tile_ground_ahead)) {
-        // No ground ahead, reverse direction (Koopa turns at ledges)
-        koopa->vel_x = -ENEMY_KOOPA_SPEED;
-        koopa->flip = TRUE;
-      } else {
-        // Safe to move
-        koopa->x = next_x_upscaled;
-      }
-    }
-  } else if (koopa->vel_x < 0) {
-    // Moving left - check left edge for wall collision
-    uint8_t tile_left_top =
-        get_tile(next_x - camera_x, current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_left_bottom =
-        get_tile(next_x - camera_x, current_y + ENEMY_HEIGHT - 1);
-
-    if (is_tile_solid(tile_left_top) || is_tile_solid(tile_left_bottom)) {
-      // Hit wall, reverse direction
-      koopa->vel_x = ENEMY_KOOPA_SPEED;
-      koopa->flip = FALSE;
-    } else {
-      // Check for cliff (no ground ahead when moving left)
-      uint8_t tile_ground_ahead =
-          get_tile(next_x - 1 - camera_x, current_y + ENEMY_HEIGHT);
-      if (!is_tile_solid(tile_ground_ahead)) {
-        // No ground ahead, reverse direction (Koopa turns at ledges)
-        koopa->vel_x = ENEMY_KOOPA_SPEED;
-        koopa->flip = FALSE;
-      } else {
-        // Safe to move
-        koopa->x = next_x_upscaled;
-      }
-    }
-  }
-
-  // Apply gravity if not on ground
-  uint16_t ground_check_x = koopa->x >> 4;
-  uint16_t ground_check_y = (koopa->y >> 4) + ENEMY_HEIGHT;
-
-  uint8_t tile_ground_left =
-      get_tile(ground_check_x - camera_x, ground_check_y);
-  uint8_t tile_ground_right =
-      get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
-
-  if (!is_tile_solid(tile_ground_left) && !is_tile_solid(tile_ground_right)) {
-    // No ground beneath, apply gravity
-    koopa->vel_y = ENEMY_GRAVITY;
-  } else {
-    // On ground, stop falling
-    koopa->vel_y = 0;
-    // Snap to ground level
-    uint16_t ground_y = ((ground_check_y + 7) & ~7) - ENEMY_HEIGHT;
-    koopa->y = ground_y << 4;
-  }
-
-  // Vertical movement
-  if (koopa->vel_y != 0) {
-    next_y_upscaled = koopa->y + koopa->vel_y;
-    next_y = next_y_upscaled >> 4;
-
-    if (koopa->vel_y > 0) {
-      // Falling down - check for ground collision
-      uint8_t tile_bottom_left =
-          get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
-      uint8_t tile_bottom_right = get_tile(
-          ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
-
-      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
-        // Hit ground, stop falling
-        koopa->vel_y = 0;
-        koopa->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
-      } else {
-        // Continue falling
-        koopa->y = next_y_upscaled;
-      }
-    }
-  }
+  // Apply movement
+  enemy_apply_horizontal_movement(koopa, TRUE); // Koopas turn at cliffs
+  enemy_apply_vertical_movement(koopa, 1); // Full gravity
 }
-
-#define ENEMY_FLY_WAIT_FRAMES 60    // How long to wait before jumping
-#define ENEMY_FLY_JUMP_VELOCITY -48 // Upward jump velocity (negative = up)
-#define ENEMY_FLY_JUMP_SPEED 8      // Horizontal speed during jump
 
 void enemy_move_fly(uint8_t index) BANKED {
   enemy_t *fly = &enemies[index];
@@ -288,23 +229,13 @@ void enemy_move_fly(uint8_t index) BANKED {
     return;
   }
 
-  uint16_t ground_check_x = fly->x >> 4;
-  uint16_t ground_check_y = (fly->y >> 4) + ENEMY_HEIGHT;
+  uint8_t on_ground = enemy_has_ground(fly);
 
-  uint8_t tile_ground_left =
-      get_tile(ground_check_x - camera_x, ground_check_y);
-  uint8_t tile_ground_right =
-      get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
-
-  uint8_t on_ground = is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right);
-
-  // Use frame_counter as a wait timer
-  // When counter reaches ENEMY_FLY_WAIT_FRAMES and on ground, jump
+  // Check if it's time to jump
   if (on_ground && fly->frame_counter >= ENEMY_FLY_WAIT_FRAMES) {
     EMU_printf("FLY Time to jump!\n");
     fly->vel_y = ENEMY_FLY_JUMP_VELOCITY;
-    // Set horizontal velocity for jump (can be left or right)
-    fly->vel_x = ENEMY_FLY_JUMP_SPEED; // Change to -ENEMY_FLY_JUMP_SPEED for left
+    fly->vel_x = ENEMY_FLY_JUMP_SPEED; // Move horizontally when jumping
     fly->frame_counter = 0; // Reset counter
   }
 
@@ -313,64 +244,16 @@ void enemy_move_fly(uint8_t index) BANKED {
     fly->vel_x = 0;
   }
 
-  // Apply gravity when in air
-  if (!on_ground) {
-    // No ground beneath, apply gravity
-    fly->vel_y += ENEMY_GRAVITY / 8; // Lighter gravity for fly
-  }
+  // Apply movement
+  enemy_apply_horizontal_movement(fly, FALSE); // No cliff checking for flies
+  enemy_apply_vertical_movement(fly, 8); // Lighter gravity (1/8th)
 
-  // Horizontal movement
-  if (fly->vel_x != 0) {
-    uint16_t next_x_upscaled = fly->x + fly->vel_x;
-    uint16_t next_x = next_x_upscaled >> 4;
-    uint16_t current_y = fly->y >> 4;
-
-    // Simple horizontal movement (add wall collision if needed)
-    fly->x = next_x_upscaled;
-  }
-
-  // Vertical movement
-  if (fly->vel_y != 0) {
-    uint16_t next_y_upscaled = fly->y + fly->vel_y;
-    uint16_t next_y = next_y_upscaled >> 4;
-
-    if (fly->vel_y > 0) {
-      // Falling down - check for ground collision
-      uint8_t tile_bottom_left =
-          get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
-      uint8_t tile_bottom_right = get_tile(
-          ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
-
-      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right)) {
-        // Hit ground, stop falling
-        fly->vel_y = 0;
-        fly->y = (((next_y + ENEMY_HEIGHT + 7) & ~7) - ENEMY_HEIGHT) << 4;
-      } else {
-        // Continue falling
-        fly->y = next_y_upscaled;
-      }
-    } else if (fly->vel_y < 0) {
-      // Moving up - check for ceiling collision
-      uint8_t tile_top_left =
-          get_tile(ground_check_x - camera_x, next_y + ENEMY_TOP_MARGIN);
-      uint8_t tile_top_right =
-          get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x,
-                   next_y + ENEMY_TOP_MARGIN);
-
-      if (is_tile_solid(tile_top_left) || is_tile_solid(tile_top_right)) {
-        // Hit ceiling, start falling
-        fly->vel_y = 0;
-      } else {
-        // Continue moving up
-        fly->y = next_y_upscaled;
-      }
-    }
-  }
-  
   EMU_printf("FLY vel %d %d\n", fly->vel_x, fly->vel_y);
 }
 
 void enemy_stomp(uint8_t index_enemy) NONBANKED {
+  EMU_printf("STOMP ENEMY %d\n", index_enemy);
+
   enemy_t *enemy = &enemies[index_enemy];
 
   if (!enemy->active) {
@@ -386,14 +269,13 @@ void enemy_stomp(uint8_t index_enemy) NONBANKED {
   enemy->vel_y = 0;
 
   // Set to stomped/crushed sprite frame
-  // The stomped frame is right after the normal frame in memory
   switch (enemy->type) {
   case ENEMY_GOOMBO:
     enemy->current_frame = 1;
     enemy->flip = FALSE;
     break;
   case ENEMY_KOOPA:
-    enemy->current_frame = 4; // Changed from 3 to 4 to use frame 5 (index 4)
+    enemy->current_frame = 4;
     break;
   default:
     enemy->current_frame++;
@@ -463,9 +345,8 @@ void enemy_update(void) NONBANKED {
       SWITCH_ROM(BANK(enemy));
       enemy_move_goomba(index_enemy);
       SWITCH_ROM(_saved_bank);
-      // set frame animation (only when not stomped)
-      if (enemies[index_enemy].frame_counter ==
-          ENEMY_LOOP_PER_ANIMATION_FRAME) {
+      // Set frame animation (only when not stomped)
+      if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
         enemies[index_enemy].flip = !enemies[index_enemy].flip;
       }
@@ -474,9 +355,7 @@ void enemy_update(void) NONBANKED {
       SWITCH_ROM(BANK(enemy));
       enemy_move_koopa(index_enemy);
       SWITCH_ROM(_saved_bank);
-
-      if (enemies[index_enemy].frame_counter ==
-          ENEMY_LOOP_PER_ANIMATION_FRAME) {
+      if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
         enemies[index_enemy].current_frame =
             (enemies[index_enemy].current_frame + 1) % 2 + 2;
