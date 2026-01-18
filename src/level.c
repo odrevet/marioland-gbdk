@@ -38,8 +38,10 @@ size_t level_lookup_size;
 const level levels[NB_LEVELS] = {{.major = '1',
                                   .minor = '1',
                                   .bank = BANK(level_1_1),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_1_1_map,
                                   .map_tiles_bank = BANK(birabuto),
                                   .map_tile_origin = birabuto_TILE_ORIGIN,
@@ -54,8 +56,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '1',
                                   .minor = '2',
                                   .bank = BANK(level_1_2),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_1_2_map,
                                   .map_tiles_bank = BANK(birabuto),
                                   .map_tile_origin = birabuto_TILE_ORIGIN,
@@ -73,8 +77,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                   .map = level_1_3_map,
                                   .map_tiles_bank = BANK(birabuto),
                                   .map_tile_origin = birabuto_TILE_ORIGIN,
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_castle),
                                   .music = &music_castle,
+                                  #endif
                                   .map_tiles = birabuto_tiles,
                                   .map_tiles_count = birabuto_TILE_COUNT,
                                   .map_width = level_1_3_WIDTH,
@@ -86,8 +92,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '2',
                                   .minor = '1',
                                   .bank = BANK(level_2_1),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_2_1_map,
                                   .map_tiles_bank = BANK(muda),
                                   .map_tile_origin = muda_TILE_ORIGIN,
@@ -102,8 +110,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '2',
                                   .minor = '2',
                                   .bank = BANK(level_2_2),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_2_2_map,
                                   .map_tiles_bank = BANK(muda),
                                   .map_tile_origin = muda_TILE_ORIGIN,
@@ -118,8 +128,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '2',
                                   .minor = '3',
                                   .bank = BANK(level_2_3),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_2_3_map,
                                   .map_tiles_bank = BANK(muda),
                                   .map_tile_origin = muda_TILE_ORIGIN,
@@ -134,8 +146,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '3',
                                   .minor = '1',
                                   .bank = BANK(level_3_1),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_3_1_map,
                                   .map_tiles_bank = BANK(easton),
                                   .map_tile_origin = easton_TILE_ORIGIN,
@@ -150,8 +164,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '3',
                                   .minor = '2',
                                   .bank = BANK(level_3_2),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_3_2_map,
                                   .map_tiles_bank = BANK(easton),
                                   .map_tile_origin = easton_TILE_ORIGIN,
@@ -166,8 +182,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '3',
                                   .minor = '3',
                                   .bank = BANK(level_3_3),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_3_3_map,
                                   .map_tiles_bank = BANK(easton),
                                   .map_tile_origin = easton_TILE_ORIGIN,
@@ -182,8 +200,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '4',
                                   .minor = '1',
                                   .bank = BANK(level_4_1),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_4_1_map,
                                   .map_tile_origin = chai_TILE_ORIGIN,
                                   .map_tiles_bank = BANK(chai),
@@ -198,8 +218,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '4',
                                   .minor = '2',
                                   .bank = BANK(level_4_2),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map_tiles_bank = BANK(chai),
                                   .map = level_4_2_map,
                                   .map_tile_origin = chai_TILE_ORIGIN,
@@ -214,8 +236,10 @@ const level levels[NB_LEVELS] = {{.major = '1',
                                  {.major = '4',
                                   .minor = '3',
                                   .bank = BANK(level_4_3),
+                                  #ifdef GAMEBOY
                                   .music_bank = BANK(music_overworld),
                                   .music = &music_overworld,
+                                  #endif
                                   .map = level_4_3_map,
                                   .map_tiles_bank = BANK(chai),
                                   .map_tile_origin = chai_TILE_ORIGIN,
@@ -327,8 +351,10 @@ void on_get_coin_background(uint8_t x, uint8_t y) {
 }
 
 void on_get_coin() {
+  #ifdef GAMEBOY
   music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                  MUSIC_SFX_PRIORITY_NORMAL);
+  #endif
 
   coins++;
   score += 10;
@@ -337,8 +363,10 @@ void on_get_coin() {
     lives++;
     hud_update_lives();
     coins = 0;
+    #ifdef GAMEBOY
     music_play_sfx(BANK(sound_oneup), sound_oneup, SFX_MUTE_MASK(sound_oneup),
                    MUSIC_SFX_PRIORITY_NORMAL);
+    #endif
   }
 
   hud_update_coins();
@@ -462,7 +490,9 @@ void load_current_level(void) NONBANKED {
 void set_level(uint8_t level_index) NONBANKED {
   hud_set_level(levels[level_index].major, levels[level_index].minor);
 
+  #ifdef GAMEBOY
   music_load(levels[level_index].music_bank, levels[level_index].music);
+  #endif
 
   uint8_t _saved_bank = _current_bank;
 

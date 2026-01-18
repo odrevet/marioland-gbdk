@@ -102,8 +102,9 @@ void text_print_char_win(uint8_t x, uint8_t y, unsigned char chr) {
       tile = LETTERS_STARTS_AT + 29;
     }
   }
-
+  #ifdef GAMEBOY
   set_win_tile_xy(x, y, tile + text_TILE_ORIGIN);
+  #endif
 }
 
 void text_print_string_win(uint8_t x, uint8_t y, unsigned char *string) {

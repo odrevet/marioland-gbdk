@@ -32,8 +32,11 @@
 #include "powerup.h"
 #include "text.h"
 
+#ifdef GAMEBOY
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
+#endif
 
+#ifdef GAMEBOY
 void interruptLCD(void) {
   while (STAT_REG & 3)
     ;
@@ -41,6 +44,7 @@ void interruptLCD(void) {
 }
 
 void interruptVBL(void) { SHOW_WIN; }
+#endif 
 
 bool powerups_collide() {
   /*uint8_t powerup_left = powerup.draw_x - 4;
@@ -86,9 +90,10 @@ bool enemy_collide() {
         display_jump_frame = TRUE;
         vel_y = -16;
         touch_ground = FALSE;
-
+        #ifdef GAMEBOY
         music_play_sfx(BANK(sound_squish), sound_squish,
                        SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
+        #endif
         continue;
       } else {
         die();
@@ -101,6 +106,7 @@ bool enemy_collide() {
 }
 
 void main(void) {
+  #ifdef GAMEBOY
   STAT_REG = 0x40;
   LYC_REG = 0x0F;
 
@@ -108,6 +114,7 @@ void main(void) {
   set_interrupts(VBL_IFLAG | LCD_IFLAG);
   add_LCD(interruptLCD);
   enable_interrupts();
+
 
   music_init();
 
@@ -119,6 +126,7 @@ void main(void) {
   }
   // enable the timer interrupt
   set_interrupts(IE_REG | TIM_IFLAG);
+  #endif
 
   // joypad
   joypad_previous, joypad_current = 0;
@@ -155,7 +163,10 @@ void main(void) {
 
   DISPLAY_ON;
   SHOW_BKG;
+  #ifdef GAMEBOY
   SHOW_WIN;
+  #endif 
+
   SHOW_SPRITES;
   SPRITES_8x8;
 
@@ -164,11 +175,12 @@ void main(void) {
   uint8_t anim_frame_counter = 0;
 
   state_title();
-
+  #ifdef GAMEBOY
   disable_interrupts();
   add_VBL(interruptVBL);
   move_bkg(0, -MARGIN_TOP_PX);
   enable_interrupts();
+  #endif
 
   current_level = 0;
   level_set_current();
@@ -191,6 +203,7 @@ void main(void) {
   // text
   unsigned char windata[WINDOW_SIZE];
   memset(windata, 15, WINDOW_SIZE);
+  #ifdef GAMEBOY
   set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
   move_win(WINDOW_X, WINDOW_Y);
   text_print_string_win(0, 0, "MARIOx00  WORLD TIME");
@@ -200,6 +213,7 @@ void main(void) {
   set_win_tile_xy(7, 1, TILE_COIN);
   hud_update_time();
   hud_update_lives();
+  #endif
 
   while (1) {
     joypad_previous = joypad_current;
@@ -207,11 +221,13 @@ void main(void) {
 
     // pause
     if (joypad_current & J_START && !(joypad_previous & J_START)) {
+      #ifdef GAMEBOY
       music_pause(TRUE);
       music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause),
                      MUSIC_SFX_PRIORITY_NORMAL);
       state_pause();
       music_pause(FALSE);
+      #endif
     }
 
     enemy_collide();
@@ -221,8 +237,10 @@ void main(void) {
     if (display_jump_frame) {
       player_frame = 4;
     } else if (display_slide_frame) {
+      #ifdef GAMEBOY
       music_play_sfx(BANK(sound_skid), sound_skid, SFX_MUTE_MASK(sound_skid),
                      MUSIC_SFX_PRIORITY_NORMAL);
+      #endif
       player_frame = 5;
     } else if (display_walk_animation) {
       update_frame_counter();
@@ -281,7 +299,10 @@ void main(void) {
     // if reach end of level
     if (level_end_reached && player_draw_x >= DEVICE_SCREEN_WIDTH << 3) {
 
+      #ifdef GAMEBOY
       music_load(BANK(music_stage_clear), &music_stage_clear);
+      #endif 
+      
       delay(4500);
 
       while (time >> TIME_SHIFT > 0) {
@@ -289,8 +310,10 @@ void main(void) {
         score += 1;
         hud_update_time();
         hud_update_score();
+        #ifdef GAMEBOY
         music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                        MUSIC_SFX_PRIORITY_NORMAL);
+        #endif
         delay(10);
       }
 

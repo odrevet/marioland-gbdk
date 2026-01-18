@@ -53,10 +53,12 @@ void state_pause(void) {
     }
   }
 
+  #ifdef GAMEBOY
   hUGE_mute_channel(0, HT_CH_PLAY);
   hUGE_mute_channel(1, HT_CH_PLAY);
   hUGE_mute_channel(2, HT_CH_PLAY);
   hUGE_mute_channel(3, HT_CH_PLAY);
+  #endif 
 
   text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "     ");
   hud_update_time();
@@ -67,12 +69,14 @@ void state_pause(void) {
 #define DEATH_ANIMATION_FRAME 6
 
 void die(void) {
+  #ifdef GAMEBOY
   hUGE_mute_channel(0, HT_CH_PLAY);
   hUGE_mute_channel(1, HT_CH_PLAY);
   hUGE_mute_channel(2, HT_CH_PLAY);
   hUGE_mute_channel(3, HT_CH_PLAY);
 
   music_load(BANK(music_defeat), &music_defeat);
+  #endif
 
   player_frame = DEATH_ANIMATION_FRAME;  // Death pose
     

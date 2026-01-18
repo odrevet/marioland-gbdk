@@ -187,8 +187,10 @@ void player_move(void) BANKED {
     display_jump_frame = TRUE;
     vel_y = JUMP_INITIAL_VELOCITY;
     touch_ground = FALSE;
+    #ifdef GAMEBOY
     music_play_sfx(BANK(sound_jump_small), sound_jump_small,
                    SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
+    #endif 
   }
 
   // Horizontal collision detection

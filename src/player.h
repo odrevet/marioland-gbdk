@@ -12,11 +12,13 @@
 #include "platforms.h"
 #include "text.h"
 
+#ifdef GAMEBOY
 #include "musicmanager.h"
 #include "sfxplayer.h"
 #include "sounds/sound_bump.h"
 #include "sounds/sound_jump_small.h"
 #include "sounds/sound_pause.h"
+#endif 
 
 #include "graphics/mario.h"
 #include "graphics/text.h"

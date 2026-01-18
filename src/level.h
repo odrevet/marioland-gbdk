@@ -15,6 +15,7 @@
 #include "global.h"
 #include "hud.h"
 
+#ifdef GAMEBOY
 // sounds
 #include "sfxplayer.h"
 #include "sounds/sound_coin.h"
@@ -23,6 +24,7 @@
 // musics
 #include "musicmanager.h"
 #include "musics/musics.h"
+#endif 
 
 // tilesets
 #include "graphics/birabuto.h"
@@ -109,9 +111,10 @@ typedef struct level_t {
   uint8_t lookup_bank;
   level_object *lookup;
   const size_t lookup_size;
-
+#ifdef GAMEBOY
   uint8_t music_bank;
   hUGESong_t *music;
+#endif
 } level;
 
 extern const level levels[NB_LEVELS];
