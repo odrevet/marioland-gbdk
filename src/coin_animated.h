@@ -1,7 +1,7 @@
 #ifndef COIN_ANIMATED_H
 #define COIN_ANIMATED_H
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
 #include <stdint.h>

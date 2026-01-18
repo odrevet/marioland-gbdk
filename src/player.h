@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/platform.h>
 
 #include <stdint.h>

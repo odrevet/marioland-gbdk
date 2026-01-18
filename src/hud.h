@@ -1,7 +1,7 @@
 #ifndef HUD_H
 #define HUD_H
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/platform.h>
 
 #include <stdbool.h>

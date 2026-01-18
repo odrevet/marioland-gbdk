@@ -1,5 +1,5 @@
 #include "coin_animated.h"
-#include "gb/gb.h"
+#include <gbdk/platform.h>
 #include "level.h"
 #include <stdint.h>
 

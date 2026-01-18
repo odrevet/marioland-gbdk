@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 #include <gbdk/platform.h>
 
@@ -59,8 +59,6 @@
 #include "lookup_tables/lookup_table_4_1.h"
 #include "lookup_tables/lookup_table_4_2.h"
 #include "lookup_tables/lookup_table_4_3.h"
-
-#include <gbdk/emu_debug.h>
 
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16

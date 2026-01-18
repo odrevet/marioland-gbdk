@@ -10,8 +10,6 @@ enemy_t enemies[ENEMY_MAX];
 
 BANKREF(enemy)
 
-#include <gbdk/emu_debug.h>
-
 // Constants
 #define ENEMY_WIDTH 8
 #define ENEMY_HEIGHT 16
@@ -146,7 +144,7 @@ void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor) BANKE
 }
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
-  EMU_printf("enemy new at %d %d\n", x, y);
+  //EMU_printf("enemy new at %d %d\n", x, y);
 
   // Find first inactive enemy slot
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
@@ -233,7 +231,6 @@ void enemy_move_fly(uint8_t index) BANKED {
 
   // Check if it's time to jump
   if (on_ground && fly->frame_counter >= ENEMY_FLY_WAIT_FRAMES) {
-    EMU_printf("FLY Time to jump!\n");
     fly->vel_y = ENEMY_FLY_JUMP_VELOCITY;
     fly->vel_x = ENEMY_FLY_JUMP_SPEED; // Move horizontally when jumping
     fly->frame_counter = 0; // Reset counter
@@ -247,13 +244,9 @@ void enemy_move_fly(uint8_t index) BANKED {
   // Apply movement
   enemy_apply_horizontal_movement(fly, FALSE); // No cliff checking for flies
   enemy_apply_vertical_movement(fly, 8); // Lighter gravity (1/8th)
-
-  EMU_printf("FLY vel %d %d\n", fly->vel_x, fly->vel_y);
 }
 
 void enemy_stomp(uint8_t index_enemy) NONBANKED {
-  EMU_printf("STOMP ENEMY %d\n", index_enemy);
-
   enemy_t *enemy = &enemies[index_enemy];
 
   if (!enemy->active) {
@@ -284,7 +277,7 @@ void enemy_stomp(uint8_t index_enemy) NONBANKED {
 }
 
 void enemy_remove(uint8_t index_enemy) NONBANKED {
-  EMU_printf("REMOVE ENEMY %d\n", index_enemy);
+  //EMU_printf("REMOVE ENEMY %d\n", index_enemy);
 
   if (index_enemy < ENEMY_MAX && enemies[index_enemy].active) {
     enemies[index_enemy].active = FALSE;
@@ -294,7 +287,7 @@ void enemy_remove(uint8_t index_enemy) NONBANKED {
 }
 
 void enemy_reset_all(void) NONBANKED {
-  EMU_printf("RESET ALL ENEMIES\n");
+  //EMU_printf("RESET ALL ENEMIES\n");
 
   // Deactivate all enemy slots
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
@@ -398,8 +391,8 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     uint8_t draw_index = enemies[index_enemy].current_frame;
     metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
 
-    EMU_printf("ENEMY %d %d\n", enemies[index_enemy].draw_x,
-               enemies[index_enemy].draw_y);
+    //EMU_printf("ENEMY %d %d\n", enemies[index_enemy].draw_x,
+    //           enemies[index_enemy].draw_y);
 
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(

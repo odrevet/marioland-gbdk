@@ -374,7 +374,6 @@ bool player_is_on_platform(void) NONBANKED {
         player_x_upscaled > platforms_moving[index_platform].x) {
       vel_x += platforms_moving[index_platform].vel_x;
       vel_y = platforms_moving[index_platform].vel_y;
-
       player_on_touch_ground();
       return TRUE;
     }

@@ -1,7 +1,7 @@
 #ifndef MISSILE_H
 #define MISSILE_H
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
 #include <stdbool.h>
@@ -15,7 +15,6 @@
 
 #include "graphics/sprite_common.h"
 
-#include <gbdk/emu_debug.h>
 
 #define MISSILE_MAX 3
 

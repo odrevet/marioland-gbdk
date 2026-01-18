@@ -1,6 +1,6 @@
 #include "level.h"
 #include "coin_animated.h"
-#include "gb/gb.h"
+#include <gbdk/platform.h>
 #include "global.h"
 #include "graphics/enemies.h"
 #include "levels/level_1_1.h"

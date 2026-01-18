@@ -1,7 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 #include <stdbool.h>
 #include <stdint.h>
