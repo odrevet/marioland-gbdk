@@ -206,8 +206,8 @@ void main(void) {
   #ifdef GAMEBOY
   set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
   move_win(WINDOW_X, WINDOW_Y);
-  text_print_string_win(0, 0, "MARIOx00  WORLD TIME");
-  text_print_string_win(0, 1, "     0  x00 1-1  000");
+  text_print_string(0, 0, "MARIOx00  WORLD TIME");
+  text_print_string(0, 1, "     0  x00 1-1  000");
 
   // display a coin in the HUD
   set_win_tile_xy(7, 1, TILE_COIN);

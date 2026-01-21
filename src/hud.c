@@ -4,8 +4,8 @@ void hud_set_level(char major, char minor) {
     char major_str[2] = {major, '\0'};
     char minor_str[2] = {minor, '\0'};
     
-    text_print_string_win(12, 1, major_str);
-    text_print_string_win(14, 1, minor_str);
+    text_print_string(12, 1, major_str);
+    text_print_string(14, 1, minor_str);
   }
   
   void hud_update_coins(void) {
@@ -18,25 +18,25 @@ void hud_set_level(char major, char minor) {
       itoa(coins, coins_str, 10);
     }
   
-    text_print_string_win(9, 1, coins_str);
+    text_print_string(9, 1, coins_str);
   }
   
   void hud_update_score(void) {
     char score_str[6];  // 5 digits + \0. the units digit is always 0
     itoa(score, score_str, 10);
-    text_print_string_win(5 - strlen(score_str), 1, score_str);
+    text_print_string(5 - strlen(score_str), 1, score_str);
   }
   
   void hud_update_time(void) {
     char time_str[4];
     itoa(time >> TIME_SHIFT, time_str, 10);
-    text_print_string_win(DEVICE_SCREEN_WIDTH - 3, 1, "000");
-    text_print_string_win(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
+    text_print_string(DEVICE_SCREEN_WIDTH - 3, 1, "000");
+    text_print_string(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
   }
   
   void hud_update_lives(void) {
     char lives_str[4];
     itoa(lives, lives_str, 10);
-    text_print_string_win(7, 0, lives_str);
+    text_print_string(7, 0, lives_str);
   }
 

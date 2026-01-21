@@ -41,7 +41,7 @@ void state_title(void) {
 }
 
 void state_pause(void) {
-  text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
+  text_print_string(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
 
   vsync();
 
@@ -60,7 +60,7 @@ void state_pause(void) {
   hUGE_mute_channel(3, HT_CH_PLAY);
   #endif 
 
-  text_print_string_win(DEVICE_SCREEN_WIDTH - 5, 1, "     ");
+  text_print_string(DEVICE_SCREEN_WIDTH - 5, 1, "     ");
   hud_update_time();
 }
 
@@ -84,8 +84,9 @@ void die(void) {
   int16_t death_vel_y = DEATH_BOUNCE_VELOCITY;
   uint16_t death_y = player_y_upscaled;
   
+#if defined(GAMEBOY)
   // Freeze game and perform death animation
-  while (player_draw_y < DEVICE_SCREEN_PX_HEIGHT + 16) {
+  while (player_draw_y < DEVICE_SCREEN_PX_HEIGHT ) {
       // Apply gravity
       death_vel_y += DEATH_GRAVITY;
       death_y += death_vel_y;
@@ -104,6 +105,7 @@ void die(void) {
     
   // Wait after Mario falls off screen
   delay(2000);
+#endif
 
   init();
 

@@ -379,7 +379,12 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // update map buffer and vram with an emptied block
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
+
+#if defined(GAMEBOY)
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
+#elif defined(NINTENDO_NES)
+  set_bkg_tile_xy(index_x, index_y + 2, TILE_EMPTIED);
+#endif
 
   // check block content in lookup table
   bool lookup_found = FALSE;
@@ -446,7 +451,12 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     }
 
     // Draw current column
-    set_bkg_tiles(map_column, 0, 1, LEVEL_HEIGHT, coldata);
+    #if defined(GAMEBOY)
+        #define TILE_Y 0
+    #elif defined(NINTENDO_NES)
+        #define TILE_Y 2
+    #endif
+    set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
 
     col++;
   };

@@ -1,6 +1,6 @@
 #include "text.h"
 
-void text_print_char_win(uint8_t x, uint8_t y, unsigned char chr) {
+void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
   uint8_t tile;
 
   if (chr >= '0' && chr <= '9') {
@@ -107,7 +107,7 @@ void text_print_char_win(uint8_t x, uint8_t y, unsigned char chr) {
   #endif
 }
 
-void text_print_string_win(uint8_t x, uint8_t y, unsigned char *string) {
+void text_print_string(uint8_t x, uint8_t y, unsigned char *string) {
   uint8_t offset_x = 0;
   uint8_t offset_y = 0;
 
@@ -116,7 +116,7 @@ void text_print_string_win(uint8_t x, uint8_t y, unsigned char *string) {
       offset_x = 0;
       offset_y++;
     } else {
-      text_print_char_win(x + offset_x, y + offset_y, (unsigned char)string[0]);
+      text_print_char(x + offset_x, y + offset_y, (unsigned char)string[0]);
       offset_x++;
     }
 

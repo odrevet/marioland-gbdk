@@ -69,7 +69,12 @@
 // buffer worth of one column to hold map data when loading/scrolling
 extern uint8_t coldata[LEVEL_HEIGHT];
 // map buffer in RAM to check collision without access VRAM
+#if defined(GAMEBOY)
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
+#elif defined(NINTENDO_NES)
+#define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 1)
+#endif
+
 #define MAP_BUFFER_HEIGHT LEVEL_HEIGHT
 
 extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH];

@@ -245,7 +245,13 @@ void player_move(void) BANKED {
 
       // load level background
       if (camera_x >> 3 >= next_col_chunk_load && !level_end_reached) {
+#if defined(GAMEBOY)
         level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1);
+#elif defined(NINTENDO_NES)
+        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1);
+#endif
+
+        
         next_col_chunk_load++;
       }
     }
