@@ -133,6 +133,17 @@ void main(void) {
 
   init();
 
+#ifdef NINTENDO_NES
+uint8_t y;
+uint8_t initial_tiles[32];
+
+memset(initial_tiles, TILE_EMPTY, 32);
+
+for (y = 0; y != 30; y++) {
+    set_bkg_tiles(0, y, 32, 1, initial_tiles);
+}
+#endif
+
   // set sprite and background data
   uint8_t _saved_bank = _current_bank;
 
