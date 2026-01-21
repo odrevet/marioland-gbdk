@@ -7,7 +7,7 @@ void init(void) {
 
   camera_x = 0;
   camera_x_upscaled = 0;
-  SCX_REG = 0;
+  //SCX_REG = 0;
 
   player_x = (4 * TILE_SIZE) << 4;
   player_y = (13 * TILE_SIZE) << 4;

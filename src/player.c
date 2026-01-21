@@ -230,7 +230,7 @@ void player_move(void) BANKED {
           current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        SCX_REG = camera_x;
+        move_bkg(camera_x, -16);
       }
 
       // check scroll limit
@@ -238,7 +238,7 @@ void player_move(void) BANKED {
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
-        SCX_REG = camera_x;
+        move_bkg(camera_x, -16);
         scroll_limit = player_x;
         level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
       }

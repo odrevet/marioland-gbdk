@@ -455,6 +455,8 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
         #define TILE_Y 0
     #elif defined(NINTENDO_NES)
         #define TILE_Y 2
+    #else
+        #define TILE_Y 0
     #endif
     set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
 
