@@ -163,6 +163,11 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
         vel_x = 0; // WIP
         y -= 8;
         break;
+      case ENEMY_FLY:
+        current_frame = 0;
+        vel_x = 0; // WIP
+        y -= 8;
+        break;
       }
 
       enemies[i].x = x << 4;
@@ -379,8 +384,7 @@ void enemy_update(void) NONBANKED {
 }
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(enemies));
+
 
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     // Skip inactive enemies
@@ -389,26 +393,54 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     }
 
     uint8_t draw_index = enemies[index_enemy].current_frame;
-    metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
+
 
     //EMU_printf("ENEMY %d %d\n", enemies[index_enemy].draw_x,
     //           enemies[index_enemy].draw_y);
 
-    if (enemies[index_enemy].flip) {
-      base_sprite += move_metasprite_flipx(
-          enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
-          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
-              enemies_HEIGHT + 8);
-    } else {
-      base_sprite += move_metasprite_ex(
-          enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
-          enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
-          enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
-              enemies_HEIGHT + 8);
+    uint8_t _saved_bank = _current_bank;
+    
+    if(enemies[index_enemy].type == ENEMY_FLY)
+    {
+      SWITCH_ROM(BANK(enemies_large));
+
+      metasprite_t *enemy_metasprite = enemies_large_metasprites[draw_index];
+      if (enemies[index_enemy].flip) {
+        base_sprite += move_metasprite_flipx(
+            enemy_metasprite, enemies_large_TILE_ORIGIN, 0, base_sprite,
+            enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+            enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                enemies_HEIGHT + 8);
+      } else {
+        base_sprite += move_metasprite_ex(
+            enemy_metasprite, enemies_large_TILE_ORIGIN, 0, base_sprite,
+            enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+            enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                enemies_HEIGHT + 8);
+      }
     }
+    else{
+      SWITCH_ROM(BANK(enemies));
+
+      metasprite_t *enemy_metasprite = enemies_metasprites[draw_index];
+      if (enemies[index_enemy].flip) {
+        base_sprite += move_metasprite_flipx(
+            enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
+            enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+            enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                enemies_HEIGHT + 8);
+      } else {
+        base_sprite += move_metasprite_ex(
+            enemy_metasprite, enemies_TILE_ORIGIN, 0, base_sprite,
+            enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
+            enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                enemies_HEIGHT + 8);
+      }
+    }
+    
+    SWITCH_ROM(_saved_bank);
   }
-  SWITCH_ROM(_saved_bank);
+
 
   return base_sprite;
 }

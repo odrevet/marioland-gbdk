@@ -10,6 +10,7 @@
 #include <string.h>
 #include "global.h"
 #include "graphics/enemies.h"
+#include "graphics/enemies_large.h"
 
 BANKREF_EXTERN(enemy)
 
