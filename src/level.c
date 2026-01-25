@@ -376,8 +376,12 @@ void on_get_coin() {
 #include <gbdk/emu_debug.h>
 
 void on_interogation_block_hit(uint8_t x, uint8_t y) {
+  // Get buffer indices for rendering
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
+
+  // Get actual world tile coordinates for lookup
+  uint8_t world_tile_x = (x + camera_x) >> 3;
 
   // update map buffer and vram with an emptied block
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
@@ -391,13 +395,18 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
 
-  // check block content in lookup table
+  //EMU_printf("Searching lookup table, size=%d\n", level_lookup_size);
+
+  // check block content in lookup table using WORLD coordinates
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
     level_object *obj = &level_lookup[i];
-    if (obj->x == index_x && obj->y == index_y) {
+    //EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, world_tile_y);
+    
+    if (obj->x == world_tile_x && obj->y == index_y) {
+      //EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
       lookup_found = TRUE;
-      powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->type);
+      powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->type);
     }
   }
 
@@ -405,6 +414,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
+    EMU_printf("No powerup found, spawning coin\n");
     on_get_coin();
     coin_animated_new(index_x, index_y);
   }

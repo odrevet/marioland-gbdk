@@ -24,6 +24,10 @@ const level_object level_1_1_lookup[] = {
      .y = 4,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GOOMBO}},
+    {.x = 95,
+     .y = 6,
+     .type = OBJECT_TYPE_POWERUP,
+     .data.enemy = {.type = POWERUP_MUSHROOM}},
     {.x = 117,
      .y = 13,
      .type = OBJECT_TYPE_ENEMY,
@@ -73,5 +77,4 @@ const level_object level_1_1_lookup[] = {
      .y = 1,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.range = 6,
-                              .platform_direction = DIRECTION_HORIZONTAL}}
-};
+                              .platform_direction = DIRECTION_HORIZONTAL}}};

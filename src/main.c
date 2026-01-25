@@ -65,10 +65,10 @@ bool powerups_collide() {
   uint16_t player_top = player_y + 8;
   uint16_t player_bottom = player_y + mario_HEIGHT;
 
-   EMU_printf("POWERUP: left=%d right=%d top=%d bottom=%d\n", 
-             powerup_left, powerup_right, powerup_top, powerup_bottom);
-  EMU_printf("PLAYER: x=%d right=%d y=%d bottom=%d\n", 
-             player_x, player_right, player_y, player_bottom);
+//  EMU_printf("POWERUP: left=%d right=%d top=%d bottom=%d\n", 
+//             powerup_left, powerup_right, powerup_top, powerup_bottom);
+//  EMU_printf("PLAYER: x=%d right=%d y=%d bottom=%d\n", 
+//             player_x, player_right, player_y, player_bottom);
 
 
   // AABB collision detection
