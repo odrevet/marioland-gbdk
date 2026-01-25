@@ -373,6 +373,8 @@ void on_get_coin() {
   hud_update_score();
 }
 
+#include <gbdk/emu_debug.h>
+
 void on_interogation_block_hit(uint8_t x, uint8_t y) {
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
@@ -386,15 +388,20 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   set_bkg_tile_xy(index_x, index_y + 2, TILE_EMPTIED);
 #endif
 
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(level_lookup_bank);
+
   // check block content in lookup table
   bool lookup_found = FALSE;
-  /*for (int i = 0; i < level_block_lookup_size && !lookup_found; i++) {
-    level_block_object *obj = level_block_lookup + i;
+  for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
+    level_object *obj = &level_lookup[i];
     if (obj->x == index_x && obj->y == index_y) {
       lookup_found = TRUE;
-      powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->id);
+      powerup_new((obj->x << 3) << 4, (obj->y << 3) << 4, obj->type);
     }
-  }*/
+  }
+
+  SWITCH_ROM(_saved_bank);
 
   // coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {

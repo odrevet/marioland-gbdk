@@ -13,7 +13,7 @@
 #define enemies_large_TILE_H 8
 #define enemies_large_WIDTH 16
 #define enemies_large_HEIGHT 16
-#define enemies_large_TILE_COUNT 6
+#define enemies_large_TILE_COUNT 18
 #define enemies_large_PALETTE_COUNT 1
 #define enemies_large_COLORS_PER_PALETTE 4
 #define enemies_large_TOTAL_COLORS 4
@@ -21,11 +21,11 @@
 #define enemies_large_PIVOT_Y 8
 #define enemies_large_PIVOT_W 16
 #define enemies_large_PIVOT_H 16
-extern const metasprite_t* const enemies_large_metasprites[2];
+extern const metasprite_t* const enemies_large_metasprites[6];
 
 BANKREF_EXTERN(enemies_large)
 
 extern const palette_color_t enemies_large_palettes[4];
-extern const uint8_t enemies_large_tiles[96];
+extern const uint8_t enemies_large_tiles[288];
 
 #endif

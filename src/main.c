@@ -1,6 +1,5 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
-#include <gbdk/platform.h>
 #include <stdint.h>
 
 #include "coin_animated.h"
@@ -47,18 +46,48 @@ void interruptLCD(void) {
 void interruptVBL(void) { SHOW_WIN; }
 #endif 
 
-bool powerups_collide() {
-  /*uint8_t powerup_left = powerup.draw_x - 4;
-  uint8_t powerup_right = powerup.draw_x + 4;
-  uint8_t powerup_top = powerup.draw_y - 4;
-  uint8_t powerup_bottom = powerup.draw_y;
+#include <gbdk/emu_debug.h>
 
-  if (powerup_right <= x_left_draw || powerup_left >= x_right_draw ||
-      powerup_bottom <= y_top_draw || powerup_top >= y_bottom_draw) {
+bool powerups_collide() {
+  // Check if powerup is active
+  if (!powerup_active) {
     return false;
   }
 
-  return true;*/
+  // Get powerup boundaries (convert from upscaled coordinates)
+  uint16_t powerup_left = (powerup.x >> 4);
+  uint16_t powerup_right = (powerup.x >> 4) + TILE_SIZE;
+  uint16_t powerup_top = (powerup.y >> 4);
+  uint16_t powerup_bottom = (powerup.y >> 4) + TILE_SIZE;
+
+  // Get player boundaries
+  uint16_t player_right = player_x + TILE_SIZE;
+  uint16_t player_top = player_y + 8;
+  uint16_t player_bottom = player_y + mario_HEIGHT;
+
+   EMU_printf("POWERUP: left=%d right=%d top=%d bottom=%d\n", 
+             powerup_left, powerup_right, powerup_top, powerup_bottom);
+  EMU_printf("PLAYER: x=%d right=%d y=%d bottom=%d\n", 
+             player_x, player_right, player_y, player_bottom);
+
+
+  // AABB collision detection
+  if (player_x < powerup_right && player_right > powerup_left &&
+      player_top < powerup_bottom && player_bottom > powerup_top) {
+    
+    // TODO Collision detected - collect the powerup 
+    on_get_coin();
+    
+    #ifdef GAMEBOY
+    // Play powerup collection sound
+    music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
+                   MUSIC_SFX_PRIORITY_NORMAL);
+    #endif
+    
+    return true;
+  }
+
+  return false;
 }
 
 #define ENEMY_TOP_MARGIN 8
@@ -294,7 +323,7 @@ for (y = 0; y != 30; y++) {
       powerup.draw_x = 0;
       powerup.y = 0;
       powerup.draw_y = 0;
-      powerup_draw(base_sprite - 1);
+      //powerup_draw(base_sprite - 1);
     }
 
     time--;
