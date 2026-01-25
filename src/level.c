@@ -401,12 +401,12 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
     level_object *obj = &level_lookup[i];
-    //EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, world_tile_y);
+    EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, index_y);
     
     if (obj->x == world_tile_x && obj->y == index_y) {
-      //EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
+      EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
       lookup_found = TRUE;
-      powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->type);
+      powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->data.enemy.type); // TODO replace enemy field in union 
     }
   }
 

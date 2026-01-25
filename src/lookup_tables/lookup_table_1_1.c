@@ -46,7 +46,7 @@ const level_object level_1_1_lookup[] = {
      .data.enemy = {.type = ENEMY_GOOMBO}},
     {.x = 174,
      .y = 6,
-     .type = OBJECT_TYPE_ENEMY,
+     .type = OBJECT_TYPE_POWERUP,
      .data.enemy = {.type = POWERUP_STAR}},
     {.x = 186,
      .y = 10,

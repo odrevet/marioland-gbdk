@@ -16,7 +16,7 @@
 
 
 enum powerup_type {
-  POWERUP_MUSHROOM,
+  POWERUP_MUSHROOM = 0,
   POWERUP_STAR,
   POWERUP_HEART
 };
@@ -29,6 +29,7 @@ typedef struct powerup_t {
   int8_t vel_x;
   int8_t vel_y;
   uint8_t type;
+  uint8_t current_frame;
 } powerup_t;
 
 // a single power up at a time available
