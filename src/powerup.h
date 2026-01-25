@@ -17,7 +17,6 @@
 
 enum powerup_type {
   POWERUP_MUSHROOM,
-  POWERUP_FLOWER,
   POWERUP_STAR,
   POWERUP_HEART
 };
