@@ -231,8 +231,6 @@ void on_get_coin() {
   hud_update_score();
 }
 
-#include <gbdk/emu_debug.h>
-
 /**
  * Handle interrogation block being hit
  */
@@ -261,10 +259,10 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
     level_object *obj = &level_lookup[i];
-    EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, index_y);
+    //EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, index_y);
     
     if (obj->x == world_tile_x && obj->y == index_y) {
-      EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
+      //EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
       lookup_found = TRUE;
       powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->data.enemy.type);
     }
@@ -274,7 +272,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // Coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
-    EMU_printf("No powerup found, spawning coin\n");
+    //EMU_printf("No powerup found, spawning coin\n");
     on_get_coin();
     coin_animated_new(index_x, index_y);
   }

@@ -1,7 +1,7 @@
 #include "powerup.h"
 #include "level.h"
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 bool powerup_active = FALSE;
 powerup_t powerup;
@@ -15,11 +15,11 @@ void powerup_new(uint16_t x, uint16_t y, uint8_t type) {
   switch (powerup.type) {
   case POWERUP_MUSHROOM:
     powerup.current_frame = 0;
-    EMU_printf("SPAWN MUSH WITH FRAME %d \n", powerup.current_frame);
+    //EMU_printf("SPAWN MUSH WITH FRAME %d \n", powerup.current_frame);
     break;
   case POWERUP_STAR:
     powerup.current_frame = 5;
-    EMU_printf("SPWAN STAR WITH FRAME %d \n", powerup.current_frame);
+    //EMU_printf("SPWAN STAR WITH FRAME %d \n", powerup.current_frame);
     break;
   }
 

@@ -46,7 +46,7 @@ void interruptLCD(void) {
 void interruptVBL(void) { SHOW_WIN; }
 #endif 
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 bool powerups_collide() {
   // Check if powerup is active
