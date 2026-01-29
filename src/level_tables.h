@@ -127,9 +127,6 @@
 #include "levels/level_4_3_07.h"
 #include "levels/level_4_3_08.h"
 #include "levels/level_4_3_09.h"
-#include "levels/level_4_3_10.h"
-#include "levels/level_4_3_11.h"
-#include "levels/level_4_3_12.h"
 
 // Gates
 #include "levels/level_gates.h"

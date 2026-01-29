@@ -1,280 +1,274 @@
 #include "level_tables.h"
 
 // Level 1_1 map declarations
-extern const unsigned char level_1_1_00_map[320];
-extern const unsigned char level_1_1_01_map[320];
-extern const unsigned char level_1_1_02_map[320];
-extern const unsigned char level_1_1_03_map[320];
-extern const unsigned char level_1_1_04_map[320];
-extern const unsigned char level_1_1_05_map[320];
-extern const unsigned char level_1_1_06_map[320];
+extern const unsigned char level_1_1_00[];
+extern const unsigned char level_1_1_01[];
+extern const unsigned char level_1_1_02[];
+extern const unsigned char level_1_1_03[];
+extern const unsigned char level_1_1_04[];
+extern const unsigned char level_1_1_05[];
+extern const unsigned char level_1_1_06[];
 
 // Level 1_2 map declarations
-extern const unsigned char level_1_2_00_map[320];
-extern const unsigned char level_1_2_01_map[320];
-extern const unsigned char level_1_2_02_map[320];
-extern const unsigned char level_1_2_03_map[320];
-extern const unsigned char level_1_2_04_map[320];
-extern const unsigned char level_1_2_05_map[320];
-extern const unsigned char level_1_2_06_map[320];
+extern const unsigned char level_1_2_00[];
+extern const unsigned char level_1_2_01[];
+extern const unsigned char level_1_2_02[];
+extern const unsigned char level_1_2_03[];
+extern const unsigned char level_1_2_04[];
+extern const unsigned char level_1_2_05[];
+extern const unsigned char level_1_2_06[];
 
 // Level 1_3 map declarations
-extern const unsigned char level_1_3_00_map[320];
-extern const unsigned char level_1_3_01_map[320];
-extern const unsigned char level_1_3_02_map[320];
-extern const unsigned char level_1_3_03_map[320];
-extern const unsigned char level_1_3_04_map[320];
-extern const unsigned char level_1_3_05_map[320];
-extern const unsigned char level_1_3_06_map[320];
-extern const unsigned char level_1_3_07_map[320];
-extern const unsigned char level_1_3_08_map[320];
-extern const unsigned char level_1_3_09_map[320];
-extern const unsigned char level_1_3_10_map[320];
+extern const unsigned char level_1_3_00[];
+extern const unsigned char level_1_3_01[];
+extern const unsigned char level_1_3_02[];
+extern const unsigned char level_1_3_03[];
+extern const unsigned char level_1_3_04[];
+extern const unsigned char level_1_3_05[];
+extern const unsigned char level_1_3_06[];
+extern const unsigned char level_1_3_07[];
+extern const unsigned char level_1_3_08[];
+extern const unsigned char level_1_3_09[];
+extern const unsigned char level_1_3_10[];
 
 // Level 2_1 map declarations
-extern const unsigned char level_2_1_00_map[320];
-extern const unsigned char level_2_1_01_map[320];
-extern const unsigned char level_2_1_02_map[320];
-extern const unsigned char level_2_1_03_map[320];
-extern const unsigned char level_2_1_04_map[320];
-extern const unsigned char level_2_1_05_map[320];
-extern const unsigned char level_2_1_06_map[320];
-extern const unsigned char level_2_1_07_map[320];
+extern const unsigned char level_2_1_00[];
+extern const unsigned char level_2_1_01[];
+extern const unsigned char level_2_1_02[];
+extern const unsigned char level_2_1_03[];
+extern const unsigned char level_2_1_04[];
+extern const unsigned char level_2_1_05[];
+extern const unsigned char level_2_1_06[];
+extern const unsigned char level_2_1_07[];
 
 // Level 2_2 map declarations
-extern const unsigned char level_2_2_00_map[320];
-extern const unsigned char level_2_2_01_map[320];
-extern const unsigned char level_2_2_02_map[320];
-extern const unsigned char level_2_2_03_map[320];
-extern const unsigned char level_2_2_04_map[320];
-extern const unsigned char level_2_2_05_map[320];
-extern const unsigned char level_2_2_06_map[320];
-extern const unsigned char level_2_2_07_map[320];
+extern const unsigned char level_2_2_00[];
+extern const unsigned char level_2_2_01[];
+extern const unsigned char level_2_2_02[];
+extern const unsigned char level_2_2_03[];
+extern const unsigned char level_2_2_04[];
+extern const unsigned char level_2_2_05[];
+extern const unsigned char level_2_2_06[];
+extern const unsigned char level_2_2_07[];
 
 // Level 2_3 map declarations
-extern const unsigned char level_2_3_00_map[320];
-extern const unsigned char level_2_3_01_map[320];
-extern const unsigned char level_2_3_02_map[320];
-extern const unsigned char level_2_3_03_map[320];
-extern const unsigned char level_2_3_04_map[320];
-extern const unsigned char level_2_3_05_map[320];
+extern const unsigned char level_2_3_00[];
+extern const unsigned char level_2_3_01[];
+extern const unsigned char level_2_3_02[];
+extern const unsigned char level_2_3_03[];
+extern const unsigned char level_2_3_04[];
+extern const unsigned char level_2_3_05[];
 
 // Level 3_1 map declarations
-extern const unsigned char level_3_1_00_map[320];
-extern const unsigned char level_3_1_01_map[320];
-extern const unsigned char level_3_1_02_map[320];
-extern const unsigned char level_3_1_03_map[320];
-extern const unsigned char level_3_1_04_map[320];
-extern const unsigned char level_3_1_05_map[320];
-extern const unsigned char level_3_1_06_map[320];
-extern const unsigned char level_3_1_07_map[320];
-extern const unsigned char level_3_1_08_map[320];
-extern const unsigned char level_3_1_09_map[320];
-extern const unsigned char level_3_1_10_map[320];
-extern const unsigned char level_3_1_11_map[320];
+extern const unsigned char level_3_1_00[];
+extern const unsigned char level_3_1_01[];
+extern const unsigned char level_3_1_02[];
+extern const unsigned char level_3_1_03[];
+extern const unsigned char level_3_1_04[];
+extern const unsigned char level_3_1_05[];
+extern const unsigned char level_3_1_06[];
+extern const unsigned char level_3_1_07[];
+extern const unsigned char level_3_1_08[];
+extern const unsigned char level_3_1_09[];
+extern const unsigned char level_3_1_10[];
+extern const unsigned char level_3_1_11[];
 
 // Level 4_1 map declarations
-extern const unsigned char level_4_1_00_map[320];
-extern const unsigned char level_4_1_01_map[320];
-extern const unsigned char level_4_1_02_map[320];
-extern const unsigned char level_4_1_03_map[320];
-extern const unsigned char level_4_1_04_map[320];
-extern const unsigned char level_4_1_05_map[320];
-extern const unsigned char level_4_1_06_map[320];
-extern const unsigned char level_4_1_07_map[320];
-extern const unsigned char level_4_1_08_map[320];
-extern const unsigned char level_4_1_09_map[320];
-extern const unsigned char level_4_1_10_map[320];
+extern const unsigned char level_4_1_00[];
+extern const unsigned char level_4_1_01[];
+extern const unsigned char level_4_1_02[];
+extern const unsigned char level_4_1_03[];
+extern const unsigned char level_4_1_04[];
+extern const unsigned char level_4_1_05[];
+extern const unsigned char level_4_1_06[];
+extern const unsigned char level_4_1_07[];
+extern const unsigned char level_4_1_08[];
+extern const unsigned char level_4_1_09[];
+extern const unsigned char level_4_1_10[];
 
 // Level 4_2 map declarations
-extern const unsigned char level_4_2_00_map[320];
-extern const unsigned char level_4_2_01_map[320];
-extern const unsigned char level_4_2_02_map[320];
-extern const unsigned char level_4_2_03_map[320];
-extern const unsigned char level_4_2_04_map[320];
-extern const unsigned char level_4_2_05_map[320];
-extern const unsigned char level_4_2_06_map[320];
-extern const unsigned char level_4_2_07_map[320];
-extern const unsigned char level_4_2_08_map[320];
-extern const unsigned char level_4_2_09_map[320];
-extern const unsigned char level_4_2_10_map[320];
-extern const unsigned char level_4_2_11_map[320];
-extern const unsigned char level_4_2_12_map[320];
-extern const unsigned char level_4_2_13_map[320];
+extern const unsigned char level_4_2_00[];
+extern const unsigned char level_4_2_01[];
+extern const unsigned char level_4_2_02[];
+extern const unsigned char level_4_2_03[];
+extern const unsigned char level_4_2_04[];
+extern const unsigned char level_4_2_05[];
+extern const unsigned char level_4_2_06[];
+extern const unsigned char level_4_2_07[];
+extern const unsigned char level_4_2_08[];
+extern const unsigned char level_4_2_09[];
+extern const unsigned char level_4_2_10[];
+extern const unsigned char level_4_2_11[];
+extern const unsigned char level_4_2_12[];
+extern const unsigned char level_4_2_13[];
 
 // Level 4_3 map declarations
-extern const unsigned char level_4_3_00_map[320];
-extern const unsigned char level_4_3_01_map[320];
-extern const unsigned char level_4_3_02_map[320];
-extern const unsigned char level_4_3_03_map[320];
-extern const unsigned char level_4_3_04_map[320];
-extern const unsigned char level_4_3_05_map[320];
-extern const unsigned char level_4_3_06_map[320];
-extern const unsigned char level_4_3_07_map[320];
-extern const unsigned char level_4_3_08_map[320];
-extern const unsigned char level_4_3_09_map[320];
-extern const unsigned char level_4_3_10_map[320];
-extern const unsigned char level_4_3_11_map[320];
-extern const unsigned char level_4_3_12_map[320];
+extern const unsigned char level_4_3_00[];
+extern const unsigned char level_4_3_01[];
+extern const unsigned char level_4_3_02[];
+extern const unsigned char level_4_3_03[];
+extern const unsigned char level_4_3_04[];
+extern const unsigned char level_4_3_05[];
+extern const unsigned char level_4_3_06[];
+extern const unsigned char level_4_3_07[];
+extern const unsigned char level_4_3_08[];
+extern const unsigned char level_4_3_09[];
 
 // Gates map declaration
-extern const unsigned char level_gates_map[320];
+extern const unsigned char level_gates[];
 
 const banked_map_t level_1_1_map[level_table_1_1_ENTRY_COUNT] = {
-    {level_1_1_00_map, BANK(level_1_1_00)},
-    {level_1_1_01_map, BANK(level_1_1_01)},
-    {level_1_1_00_map, BANK(level_1_1_00)},
-    {level_1_1_02_map, BANK(level_1_1_02)},
-    {level_1_1_03_map, BANK(level_1_1_03)},
-    {level_1_1_00_map, BANK(level_1_1_00)},
-    {level_1_1_04_map, BANK(level_1_1_04)},
-    {level_1_1_00_map, BANK(level_1_1_00)},
-    {level_1_1_01_map, BANK(level_1_1_01)},
-    {level_1_1_02_map, BANK(level_1_1_02)},
-    {level_1_1_01_map, BANK(level_1_1_01)},
-    {level_1_1_00_map, BANK(level_1_1_00)},
-    {level_1_1_05_map, BANK(level_1_1_05)},
-    {level_1_1_06_map, BANK(level_1_1_06)},
-    {level_gates_map, BANK(level_gates)},
+    {level_1_1_00, BANK(level_1_1_00)},
+    {level_1_1_01, BANK(level_1_1_01)},
+    {level_1_1_00, BANK(level_1_1_00)},
+    {level_1_1_02, BANK(level_1_1_02)},
+    {level_1_1_03, BANK(level_1_1_03)},
+    {level_1_1_00, BANK(level_1_1_00)},
+    {level_1_1_04, BANK(level_1_1_04)},
+    {level_1_1_00, BANK(level_1_1_00)},
+    {level_1_1_01, BANK(level_1_1_01)},
+    {level_1_1_02, BANK(level_1_1_02)},
+    {level_1_1_01, BANK(level_1_1_01)},
+    {level_1_1_00, BANK(level_1_1_00)},
+    {level_1_1_05, BANK(level_1_1_05)},
+    {level_1_1_06, BANK(level_1_1_06)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 1_2 table
 const banked_map_t level_1_2_map[level_table_1_2_ENTRY_COUNT] = {
-    {level_1_2_00_map, BANK(level_1_2_00)},
-    {level_1_2_01_map, BANK(level_1_2_01)},
-    {level_1_2_02_map, BANK(level_1_2_02)},
-    {level_1_2_01_map, BANK(level_1_2_01)},
-    {level_1_2_03_map, BANK(level_1_2_03)},
-    {level_1_2_04_map, BANK(level_1_2_04)},
-    {level_1_2_02_map, BANK(level_1_2_02)},
-    {level_1_2_02_map, BANK(level_1_2_02)},
-    {level_1_2_05_map, BANK(level_1_2_05)},
-    {level_1_2_06_map, BANK(level_1_2_06)},
-    {level_1_2_03_map, BANK(level_1_2_03)},
-    {level_1_2_04_map, BANK(level_1_2_04)},
-    {level_1_2_00_map, BANK(level_1_2_00)},
-    {level_gates_map, BANK(level_gates)},
+    {level_1_2_00, BANK(level_1_2_00)},
+    {level_1_2_01, BANK(level_1_2_01)},
+    {level_1_2_02, BANK(level_1_2_02)},
+    {level_1_2_01, BANK(level_1_2_01)},
+    {level_1_2_03, BANK(level_1_2_03)},
+    {level_1_2_04, BANK(level_1_2_04)},
+    {level_1_2_02, BANK(level_1_2_02)},
+    {level_1_2_02, BANK(level_1_2_02)},
+    {level_1_2_05, BANK(level_1_2_05)},
+    {level_1_2_06, BANK(level_1_2_06)},
+    {level_1_2_03, BANK(level_1_2_03)},
+    {level_1_2_04, BANK(level_1_2_04)},
+    {level_1_2_00, BANK(level_1_2_00)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 1_3 table
 const banked_map_t level_1_3_map[level_table_1_3_ENTRY_COUNT] = {
-    {level_1_3_00_map, BANK(level_1_3_00)},
-    {level_1_3_01_map, BANK(level_1_3_01)},
-    {level_1_3_02_map, BANK(level_1_3_02)},
-    {level_1_3_03_map, BANK(level_1_3_03)},
-    {level_1_3_04_map, BANK(level_1_3_04)},
-    {level_1_3_05_map, BANK(level_1_3_05)},
-    {level_1_3_06_map, BANK(level_1_3_06)},
-    {level_1_3_07_map, BANK(level_1_3_07)},
-    {level_1_3_08_map, BANK(level_1_3_08)},
-    {level_1_3_09_map, BANK(level_1_3_09)},
-    {level_1_3_10_map, BANK(level_1_3_10)},
-    {level_gates_map, BANK(level_gates)},
+    {level_1_3_00, BANK(level_1_3_00)},
+    {level_1_3_01, BANK(level_1_3_01)},
+    {level_1_3_02, BANK(level_1_3_02)},
+    {level_1_3_03, BANK(level_1_3_03)},
+    {level_1_3_04, BANK(level_1_3_04)},
+    {level_1_3_05, BANK(level_1_3_05)},
+    {level_1_3_06, BANK(level_1_3_06)},
+    {level_1_3_07, BANK(level_1_3_07)},
+    {level_1_3_08, BANK(level_1_3_08)},
+    {level_1_3_09, BANK(level_1_3_09)},
+    {level_1_3_10, BANK(level_1_3_10)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 2_1 table
 const banked_map_t level_2_1_map[level_table_2_1_ENTRY_COUNT] = {
-    {level_2_1_00_map, BANK(level_2_1_00)},
-    {level_2_1_01_map, BANK(level_2_1_01)},
-    {level_2_1_02_map, BANK(level_2_1_02)},
-    {level_2_1_03_map, BANK(level_2_1_03)},
-    {level_2_1_04_map, BANK(level_2_1_04)},
-    {level_2_1_05_map, BANK(level_2_1_05)},
-    {level_2_1_06_map, BANK(level_2_1_06)},
-    {level_2_1_07_map, BANK(level_2_1_07)},
-    {level_gates_map, BANK(level_gates)},
+    {level_2_1_00, BANK(level_2_1_00)},
+    {level_2_1_01, BANK(level_2_1_01)},
+    {level_2_1_02, BANK(level_2_1_02)},
+    {level_2_1_03, BANK(level_2_1_03)},
+    {level_2_1_04, BANK(level_2_1_04)},
+    {level_2_1_05, BANK(level_2_1_05)},
+    {level_2_1_06, BANK(level_2_1_06)},
+    {level_2_1_07, BANK(level_2_1_07)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 2_2 table
 const banked_map_t level_2_2_map[level_table_2_2_ENTRY_COUNT] = {
-    {level_2_2_00_map, BANK(level_2_2_00)},
-    {level_2_2_01_map, BANK(level_2_2_01)},
-    {level_2_2_02_map, BANK(level_2_2_02)},
-    {level_2_2_03_map, BANK(level_2_2_03)},
-    {level_2_2_04_map, BANK(level_2_2_04)},
-    {level_2_2_05_map, BANK(level_2_2_05)},
-    {level_2_2_06_map, BANK(level_2_2_06)},
-    {level_2_2_07_map, BANK(level_2_2_07)},
-    {level_gates_map, BANK(level_gates)},
+    {level_2_2_00, BANK(level_2_2_00)},
+    {level_2_2_01, BANK(level_2_2_01)},
+    {level_2_2_02, BANK(level_2_2_02)},
+    {level_2_2_03, BANK(level_2_2_03)},
+    {level_2_2_04, BANK(level_2_2_04)},
+    {level_2_2_05, BANK(level_2_2_05)},
+    {level_2_2_06, BANK(level_2_2_06)},
+    {level_2_2_07, BANK(level_2_2_07)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 2_3 table
 const banked_map_t level_2_3_map[level_table_2_3_ENTRY_COUNT] = {
-    {level_2_3_00_map, BANK(level_2_3_00)},
-    {level_2_3_01_map, BANK(level_2_3_01)},
-    {level_2_3_02_map, BANK(level_2_3_02)},
-    {level_2_3_03_map, BANK(level_2_3_03)},
-    {level_2_3_04_map, BANK(level_2_3_04)},
-    {level_2_3_05_map, BANK(level_2_3_05)},
-    {level_gates_map, BANK(level_gates)},
+    {level_2_3_00, BANK(level_2_3_00)},
+    {level_2_3_01, BANK(level_2_3_01)},
+    {level_2_3_02, BANK(level_2_3_02)},
+    {level_2_3_03, BANK(level_2_3_03)},
+    {level_2_3_04, BANK(level_2_3_04)},
+    {level_2_3_05, BANK(level_2_3_05)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 3_1 table
 const banked_map_t level_3_1_map[level_table_3_1_ENTRY_COUNT] = {
-    {level_3_1_00_map, BANK(level_3_1_00)},
-    {level_3_1_01_map, BANK(level_3_1_01)},
-    {level_3_1_02_map, BANK(level_3_1_02)},
-    {level_3_1_03_map, BANK(level_3_1_03)},
-    {level_3_1_04_map, BANK(level_3_1_04)},
-    {level_3_1_05_map, BANK(level_3_1_05)},
-    {level_3_1_06_map, BANK(level_3_1_06)},
-    {level_3_1_07_map, BANK(level_3_1_07)},
-    {level_3_1_08_map, BANK(level_3_1_08)},
-    {level_3_1_09_map, BANK(level_3_1_09)},
-    {level_3_1_10_map, BANK(level_3_1_10)},
-    {level_3_1_11_map, BANK(level_3_1_11)},
-    {level_gates_map, BANK(level_gates)},
+    {level_3_1_00, BANK(level_3_1_00)},
+    {level_3_1_01, BANK(level_3_1_01)},
+    {level_3_1_02, BANK(level_3_1_02)},
+    {level_3_1_03, BANK(level_3_1_03)},
+    {level_3_1_04, BANK(level_3_1_04)},
+    {level_3_1_05, BANK(level_3_1_05)},
+    {level_3_1_06, BANK(level_3_1_06)},
+    {level_3_1_07, BANK(level_3_1_07)},
+    {level_3_1_08, BANK(level_3_1_08)},
+    {level_3_1_09, BANK(level_3_1_09)},
+    {level_3_1_10, BANK(level_3_1_10)},
+    {level_3_1_11, BANK(level_3_1_11)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 4_1 table
 const banked_map_t level_4_1_map[level_table_4_1_ENTRY_COUNT] = {
-    {level_4_1_00_map, BANK(level_4_1_00)},
-    {level_4_1_01_map, BANK(level_4_1_01)},
-    {level_4_1_02_map, BANK(level_4_1_02)},
-    {level_4_1_03_map, BANK(level_4_1_03)},
-    {level_4_1_04_map, BANK(level_4_1_04)},
-    {level_4_1_05_map, BANK(level_4_1_05)},
-    {level_4_1_06_map, BANK(level_4_1_06)},
-    {level_4_1_07_map, BANK(level_4_1_07)},
-    {level_4_1_08_map, BANK(level_4_1_08)},
-    {level_4_1_09_map, BANK(level_4_1_09)},
-    {level_4_1_10_map, BANK(level_4_1_10)},
-    {level_gates_map, BANK(level_gates)},
+    {level_4_1_00, BANK(level_4_1_00)},
+    {level_4_1_01, BANK(level_4_1_01)},
+    {level_4_1_02, BANK(level_4_1_02)},
+    {level_4_1_03, BANK(level_4_1_03)},
+    {level_4_1_04, BANK(level_4_1_04)},
+    {level_4_1_05, BANK(level_4_1_05)},
+    {level_4_1_06, BANK(level_4_1_06)},
+    {level_4_1_07, BANK(level_4_1_07)},
+    {level_4_1_08, BANK(level_4_1_08)},
+    {level_4_1_09, BANK(level_4_1_09)},
+    {level_4_1_10, BANK(level_4_1_10)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 4_2 table
 const banked_map_t level_4_2_map[level_table_4_2_ENTRY_COUNT] = {
-    {level_4_2_00_map, BANK(level_4_2_00)},
-    {level_4_2_01_map, BANK(level_4_2_01)},
-    {level_4_2_02_map, BANK(level_4_2_02)},
-    {level_4_2_03_map, BANK(level_4_2_03)},
-    {level_4_2_04_map, BANK(level_4_2_04)},
-    {level_4_2_05_map, BANK(level_4_2_05)},
-    {level_4_2_06_map, BANK(level_4_2_06)},
-    {level_4_2_07_map, BANK(level_4_2_07)},
-    {level_4_2_08_map, BANK(level_4_2_08)},
-    {level_4_2_09_map, BANK(level_4_2_09)},
-    {level_4_2_10_map, BANK(level_4_2_10)},
-    {level_4_2_11_map, BANK(level_4_2_11)},
-    {level_4_2_12_map, BANK(level_4_2_12)},
-    {level_4_2_13_map, BANK(level_4_2_13)},
-    {level_gates_map, BANK(level_gates)},
+    {level_4_2_00, BANK(level_4_2_00)},
+    {level_4_2_01, BANK(level_4_2_01)},
+    {level_4_2_02, BANK(level_4_2_02)},
+    {level_4_2_03, BANK(level_4_2_03)},
+    {level_4_2_04, BANK(level_4_2_04)},
+    {level_4_2_05, BANK(level_4_2_05)},
+    {level_4_2_06, BANK(level_4_2_06)},
+    {level_4_2_07, BANK(level_4_2_07)},
+    {level_4_2_08, BANK(level_4_2_08)},
+    {level_4_2_09, BANK(level_4_2_09)},
+    {level_4_2_10, BANK(level_4_2_10)},
+    {level_4_2_11, BANK(level_4_2_11)},
+    {level_4_2_12, BANK(level_4_2_12)},
+    {level_4_2_13, BANK(level_4_2_13)},
+    {level_gates, BANK(level_gates)},
 };
 
 // Level 4_3 table
 const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT] = {
-    {level_4_3_00_map, BANK(level_4_3_00)},
-    {level_4_3_01_map, BANK(level_4_3_01)},
-    {level_4_3_02_map, BANK(level_4_3_02)},
-    {level_4_3_03_map, BANK(level_4_3_03)},
-    {level_4_3_04_map, BANK(level_4_3_04)},
-    {level_4_3_05_map, BANK(level_4_3_05)},
-    {level_4_3_06_map, BANK(level_4_3_06)},
-    {level_4_3_07_map, BANK(level_4_3_07)},
-    {level_4_3_08_map, BANK(level_4_3_08)},
-    {level_4_3_09_map, BANK(level_4_3_09)},
-    {level_4_3_10_map, BANK(level_4_3_10)},
-    {level_4_3_11_map, BANK(level_4_3_11)},
-    {level_4_3_12_map, BANK(level_4_3_12)},
-    {level_gates_map, BANK(level_gates)},
+    {level_4_3_00, BANK(level_4_3_00)},
+    {level_4_3_01, BANK(level_4_3_01)},
+    {level_4_3_02, BANK(level_4_3_02)},
+    {level_4_3_03, BANK(level_4_3_03)},
+    {level_4_3_04, BANK(level_4_3_04)},
+    {level_4_3_05, BANK(level_4_3_05)},
+    {level_4_3_06, BANK(level_4_3_06)},
+    {level_4_3_07, BANK(level_4_3_07)},
+    {level_4_3_08, BANK(level_4_3_08)},
+    {level_4_3_09, BANK(level_4_3_09)},
+    {level_gates, BANK(level_gates)},
 };

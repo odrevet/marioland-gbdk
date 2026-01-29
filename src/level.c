@@ -1,6 +1,7 @@
 #include "level.h"
 #include "coin_animated.h"
 #include <gbdk/platform.h>
+#include <gbdk/gbdecompress.h>
 #include "global.h"
 #include "graphics/enemies.h"
 #include "lookup_tables.h"
@@ -28,6 +29,10 @@ bool level_end_reached;
 uint8_t current_level;
 uint8_t map_column;
 
+// Decompression buffer - sized for a single page
+#define DECOMPRESSED_PAGE_SIZE 512
+uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
+
 // Current level tile data
 int current_map_tile_origin;
 const unsigned char *current_map_tiles;
@@ -44,6 +49,9 @@ size_t level_lookup_size;
 // Map page tracking
 uint8_t current_page = 0;
 uint8_t map_column_in_page = 0;
+
+// Cache for currently decompressed page to avoid repeated decompression
+uint8_t cached_page_index = 0xFF;  // Invalid page initially
 
 #define PAGE_SIZE 20 
 
@@ -259,10 +267,8 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
     level_object *obj = &level_lookup[i];
-    //EMU_printf("  Check at %d %d against %d %d\n", obj->x, obj->y, world_tile_x, index_y);
     
     if (obj->x == world_tile_x && obj->y == index_y) {
-      //EMU_printf("  MATCH FOUND! Spawning powerup type=%d\n", obj->type);
       lookup_found = TRUE;
       powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->data.enemy.type);
     }
@@ -272,7 +278,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   // Coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
-    //EMU_printf("No powerup found, spawning coin\n");
     on_get_coin();
     coin_animated_new(index_x, index_y);
   }
@@ -315,7 +320,7 @@ void level_load_objects(uint16_t col) NONBANKED {
 }
 
 /**
- * Load columns from map pages with proper bank switching
+ * Load columns from compressed map pages with proper bank switching and decompression
  * This is the critical function that switches banks when loading map data
  */
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
@@ -340,13 +345,23 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     // CRITICAL: Switch to the bank containing this page's data
     SWITCH_ROM(page_entry->bank);
     
-    // Now we can safely access the map data
-    const unsigned char* current_page_data = page_entry->map;
+    // Decompress the page data if we haven't already cached it
+    const unsigned char* current_page_data;
+    if (cached_page_index != page_index) {
+      // Decompress the compressed map data into our buffer
+      // gb_decompress returns the number of bytes decompressed
+      gb_decompress(page_entry->map, decompression_buffer);
+      current_page_data = decompression_buffer;
+      cached_page_index = page_index;
+    } else {
+      // Use cached decompressed data
+      current_page_data = decompression_buffer;
+    }
     
     // Calculate buffer position for this column
     map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
 
-    // Load the column from the current page
+    // Load the column from the decompressed page
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       int pos = (row * 20) + column_in_page;  // 20 = page width
       uint8_t tile = current_page_data[pos];
@@ -407,6 +422,7 @@ void load_current_level(void) NONBANKED {
   level_end_reached = false;
   current_page = 0;
   map_column_in_page = 0;
+  cached_page_index = 0xFF;  // Invalidate page cache
 
   // Load initial map columns
   level_load_column(0, MAP_BUFFER_WIDTH);
