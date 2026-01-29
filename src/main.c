@@ -311,7 +311,7 @@ for (y = 0; y != 30; y++) {
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
-      load_current_level();
+      //load_current_level();
     }
 
     // check if mario collids with a power up

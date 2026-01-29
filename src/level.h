@@ -33,20 +33,6 @@
 #include "graphics/easton.h"
 #include "graphics/muda.h"
 
-// maps
-#include "levels/level_1_1.h"
-#include "levels/level_1_2.h"
-#include "levels/level_1_3.h"
-#include "levels/level_2_1.h"
-#include "levels/level_2_2.h"
-#include "levels/level_2_3.h"
-#include "levels/level_3_1.h"
-#include "levels/level_3_2.h"
-#include "levels/level_3_3.h"
-#include "levels/level_4_1.h"
-#include "levels/level_4_2.h"
-#include "levels/level_4_3.h"
-
 // lookup tables
 #include "lookup_tables.h"
 #include "lookup_tables/lookup_table_1_1.h"
@@ -61,6 +47,10 @@
 #include "lookup_tables/lookup_table_4_1.h"
 #include "lookup_tables/lookup_table_4_2.h"
 #include "lookup_tables/lookup_table_4_3.h"
+
+#include "levels/level_1_1_00.h"
+
+#include "level_tables.h"
 
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16
@@ -101,11 +91,16 @@ extern uint8_t level_lookup_bank;
 extern const level_object *level_lookup;
 extern size_t level_lookup_size;
 
+extern uint8_t current_page;
+extern uint8_t map_column_in_page;  // column within the current page
+
 typedef struct level_t {
   char major;
   char minor;
 
-  uint8_t bank;
+  const banked_map_t *map_pages;
+  uint8_t page_count;
+
   unsigned char *map;
   size_t map_width;
   size_t map_width_in_tiles;
