@@ -25,7 +25,7 @@
 #include "levels/level_1_2_06.h"
 
 // Level 1_3
-#define level_table_1_3_ENTRY_COUNT 12
+#define level_table_1_3_ENTRY_COUNT 16
 #include "levels/level_1_3_00.h"
 #include "levels/level_1_3_01.h"
 #include "levels/level_1_3_02.h"
@@ -39,7 +39,7 @@
 #include "levels/level_1_3_10.h"
 
 // Level 2_1
-#define level_table_2_1_ENTRY_COUNT 9
+#define level_table_2_1_ENTRY_COUNT 16
 #include "levels/level_2_1_00.h"
 #include "levels/level_2_1_01.h"
 #include "levels/level_2_1_02.h"
@@ -50,7 +50,7 @@
 #include "levels/level_2_1_07.h"
 
 // Level 2_2
-#define level_table_2_2_ENTRY_COUNT 9
+#define level_table_2_2_ENTRY_COUNT 12
 #include "levels/level_2_2_00.h"
 #include "levels/level_2_2_01.h"
 #include "levels/level_2_2_02.h"
@@ -61,7 +61,7 @@
 #include "levels/level_2_2_07.h"
 
 // Level 2_3
-#define level_table_2_3_ENTRY_COUNT 7
+#define level_table_2_3_ENTRY_COUNT 19
 #include "levels/level_2_3_00.h"
 #include "levels/level_2_3_01.h"
 #include "levels/level_2_3_02.h"
@@ -70,7 +70,7 @@
 #include "levels/level_2_3_05.h"
 
 // Level 3_1
-#define level_table_3_1_ENTRY_COUNT 13
+#define level_table_3_1_ENTRY_COUNT 23
 #include "levels/level_3_1_00.h"
 #include "levels/level_3_1_01.h"
 #include "levels/level_3_1_02.h"
@@ -84,8 +84,34 @@
 #include "levels/level_3_1_10.h"
 #include "levels/level_3_1_11.h"
 
+// Level 3_2
+#define level_table_3_2_ENTRY_COUNT 16
+#include "levels/level_3_2_00.h"
+#include "levels/level_3_2_01.h"
+#include "levels/level_3_2_02.h"
+#include "levels/level_3_2_03.h"
+#include "levels/level_3_2_04.h"
+#include "levels/level_3_2_05.h"
+#include "levels/level_3_2_06.h"
+#include "levels/level_3_2_07.h"
+#include "levels/level_3_2_08.h"
+#include "levels/level_3_2_09.h"
+#include "levels/level_3_2_10.h"
+
+// Level 3_3
+#define level_table_3_3_ENTRY_COUNT 16
+#include "levels/level_3_3_00.h"
+#include "levels/level_3_3_01.h"
+#include "levels/level_3_3_02.h"
+#include "levels/level_3_3_03.h"
+#include "levels/level_3_3_04.h"
+#include "levels/level_3_3_05.h"
+#include "levels/level_3_3_06.h"
+#include "levels/level_3_3_07.h"
+#include "levels/level_3_3_08.h"
+
 // Level 4_1
-#define level_table_4_1_ENTRY_COUNT 12
+#define level_table_4_1_ENTRY_COUNT 23
 #include "levels/level_4_1_00.h"
 #include "levels/level_4_1_01.h"
 #include "levels/level_4_1_02.h"
@@ -96,10 +122,9 @@
 #include "levels/level_4_1_07.h"
 #include "levels/level_4_1_08.h"
 #include "levels/level_4_1_09.h"
-#include "levels/level_4_1_10.h"
 
 // Level 4_2
-#define level_table_4_2_ENTRY_COUNT 15
+#define level_table_4_2_ENTRY_COUNT 20
 #include "levels/level_4_2_00.h"
 #include "levels/level_4_2_01.h"
 #include "levels/level_4_2_02.h"
@@ -112,11 +137,9 @@
 #include "levels/level_4_2_09.h"
 #include "levels/level_4_2_10.h"
 #include "levels/level_4_2_11.h"
-#include "levels/level_4_2_12.h"
-#include "levels/level_4_2_13.h"
 
 // Level 4_3
-#define level_table_4_3_ENTRY_COUNT 14
+#define level_table_4_3_ENTRY_COUNT 24
 #include "levels/level_4_3_00.h"
 #include "levels/level_4_3_01.h"
 #include "levels/level_4_3_02.h"
@@ -144,6 +167,8 @@ extern const banked_map_t level_2_1_map[level_table_2_1_ENTRY_COUNT];
 extern const banked_map_t level_2_2_map[level_table_2_2_ENTRY_COUNT];
 extern const banked_map_t level_2_3_map[level_table_2_3_ENTRY_COUNT];
 extern const banked_map_t level_3_1_map[level_table_3_1_ENTRY_COUNT];
+extern const banked_map_t level_3_2_map[level_table_3_2_ENTRY_COUNT];
+extern const banked_map_t level_3_3_map[level_table_3_3_ENTRY_COUNT];
 extern const banked_map_t level_4_1_map[level_table_4_1_ENTRY_COUNT];
 extern const banked_map_t level_4_2_map[level_table_4_2_ENTRY_COUNT];
 extern const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT];

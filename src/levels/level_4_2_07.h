@@ -7,7 +7,7 @@ BANKREF_EXTERN(level_4_2_07)
 
 
 
-#define level_4_2_07_sz_comp 38
+#define level_4_2_07_sz_comp 50
 #define level_4_2_07_sz_decomp 320
 
 extern const unsigned char level_4_2_07[];

@@ -94,7 +94,197 @@ const level levels[NB_LEVELS] = {
   .lookup_bank = BANK(level_1_2_lookup),
   .lookup = level_1_2_lookup,
   .lookup_size = level_1_2_lookup_ENTRY_COUNT
-  }
+  },
+  {
+  .major = '1',
+  .minor = '3',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_1_3_map,
+  .page_count = level_table_1_3_ENTRY_COUNT,
+  .map_tiles_bank = BANK(birabuto),
+  .map_tile_origin = birabuto_TILE_ORIGIN,
+  .map_tiles = birabuto_tiles,
+  .map_tiles_count = birabuto_TILE_COUNT,
+  .map_width = level_table_1_3_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_1_3_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_1_3_lookup),
+  .lookup = level_1_3_lookup,
+  .lookup_size = level_1_3_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '2',
+  .minor = '1',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_2_1_map,
+  .page_count = level_table_2_1_ENTRY_COUNT,
+  .map_tiles_bank = BANK(muda),
+  .map_tile_origin = muda_TILE_ORIGIN,
+  .map_tiles = muda_tiles,
+  .map_tiles_count = muda_TILE_COUNT,
+  .map_width = level_table_2_1_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_2_1_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_2_1_lookup),
+  .lookup = level_2_1_lookup,
+  .lookup_size = level_2_1_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '2',
+  .minor = '2',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_2_2_map,
+  .page_count = level_table_2_2_ENTRY_COUNT,
+  .map_tiles_bank = BANK(muda),
+  .map_tile_origin = muda_TILE_ORIGIN,
+  .map_tiles = muda_tiles,
+  .map_tiles_count = muda_TILE_COUNT,
+  .map_width = level_table_2_2_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_2_2_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_2_2_lookup),
+  .lookup = level_2_2_lookup,
+  .lookup_size = level_2_2_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '2',
+  .minor = '3',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_2_3_map,
+  .page_count = level_table_2_3_ENTRY_COUNT,
+  .map_tiles_bank = BANK(muda),
+  .map_tile_origin = muda_TILE_ORIGIN,
+  .map_tiles = muda_tiles,
+  .map_tiles_count = muda_TILE_COUNT,
+  .map_width = level_table_2_3_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_2_3_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_2_3_lookup),
+  .lookup = level_2_3_lookup,
+  .lookup_size = level_2_3_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '3',
+  .minor = '1',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_3_1_map,
+  .page_count = level_table_3_1_ENTRY_COUNT,
+  .map_tiles_bank = BANK(easton),
+  .map_tile_origin = easton_TILE_ORIGIN,
+  .map_tiles = easton_tiles,
+  .map_tiles_count = easton_TILE_COUNT,
+  .map_width = level_table_3_1_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_3_1_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_3_1_lookup),
+  .lookup = level_3_1_lookup,
+  .lookup_size = level_3_1_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '3',
+  .minor = '2',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_3_2_map,
+  .page_count = level_table_3_2_ENTRY_COUNT,
+  .map_tiles_bank = BANK(easton),
+  .map_tile_origin = easton_TILE_ORIGIN,
+  .map_tiles = easton_tiles,
+  .map_tiles_count = easton_TILE_COUNT,
+  .map_width = level_table_3_2_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_3_2_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_3_2_lookup),
+  .lookup = level_3_2_lookup,
+  .lookup_size = level_3_2_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '3',
+  .minor = '3',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_3_3_map,
+  .page_count = level_table_3_3_ENTRY_COUNT,
+  .map_tiles_bank = BANK(easton),
+  .map_tile_origin = easton_TILE_ORIGIN,
+  .map_tiles = easton_tiles,
+  .map_tiles_count = easton_TILE_COUNT,
+  .map_width = level_table_3_3_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_3_3_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_3_3_lookup),
+  .lookup = level_3_3_lookup,
+  .lookup_size = level_3_3_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '4',
+  .minor = '1',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_4_1_map,
+  .page_count = level_table_4_1_ENTRY_COUNT,
+  .map_tiles_bank = BANK(chai),
+  .map_tile_origin = chai_TILE_ORIGIN,
+  .map_tiles = chai_tiles,
+  .map_tiles_count = chai_TILE_COUNT,
+  .map_width = level_table_4_1_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_4_1_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_4_1_lookup),
+  .lookup = level_4_1_lookup,
+  .lookup_size = level_4_1_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '4',
+  .minor = '2',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_4_2_map,
+  .page_count = level_table_4_2_ENTRY_COUNT,
+  .map_tiles_bank = BANK(chai),
+  .map_tile_origin = chai_TILE_ORIGIN,
+  .map_tiles = chai_tiles,
+  .map_tiles_count = chai_TILE_COUNT,
+  .map_width = level_table_4_2_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_4_2_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_4_2_lookup),
+  .lookup = level_4_2_lookup,
+  .lookup_size = level_4_2_lookup_ENTRY_COUNT
+  },
+  {
+  .major = '4',
+  .minor = '3',
+  #ifdef GAMEBOY
+  .music_bank = BANK(music_overworld),
+  .music = &music_overworld,
+  #endif
+  .map_pages = level_4_3_map,
+  .page_count = level_table_4_3_ENTRY_COUNT,
+  .map_tiles_bank = BANK(chai),
+  .map_tile_origin = chai_TILE_ORIGIN,
+  .map_tiles = chai_tiles,
+  .map_tiles_count = chai_TILE_COUNT,
+  .map_width = level_table_4_3_ENTRY_COUNT * PAGE_SIZE * 8,
+  .map_width_in_tiles = level_table_4_3_ENTRY_COUNT * PAGE_SIZE,
+  .lookup_bank = BANK(level_4_3_lookup),
+  .lookup = level_4_3_lookup,
+  .lookup_size = level_4_3_lookup_ENTRY_COUNT
+  },
 };
 
 /**
