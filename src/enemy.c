@@ -237,7 +237,18 @@ void enemy_move_fly(uint8_t index) BANKED {
   // Check if it's time to jump
   if (on_ground && fly->frame_counter >= ENEMY_FLY_WAIT_FRAMES) {
     fly->vel_y = ENEMY_FLY_JUMP_VELOCITY;
-    fly->vel_x = ENEMY_FLY_JUMP_SPEED; // Move horizontally when jumping
+    
+    // Jump toward the player's direction
+    if (player_x < fly->x) {
+      // Player is to the left, jump left
+      fly->vel_x = -ENEMY_FLY_JUMP_SPEED;
+      fly->flip = TRUE;
+    } else {
+      // Player is to the right, jump right
+      fly->vel_x = ENEMY_FLY_JUMP_SPEED;
+      fly->flip = FALSE;
+    }
+    
     fly->frame_counter = 0; // Reset counter
   }
 
