@@ -304,13 +304,6 @@ for (y = 0; y != 30; y++) {
     coin_animated_update();
     base_sprite = coin_animated_draw(base_sprite);
 
-    if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
-      init();
-      current_level = (++current_level) % NB_LEVELS;
-      level_set_current();
-      //load_current_level();
-    }
-
     // check if mario collids with a power up
     if (powerup_active && powerups_collide()) {
       // EMU_printf("Power up collids\n");
@@ -364,7 +357,6 @@ for (y = 0; y != 30; y++) {
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
-      load_current_level();
 
       SHOW_SPRITES;
       SHOW_BKG;

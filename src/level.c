@@ -608,6 +608,7 @@ void level_set_current(void) NONBANKED {
 void load_current_level(void) NONBANKED {
   set_column_at = 0;
   camera_x = 0;
+  move_bkg(0, -16);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;

@@ -48,6 +48,13 @@ void state_pause(void) {
   while (1) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
+
+    if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
+      init();
+      current_level = (++current_level) % NB_LEVELS;
+      level_set_current();
+    }
+
     if (joypad_current & J_START && !(joypad_previous & J_START)) {
       break;
     }
