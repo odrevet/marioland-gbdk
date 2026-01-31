@@ -73,17 +73,17 @@ for i in {0..10}; do
 done
 
 echo "3_3"
-for i in {0..9}; do
+for i in {0..8}; do
   convert_level_asset 3_3 $(printf "%02d" $i) easton $tile_origin 255
 done
 
 echo "4_1"
-for i in {0..10}; do
+for i in {0..9}; do
   convert_level_asset 4_1 $(printf "%02d" $i) chai $tile_origin 255
 done
 
 echo "4_2"
-for i in {0..13}; do
+for i in {0..11}; do
   convert_level_asset 4_2 $(printf "%02d" $i) chai $tile_origin 255
 done
 
@@ -101,6 +101,16 @@ png2asset "assets/levels/pages/gates.png" \
 
 gbcompress --cin --cout --varname="level_gates" --bank=255 \
   "src/levels/level_gates.c" "src/levels/level_gates.c"
+
+echo "stage_end"
+png2asset "assets/levels/pages/stage_end.png" \
+  -o "src/levels/stage_end.c" \
+  -source_tileset "assets/tilesets/common.png" \
+  -map -noflip -keep_duplicate_tiles \
+  -tile_origin "$tile_origin" -b 255
+
+gbcompress --cin --cout --varname="stage_end" --bank=255 \
+  "src/levels/stage_end.c" "src/levels/stage_end.c"
 
 echo "common background"
 png2asset "assets/tilesets/common.png" -o "src/graphics/common.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $tile_origin
