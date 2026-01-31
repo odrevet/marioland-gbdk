@@ -112,6 +112,19 @@ png2asset "assets/levels/pages/stage_end.png" \
 gbcompress --cin --cout --varname="stage_end" --bank=255 \
   "src/levels/stage_end.c" "src/levels/stage_end.c"
 
+echo "undergrounds"
+for i in {0..9}; do
+echo "underground ${i}"
+png2asset "assets/levels/pages/underground_${i}.png" \
+  -o "src/levels/underground_${i}.c" \
+  -source_tileset "assets/tilesets/common.png" \
+  -map -noflip -keep_duplicate_tiles \
+  -tile_origin "$tile_origin" -b 255
+
+gbcompress --cin --cout --varname="underground_${i}" --bank=255 \
+  "src/levels/underground_${i}.c" "src/levels/underground_${i}.c"
+done
+
 echo "common background"
 png2asset "assets/tilesets/common.png" -o "src/graphics/common.c" -map -tiles_only -noflip -keep_duplicate_tiles -b 255 -tile_origin $tile_origin
 
