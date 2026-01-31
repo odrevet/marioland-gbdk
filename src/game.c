@@ -7,12 +7,13 @@ void init(void) {
 
   camera_x = 0;
   camera_x_upscaled = 0;
-  //SCX_REG = 0;
 
-  player_x = (4 * TILE_SIZE) << 4;
-  player_y = (13 * TILE_SIZE) << 4;
-  player_draw_x = player_x >> 4;
-  player_draw_y = player_y >> 4;
+  player_x_upscaled = (5 * TILE_SIZE) << 4;
+  player_y_upscaled = (14 * TILE_SIZE) << 4;
+  player_draw_x = player_x_upscaled >> 4;
+  player_draw_y = player_y_upscaled >> 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
 
   vel_x = 0;
   vel_y = 0;
@@ -23,6 +24,7 @@ void init(void) {
 
   frame_counter = 0;
   mario_flip = FALSE;
+  touch_ground = FALSE;
 }
 
 void state_title(void) {

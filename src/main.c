@@ -226,21 +226,12 @@ for (y = 0; y != 30; y++) {
   #endif
 
   current_level = 0;
+  init();
   level_set_current();
 
   score = 0;
   lives = INITIAL_LIVES;
   coins = 0;
-
-  player_x_upscaled = (4 << 3) << 4;
-  player_y_upscaled = 80 << 4;
-  player_x_next_upscaled = player_x_upscaled;
-  player_y_next_upscaled = player_y_upscaled;
-
-  player_draw_x =
-      player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
-  player_draw_y = player_y + DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX +
-                  PLAYER_DRAW_OFFSET_Y;
 
   // HUD
   // text
