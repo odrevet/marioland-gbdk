@@ -239,7 +239,7 @@ void enemy_move_fly(uint8_t index) BANKED {
     fly->vel_y = ENEMY_FLY_JUMP_VELOCITY;
     
     // Jump toward the player's direction
-    if (player_x < fly->x) {
+    if (player_draw_x < fly->draw_x) {
       // Player is to the left, jump left
       fly->vel_x = -ENEMY_FLY_JUMP_SPEED;
       fly->flip = TRUE;
