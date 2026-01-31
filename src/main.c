@@ -26,7 +26,6 @@
 
 #include "enemy.h"
 #include "level.h"
-#include "missile.h"
 #include "platforms.h"
 #include "player.h"
 #include "powerup.h"
@@ -294,7 +293,6 @@ for (y = 0; y != 30; y++) {
 
     enemy_update();
     platform_moving_update();
-    missile_update();
     player_draw(0);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
     base_sprite = platform_moving_draw(base_sprite);
@@ -302,7 +300,6 @@ for (y = 0; y != 30; y++) {
       powerup_update();
       base_sprite = powerup_draw(base_sprite);
     }
-    base_sprite = missile_draw(base_sprite);
 
     coin_animated_update();
     base_sprite = coin_animated_draw(base_sprite);

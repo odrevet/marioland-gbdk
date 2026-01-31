@@ -25,7 +25,7 @@
 #include "levels/level_1_2_06.h"
 
 // Level 1_3
-#define level_table_1_3_ENTRY_COUNT 16
+#define level_table_1_3_ENTRY_COUNT 17
 #include "levels/level_1_3_00.h"
 #include "levels/level_1_3_01.h"
 #include "levels/level_1_3_02.h"
@@ -151,8 +151,8 @@
 #include "levels/level_4_3_08.h"
 #include "levels/level_4_3_09.h"
 
-// Gates
 #include "levels/level_gates.h"
+#include "levels/stage_end.h"
 
 typedef struct {
     const unsigned char* map;

@@ -1,4 +1,5 @@
 #include "level_tables.h"
+#include "levels/stage_end.h"
 
 // Level 1_1 map declarations
 extern const unsigned char level_1_1_00[];
@@ -111,8 +112,8 @@ extern const unsigned char level_4_3_07[];
 extern const unsigned char level_4_3_08[];
 extern const unsigned char level_4_3_09[];
 
-// Gates map declaration
 extern const unsigned char level_gates[];
+extern const unsigned char stage_end[];
 
 const banked_map_t level_1_1_map[level_table_1_1_ENTRY_COUNT] = {
     {level_1_1_00, BANK(level_1_1_00)},
@@ -165,9 +166,10 @@ const banked_map_t level_1_3_map[level_table_1_3_ENTRY_COUNT] = {
     {level_1_3_06, BANK(level_1_3_06)},
     {level_1_3_07, BANK(level_1_3_07)},
     {level_1_3_08, BANK(level_1_3_08)},
-    {level_1_3_08, BANK(level_1_3_08)},
     {level_1_3_09, BANK(level_1_3_09)},
-    {level_gates, BANK(level_gates)},
+    {level_1_3_09, BANK(level_1_3_09)},
+    {level_1_3_10, BANK(level_1_3_10)},
+    {stage_end, BANK(stage_end)},
 };
 
 // Level 2_1 table
@@ -226,7 +228,7 @@ const banked_map_t level_2_3_map[level_table_2_3_ENTRY_COUNT] = {
     {level_2_3_03, BANK(level_2_3_03)},
     {level_2_3_03, BANK(level_2_3_03)},
     {level_2_3_05, BANK(level_2_3_05)},
-    {level_gates, BANK(level_gates)},
+    {stage_end, BANK(stage_end)},
 };
 
 // Level 3_1 table
@@ -293,7 +295,7 @@ const banked_map_t level_3_3_map[level_table_3_3_ENTRY_COUNT] = {
     {level_3_3_07, BANK(level_3_3_07)},
     {level_3_3_07, BANK(level_3_3_07)},
     {level_3_3_08, BANK(level_3_3_08)},
-    {level_gates, BANK(level_gates)},
+    {stage_end, BANK(stage_end)},
 };
 
 // Level 4_1 table
@@ -372,6 +374,5 @@ const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT] = {
     {level_4_3_06, BANK(level_4_3_06)},
     {level_4_3_07, BANK(level_4_3_07)},
     {level_4_3_08, BANK(level_4_3_08)},
-    {level_4_3_09, BANK(level_4_3_09)},
-    {level_gates, BANK(level_gates)},
+    {level_4_3_09, BANK(level_4_3_09)}
 };

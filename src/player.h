@@ -8,7 +8,6 @@
 
 #include "global.h"
 #include "level.h"
-#include "missile.h"
 #include "platforms.h"
 #include "text.h"
 

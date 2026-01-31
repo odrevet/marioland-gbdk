@@ -1,0 +1,15 @@
+#ifndef GBCOMPRESS_underground_2_H
+#define GBCOMPRESS_underground_2_H
+
+#include <gbdk/metasprites.h>
+
+BANKREF_EXTERN(underground_2)
+
+
+
+#define underground_2_sz_comp 10
+#define underground_2_sz_decomp 16
+
+extern const unsigned char underground_2[];
+
+#endif

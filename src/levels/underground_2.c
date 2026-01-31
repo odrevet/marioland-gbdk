@@ -1,0 +1,10 @@
+#pragma bank 255
+
+#include <gbdk/platform.h>
+
+BANKREF(underground_2)
+
+const unsigned char underground_2[] = {
+    0xC1, 0x7E, 0x7E, 0x45, 0x81, 0xFF, 0xC1, 0x7F, 0x7F, 0x00
+};
+
