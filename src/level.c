@@ -500,6 +500,9 @@ void level_load_objects(uint16_t col) NONBANKED {
         platform_falling_new(obj->x * TILE_SIZE,
                              (obj->y + MARGIN_TOP) * TILE_SIZE);
       }
+      else if (obj->type == OBJECT_TYPE_PIPE) {
+        // TODO PIPE
+      }
     } else if (obj->x > col) {
       col_from = i;
       break;

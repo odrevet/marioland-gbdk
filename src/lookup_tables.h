@@ -7,7 +7,8 @@ typedef enum {
   OBJECT_TYPE_ENEMY,
   OBJECT_TYPE_POWERUP,
   OBJECT_TYPE_PLATFORM_MOVING,
-  OBJECT_TYPE_PLATFORM_FALLING
+  OBJECT_TYPE_PLATFORM_FALLING,
+  OBJECT_TYPE_PIPE
 } object_type;
 
 typedef struct {
@@ -21,6 +22,12 @@ typedef struct {
 } platform_moving_params;
 
 typedef struct {
+  const unsigned char* destination;
+  uint8_t bank;
+  uint8_t direction;
+} pipe_params;
+
+typedef struct {
   uint16_t x;
   uint8_t y;
   object_type type;
@@ -28,6 +35,7 @@ typedef struct {
   union {
     enemy_params enemy;
     platform_moving_params platform_moving;
+    pipe_params pipe;
   } data;
 } level_object;
 
