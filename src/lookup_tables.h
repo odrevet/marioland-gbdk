@@ -23,7 +23,7 @@ typedef struct {
 
 typedef struct {
   const unsigned char* destination;
-  uint8_t bank;
+  uint8_t destination_bank;
   uint8_t direction;
 } pipe_params;
 

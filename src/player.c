@@ -1,11 +1,14 @@
+#pragma bank 255
+
 #include "asm/types.h"
 #include "global.h"
 #include "graphics/mario.h"
 #include "level.h"
 #include <stdint.h>
-#pragma bank 255
+
 
 #include "player.h"
+#include <gbdk/gbdecompress.h>
 
 BANKREF(player)
 
@@ -73,7 +76,152 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
+#include <gbdk/emu_debug.h>
 
+/**
+ * Check if player is standing on a pipe and can enter it
+ * Returns true if player should enter the pipe
+ */
+bool player_check_pipe_entry(void) NONBANKED {
+  // Only check if player is on ground and pressing down
+  if (!touch_ground || !(joypad_current & J_DOWN)) {
+    return FALSE;
+  }
+  
+  // Only trigger on button press, not hold
+  if (joypad_previous & J_DOWN) {
+    return FALSE;
+  }
+  
+  // Get player's tile position in world coordinates
+  uint8_t player_tile_x = (player_x + camera_x) >> 3;
+  uint8_t player_tile_y = (player_y >> 3);
+  
+  // Check pipe lookup table
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(level_lookup_bank);
+  
+  bool pipe_found = FALSE;
+  const unsigned char* pipe_destination = NULL;
+  uint8_t pipe_destination_bank = 0;
+  
+  EMU_printf("---------- CHECK PIPE\n");
+
+    for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
+    level_object *obj = &level_lookup[i];
+        
+    EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
+
+    if (obj->type == OBJECT_TYPE_PIPE) {
+      // Check if player is within the pipe's horizontal bounds
+      // Pipes are typically 2 tiles wide, so check x and x+1
+      if ((player_tile_x == obj->x || player_tile_x == obj->x + 1) &&
+          player_tile_y == obj->y) {
+        pipe_found = TRUE;
+        pipe_destination = obj->data.pipe.destination;
+        pipe_destination_bank = obj->data.pipe.destination_bank;
+      }
+    }
+  }
+  
+  SWITCH_ROM(_saved_bank);
+  
+  if (pipe_found) {
+    // Trigger pipe transition with bank info
+    player_enter_pipe(pipe_destination, pipe_destination_bank);
+    return TRUE;
+  }
+  
+  return FALSE;
+}
+
+/**
+ * Handle entering a pipe and loading destination
+ */
+void player_enter_pipe(const unsigned char* destination, uint8_t destination_bank) NONBANKED {
+  #ifdef GAMEBOY
+   music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
+                  MUSIC_SFX_PRIORITY_NORMAL);
+  #endif
+  
+  // Hide sprites during transition
+  hide_sprites_range(0, MAX_HARDWARE_SPRITES);
+  
+  // TODO pipe animation
+  delay(500);
+
+  // TODO make level function more generic to load a specific page
+  // instead of being tied to a level index
+  set_column_at = 0;
+  camera_x = 0;
+  move_bkg(0, -16);
+  camera_x_upscaled = 0;
+  level_end_reached = false;
+  current_page = 0;
+  map_column_in_page = 0;
+
+  player_x_upscaled = (2 * TILE_SIZE) << 4;
+  player_y_upscaled = (2 * TILE_SIZE) << 4;
+  player_draw_x = player_x_upscaled >> 4;
+  player_draw_y = player_y_upscaled >> 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
+
+  vel_x = 0;
+  vel_y = 0;
+
+  display_jump_frame = FALSE;
+  display_slide_frame = FALSE;
+  display_walk_animation = FALSE;
+
+  frame_counter = 0;
+  mario_flip = FALSE;
+  touch_ground = FALSE;
+
+  next_col_chunk_load = COLUMN_CHUNK_SIZE;
+  
+  // Switch to destination bank and load the level
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(destination_bank);
+  
+  uint8_t col = 0;
+  uint8_t start_at = 0;
+  uint8_t nb = 20;
+  gb_decompress(destination, decompression_buffer);
+
+  while (col < nb) {
+    // Calculate which page we need and the column within that page
+    uint16_t global_column = col + start_at;
+    uint8_t page_index = global_column / 20;  // Each page is 20 tiles wide
+    uint8_t column_in_page = global_column % 20;
+    
+    // Calculate buffer position for this column
+    map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+
+    // Load the column from the decompressed page
+    for (int row = 0; row < LEVEL_HEIGHT; row++) {
+      int pos = (row * 20) + column_in_page;  // 20 = page width
+      uint8_t tile = decompression_buffer[pos];
+      map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
+      coldata[row] = tile;
+    }
+
+    // Draw current column to background
+    #if defined(GAMEBOY)
+      #define TILE_Y 0
+    #elif defined(NINTENDO_NES)
+      #define TILE_Y 2
+    #else
+      #define TILE_Y 0
+    #endif
+    set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
+
+    col++;
+  }
+
+  
+  SWITCH_ROM(_saved_bank);
+}
 
 void player_move(void) BANKED {
   int8_t target_vel_x = 0;
@@ -81,6 +229,12 @@ void player_move(void) BANKED {
   int8_t accel;
   int8_t decel;
   bool on_ground = touch_ground || player_is_on_platform();
+
+  // Check for pipe entry first (before any movement)
+  if (player_check_pipe_entry()) {
+    // Pipe entry handled, skip rest of movement for this frame
+    return;
+  }
 
   if (joypad_current & J_RIGHT) {
     display_walk_animation = TRUE;

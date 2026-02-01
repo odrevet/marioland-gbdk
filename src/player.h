@@ -10,6 +10,7 @@
 #include "level.h"
 #include "platforms.h"
 #include "text.h"
+#include "level.h"
 
 #ifdef GAMEBOY
 #include "musicmanager.h"
@@ -17,10 +18,13 @@
 #include "sounds/sound_bump.h"
 #include "sounds/sound_jump_small.h"
 #include "sounds/sound_pause.h"
+#include "sounds/sound_pipe.h"
 #endif 
 
 #include "graphics/mario.h"
 #include "graphics/text.h"
+
+#include "lookup_tables.h"
 
 BANKREF_EXTERN(player)
 
@@ -81,5 +85,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
 void player_on_touch_ground(void) NONBANKED;
 bool player_is_on_platform(void) NONBANKED;
+bool player_check_pipe_entry(void) NONBANKED;
+void player_enter_pipe(const unsigned char* destination, uint8_t destination_bank) NONBANKED;
 
 #endif

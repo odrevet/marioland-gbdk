@@ -16,6 +16,7 @@ const level_object level_1_1_lookup[] = {
      .y = 12,
      .type = OBJECT_TYPE_PIPE,
      .data.pipe = {.destination = underground_0,
+                   .destination_bank = BANK(underground_0),
                    .direction = DIRECTION_VERTICAL}},
     {.x = 66,
      .y = 10,
