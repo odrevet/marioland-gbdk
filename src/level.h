@@ -94,6 +94,9 @@ extern size_t level_lookup_size;
 extern uint8_t current_page;
 extern uint8_t map_column_in_page;  // column within the current page
 
+#define DECOMPRESSED_PAGE_SIZE 320
+extern uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
+
 typedef struct level_t {
   char major;
   char minor;
@@ -237,7 +240,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y);
 
 void level_load_objects(uint16_t col) NONBANKED;
 uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
-
+                         
 void level_set_current(void) NONBANKED;
 void load_current_level(void) NONBANKED;
 

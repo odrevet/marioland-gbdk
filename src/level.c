@@ -30,7 +30,6 @@ uint8_t current_level;
 uint8_t map_column;
 
 // Decompression buffer - sized for a single page
-#define DECOMPRESSED_PAGE_SIZE 512
 uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
 
 // Current level tile data
@@ -99,8 +98,8 @@ const level levels[NB_LEVELS] = {
   .major = '1',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_castle),
+  .music = &music_castle,
   #endif
   .map_pages = level_1_3_map,
   .page_count = level_table_1_3_ENTRY_COUNT,
@@ -156,8 +155,8 @@ const level levels[NB_LEVELS] = {
   .major = '2',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_castle),
+  .music = &music_castle,
   #endif
   .map_pages = level_2_3_map,
   .page_count = level_table_2_3_ENTRY_COUNT,
@@ -213,8 +212,8 @@ const level levels[NB_LEVELS] = {
   .major = '3',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_castle),
+  .music = &music_castle,
   #endif
   .map_pages = level_3_3_map,
   .page_count = level_table_3_3_ENTRY_COUNT,
@@ -270,8 +269,8 @@ const level levels[NB_LEVELS] = {
   .major = '4',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_castle),
+  .music = &music_castle,
   #endif
   .map_pages = level_4_3_map,
   .page_count = level_table_4_3_ENTRY_COUNT,
@@ -501,7 +500,9 @@ void level_load_objects(uint16_t col) NONBANKED {
                              (obj->y + MARGIN_TOP) * TILE_SIZE);
       }
       else if (obj->type == OBJECT_TYPE_PIPE) {
-        // TODO PIPE
+        // Pipes are rendered as part of the background tiles
+        // They are checked in player_check_pipe_entry() when player presses down
+        // No special loading needed here - just skip
       }
     } else if (obj->x > col) {
       col_from = i;
@@ -511,6 +512,7 @@ void level_load_objects(uint16_t col) NONBANKED {
   
   SWITCH_ROM(_saved_bank);
 }
+
 
 /**
  * Load columns from compressed map pages with proper bank switching and decompression
