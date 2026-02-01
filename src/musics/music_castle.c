@@ -679,8 +679,9 @@ static const hUGEWaveInstr_t wave_instruments[] = {
 };
 static const hUGENoiseInstr_t noise_instruments[] = {
     {193,0,119,0,0},
-    {193,0,0,0,0},
+    {193,0,0,0,0}
 };
+
 static const unsigned char waves[] = {
     1,35,69,103,137,171,205,239,254,220,186,152,118,84,50,16,
 };

@@ -155,8 +155,8 @@ const level levels[NB_LEVELS] = {
   .major = '2',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_castle),
-  .music = &music_castle,
+  .music_bank = BANK(music_underwater),
+  .music = &music_underwater,
   #endif
   .map_pages = level_2_3_map,
   .page_count = level_table_2_3_ENTRY_COUNT,
@@ -269,8 +269,8 @@ const level levels[NB_LEVELS] = {
   .major = '4',
   .minor = '3',
   #ifdef GAMEBOY
-  .music_bank = BANK(music_castle),
-  .music = &music_castle,
+  .music_bank = BANK(music_underwater),
+  .music = &music_underwater,
   #endif
   .map_pages = level_4_3_map,
   .page_count = level_table_4_3_ENTRY_COUNT,

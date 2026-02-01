@@ -19,6 +19,7 @@
 #include "sounds/sound_jump_small.h"
 #include "sounds/sound_pause.h"
 #include "sounds/sound_pipe.h"
+#include "musics/musics.h"
 #endif 
 
 #include "graphics/mario.h"

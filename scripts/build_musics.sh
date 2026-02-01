@@ -6,7 +6,7 @@ output_dir="src/songs"
 for filepath in "$input_dir"/*.uge; do
   filename=$(basename "$filepath" .uge)
   echo $filepath
-  ~/bin/hUGETracker-1.0.10-linux/uge2source \
+  ~/bin/hUGETracker-1.0.11-linux/uge2source \
     "$filepath" \
     -b 255 \
     "$filename" \

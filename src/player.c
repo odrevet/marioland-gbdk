@@ -144,11 +144,16 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
                   MUSIC_SFX_PRIORITY_NORMAL);
   #endif
   
+  
   // Hide sprites during transition
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
   
   // TODO pipe animation
   delay(500);
+
+  #ifdef GAMEBOY
+  music_load(BANK(music_underground), &music_underground);
+  #endif
 
   // TODO make level function more generic to load a specific page
   // instead of being tied to a level index
