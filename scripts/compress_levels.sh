@@ -82,4 +82,4 @@ for i in {0..9}; do
 done
 
 # correct level map name by adding _map
-find level_maps_compressed -type f \( -name "*.h" -o -name "*.c" \) -exec sed -i 's/\[\]/_map[]/g' {} +
+find $output_dir -type f \( -name "*.h" -o -name "*.c" \) -exec sed -i 's/\[\]/_map[]/g' {} +
