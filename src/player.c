@@ -8,7 +8,10 @@
 
 
 #include "player.h"
+
+#ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
+#endif
 
 BANKREF(player)
 
@@ -76,7 +79,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 /**
  * Check if player is standing on a pipe and can enter it
@@ -105,12 +108,12 @@ bool player_check_pipe_entry(void) NONBANKED {
   const unsigned char* pipe_destination = NULL;
   uint8_t pipe_destination_bank = 0;
   
-  EMU_printf("---------- CHECK PIPE\n");
+  //EMU_printf("---------- CHECK PIPE\n");
 
     for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
     level_object *obj = &level_lookup[i];
         
-    EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
+    //EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
 
     if (obj->type == OBJECT_TYPE_PIPE) {
       // Check if player is within the pipe's horizontal bounds
@@ -192,7 +195,14 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
   uint8_t col = 0;
   uint8_t start_at = 0;
   uint8_t nb = 20;
+  
+  const unsigned char* current_page_data;
+  #ifdef USE_COMPRESSED_LEVELS
   gb_decompress(destination, decompression_buffer);
+  current_page_data = decompression_buffer;
+  #else
+  current_page_data = destination;
+  #endif
 
   while (col < nb) {
     // Calculate which page we need and the column within that page
@@ -206,7 +216,7 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
     // Load the column from the decompressed page
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       int pos = (row * 20) + column_in_page;  // 20 = page width
-      uint8_t tile = decompression_buffer[pos];
+      uint8_t tile = current_page_data[pos];
       map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
       coldata[row] = tile;
     }

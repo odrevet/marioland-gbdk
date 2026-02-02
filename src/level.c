@@ -1,7 +1,7 @@
 #include "level.h"
 #include "coin_animated.h"
 #include <gbdk/platform.h>
-#include <gbdk/gbdecompress.h>
+
 #include "global.h"
 #include "graphics/enemies.h"
 #include "lookup_tables.h"
@@ -29,8 +29,11 @@ bool level_end_reached;
 uint8_t current_level;
 uint8_t map_column;
 
+#ifdef USE_COMPRESSED_LEVELS
+#include <gbdk/gbdecompress.h>
 // Decompression buffer - sized for a single page
 uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
+#endif
 
 // Current level tile data
 int current_map_tile_origin;
@@ -539,12 +542,12 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     
     // CRITICAL: Switch to the bank containing this page's data
     SWITCH_ROM(page_entry->bank);
-    
-    // Decompress the page data if we haven't already cached it
     const unsigned char* current_page_data;
+
+    #ifdef USE_COMPRESSED_LEVELS
+    // Decompress the page data if we haven't already cached it
     if (cached_page_index != page_index) {
       // Decompress the compressed map data into our buffer
-      // gb_decompress returns the number of bytes decompressed
       gb_decompress(page_entry->map, decompression_buffer);
       current_page_data = decompression_buffer;
       cached_page_index = page_index;
@@ -552,6 +555,9 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
       // Use cached decompressed data
       current_page_data = decompression_buffer;
     }
+    #else
+    current_page_data = page_entry->map;
+    #endif
     
     // Calculate buffer position for this column
     map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);

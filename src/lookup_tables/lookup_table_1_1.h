@@ -8,7 +8,7 @@
 #include "../platforms.h"
 #include "../powerup.h"
 
-#include "../levels/underground_0.h"
+#include <underground_0.h>
 
 BANKREF_EXTERN(level_1_1_lookup)
 

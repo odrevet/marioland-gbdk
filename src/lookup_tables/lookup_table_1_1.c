@@ -1,6 +1,8 @@
 #pragma bank 255
 #include "lookup_table_1_1.h"
 
+extern const unsigned char underground_0_map[];
+
 BANKREF(level_1_1_lookup)
 
 const level_object level_1_1_lookup[] = {
@@ -15,7 +17,7 @@ const level_object level_1_1_lookup[] = {
     {.x = 41,
      .y = 12,
      .type = OBJECT_TYPE_PIPE,
-     .data.pipe = {.destination = underground_0,
+     .data.pipe = {.destination = underground_0_map,
                    .destination_bank = BANK(underground_0),
                    .direction = DIRECTION_VERTICAL}},
     {.x = 66,

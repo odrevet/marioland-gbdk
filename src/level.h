@@ -48,8 +48,6 @@
 #include "lookup_tables/lookup_table_4_2.h"
 #include "lookup_tables/lookup_table_4_3.h"
 
-#include "levels/level_1_1_00.h"
-
 #include "level_tables.h"
 
 #define NB_LEVELS 12
@@ -94,8 +92,10 @@ extern size_t level_lookup_size;
 extern uint8_t current_page;
 extern uint8_t map_column_in_page;  // column within the current page
 
+#ifdef USE_COMPRESSED_LEVELS
 #define DECOMPRESSED_PAGE_SIZE 320
 extern uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
+#endif 
 
 typedef struct level_t {
   char major;
