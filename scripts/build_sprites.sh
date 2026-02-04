@@ -17,6 +17,6 @@ png2asset "assets/sprites/common.png" -o "src/graphics/sprite_common.c" -sw 8 -s
 tile_origin=$((tile_origin + $(get_define_value sprite_common_TILE_COUNT "src/graphics/sprite_common.h")))
 
 echo "enemies sprites large"
-png2asset "assets/sprites/enemies_large.png" -o "src/graphics/enemies_large.c" -sw 16 -sh 16 -spr8x8 -tile_origin $tile_origin -b 255
+png2asset "assets/sprites/enemies_large.png" -o "src/graphics/enemies_large.c" -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $tile_origin -b 255
 tile_origin=$((tile_origin + $(get_define_value enemies_large_TILE_COUNT "src/graphics/enemies_large.h")))
 
