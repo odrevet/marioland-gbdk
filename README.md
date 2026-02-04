@@ -28,7 +28,7 @@ Splitted, resized and edited to remove sprites such as plateforms and bonuses.
 
 ## images color mode
 
-Images has 4 indexed colors from: fff 555 aaa 000 (exported as `assets/palette.txt`)
+Images uses a palette of 4 indexed colors : fff aaa 555 000 (exported as `assets/palette.txt`)
 
 Colors must match between the tileset and the level map, otherwise png2asset will not match tiles in the tileset. 
 
