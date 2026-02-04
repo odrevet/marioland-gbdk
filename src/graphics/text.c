@@ -9,9 +9,8 @@
 
 BANKREF(text)
 
-const palette_color_t text_palettes[8] = {
-	RGB8(132,150,  0), RGB8( 74,105,  0), RGB8( 41, 85,  0), RGB8( 16, 65,  0),
-	RGB8(255,255,255), RGB8(  0,  0,  0), RGB8(  0,  0,  0), RGB8(  0,  0,  0)
+const palette_color_t text_palettes[4] = {
+	RGB8(255,255,255), RGB8( 85, 85, 85), RGB8(170,170,170), RGB8(  0,  0,  0)
 	};
 
 const uint8_t text_tiles[640] = {

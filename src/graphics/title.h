@@ -13,17 +13,17 @@
 #define title_TILE_H 8
 #define title_WIDTH 160
 #define title_HEIGHT 144
-#define title_TILE_COUNT 101
-#define title_PALETTE_COUNT 2
+#define title_TILE_COUNT 100
+#define title_PALETTE_COUNT 1
 #define title_COLORS_PER_PALETTE 4
-#define title_TOTAL_COLORS 8
+#define title_TOTAL_COLORS 4
 #define title_MAP_ATTRIBUTES 0
 extern const unsigned char title_map[360];
 #define title_map_attributes title_map
 
 BANKREF_EXTERN(title)
 
-extern const palette_color_t title_palettes[8];
-extern const uint8_t title_tiles[1616];
+extern const palette_color_t title_palettes[4];
+extern const uint8_t title_tiles[1600];
 
 #endif
