@@ -13,7 +13,7 @@ const palette_color_t enemies_large_palettes[4] = {
 	RGB8(255,255,255), RGB8(170,170,170), RGB8( 85, 85, 85), RGB8(  0,  0,  0)
 	};
 
-const uint8_t enemies_large_tiles[1648] = {
+const uint8_t enemies_large_tiles[1872] = {
 	0x00,0x00,0x00,0x00,0x30,0x30,0x48,0x48,0x44,0x44,0x75,0x45,0x77,0x66,0x39,0x39,
 	0x0b,0x0a,0xcf,0xcf,0xe9,0xe9,0x39,0x39,0x07,0x07,0x03,0x02,0x3f,0x3e,0x71,0x71,
 	0xd0,0x50,0xf3,0xf3,0x57,0x57,0x5c,0x5c,0xe0,0xe0,0xc0,0x40,0xfc,0x7c,0x8e,0x8e,
@@ -101,6 +101,20 @@ const uint8_t enemies_large_tiles[1648] = {
 	0xc0,0xe0,0xe0,0xf0,0xe0,0xf0,0xf0,0xe0,0xf0,0xb0,0xf0,0xb0,0xf0,0x30,0xc0,0xc0,
 	0x00,0x00,0x03,0x03,0x03,0x03,0x07,0x01,0x03,0x00,0x7f,0x1f,0x43,0x01,0x0f,0x0f,
 	0x00,0x00,0xe2,0xe2,0x32,0x32,0xfc,0x3c,0xe0,0x00,0xf0,0xf0,0xf8,0xf8,0xfc,0xfc,
+	0x00,0x00,0x00,0x00,0x07,0x07,0x0f,0x0a,0x1f,0x11,0x3f,0x22,0x3f,0x24,0x3f,0x28,
+	0x3f,0x28,0x3f,0x28,0x1f,0x18,0x8f,0x88,0xc7,0xc7,0xfd,0xfd,0x79,0x79,0x03,0x03,
+	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x30,0x30,0x71,0x51,0xf6,0x97,0xf8,0x9f,
+	0xfb,0x8f,0xff,0x84,0xff,0x88,0x7f,0x48,0x3f,0x30,0x0f,0x0f,0x79,0x79,0xf1,0xf1,
+	0x00,0x00,0x00,0x00,0x3f,0x3f,0x40,0x44,0xb3,0xf7,0xf7,0xb3,0xff,0x80,0xff,0x80,
+	0x00,0x00,0x00,0x00,0x80,0x80,0x40,0x40,0x20,0x60,0x20,0x60,0xa0,0x60,0xa0,0x60,
+	0xff,0xff,0x7f,0x40,0x3f,0x3f,0x40,0x41,0xff,0xff,0x81,0x83,0xff,0xff,0x40,0x40,
+	0xa0,0x60,0x40,0xc0,0x41,0xc1,0x83,0x83,0x85,0x87,0xdb,0xdd,0x66,0xfa,0xfc,0x0c,
+	0x00,0x00,0x00,0x00,0x7f,0x40,0xff,0xbb,0xff,0x80,0xff,0xbf,0xcf,0xcf,0x07,0x07,
+	0x00,0x00,0x00,0x00,0x40,0xc0,0xa0,0xe0,0xa0,0x60,0xe0,0x20,0xe0,0xa0,0xe0,0xa0,
+	0x07,0x07,0xcf,0xcf,0xff,0xbf,0x7f,0x40,0x3f,0x3f,0x10,0x10,0x1f,0x1f,0x08,0x08,
+	0xe2,0xa2,0xe3,0x23,0xc3,0x43,0xc7,0xc5,0x6b,0xed,0x77,0xfb,0xce,0xf2,0x1c,0x2c,
+	0x00,0x00,0x3f,0x3f,0x7e,0x41,0x7f,0x40,0xff,0x9e,0xff,0x80,0xff,0xfc,0xff,0x80,
+	0x00,0x00,0x00,0x00,0x81,0x81,0x43,0xc3,0xf3,0x73,0xcd,0x7f,0xdb,0x4d,0xef,0xeb,
 	0x00,0x00,0x00,0x00,0x3c,0x3c,0x7e,0x7e,0x4e,0x4e,0x6e,0x6e,0x4f,0x4b,0xbf,0xb0,
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xf0,0xf0,0x98,0xf8,0xee,0x1e,
 	0x8f,0x89,0xbf,0xbb,0xc9,0xcf,0x7c,0x7f,0x07,0x07,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -354,34 +368,22 @@ const metasprite_t enemies_large_metasprite30[] = {
 };
 
 const metasprite_t enemies_large_metasprite31[] = {
+	METASPR_ITEM(-8, -8, 87, S_PAL(0)),
+	METASPR_ITEM(0, 8, 87, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(8, -8, 88, S_PAL(0)),
+	METASPR_ITEM(0, 8, 88, S_PAL(0) | S_FLIPX),
 	METASPR_TERM
 };
 
 const metasprite_t enemies_large_metasprite32[] = {
+	METASPR_ITEM(-8, -8, 89, S_PAL(0)),
+	METASPR_ITEM(0, 8, 89, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(8, -8, 90, S_PAL(0)),
+	METASPR_ITEM(0, 8, 90, S_PAL(0) | S_FLIPX),
 	METASPR_TERM
 };
 
 const metasprite_t enemies_large_metasprite33[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite34[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite35[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite36[] = {
-	METASPR_ITEM(-8, -8, 87, S_PAL(0)),
-	METASPR_ITEM(0, 8, 88, S_PAL(0)),
-	METASPR_ITEM(8, -8, 89, S_PAL(0)),
-	METASPR_ITEM(0, 8, 90, S_PAL(0)),
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite37[] = {
 	METASPR_ITEM(-8, -8, 91, S_PAL(0)),
 	METASPR_ITEM(0, 8, 92, S_PAL(0)),
 	METASPR_ITEM(8, -8, 93, S_PAL(0)),
@@ -389,7 +391,7 @@ const metasprite_t enemies_large_metasprite37[] = {
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite38[] = {
+const metasprite_t enemies_large_metasprite34[] = {
 	METASPR_ITEM(-8, -8, 95, S_PAL(0)),
 	METASPR_ITEM(0, 8, 96, S_PAL(0)),
 	METASPR_ITEM(8, -8, 97, S_PAL(0)),
@@ -397,110 +399,44 @@ const metasprite_t enemies_large_metasprite38[] = {
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite39[] = {
-	METASPR_ITEM(-8, -8, 99, S_PAL(0)),
+const metasprite_t enemies_large_metasprite35[] = {
+	METASPR_ITEM(0, -8, 99, S_PAL(0)),
 	METASPR_ITEM(0, 8, 100, S_PAL(0)),
-	METASPR_ITEM(8, -8, 101, S_PAL(0)),
+	METASPR_TERM
+};
+
+const metasprite_t enemies_large_metasprite36[] = {
+	METASPR_ITEM(-8, -8, 101, S_PAL(0)),
 	METASPR_ITEM(0, 8, 102, S_PAL(0)),
+	METASPR_ITEM(8, -8, 103, S_PAL(0)),
+	METASPR_ITEM(0, 8, 104, S_PAL(0)),
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite40[] = {
+const metasprite_t enemies_large_metasprite37[] = {
+	METASPR_ITEM(-8, -8, 105, S_PAL(0)),
+	METASPR_ITEM(0, 8, 106, S_PAL(0)),
+	METASPR_ITEM(8, -8, 107, S_PAL(0)),
+	METASPR_ITEM(0, 8, 108, S_PAL(0)),
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite41[] = {
+const metasprite_t enemies_large_metasprite38[] = {
+	METASPR_ITEM(-8, -8, 109, S_PAL(0)),
+	METASPR_ITEM(0, 8, 110, S_PAL(0)),
+	METASPR_ITEM(8, -8, 111, S_PAL(0)),
+	METASPR_ITEM(0, 8, 112, S_PAL(0)),
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite42[] = {
+const metasprite_t enemies_large_metasprite39[] = {
+	METASPR_ITEM(-8, -8, 113, S_PAL(0)),
+	METASPR_ITEM(0, 8, 114, S_PAL(0)),
+	METASPR_ITEM(8, -8, 115, S_PAL(0)),
+	METASPR_ITEM(0, 8, 116, S_PAL(0)),
 	METASPR_TERM
 };
 
-const metasprite_t enemies_large_metasprite43[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite44[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite45[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite46[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite47[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite48[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite49[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite50[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite51[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite52[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite53[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite54[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite55[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite56[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite57[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite58[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite59[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite60[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite61[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite62[] = {
-	METASPR_TERM
-};
-
-const metasprite_t enemies_large_metasprite63[] = {
-	METASPR_TERM
-};
-
-const metasprite_t* const enemies_large_metasprites[64] = {
-	enemies_large_metasprite0, enemies_large_metasprite1, enemies_large_metasprite2, enemies_large_metasprite3, enemies_large_metasprite4, enemies_large_metasprite5, enemies_large_metasprite6, enemies_large_metasprite7, enemies_large_metasprite8, enemies_large_metasprite9, enemies_large_metasprite10, enemies_large_metasprite11, enemies_large_metasprite12, enemies_large_metasprite13, enemies_large_metasprite14, enemies_large_metasprite15, enemies_large_metasprite16, enemies_large_metasprite17, enemies_large_metasprite18, enemies_large_metasprite19, enemies_large_metasprite20, enemies_large_metasprite21, enemies_large_metasprite22, enemies_large_metasprite23, enemies_large_metasprite24, enemies_large_metasprite25, enemies_large_metasprite26, enemies_large_metasprite27, enemies_large_metasprite28, enemies_large_metasprite29, enemies_large_metasprite30, enemies_large_metasprite31, enemies_large_metasprite32, enemies_large_metasprite33, enemies_large_metasprite34, enemies_large_metasprite35, enemies_large_metasprite36, enemies_large_metasprite37, enemies_large_metasprite38, enemies_large_metasprite39, enemies_large_metasprite40, enemies_large_metasprite41, enemies_large_metasprite42, enemies_large_metasprite43, enemies_large_metasprite44, enemies_large_metasprite45, enemies_large_metasprite46, enemies_large_metasprite47, enemies_large_metasprite48, enemies_large_metasprite49, enemies_large_metasprite50, enemies_large_metasprite51, enemies_large_metasprite52, enemies_large_metasprite53, enemies_large_metasprite54, enemies_large_metasprite55, enemies_large_metasprite56, enemies_large_metasprite57, enemies_large_metasprite58, enemies_large_metasprite59, enemies_large_metasprite60, enemies_large_metasprite61, enemies_large_metasprite62, enemies_large_metasprite63
+const metasprite_t* const enemies_large_metasprites[40] = {
+	enemies_large_metasprite0, enemies_large_metasprite1, enemies_large_metasprite2, enemies_large_metasprite3, enemies_large_metasprite4, enemies_large_metasprite5, enemies_large_metasprite6, enemies_large_metasprite7, enemies_large_metasprite8, enemies_large_metasprite9, enemies_large_metasprite10, enemies_large_metasprite11, enemies_large_metasprite12, enemies_large_metasprite13, enemies_large_metasprite14, enemies_large_metasprite15, enemies_large_metasprite16, enemies_large_metasprite17, enemies_large_metasprite18, enemies_large_metasprite19, enemies_large_metasprite20, enemies_large_metasprite21, enemies_large_metasprite22, enemies_large_metasprite23, enemies_large_metasprite24, enemies_large_metasprite25, enemies_large_metasprite26, enemies_large_metasprite27, enemies_large_metasprite28, enemies_large_metasprite29, enemies_large_metasprite30, enemies_large_metasprite31, enemies_large_metasprite32, enemies_large_metasprite33, enemies_large_metasprite34, enemies_large_metasprite35, enemies_large_metasprite36, enemies_large_metasprite37, enemies_large_metasprite38, enemies_large_metasprite39
 };
