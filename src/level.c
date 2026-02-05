@@ -314,7 +314,14 @@ bool is_tile_solid(uint8_t tile) {
     case PIPE_TOP_LEFT:
     case PIPE_TOP_RIGHT:
     case PIPE_CENTER_LEFT:
-    case PIPE_CENTER_RIGHT:
+    case PIPE_HORIZONTAL_1:
+    case PIPE_HORIZONTAL_2:
+    case PIPE_HORIZONTAL_3:
+    case PIPE_HORIZONTAL_4:
+    case PIPE_HORIZONTAL_5:
+    case PIPE_HORIZONTAL_6:
+    case PIPE_HORIZONTAL_7:
+    case PIPE_HORIZONTAL_8:
     case TILE_EMPTIED:
     case METAL_GATE:
     case METAL_BLOCK_LEFT:
