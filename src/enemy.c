@@ -413,18 +413,18 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     
     if(enemies[index_enemy].type == ENEMY_FLY)
     {
-      SWITCH_ROM(BANK(enemies_large));
+      SWITCH_ROM(BANK(enemies_large_birabuto));
 
-      metasprite_t *enemy_metasprite = enemies_large_metasprites[draw_index];
+      metasprite_t *enemy_metasprite = enemies_large_birabuto_metasprites[draw_index];
       if (enemies[index_enemy].flip) {
         base_sprite += move_metasprite_flipx(
-            enemy_metasprite, enemies_large_TILE_ORIGIN, 0, base_sprite,
+            enemy_metasprite, enemies_large_birabuto_TILE_ORIGIN, 0, base_sprite,
             enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
             enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
                 enemies_HEIGHT + 8);
       } else {
         base_sprite += move_metasprite_ex(
-            enemy_metasprite, enemies_large_TILE_ORIGIN, 0, base_sprite,
+            enemy_metasprite, enemies_large_birabuto_TILE_ORIGIN, 0, base_sprite,
             enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4,
             enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
                 enemies_HEIGHT + 8);

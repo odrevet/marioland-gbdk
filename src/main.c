@@ -8,7 +8,7 @@
 #include "graphics/birabuto_torch.h"
 #include "graphics/common.h"
 #include "graphics/enemies.h"
-#include "graphics/enemies_large.h"
+#include "graphics/enemies_large_birabuto.h"
 #include "graphics/mario.h"
 #include "graphics/sprite_common.h"
 #include "graphics/text.h"
@@ -183,8 +183,8 @@ for (y = 0; y != 30; y++) {
   SWITCH_ROM(BANK(enemies));
   set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
 
-  SWITCH_ROM(BANK(enemies_large));
-  set_sprite_data(enemies_large_TILE_ORIGIN, enemies_large_TILE_COUNT, enemies_large_tiles);
+  SWITCH_ROM(BANK(enemies_large_birabuto));
+  set_sprite_data(enemies_large_birabuto_TILE_ORIGIN, enemies_large_birabuto_TILE_COUNT, enemies_large_birabuto_tiles);
 
   SWITCH_ROM(BANK(sprite_common));
   set_sprite_data(sprite_common_TILE_ORIGIN, sprite_common_TILE_COUNT,
