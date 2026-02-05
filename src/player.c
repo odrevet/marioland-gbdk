@@ -391,6 +391,12 @@ void player_move(void) BANKED {
                                player_y_next + mario_HEIGHT - 1);
       }
 
+      if(tile_next_1 == SWITCH){
+        init();
+        current_level = (++current_level) % NB_LEVELS;
+        level_set_current();
+      }
+
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
 
