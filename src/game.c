@@ -28,12 +28,9 @@ void init(void) {
 }
 
 void state_title(void) {
-  // text_print_string_win(0, 0, "TITLE SCREEN");
-  // text_print_string_win(0, 1, "PRESS START");
-
-  vsync();
-
   while (1) {
+    vsync();
+    
     joypad_previous = joypad_current;
     joypad_current = joypad();
     if (joypad_current & J_START && !(joypad_previous & J_START)) {
@@ -45,9 +42,9 @@ void state_title(void) {
 void state_pause(void) {
   text_print_string(DEVICE_SCREEN_WIDTH - 5, 1, "PAUSE");
 
-  vsync();
-
   while (1) {
+    vsync();
+
     joypad_previous = joypad_current;
     joypad_current = joypad();
 
