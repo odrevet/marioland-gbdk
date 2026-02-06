@@ -8,7 +8,8 @@ typedef enum {
   OBJECT_TYPE_POWERUP,
   OBJECT_TYPE_PLATFORM_MOVING,
   OBJECT_TYPE_PLATFORM_FALLING,
-  OBJECT_TYPE_PIPE
+  OBJECT_TYPE_PIPE_VERTICAL,
+  OBJECT_TYPE_PIPE_HORIZONTAL
 } object_type;
 
 typedef struct {
@@ -24,7 +25,9 @@ typedef struct {
 typedef struct {
   const unsigned char* destination;
   uint8_t destination_bank;
-  uint8_t direction;
+  uint16_t destination_x;
+  uint8_t destination_y;
+  uint8_t destination_page;
 } pipe_params;
 
 typedef struct {

@@ -314,6 +314,7 @@ bool is_tile_solid(uint8_t tile) {
     case PIPE_TOP_LEFT:
     case PIPE_TOP_RIGHT:
     case PIPE_CENTER_LEFT:
+    case PIPE_CENTER_RIGHT:
     case PIPE_HORIZONTAL_1:
     case PIPE_HORIZONTAL_2:
     case PIPE_HORIZONTAL_3:
@@ -509,7 +510,7 @@ void level_load_objects(uint16_t col) NONBANKED {
         platform_falling_new(obj->x * TILE_SIZE,
                              (obj->y + MARGIN_TOP) * TILE_SIZE);
       }
-      else if (obj->type == OBJECT_TYPE_PIPE) {
+      else if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
         // Pipes are rendered as part of the background tiles
         // They are checked in player_check_pipe_entry() when player presses down
         // No special loading needed here - just skip

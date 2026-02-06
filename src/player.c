@@ -79,7 +79,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
-//#include <gbdk/emu_debug.h>
+#include <gbdk/emu_debug.h>
 
 /**
  * Check if player is standing on a pipe and can enter it
@@ -97,7 +97,7 @@ bool player_check_pipe_entry(void) NONBANKED {
   }
   
   // Get player's tile position in world coordinates
-  uint8_t player_tile_x = (player_x + camera_x) >> 3;
+  uint8_t player_tile_x = (player_x) >> 3;
   uint8_t player_tile_y = (player_y >> 3);
   
   // Check pipe lookup table
@@ -108,18 +108,18 @@ bool player_check_pipe_entry(void) NONBANKED {
   const unsigned char* pipe_destination = NULL;
   uint8_t pipe_destination_bank = 0;
   
-  //EMU_printf("---------- CHECK PIPE\n");
+  EMU_printf("---------- CHECK PIPE\n");
 
     for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
     level_object *obj = &level_lookup[i];
         
-    //EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
+    EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
 
-    if (obj->type == OBJECT_TYPE_PIPE) {
+    if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
       // Check if player is within the pipe's horizontal bounds
       // Pipes are typically 2 tiles wide, so check x and x+1
       if ((player_tile_x == obj->x || player_tile_x == obj->x + 1) &&
-          player_tile_y == obj->y) {
+          player_tile_y + 2== obj->y) {
         pipe_found = TRUE;
         pipe_destination = obj->data.pipe.destination;
         pipe_destination_bank = obj->data.pipe.destination_bank;
