@@ -19,7 +19,8 @@ const level_object level_1_1_lookup[] = {
                    .destination_bank = BANK(underground_0),
                    .destination_lookup_table = underground_0_lookup,
                    .destination_lookup_size = underground_lookup_ENTRY_COUNT,
-                   .destination_lookup_bank = BANK(underground_lookup)  
+                   .destination_lookup_bank = BANK(underground_lookup),
+                   .map_pages = NULL 
                 }},
     {.x = 66,
      .y = 10,

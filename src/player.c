@@ -193,6 +193,8 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   uint8_t start_at = 0;
   uint8_t nb = 20;
   
+  //scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+
   const unsigned char* current_page_data;
   #ifdef USE_COMPRESSED_LEVELS
   gb_decompress(pipe->destination, decompression_buffer);
