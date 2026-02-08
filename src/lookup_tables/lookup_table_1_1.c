@@ -16,7 +16,11 @@ const level_object level_1_1_lookup[] = {
      .y = 12,
      .type = OBJECT_TYPE_PIPE_VERTICAL,
      .data.pipe = {.destination = underground_0_map,
-                   .destination_bank = BANK(underground_0)}},
+                   .destination_bank = BANK(underground_0),
+                   .destination_lookup_table = underground_0_lookup,
+                   .destination_lookup_size = underground_lookup_ENTRY_COUNT,
+                   .destination_lookup_bank = BANK(underground_lookup)  
+                }},
     {.x = 66,
      .y = 10,
      .type = OBJECT_TYPE_ENEMY,

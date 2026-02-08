@@ -1,5 +1,5 @@
-#ifndef LOOKUP_TABLE_1_1_H
-#define LOOKUP_TABLE_1_1_H
+#ifndef LOOKUP_TABLE_UNDERGROUND_H
+#define LOOKUP_TABLE_UNDERGROUND_H
 
 #include <stdint.h>
 

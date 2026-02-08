@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <gbdk/platform.h>
-#include <gbdk/platform.h>
 
 #include <stdint.h>
 
@@ -27,7 +26,6 @@
 
 #include "level_object.h"
 
-//#include "lookup_tables/lookup_table_underground.h"
 
 BANKREF_EXTERN(player)
 
@@ -89,6 +87,6 @@ void player_move(void) BANKED;
 void player_on_touch_ground(void) NONBANKED;
 bool player_is_on_platform(void) NONBANKED;
 bool player_check_pipe_entry(void) NONBANKED;
-void player_enter_pipe(const unsigned char* destination, uint8_t destination_bank) NONBANKED;
+void player_enter_pipe(pipe_params *pipe_params) NONBANKED;
 
 #endif

@@ -105,24 +105,21 @@ bool player_check_pipe_entry(void) NONBANKED {
   SWITCH_ROM(level_lookup_bank);
   
   bool pipe_found = FALSE;
-  const unsigned char* pipe_destination = NULL;
-  uint8_t pipe_destination_bank = 0;
+  pipe_params found_pipe; // Create a local copy
   
   EMU_printf("---------- CHECK PIPE\n");
-
-    for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
+  for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
     level_object *obj = &level_lookup[i];
-        
+    
     EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
-
     if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
       // Check if player is within the pipe's horizontal bounds
       // Pipes are typically 2 tiles wide, so check x and x+1
       if ((player_tile_x == obj->x || player_tile_x == obj->x + 1) &&
-          player_tile_y + 2== obj->y) {
+          player_tile_y + 2 == obj->y) {
         pipe_found = TRUE;
-        pipe_destination = obj->data.pipe.destination;
-        pipe_destination_bank = obj->data.pipe.destination_bank;
+        // Copy the pipe data while we're in the correct bank
+        found_pipe = obj->data.pipe;
       }
     }
   }
@@ -130,8 +127,8 @@ bool player_check_pipe_entry(void) NONBANKED {
   SWITCH_ROM(_saved_bank);
   
   if (pipe_found) {
-    // Trigger pipe transition with bank info
-    player_enter_pipe(pipe_destination, pipe_destination_bank);
+    // Trigger pipe transition with copied pipe data
+    player_enter_pipe(&found_pipe);
     return TRUE;
   }
   
@@ -141,7 +138,7 @@ bool player_check_pipe_entry(void) NONBANKED {
 /**
  * Handle entering a pipe and loading destination
  */
-void player_enter_pipe(const unsigned char* destination, uint8_t destination_bank) NONBANKED {
+void player_enter_pipe(pipe_params* pipe) NONBANKED {
   #ifdef GAMEBOY
    music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
                   MUSIC_SFX_PRIORITY_NORMAL);
@@ -190,7 +187,7 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
   
   // Switch to destination bank and load the level
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(destination_bank);
+  SWITCH_ROM(pipe->destination_bank);
   
   uint8_t col = 0;
   uint8_t start_at = 0;
@@ -198,10 +195,10 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
   
   const unsigned char* current_page_data;
   #ifdef USE_COMPRESSED_LEVELS
-  gb_decompress(destination, decompression_buffer);
+  gb_decompress(pipe->destination, decompression_buffer);
   current_page_data = decompression_buffer;
   #else
-  current_page_data = destination;
+  current_page_data = pipe->destination;
   #endif
 
   while (col < nb) {
@@ -235,10 +232,10 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
   }
 
   // Set up lookup table for level objects
-  //SWITCH_ROM(underground_lookup);
-  //level_lookup_bank = underground_lookup;  
-  //level_lookup = underground_0_lookup;  // TODO find correct lookup when more undergrounds
-  //level_lookup_size = underground_lookup_ENTRY_COUNT; // TODO find correct lookup when more undergrounds
+  SWITCH_ROM(pipe->destination_lookup_bank);
+  level_lookup_bank = pipe->destination_lookup_bank;  
+  level_lookup = pipe->destination_lookup_table;
+  level_lookup_size = pipe->destination_lookup_size;
 
   SWITCH_ROM(_saved_bank);
 }

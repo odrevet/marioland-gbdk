@@ -24,6 +24,9 @@ typedef struct {
   uint8_t width;
 } platform_moving_params;
 
+// foreward declaration
+typedef struct level_object level_object;
+
 typedef struct {
   const unsigned char* destination;
   uint8_t destination_bank;
@@ -31,9 +34,12 @@ typedef struct {
   uint8_t destination_y;
   uint8_t destination_page;
   const banked_map_t *map_pages;
+  const level_object* destination_lookup_table;
+  uint8_t destination_lookup_bank;
+  uint8_t destination_lookup_size;
 } pipe_params;
 
-typedef struct {
+struct level_object {
   uint16_t x;
   uint8_t y;
   object_type type;
@@ -43,6 +49,6 @@ typedef struct {
     platform_moving_params platform_moving;
     pipe_params pipe;
   } data;
-} level_object;
+};
 
 #endif
