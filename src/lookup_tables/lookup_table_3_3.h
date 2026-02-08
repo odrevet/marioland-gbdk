@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "../enemy.h"
-#include "../lookup_tables.h"
+#include "../level_object.h"
 #include "../platforms.h"
 #include "../powerup.h"
 

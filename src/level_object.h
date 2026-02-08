@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "level_tables.h"
+
 typedef enum {
   OBJECT_TYPE_ENEMY,
   OBJECT_TYPE_POWERUP,
@@ -28,6 +30,7 @@ typedef struct {
   uint16_t destination_x;
   uint8_t destination_y;
   uint8_t destination_page;
+  const banked_map_t *map_pages;
 } pipe_params;
 
 typedef struct {

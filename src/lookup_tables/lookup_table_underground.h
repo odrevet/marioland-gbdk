@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "../lookup_tables.h"
+#include "../level_object.h"
 #include "../powerup.h"
 
 #include <level_1_1_00.h>

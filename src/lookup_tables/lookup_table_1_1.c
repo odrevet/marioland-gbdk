@@ -1,8 +1,6 @@
 #pragma bank 255
 #include "lookup_table_1_1.h"
 
-extern const unsigned char underground_0_map[];
-
 BANKREF(level_1_1_lookup)
 
 const level_object level_1_1_lookup[] = {

@@ -234,7 +234,12 @@ void player_enter_pipe(const unsigned char* destination, uint8_t destination_ban
     col++;
   }
 
-  
+  // Set up lookup table for level objects
+  //SWITCH_ROM(underground_lookup);
+  //level_lookup_bank = underground_lookup;  
+  //level_lookup = underground_0_lookup;  // TODO find correct lookup when more undergrounds
+  //level_lookup_size = underground_lookup_ENTRY_COUNT; // TODO find correct lookup when more undergrounds
+
   SWITCH_ROM(_saved_bank);
 }
 

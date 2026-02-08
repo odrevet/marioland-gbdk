@@ -34,7 +34,7 @@
 #include "graphics/muda.h"
 
 // lookup tables
-#include "lookup_tables.h"
+#include "level_object.h"
 #include "lookup_tables/lookup_table_1_1.h"
 #include "lookup_tables/lookup_table_1_2.h"
 #include "lookup_tables/lookup_table_1_3.h"

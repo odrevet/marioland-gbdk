@@ -4,7 +4,7 @@
 
 #include "global.h"
 #include "graphics/enemies.h"
-#include "lookup_tables.h"
+#include "level_object.h"
 #include "level_tables.h"
 
 #ifdef GAMEBOY

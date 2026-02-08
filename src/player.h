@@ -25,7 +25,9 @@
 #include "graphics/mario.h"
 #include "graphics/text.h"
 
-#include "lookup_tables.h"
+#include "level_object.h"
+
+//#include "lookup_tables/lookup_table_underground.h"
 
 BANKREF_EXTERN(player)
 
