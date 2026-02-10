@@ -28,8 +28,6 @@ typedef struct {
 typedef struct level_object level_object;
 
 typedef struct {
-  const unsigned char* destination;
-  uint8_t destination_bank;
   uint16_t destination_x;
   uint8_t destination_y;
   uint8_t destination_page;

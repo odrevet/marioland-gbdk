@@ -261,3 +261,44 @@ const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT] = {
     {level_4_3_08_map, BANK(level_4_3_08)},
     {level_4_3_09_map, BANK(level_4_3_09)}
 };
+
+// Underground pages
+const banked_map_t underground_0_map_pages[1] = {
+    {underground_0_map, BANK(underground_0)},
+};
+
+const banked_map_t underground_1_map_pages[1] = {
+    {underground_1_map, BANK(underground_1)},
+};
+
+const banked_map_t underground_2_map_pages[1] = {
+    {underground_2_map, BANK(underground_2)},
+};
+
+const banked_map_t underground_3_map_pages[1] = {
+    {underground_3_map, BANK(underground_3)},
+};
+
+const banked_map_t underground_4_map_pages[1] = {
+    {underground_4_map, BANK(underground_4)},
+};
+
+const banked_map_t underground_5_map_pages[1] = {
+    {underground_5_map, BANK(underground_5)},
+};
+
+const banked_map_t underground_6_map_pages[1] = {
+    {underground_6_map, BANK(underground_6)},
+};
+
+const banked_map_t underground_7_map_pages[1] = {
+    {underground_7_map, BANK(underground_7)},
+};
+
+const banked_map_t underground_8_map_pages[1] = {
+    {underground_8_map, BANK(underground_8)},
+};
+
+const banked_map_t underground_9_map_pages[1] = {
+    {underground_9_map, BANK(underground_9)},
+};

@@ -15,12 +15,10 @@ const level_object level_1_1_lookup[] = {
     {.x = 41,
      .y = 12,
      .type = OBJECT_TYPE_PIPE_VERTICAL,
-     .data.pipe = {.destination = underground_0_map,
-                   .destination_bank = BANK(underground_0),
-                   .destination_lookup_table = underground_0_lookup,
+     .data.pipe = {.destination_lookup_table = underground_0_lookup,
                    .destination_lookup_size = underground_lookup_ENTRY_COUNT,
                    .destination_lookup_bank = BANK(underground_lookup),
-                   .map_pages = NULL 
+                   .map_pages = underground_0_map_pages 
                 }},
     {.x = 66,
      .y = 10,

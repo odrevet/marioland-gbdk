@@ -187,20 +187,20 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   
   // Switch to destination bank and load the level
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(pipe->destination_bank);
+  SWITCH_ROM(pipe->map_pages[0].bank);
   
   uint8_t col = 0;
   uint8_t start_at = 0;
   uint8_t nb = 20;
-  
-  //scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+
+  current_page = 0;
 
   const unsigned char* current_page_data;
   #ifdef USE_COMPRESSED_LEVELS
-  gb_decompress(pipe->destination, decompression_buffer);
+  gb_decompress(pipe->map_pages[current_page].map, decompression_buffer);
   current_page_data = decompression_buffer;
   #else
-  current_page_data = pipe->destination;
+  current_page_data = pipe->map_pages[current_page].map;
   #endif
 
   while (col < nb) {

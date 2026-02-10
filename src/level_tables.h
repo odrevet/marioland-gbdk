@@ -153,6 +153,17 @@
 #include <level_gates.h>
 #include <stage_end.h>
 
+#include <underground_0.h>
+#include <underground_1.h>
+#include <underground_2.h>
+#include <underground_3.h>
+#include <underground_4.h>
+#include <underground_5.h>
+#include <underground_6.h>
+#include <underground_7.h>
+#include <underground_8.h>
+#include <underground_9.h>
+
 typedef struct {
     const unsigned char* map;
     uint8_t bank;
@@ -171,5 +182,16 @@ extern const banked_map_t level_3_3_map[level_table_3_3_ENTRY_COUNT];
 extern const banked_map_t level_4_1_map[level_table_4_1_ENTRY_COUNT];
 extern const banked_map_t level_4_2_map[level_table_4_2_ENTRY_COUNT];
 extern const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT];
+
+extern const banked_map_t underground_0_map_pages[1];
+extern const banked_map_t underground_1_map_pages[1];
+extern const banked_map_t underground_2_map_pages[1];
+extern const banked_map_t underground_3_map_pages[1];
+extern const banked_map_t underground_4_map_pages[1];
+extern const banked_map_t underground_5_map_pages[1];
+extern const banked_map_t underground_6_map_pages[1];
+extern const banked_map_t underground_7_map_pages[1];
+extern const banked_map_t underground_8_map_pages[1];
+extern const banked_map_t underground_9_map_pages[1];
 
 #endif

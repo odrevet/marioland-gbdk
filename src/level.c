@@ -286,7 +286,7 @@ const level levels[NB_LEVELS] = {
   .lookup_bank = BANK(level_4_3_lookup),
   .lookup = level_4_3_lookup,
   .lookup_size = level_4_3_lookup_ENTRY_COUNT
-  },
+  }
 };
 
 /**
