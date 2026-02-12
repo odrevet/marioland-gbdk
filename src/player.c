@@ -151,10 +151,6 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   // TODO pipe animation
   delay(500);
 
-  #ifdef GAMEBOY
-  music_load(BANK(music_underground), &music_underground);
-  #endif
-
   // TODO make level function more generic to load a specific page
   // instead of being tied to a level index
   set_column_at = 0;
@@ -187,20 +183,27 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   
   // Switch to destination bank and load the level
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(pipe->map_pages[0].bank);
   
+  current_page = 0;
+  
+  #ifdef GAMEBOY
+  music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
+  #endif
+
   uint8_t col = 0;
   uint8_t start_at = 0;
   uint8_t nb = 20;
 
   current_page = 0;
 
+  SWITCH_ROM(pipe->destination_level->map_pages[current_page].bank);
+
   const unsigned char* current_page_data;
   #ifdef USE_COMPRESSED_LEVELS
-  gb_decompress(pipe->map_pages[current_page].map, decompression_buffer);
+  gb_decompress(pipe->destination_level->map_pages[current_page].map, decompression_buffer);
   current_page_data = decompression_buffer;
   #else
-  current_page_data = pipe->map_pages[current_page].map;
+  current_page_data = pipe->destination_level->map_pages[current_page].map;
   #endif
 
   while (col < nb) {
@@ -234,10 +237,10 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   }
 
   // Set up lookup table for level objects
-  SWITCH_ROM(pipe->destination_lookup_bank);
-  level_lookup_bank = pipe->destination_lookup_bank;  
-  level_lookup = pipe->destination_lookup_table;
-  level_lookup_size = pipe->destination_lookup_size;
+  //SWITCH_ROM(pipe->destination_level->lookup_bank);
+  //level_lookup_bank = pipe->destination_level->lookup_bank;
+  //level_lookup = pipe->destination_level->lookup;
+  //level_lookup_size = pipe->destination_level->lookup_size;
 
   SWITCH_ROM(_saved_bank);
 }

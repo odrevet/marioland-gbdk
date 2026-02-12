@@ -6,6 +6,7 @@
 #include "graphics/enemies.h"
 #include "level_object.h"
 #include "level_tables.h"
+#include "lookup_tables/lookup_table_underground.h"
 
 #ifdef GAMEBOY
 #include "musics/musics.h"
@@ -286,6 +287,28 @@ const level levels[NB_LEVELS] = {
   .lookup_bank = BANK(level_4_3_lookup),
   .lookup = level_4_3_lookup,
   .lookup_size = level_4_3_lookup_ENTRY_COUNT
+  }
+};
+
+const level undergrounds[1] = {
+  {
+    .major = '1',
+    .minor = '1',
+    #ifdef GAMEBOY
+    .music_bank = BANK(music_underground),
+    .music = &music_underground,
+    #endif
+    .map_pages = underground_0_map_pages,
+    .page_count = 1,
+    .map_tiles_bank = NULL,
+    .map_tile_origin = NULL,
+    .map_tiles = NULL,
+    .map_tiles_count = 0,
+    .map_width = 1 * PAGE_SIZE * 8,
+    .map_width_in_tiles = 1 * PAGE_SIZE,
+    .lookup_bank = BANK(underground_lookup),
+    .lookup = underground_0_lookup,
+    .lookup_size = underground_lookup_ENTRY_COUNT
   }
 };
 

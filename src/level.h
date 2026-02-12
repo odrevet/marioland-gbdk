@@ -47,6 +47,7 @@
 #include "lookup_tables/lookup_table_4_1.h"
 #include "lookup_tables/lookup_table_4_2.h"
 #include "lookup_tables/lookup_table_4_3.h"
+#include "lookup_tables/lookup_table_underground.h"
 
 #include "level_tables.h"
 
@@ -104,7 +105,6 @@ typedef struct level_t {
   const banked_map_t *map_pages;
   uint8_t page_count;
 
-  unsigned char *map;
   size_t map_width;
   size_t map_width_in_tiles;
 
@@ -123,6 +123,7 @@ typedef struct level_t {
 } level;
 
 extern const level levels[NB_LEVELS];
+extern const level undergrounds[1];
 
 #define TILE_INDEX_X(x, camera_x)                                              \
   ((((x) + (camera_x)) >> 3) % DEVICE_SCREEN_BUFFER_WIDTH)

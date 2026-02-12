@@ -1,7 +1,10 @@
-#ifndef LOOKUP_TABLES_H
-#define LOOKUP_TABLES_H
+#ifndef LEVEL_OBJECT_H
+#define LEVEL_OBJECT_H
 
 #include <stdint.h>
+
+// foreward declaration
+typedef struct level_t level;
 
 #include "level_tables.h"
 
@@ -24,20 +27,13 @@ typedef struct {
   uint8_t width;
 } platform_moving_params;
 
-// foreward declaration
-typedef struct level_object level_object;
-
 typedef struct {
   uint16_t destination_x;
   uint8_t destination_y;
-  uint8_t destination_page;
-  const banked_map_t *map_pages;
-  const level_object* destination_lookup_table;
-  uint8_t destination_lookup_bank;
-  uint8_t destination_lookup_size;
+  level* destination_level;
 } pipe_params;
 
-struct level_object {
+typedef struct {
   uint16_t x;
   uint8_t y;
   object_type type;
@@ -47,6 +43,6 @@ struct level_object {
     platform_moving_params platform_moving;
     pipe_params pipe;
   } data;
-};
+} level_object;
 
 #endif

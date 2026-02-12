@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
+#include "../level.h"
 #include "../level_object.h"
 #include "../powerup.h"
-
-#include <level_1_1_00.h>
 
 BANKREF_EXTERN(underground_lookup)
 
