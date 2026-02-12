@@ -93,6 +93,8 @@ extern size_t level_lookup_size;
 extern uint8_t current_page;
 extern uint8_t map_column_in_page;  // column within the current page
 
+extern uint8_t cached_page_index;
+
 #ifdef USE_COMPRESSED_LEVELS
 #define DECOMPRESSED_PAGE_SIZE 320
 extern uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];

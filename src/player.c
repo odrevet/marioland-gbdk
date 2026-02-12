@@ -181,17 +181,14 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
   
-  // Switch to destination bank and load the level
-  uint8_t _saved_bank = _current_bank;
-  
-  current_page = 0;
-  
   #ifdef GAMEBOY
   music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
+  cached_page_index = 0xFF;
   #endif
-
+  
   level_load_column(0, 20, pipe->destination_level);
 
+  uint8_t _saved_bank = _current_bank;
   // Set up lookup table for level objects
   SWITCH_ROM(pipe->destination_level->lookup_bank);
   level_lookup_bank = pipe->destination_level->lookup_bank;
