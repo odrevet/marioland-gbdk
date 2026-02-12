@@ -552,7 +552,7 @@ void level_load_objects(uint16_t col) NONBANKED {
  * Load columns from compressed map pages with proper bank switching and decompression
  * This is the critical function that switches banks when loading map data
  */
-uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
+uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   
   uint8_t col = 0;
@@ -563,13 +563,13 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED {
     uint8_t column_in_page = global_column % 20;
     
     // Check if we've exceeded the number of pages
-    if (page_index >= levels[current_level].page_count) {
+    if (page_index >= level_to_load->page_count) {
       SWITCH_ROM(_saved_bank);
       return col;  // Return how many we actually loaded
     }
     
     // Get the banked map entry for the current page
-    const banked_map_t *page_entry = &levels[current_level].map_pages[page_index];
+    const banked_map_t *page_entry = level_to_load->map_pages + page_index;
     
     // CRITICAL: Switch to the bank containing this page's data
     SWITCH_ROM(page_entry->bank);
@@ -646,7 +646,7 @@ void load_current_level(void) NONBANKED {
   cached_page_index = 0xFF;  // Invalidate page cache
 
   // Load initial map columns
-  level_load_column(0, MAP_BUFFER_WIDTH);
+  level_load_column(0, MAP_BUFFER_WIDTH, levels + current_level);
 
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
 }

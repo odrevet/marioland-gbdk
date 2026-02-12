@@ -248,7 +248,7 @@ void on_get_coin();
 void on_interogation_block_hit(uint8_t x, uint8_t y);
 
 void level_load_objects(uint16_t col) NONBANKED;
-uint8_t level_load_column(uint16_t start_at, uint8_t nb) NONBANKED;
+uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) NONBANKED;
                          
 void level_set_current(void) NONBANKED;
 void load_current_level(void) NONBANKED;

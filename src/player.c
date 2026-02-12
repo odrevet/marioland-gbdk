@@ -190,57 +190,13 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
   #endif
 
-  uint8_t col = 0;
-  uint8_t start_at = 0;
-  uint8_t nb = 20;
-
-  current_page = 0;
-
-  SWITCH_ROM(pipe->destination_level->map_pages[current_page].bank);
-
-  const unsigned char* current_page_data;
-  #ifdef USE_COMPRESSED_LEVELS
-  gb_decompress(pipe->destination_level->map_pages[current_page].map, decompression_buffer);
-  current_page_data = decompression_buffer;
-  #else
-  current_page_data = pipe->destination_level->map_pages[current_page].map;
-  #endif
-
-  while (col < nb) {
-    // Calculate which page we need and the column within that page
-    uint16_t global_column = col + start_at;
-    uint8_t page_index = global_column / 20;  // Each page is 20 tiles wide
-    uint8_t column_in_page = global_column % 20;
-    
-    // Calculate buffer position for this column
-    map_column = (col + start_at) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
-
-    // Load the column from the decompressed page
-    for (int row = 0; row < LEVEL_HEIGHT; row++) {
-      int pos = (row * 20) + column_in_page;  // 20 = page width
-      uint8_t tile = current_page_data[pos];
-      map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
-      coldata[row] = tile;
-    }
-
-    // Draw current column to background
-    #if defined(GAMEBOY)
-      #define TILE_Y 0
-    #elif defined(NINTENDO_NES)
-      #define TILE_Y 2
-    #else
-      #define TILE_Y 0
-    #endif
-    set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
-
-    col++;
-  }
+  level_load_column(0, 20, pipe->destination_level);
 
   // Set up lookup table for level objects
-  //SWITCH_ROM(pipe->destination_level->lookup_bank);
-  //level_lookup_bank = pipe->destination_level->lookup_bank;
-  //level_lookup = pipe->destination_level->lookup;
-  //level_lookup_size = pipe->destination_level->lookup_size;
+  SWITCH_ROM(pipe->destination_level->lookup_bank);
+  level_lookup_bank = pipe->destination_level->lookup_bank;
+  level_lookup = pipe->destination_level->lookup;
+  level_lookup_size = pipe->destination_level->lookup_size;
 
   SWITCH_ROM(_saved_bank);
 }
@@ -428,9 +384,9 @@ void player_move(void) BANKED {
       // load level background
       if (camera_x >> 3 >= next_col_chunk_load && !level_end_reached) {
 #if defined(GAMEBOY)
-        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1);
+        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1, levels + current_level);
 #elif defined(NINTENDO_NES)
-        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1);
+        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1, levels + current_level);
 #endif
 
         
