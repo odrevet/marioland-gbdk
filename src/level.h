@@ -54,6 +54,7 @@
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16
 #define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
+#define PAGE_SIZE 20
 
 // buffer worth of one column to hold map data when loading/scrolling
 extern uint8_t coldata[LEVEL_HEIGHT];

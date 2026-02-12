@@ -58,8 +58,6 @@ uint8_t map_column_in_page = 0;
 uint8_t cached_page_index = 0xFF;  // Invalid page initially
 #endif 
 
-#define PAGE_SIZE 20 
-
 // Level definitions
 const level levels[NB_LEVELS] = {
   {
@@ -561,8 +559,8 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) N
   while (col < nb) {
     // Calculate which page we need and the column within that page
     uint16_t global_column = col + start_at;
-    uint8_t page_index = global_column / 20;  // Each page is 20 tiles wide
-    uint8_t column_in_page = global_column % 20;
+    uint8_t page_index = global_column / PAGE_SIZE;
+    uint8_t column_in_page = global_column % PAGE_SIZE;
     
     // Check if we've exceeded the number of pages
     if (page_index >= level_to_load->page_count) {
@@ -597,7 +595,7 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) N
 
     // Load the column from the decompressed page
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
-      int pos = (row * 20) + column_in_page;  // 20 = page width
+      int pos = (row * PAGE_SIZE) + column_in_page;
       uint8_t tile = current_page_data[pos];
       map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
       coldata[row] = tile;

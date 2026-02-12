@@ -159,7 +159,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   current_page = pipe->destination_page;
   map_column_in_page = 0;
 
-  player_x_upscaled = (pipe->destination_x * TILE_SIZE) << 4;
+  player_x_upscaled = (pipe->destination_x * TILE_SIZE + current_page * PAGE_SIZE) << 4;
   player_y_upscaled = (pipe->destination_y * TILE_SIZE) << 4;
   player_draw_x = player_x_upscaled >> 4;
   player_draw_y = player_y_upscaled >> 4;
@@ -177,6 +177,8 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   mario_flip = FALSE;
   touch_ground = FALSE;
 
+  //scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
   
   #ifdef GAMEBOY
@@ -187,7 +189,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   cached_page_index = 0xFF;
   #endif 
   
-  level_load_column(0, 20, pipe->destination_level);
+  level_load_column(current_page * PAGE_SIZE, MAP_BUFFER_WIDTH, pipe->destination_level);
 
   uint8_t _saved_bank = _current_bank;
   // Set up lookup table for level objects

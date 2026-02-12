@@ -8,6 +8,6 @@ const level_object underground_0_lookup[] = {
      .y = 12,
      .type = OBJECT_TYPE_PIPE_VERTICAL,
      .data.pipe = {.destination_level = levels + 0,
-                   .destination_page = 1,  // WIP page
+                   .destination_page = 0,
                    .destination_x = 4, 
                    .destination_y = 12}}};
