@@ -16,6 +16,7 @@ const level_object level_1_1_lookup[] = {
      .y = 12,
      .type = OBJECT_TYPE_PIPE_VERTICAL,
      .data.pipe = {.destination_level = undergrounds + 0,
+                   .destination_page = 0,
                    .destination_x = 2,
                    .destination_y = 2}},
     {.x = 66,

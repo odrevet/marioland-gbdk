@@ -31,6 +31,7 @@ typedef struct {
   uint16_t destination_x;
   uint8_t destination_y;
   level* destination_level;
+  uint8_t destination_page;
 } pipe_params;
 
 typedef struct {

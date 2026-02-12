@@ -151,18 +151,16 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   // TODO pipe animation
   delay(500);
 
-  // TODO make level function more generic to load a specific page
-  // instead of being tied to a level index
   set_column_at = 0;
   camera_x = 0;
   move_bkg(0, -16);
   camera_x_upscaled = 0;
   level_end_reached = false;
-  current_page = 0;
+  current_page = pipe->destination_page;
   map_column_in_page = 0;
 
-  player_x_upscaled = (2 * TILE_SIZE) << 4;
-  player_y_upscaled = (2 * TILE_SIZE) << 4;
+  player_x_upscaled = (pipe->destination_x * TILE_SIZE) << 4;
+  player_y_upscaled = (pipe->destination_y * TILE_SIZE) << 4;
   player_draw_x = player_x_upscaled >> 4;
   player_draw_y = player_y_upscaled >> 4;
   player_x_next_upscaled = player_x_upscaled;
@@ -183,8 +181,11 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   
   #ifdef GAMEBOY
   music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
-  cached_page_index = 0xFF;
   #endif
+
+  #ifdef USE_COMPRESSED_LEVELS
+  cached_page_index = 0xFF;
+  #endif 
   
   level_load_column(0, 20, pipe->destination_level);
 

@@ -53,8 +53,10 @@ size_t level_lookup_size;
 uint8_t current_page = 0;
 uint8_t map_column_in_page = 0;
 
+#ifdef USE_COMPRESSED_LEVELS
 // Cache for currently decompressed page to avoid repeated decompression
 uint8_t cached_page_index = 0xFF;  // Invalid page initially
+#endif 
 
 #define PAGE_SIZE 20 
 
@@ -643,8 +645,9 @@ void load_current_level(void) NONBANKED {
   level_end_reached = false;
   current_page = 0;
   map_column_in_page = 0;
+#ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;  // Invalidate page cache
-
+#endif 
   // Load initial map columns
   level_load_column(0, MAP_BUFFER_WIDTH, levels + current_level);
 
