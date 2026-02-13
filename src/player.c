@@ -151,13 +151,11 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   // TODO pipe animation
   delay(500);
 
-  set_column_at = 0;
   camera_x = 0;
   move_bkg(0, -16);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = pipe->destination_page;
-  map_column_in_page = 0;
 
   player_x_upscaled = (pipe->destination_x * TILE_SIZE + current_page * PAGE_SIZE) << 4;
   player_y_upscaled = (pipe->destination_y * TILE_SIZE) << 4;

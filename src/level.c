@@ -25,7 +25,6 @@ const unsigned char *current_map;
 // Map buffer for rendering
 uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
-uint8_t set_column_at;
 bool level_end_reached;
 uint8_t current_level;
 uint8_t map_column;
@@ -51,7 +50,6 @@ size_t level_lookup_size;
 
 // Map page tracking
 uint8_t current_page = 0;
-uint8_t map_column_in_page = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
 // Cache for currently decompressed page to avoid repeated decompression
@@ -636,13 +634,12 @@ void level_set_current(void) NONBANKED {
  * Load the current level's initial state
  */
 void load_current_level(void) NONBANKED {
-  set_column_at = 0;
   camera_x = 0;
   move_bkg(0, -16);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;
-  map_column_in_page = 0;
+
 #ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;  // Invalidate page cache
 #endif 
