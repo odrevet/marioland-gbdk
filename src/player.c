@@ -177,8 +177,10 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   mario_flip = FALSE;
   touch_ground = FALSE;
 
-  //scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
-
+  if(pipe->destination_level->page_count > 1){
+    scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+  }
+  
   next_col_chunk_load = COLUMN_CHUNK_SIZE;
   
   #ifdef GAMEBOY
