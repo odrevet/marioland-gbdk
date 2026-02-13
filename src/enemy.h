@@ -61,7 +61,7 @@ extern enemy_t enemies[ENEMY_MAX];
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED;
 void enemy_remove(uint8_t index_enemy) NONBANKED;
-void enemy_stomp(uint8_t index_enemy) NONBANKED;
+void enemy_stomp(uint8_t index_enemy) BANKED;
 void enemy_update(void) NONBANKED;
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED;
 

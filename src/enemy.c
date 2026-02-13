@@ -262,7 +262,7 @@ void enemy_move_fly(uint8_t index) BANKED {
   enemy_apply_vertical_movement(fly, 8); // Lighter gravity (1/8th)
 }
 
-void enemy_stomp(uint8_t index_enemy) NONBANKED {
+void enemy_stomp(uint8_t index_enemy) BANKED {
   enemy_t *enemy = &enemies[index_enemy];
 
   if (!enemy->active) {
