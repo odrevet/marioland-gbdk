@@ -509,7 +509,7 @@ void player_on_touch_ground(void) NONBANKED {
   display_jump_frame = FALSE;
 }
 
-bool player_is_on_platform(void) NONBANKED {
+bool player_is_on_platform(void) BANKED {
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
     if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
