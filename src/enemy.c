@@ -324,7 +324,7 @@ void enemy_reset_all(void) BANKED {
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
 }
 
-void enemy_update(void) NONBANKED {
+void enemy_update(void) BANKED {
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     // Skip inactive enemies
     if (!enemies[index_enemy].active) {
@@ -346,14 +346,9 @@ void enemy_update(void) NONBANKED {
       continue;
     }
 
-    // Update based on enemy type
-    uint8_t _saved_bank = _current_bank;
-
     switch (enemies[index_enemy].type) {
     case ENEMY_GOOMBO:
-      SWITCH_ROM(BANK(enemy));
       enemy_move_goomba(index_enemy);
-      SWITCH_ROM(_saved_bank);
       // Set frame animation (only when not stomped)
       if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
@@ -361,9 +356,7 @@ void enemy_update(void) NONBANKED {
       }
       break;
     case ENEMY_KOOPA:
-      SWITCH_ROM(BANK(enemy));
       enemy_move_koopa(index_enemy);
-      SWITCH_ROM(_saved_bank);
       if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].frame_counter = 0;
         enemies[index_enemy].current_frame =
@@ -371,9 +364,7 @@ void enemy_update(void) NONBANKED {
       }
       break;
     case ENEMY_FLY:
-      SWITCH_ROM(BANK(enemy));
       enemy_move_fly(index_enemy);
-      SWITCH_ROM(_saved_bank);
       // TODO: Add wing flapping animation
       break;
     }

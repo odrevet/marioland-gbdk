@@ -288,7 +288,10 @@ for (y = 0; y != 30; y++) {
       player_frame = 0;
     }
 
+    SWITCH_ROM(BANK(enemy));
     enemy_update();
+    SWITCH_ROM(_saved_bank);
+
     platform_moving_update();
     player_draw(0);
     base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
