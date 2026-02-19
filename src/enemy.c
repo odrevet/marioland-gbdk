@@ -302,7 +302,7 @@ void enemy_remove(uint8_t index_enemy) NONBANKED {
   }
 }
 
-void enemy_reset_all(void) NONBANKED {
+void enemy_reset_all(void) BANKED {
   //EMU_printf("RESET ALL ENEMIES\n");
 
   // Deactivate all enemy slots

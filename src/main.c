@@ -113,9 +113,9 @@ bool enemy_collide() {
       if (player_y + mario_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
         // Stomp the enemy
         uint8_t _saved_bank = _current_bank;
-        SWITCH_ROM(_saved_bank);
-        enemy_stomp(enemy_index);
         SWITCH_ROM(BANK(enemy));
+        enemy_stomp(enemy_index);
+        SWITCH_ROM(_saved_bank);
 
         current_jump = 0;
         is_jumping = TRUE;
@@ -129,7 +129,10 @@ bool enemy_collide() {
         continue;
       } else {
         die();
+        uint8_t _saved_bank = _current_bank;
+        SWITCH_ROM(BANK(enemy));
         enemy_reset_all();
+        SWITCH_ROM(_saved_bank);
       }
       return true;
     }
