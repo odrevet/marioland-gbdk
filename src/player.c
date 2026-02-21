@@ -179,7 +179,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
     scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
   }
   
-  next_col_chunk_load = COLUMN_CHUNK_SIZE;
+  load_col_at = COLUMN_SIZE;
   
   #ifdef GAMEBOY
   music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
@@ -364,7 +364,7 @@ void player_move(void) BANKED {
       player_x = player_x_upscaled >> 4;
 
       // check if end of level reached
-      if (next_col_chunk_load ==
+      if (load_col_at ==
           current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
@@ -382,15 +382,15 @@ void player_move(void) BANKED {
       }
 
       // load level background
-      if (camera_x >> 3 >= next_col_chunk_load && !level_end_reached) {
+      if (camera_x >> 3 >= load_col_at && !level_end_reached) {
 #if defined(GAMEBOY)
-        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH + 6, 1, levels + current_level);
+        level_load_column(load_col_at + DEVICE_SCREEN_WIDTH + 6, 1, levels + current_level);
 #elif defined(NINTENDO_NES)
-        level_load_column(next_col_chunk_load + DEVICE_SCREEN_WIDTH, 1, levels + current_level);
+        level_load_column(load_col_at + DEVICE_SCREEN_WIDTH, 1, levels + current_level);
 #endif
 
         
-        next_col_chunk_load++;
+        load_col_at++;
       }
     }
   } else if (vel_x < 0 && player_draw_x > 12) {

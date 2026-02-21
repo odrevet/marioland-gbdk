@@ -53,7 +53,7 @@
 
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16
-#define COLUMN_CHUNK_SIZE 1 // how many map columns to load at a time
+#define COLUMN_SIZE 1 // how many map columns to load at a time
 #define PAGE_SIZE 20
 
 // buffer worth of one column to hold map data when loading/scrolling
@@ -73,7 +73,7 @@ extern uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH];
 
 extern uint16_t camera_x;
 extern uint16_t camera_x_upscaled;
-extern uint16_t next_col_chunk_load;
+extern uint16_t load_col_at;
 extern bool level_end_reached;
 extern uint8_t current_level;
 

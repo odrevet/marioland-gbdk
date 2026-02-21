@@ -19,7 +19,7 @@
 // Camera and scrolling
 uint16_t camera_x;
 uint16_t camera_x_upscaled;
-uint16_t next_col_chunk_load;
+uint16_t load_col_at;
 const unsigned char *current_map;
 
 // Map buffer for rendering
@@ -646,7 +646,7 @@ void load_current_level(void) NONBANKED {
   // Load initial map columns
   level_load_column(0, MAP_BUFFER_WIDTH, levels + current_level);
 
-  next_col_chunk_load = COLUMN_CHUNK_SIZE;
+  load_col_at = COLUMN_SIZE;
 }
 
 /**
