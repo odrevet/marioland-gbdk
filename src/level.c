@@ -562,11 +562,10 @@ uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) N
 
     EMU_printf("global_column %d col %d column_in_page %d current_page %d\n", global_column, col, column_in_page, current_page);
 
-    uint8_t page_for_column = global_column / PAGE_SIZE;
-
-    if (page_for_column > current_page) {
-      current_page = page_for_column;
-      EMU_printf("advanced current_page to %d\n", current_page);
+    // When we cross a page boundary mid-load, advance current_page
+    if (column_in_page == 0 && global_column > 0) {
+      current_page++;
+      EMU_printf("increment current_page, now is %d\n", current_page);
     }
 
     
