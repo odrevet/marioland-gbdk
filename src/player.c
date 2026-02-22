@@ -139,25 +139,23 @@ bool player_check_pipe_entry(void) NONBANKED {
  * Handle entering a pipe and loading destination
  */
 void player_enter_pipe(pipe_params* pipe) NONBANKED {
-  #ifdef GAMEBOY
-   music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
-                  MUSIC_SFX_PRIORITY_NORMAL);
-  #endif
-  
-  
-  // Hide sprites during transition
+#ifdef GAMEBOY
+  music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
+                 MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
-  
-  // TODO pipe animation
   delay(500);
 
   camera_x = 0;
   move_bkg(0, -16);
   camera_x_upscaled = 0;
   level_end_reached = false;
+
   current_page = pipe->destination_page;
 
-  player_x_upscaled = (pipe->destination_x * TILE_SIZE + current_page * PAGE_SIZE) << 4;
+  // Player position is relative to the start of the destination page
+  player_x_upscaled = (pipe->destination_x * TILE_SIZE) << 4;
   player_y_upscaled = (pipe->destination_y * TILE_SIZE) << 4;
   player_draw_x = player_x_upscaled >> 4;
   player_draw_y = player_y_upscaled >> 4;
@@ -166,38 +164,36 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 
   vel_x = 0;
   vel_y = 0;
-
   display_jump_frame = FALSE;
   display_slide_frame = FALSE;
   display_walk_animation = FALSE;
-
   frame_counter = 0;
   mario_flip = FALSE;
   touch_ground = FALSE;
 
-  if(pipe->destination_level->page_count > 1){
+  if (pipe->destination_level->page_count > 1) {
     scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
   }
-  
-  load_col_at = COLUMN_SIZE;
-  
-  #ifdef GAMEBOY
-  music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
-  #endif
 
-  #ifdef USE_COMPRESSED_LEVELS
+  load_col_at = COLUMN_SIZE;
+
+#ifdef GAMEBOY
+  music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
+#endif
+
+#ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
-  #endif 
-  
+#endif
+
+  // Load columns starting from the beginning of the destination page
+  // current_page is already set, level_load_column will use it
   level_load_column(current_page * PAGE_SIZE, MAP_BUFFER_WIDTH, pipe->destination_level);
 
   uint8_t _saved_bank = _current_bank;
-  // Set up lookup table for level objects
   SWITCH_ROM(pipe->destination_level->lookup_bank);
   level_lookup_bank = pipe->destination_level->lookup_bank;
   level_lookup = pipe->destination_level->lookup;
   level_lookup_size = pipe->destination_level->lookup_size;
-
   SWITCH_ROM(_saved_bank);
 }
 
