@@ -152,7 +152,8 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   camera_x_upscaled = 0;
   level_end_reached = false;
 
-  current_page = pipe->destination_page;
+  current_page = 0; // WIP pipe->destination_page;
+  current_column_in_page = 0;
 
   // Player position is relative to the start of the destination page
   player_x_upscaled = (pipe->destination_x * TILE_SIZE) << 4;
