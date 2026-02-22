@@ -186,8 +186,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 #endif
 
   // Load columns starting from the beginning of the destination page
-  // current_page is already set, level_load_column will use it
-  level_load_column(current_page * PAGE_SIZE, MAP_BUFFER_WIDTH, pipe->destination_level);
+  level_load_column(MAP_BUFFER_WIDTH, pipe->destination_level);
 
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(pipe->destination_level->lookup_bank);
@@ -380,9 +379,9 @@ void player_move(void) BANKED {
       // load level background
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {
 #if defined(GAMEBOY)
-        level_load_column(load_col_at + DEVICE_SCREEN_WIDTH + 6, 1, levels + current_level);
+        level_load_column(1, levels + current_level);
 #elif defined(NINTENDO_NES)
-        level_load_column(load_col_at + DEVICE_SCREEN_WIDTH, 1, levels + current_level);
+        level_load_column(1, levels + current_level);
 #endif
 
         

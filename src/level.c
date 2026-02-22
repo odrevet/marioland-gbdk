@@ -28,6 +28,7 @@ uint8_t coldata[MAP_BUFFER_HEIGHT];
 bool level_end_reached;
 uint8_t current_level;
 uint8_t map_column;
+uint8_t current_column_in_page = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
@@ -547,71 +548,72 @@ void level_load_objects(uint16_t col) NONBANKED {
 
 #include <gbdk/emu_debug.h>
 
-/**
- * Load columns from compressed map pages with proper bank switching and decompression
- * This is the critical function that switches banks when loading map data
- */
-uint8_t level_load_column(uint16_t start_at, uint8_t nb, level *level_to_load) NONBANKED {
+uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
-  
   uint8_t col = 0;
+
+  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d\n", nb, current_page, current_column_in_page);
+
   while (col < nb) {
-    uint16_t global_column = col + start_at;
-    // Use current_page global - caller is responsible for setting it correctly
-    uint8_t column_in_page = global_column % PAGE_SIZE;
-
-    EMU_printf("global_column %d col %d column_in_page %d current_page %d\n", global_column, col, column_in_page, current_page);
-
-    // When we cross a page boundary mid-load, advance current_page
-    if (column_in_page == 0 && global_column > 0) {
+    // Page boundary: advance page when column_in_page wraps
+    if (current_column_in_page == PAGE_SIZE) {
+      current_column_in_page = 0;
       current_page++;
-      EMU_printf("increment current_page, now is %d\n", current_page);
+      #ifdef USE_COMPRESSED_LEVELS
+      cached_page_index = 0xFF;
+      #endif
+      EMU_printf("--- page boundary! current_page now %d\n", current_page);
     }
 
-    
-    // Check if we've exceeded the number of pages
     if (current_page >= level_to_load->page_count) {
+      EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
       SWITCH_ROM(_saved_bank);
       return col;
     }
-    
-    const banked_map_t *page_entry = level_to_load->map_pages + current_page;
-    
-    SWITCH_ROM(page_entry->bank);
-    const unsigned char* current_page_data;
 
-#ifdef USE_COMPRESSED_LEVELS
+    const banked_map_t *page_entry = level_to_load->map_pages + current_page;
+    SWITCH_ROM(page_entry->bank);
+    const unsigned char *current_page_data;
+
+    #ifdef USE_COMPRESSED_LEVELS
     if (cached_page_index != current_page) {
+      EMU_printf("    decompress page %d\n", current_page);
       gb_decompress(page_entry->map, decompression_buffer);
       current_page_data = decompression_buffer;
       cached_page_index = current_page;
     } else {
       current_page_data = decompression_buffer;
     }
-#else
+    #else
     current_page_data = page_entry->map;
-#endif
-    
-    map_column = global_column & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+    #endif
+
+    // map_column uses load_col_at to place into correct screen buffer slot
+    map_column = (current_page * PAGE_SIZE + current_column_in_page) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
+
+    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d\n", 
+               col, current_column_in_page, current_page, map_column);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
-      int pos = (row * PAGE_SIZE) + column_in_page;
-      uint8_t tile = current_page_data[pos];
+      uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
       map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
       coldata[row] = tile;
     }
 
-#if defined(GAMEBOY)
-    #define TILE_Y 0
-#elif defined(NINTENDO_NES)
-    #define TILE_Y 2
-#else
-    #define TILE_Y 0
-#endif
+    #if defined(GAMEBOY)
+      #define TILE_Y 0
+    #elif defined(NINTENDO_NES)
+      #define TILE_Y 2
+    #else
+      #define TILE_Y 0
+    #endif
     set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
 
+    current_column_in_page++;
     col++;
   }
+
+  EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
 
   SWITCH_ROM(_saved_bank);
   return col;
@@ -644,7 +646,7 @@ void load_current_level(void) NONBANKED {
   cached_page_index = 0xFF;
 #endif
 
-  level_load_column(0, MAP_BUFFER_WIDTH, levels + current_level);
+  level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;
 }
 
