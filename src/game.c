@@ -25,6 +25,9 @@ void init(void) {
   frame_counter = 0;
   mario_flip = FALSE;
   touch_ground = FALSE;
+
+  current_column_in_page = 0;
+  map_column = 0;
 }
 
 void state_title(void) {
@@ -49,6 +52,7 @@ void state_pause(void) {
     joypad_current = joypad();
 
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
+      map_column = 0;
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();

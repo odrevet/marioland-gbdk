@@ -232,6 +232,7 @@ for (y = 0; y != 30; y++) {
   #endif
 
   current_level = 0;
+  map_column = 0;
   init();
   level_set_current();
 
@@ -354,6 +355,7 @@ for (y = 0; y != 30; y++) {
       HIDE_SPRITES;
       HIDE_BKG;
 
+      map_column = 0;
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();

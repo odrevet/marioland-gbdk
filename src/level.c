@@ -27,7 +27,7 @@ uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 bool level_end_reached;
 uint8_t current_level;
-uint8_t map_column;
+uint8_t map_column = 0;
 uint8_t current_column_in_page = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
@@ -552,7 +552,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   uint8_t col = 0;
 
-  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d\n", nb, current_page, current_column_in_page);
+  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
 
   while (col < nb) {
     // Page boundary: advance page when column_in_page wraps
@@ -588,11 +588,8 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     current_page_data = page_entry->map;
     #endif
 
-    // map_column uses load_col_at to place into correct screen buffer slot
-    map_column = (current_page * PAGE_SIZE + current_column_in_page) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
-
-    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d\n", 
-               col, current_column_in_page, current_page, map_column);
+    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
+               col, current_column_in_page, current_page, map_column, camera_x);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
@@ -611,6 +608,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
 
     current_column_in_page++;
     col++;
+    map_column = (map_column + 1) % 32;
   }
 
   EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
