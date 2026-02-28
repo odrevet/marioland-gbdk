@@ -6,6 +6,14 @@ The resulting ROM is significantly larger than the original, as level data is ge
 
 The main goal remains to produce a playable game.
 
+# Build 
+
+For game boy: 
+
+```
+make -f Makefile.targets gb
+```
+
 # Roadmap
 
 * Platforms
