@@ -144,6 +144,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
                  MUSIC_SFX_PRIORITY_NORMAL);
 #endif
 
+  enemy_reset_all();
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
   delay(500);
 
@@ -376,7 +377,9 @@ void player_move(void) BANKED {
         camera_x = camera_x_upscaled >> 4;
         move_bkg(camera_x, -16);
         scroll_limit = player_x;
-        level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
+        //EMU_printf("CAM=%d page=%d PAGING=%d\n", (camera_x >> 3) + DEVICE_SCREEN_WIDTH, current_page * PAGE_SIZE, current_page * PAGE_SIZE + current_column_in_page - 7);
+        //level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
+        level_load_objects(current_page * PAGE_SIZE + current_column_in_page - 7);
       }
 
       // load level background
