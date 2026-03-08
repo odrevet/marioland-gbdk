@@ -95,6 +95,9 @@ extern uint8_t current_page;
 
 extern uint8_t cached_page_index;
 
+extern uint16_t col_from;
+extern uint16_t level_page_x_offset;
+
 #ifdef USE_COMPRESSED_LEVELS
 #define DECOMPRESSED_PAGE_SIZE 320
 extern uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];

@@ -144,6 +144,8 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
                  MUSIC_SFX_PRIORITY_NORMAL);
 #endif
 
+  level_page_x_offset = pipe->destination_page * PAGE_SIZE;
+
   enemy_reset_all();
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
   delay(500);
@@ -190,6 +192,11 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 
   // Load columns starting from the beginning of the destination page
   level_load_column(MAP_BUFFER_WIDTH, pipe->destination_level);
+
+  col_from = 0;
+  for (uint8_t c = 0; c <= DEVICE_SCREEN_WIDTH + 1; c++) {
+    level_load_objects(c);
+  }
 
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(pipe->destination_level->lookup_bank);

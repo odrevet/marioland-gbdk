@@ -30,6 +30,8 @@ uint8_t current_level;
 uint8_t map_column = 0;
 uint8_t current_column_in_page = 0;
 
+uint16_t level_page_x_offset = 0;
+
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
 // Decompression buffer - sized for a single page
@@ -507,6 +509,8 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 
+#include <gbdk/emu_debug.h>
+
 /**
  * Load level objects (enemies, platforms, etc.) at a specific column
  */
@@ -518,9 +522,11 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        enemy_new(obj->x * TILE_SIZE,
+        uint16_t relative_x = obj->x - level_page_x_offset;
+        enemy_new(relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
                   obj->data.enemy.type);
+        EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         // Powerups handled by interrogation blocks
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
@@ -552,7 +558,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   uint8_t col = 0;
 
-  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
+  //EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
 
   while (col < nb) {
     // Page boundary: advance page when column_in_page wraps
@@ -562,11 +568,11 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
       #ifdef USE_COMPRESSED_LEVELS
       cached_page_index = 0xFF;
       #endif
-      EMU_printf("--- page boundary! current_page now %d\n", current_page);
+      //EMU_printf("--- page boundary! current_page now %d\n", current_page);
     }
 
     if (current_page >= level_to_load->page_count) {
-      EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
+      //EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
       SWITCH_ROM(_saved_bank);
       return col;
     }
@@ -588,8 +594,8 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     current_page_data = page_entry->map;
     #endif
 
-    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
-               col, current_column_in_page, current_page, map_column, camera_x);
+    //EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
+    //           col, current_column_in_page, current_page, map_column, camera_x);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
@@ -611,7 +617,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     map_column = (map_column + 1) % 32;
   }
 
-  EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
+  //EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
 
   SWITCH_ROM(_saved_bank);
   return col;
@@ -639,6 +645,7 @@ void load_current_level(void) NONBANKED {
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;
+  level_page_x_offset = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
