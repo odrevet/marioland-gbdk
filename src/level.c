@@ -389,7 +389,7 @@ void level_load_objects(uint8_t col) NONBANKED {
     uint8_t obj_bank = page_lk->bank;
     const level_object *objects = page_lk->objects;
 
-    EMU_printf("load_objects col=%d page=%d count=%d\n", col, current_page, count);
+    EMU_printf("!!!!load_objects col=%d page=%d count=%d\n", col, current_page, count);
 
     if (count == 0) {
         SWITCH_ROM(_saved_bank);
@@ -421,6 +421,14 @@ void level_load_objects(uint8_t col) NONBANKED {
             } else if (obj_type == OBJECT_TYPE_PLATFORM_FALLING) {
                 SWITCH_ROM(_saved_bank);
                 platform_falling_new(world_x, (obj_y + MARGIN_TOP) * TILE_SIZE);
+                SWITCH_ROM(obj_bank);
+            }
+            else if (obj_type == OBJECT_TYPE_PIPE_VERTICAL) {
+                EMU_printf("PIPE_NEW: current_page=%d col=%d world_x=%d obj_y=%d\n",
+                current_page, col, world_x, obj_y);
+                pipe_params p = obj->data.pipe;
+                SWITCH_ROM(_saved_bank);
+                pipe_new(world_x, obj_y, p);
                 SWITCH_ROM(obj_bank);
             }
         }

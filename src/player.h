@@ -10,6 +10,7 @@
 #include "platforms.h"
 #include "text.h"
 #include "level.h"
+#include "enemy.h"
 
 #ifdef GAMEBOY
 #include "musicmanager.h"

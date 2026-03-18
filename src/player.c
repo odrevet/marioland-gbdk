@@ -1,5 +1,4 @@
 #pragma bank 255
-
 #include "asm/types.h"
 #include "global.h"
 #include "graphics/mario.h"
@@ -7,6 +6,7 @@
 #include <stdint.h>
 
 #include "player.h"
+#include "pipe.h"
 
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
@@ -79,38 +79,27 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 bool player_check_pipe_entry(void) NONBANKED {
     if (!touch_ground || !(joypad_current & J_DOWN)) return FALSE;
     if (joypad_previous & J_DOWN) return FALSE;
-    if (!current_level_ptr) return FALSE;
 
-    // Player tile position is relative to current page
-    uint8_t player_tile_x = (player_x + camera_x) >> 3;
-    uint8_t page_base_x   = current_page * PAGE_SIZE;
-    uint8_t page_local_x  = player_tile_x - page_base_x;
+    EMU_printf("--- PIPE CHECK: pipe_active=%d\n", pipe_active);
+
+    if (!pipe_active) return FALSE;
+
+    uint8_t player_tile_x = player_x >> 3;
     uint8_t player_tile_y = player_y >> 3;
+    uint8_t pipe_tile_x   = active_pipe_world_x >> 3;
 
-    const page_lookup_t *page_lk = &current_level_ptr->page_lookups[current_page];
-    if (page_lk->count == 0) return FALSE;
+    EMU_printf("player_x=%d player_y=%d\n", player_x, player_y);
+    EMU_printf("active_pipe_world_x=%d active_pipe_y=%d\n", active_pipe_world_x, active_pipe_y);
+    EMU_printf("player_tile_x=%d player_tile_y=%d pipe_tile_x=%d pipe_tile_x+1=%d pipe_y=%d\n",
+               player_tile_x, player_tile_y, pipe_tile_x, pipe_tile_x + 1, active_pipe_y);
+    EMU_printf("cond1=%d cond2=%d\n",
+               (player_tile_x == pipe_tile_x || player_tile_x == pipe_tile_x + 1),
+               (player_tile_y + 2 == active_pipe_y));
 
-    uint8_t _saved_bank = _current_bank;
-    SWITCH_ROM(page_lk->bank);
-
-    bool pipe_found = FALSE;
-    pipe_params found_pipe;
-
-    for (uint8_t i = 0; i < page_lk->count && !pipe_found; i++) {
-        const level_object *obj = &page_lk->objects[i];
-        if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
-            if ((page_local_x == obj->x || page_local_x == obj->x + 1) &&
-                player_tile_y + 2 == obj->y) {
-                pipe_found = TRUE;
-                found_pipe = obj->data.pipe;
-            }
-        }
-    }
-
-    SWITCH_ROM(_saved_bank);
-
-    if (pipe_found) {
-        player_enter_pipe(&found_pipe);
+    if ((player_tile_x == pipe_tile_x || player_tile_x == pipe_tile_x + 1) &&
+        player_tile_y + 2 == active_pipe_y) {
+        EMU_printf("ENTERING PIPE\n");
+        player_enter_pipe(&active_pipe);
         return TRUE;
     }
 
@@ -118,13 +107,27 @@ bool player_check_pipe_entry(void) NONBANKED {
 }
 
 void player_enter_pipe(pipe_params* pipe) NONBANKED {
+    EMU_printf("--- ENTER PIPE ---\n");
+    EMU_printf("dest_level=%p dest_page=%d dest_x=%d dest_y=%d dest_bank=%d\n",
+               pipe->destination_level,
+               pipe->destination_page,
+               pipe->destination_x,
+               pipe->destination_y, 
+               pipe->destination_level_bank);
+
 #ifdef GAMEBOY
     music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe), MUSIC_SFX_PRIORITY_NORMAL);
 #endif
-
-    enemy_reset_all();
-    hide_sprites_range(0, MAX_HARDWARE_SPRITES);
+    
     delay(500);
+
+    uint8_t _saved_bank = _current_bank;
+    SWITCH_ROM(BANK(enemy));
+    enemy_reset_all();
+    SWITCH_ROM(_saved_bank);
+    
+    
+    hide_sprites_range(0, MAX_HARDWARE_SPRITES);
 
     camera_x = 0;
     move_bkg(0, -16);
@@ -133,6 +136,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 
     current_page = pipe->destination_page;
     current_column_in_page = 0;
+    level_page_loaded_cols = 0;
     map_column = 0;
     col_from = 0;
 
@@ -171,10 +175,18 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 #endif
 
     level_load_column(MAP_BUFFER_WIDTH, pipe->destination_level);
+    uint16_t current_page_after_load = current_page;
 
+    current_page = pipe->destination_page;
+    level_page_loaded_cols = 0;
+
+    EMU_printf("ENTER PIPE LOAD INITIAL OBJECTS AT PAGE %d\n", current_page);
     for (uint8_t c = 0; c < MAP_BUFFER_WIDTH; c++) {
         level_load_objects(c);
     }
+
+    current_page = current_page_after_load;
+
 }
 
 void player_move(void) BANKED {
@@ -298,7 +310,6 @@ void player_move(void) BANKED {
                 camera_x = camera_x_upscaled >> 4;
                 move_bkg(camera_x, -16);
                 scroll_limit = player_x;
-                // col is page-local: subtract page base from the world column
                 uint8_t world_col = (camera_x >> 3) + DEVICE_SCREEN_WIDTH;
                 uint8_t page_base = current_page * PAGE_SIZE;
                 if (world_col >= page_base && world_col < page_base + PAGE_SIZE) {

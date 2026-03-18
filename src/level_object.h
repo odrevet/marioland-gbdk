@@ -28,10 +28,11 @@ typedef struct {
 } platform_moving_params;
 
 typedef struct {
-  uint16_t destination_x;
-  uint8_t destination_y;
-  level* destination_level;
-  uint8_t destination_page;
+    const struct level_t *destination_level;
+    uint8_t destination_level_bank;
+    uint8_t destination_page;
+    uint8_t destination_x;
+    uint8_t destination_y;
 } pipe_params;
 
 typedef struct {

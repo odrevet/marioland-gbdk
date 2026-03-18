@@ -10,11 +10,12 @@ static const level_object level_1_1_page_01_lookup[] = {
 };
 
 static const level_object level_1_1_page_02_lookup[] = {
-    {.x = 1,  .y = 12, .type = OBJECT_TYPE_PIPE_VERTICAL,
-     .data.pipe = {.destination_level = undergrounds + 0,
-                   .destination_page = 0,
-                   .destination_x = 2,
-                   .destination_y = 2}},
+    {.x = 1, .y = 12, .type = OBJECT_TYPE_PIPE_VERTICAL,
+    .data.pipe = {.destination_level = undergrounds + 0,
+                .destination_level_bank = BANK(underground_0),
+                .destination_page = 0,
+                .destination_x = 2,
+                .destination_y = 2}},
 };
 
 static const level_object level_1_1_page_03_lookup[] = {

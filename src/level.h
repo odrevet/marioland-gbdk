@@ -30,6 +30,8 @@
 
 #include "level_object.h"
 
+#include "pipe.h"
+
 #define NB_LEVELS 12
 #define LEVEL_HEIGHT 16
 #define COLUMN_SIZE 1
