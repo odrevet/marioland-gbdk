@@ -312,6 +312,10 @@ void player_move(void) BANKED {
                 scroll_limit = player_x;
                 uint8_t world_col = (camera_x >> 3) + DEVICE_SCREEN_WIDTH;
                 uint8_t page_base = current_page * PAGE_SIZE;
+
+
+                EMU_printf(">>WORLD COL=%d current_page=%d page_base=%d\n", world_col, current_page, page_base);
+
                 if (world_col >= page_base && world_col < page_base + PAGE_SIZE) {
                     level_load_objects(world_col - page_base);
                 }

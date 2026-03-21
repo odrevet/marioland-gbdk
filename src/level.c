@@ -409,7 +409,7 @@ void level_load_objects(uint8_t col) NONBANKED {
                 uint8_t enemy_type = obj->data.enemy.type;
                 SWITCH_ROM(_saved_bank);
                 enemy_new(world_x, (obj_y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT, enemy_type);
-                EMU_printf("ENEMY NEW X=%d Y=%d\n", world_x / TILE_SIZE, obj_y);
+                //EMU_printf("ENEMY NEW X=%d Y=%d\n", world_x / TILE_SIZE, obj_y);
                 SWITCH_ROM(obj_bank);
             } else if (obj_type == OBJECT_TYPE_PLATFORM_MOVING) {
                 uint8_t direction = obj->data.platform_moving.platform_direction;
@@ -424,8 +424,7 @@ void level_load_objects(uint8_t col) NONBANKED {
                 SWITCH_ROM(obj_bank);
             }
             else if (obj_type == OBJECT_TYPE_PIPE_VERTICAL) {
-                EMU_printf("PIPE_NEW: current_page=%d col=%d world_x=%d obj_y=%d\n",
-                current_page, col, world_x, obj_y);
+                //EMU_printf("PIPE_NEW: current_page=%d col=%d world_x=%d obj_y=%d\n", current_page, col, world_x, obj_y);
                 pipe_params p = obj->data.pipe;
                 SWITCH_ROM(_saved_bank);
                 pipe_new(world_x, obj_y, p);
@@ -520,6 +519,14 @@ void load_current_level(void) NONBANKED {
     #ifdef USE_COMPRESSED_LEVELS
     cached_page_index = 0xFF;
     #endif
+
+    uint8_t world_col = (camera_x >> 3) + DEVICE_SCREEN_WIDTH;
+    uint8_t page_base = current_page * PAGE_SIZE;
+
+    EMU_printf("LOAD INITIAL LEVEL OBJECT\n");
+    for (uint8_t c = 0; c < MAP_BUFFER_WIDTH; c++) {
+        level_load_objects(c);
+    }
 
     level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
     load_col_at = COLUMN_SIZE;
