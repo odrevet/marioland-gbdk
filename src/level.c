@@ -409,7 +409,7 @@ void level_load_objects(uint8_t col) NONBANKED {
                 uint8_t enemy_type = obj->data.enemy.type;
                 SWITCH_ROM(_saved_bank);
                 enemy_new(world_x, (obj_y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT, enemy_type);
-                //EMU_printf("ENEMY NEW X=%d Y=%d\n", world_x / TILE_SIZE, obj_y);
+                EMU_printf("ENEMY NEW X=%d Y=%d\n", world_x / TILE_SIZE, obj_y);
                 SWITCH_ROM(obj_bank);
             } else if (obj_type == OBJECT_TYPE_PLATFORM_MOVING) {
                 uint8_t direction = obj->data.platform_moving.platform_direction;

@@ -138,7 +138,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
     current_column_in_page = 0;
     level_page_loaded_cols = 0;
     map_column = 0;
-    col_from = 0;
+    col_from = current_page * PAGE_SIZE;
 
     current_level_ptr = pipe->destination_level;
 
@@ -310,7 +310,8 @@ void player_move(void) BANKED {
                 camera_x = camera_x_upscaled >> 4;
                 move_bkg(camera_x, -16);
                 scroll_limit = player_x;
-                uint8_t world_col = (camera_x >> 3) + DEVICE_SCREEN_WIDTH;
+
+                uint8_t world_col = col_from + (camera_x >> 3) + DEVICE_SCREEN_WIDTH;
                 uint8_t page_base = current_page * PAGE_SIZE;
 
 
