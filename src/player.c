@@ -306,7 +306,7 @@ void player_move(void) BANKED {
     if (current_jump >= JUMP_MAX_FRAMES + 10) {
       is_jumping = FALSE;
     }
-  } else if (!touch_ground && !player_is_on_platform()) {
+  } else if (!touch_ground || !player_is_on_platform()) {
     // Not jumping but not grounded - apply falling gravity
     vel_y += GRAVITY;
   }
@@ -526,12 +526,13 @@ bool player_is_on_platform(void) BANKED {
         player_x_upscaled <=
             platforms_moving[index_platform].x + (3 * 8 * 16) &&
         player_x_upscaled > platforms_moving[index_platform].x) {
-      vel_x += platforms_moving[index_platform].vel_x;
+
+      player_x_upscaled += platforms_moving[index_platform].vel_x;
+      player_x = player_x_upscaled >> 4;
       vel_y = platforms_moving[index_platform].vel_y;
       player_on_touch_ground();
       return TRUE;
     }
   }
-
   return FALSE;
 }
