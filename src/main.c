@@ -91,9 +91,6 @@ bool powerups_collide() {
 
 #define ENEMY_TOP_MARGIN 8
 
-// Updated enemy_collide() function for main.c
-// Replace the existing enemy_collide() function with this:
-
 bool enemy_collide() {
   for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
     // Skip inactive or stomped enemies

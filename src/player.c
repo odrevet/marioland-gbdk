@@ -206,6 +206,74 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   SWITCH_ROM(_saved_bank);
 }
 
+void player_reset(uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED {
+#ifdef GAMEBOY
+  music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
+                 MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+
+  level_page_x_offset = destination_page * PAGE_SIZE;
+
+  enemy_reset_all();
+  hide_sprites_range(0, MAX_HARDWARE_SPRITES);
+  delay(500);
+
+  camera_x = 0;
+  move_bkg(0, -16);
+  camera_x_upscaled = 0;
+  level_end_reached = false;
+
+  current_page = destination_page;
+  current_column_in_page = 0;
+  map_column = 0;
+
+  // Player position is relative to the start of the destination page
+  player_x_upscaled = (destination_x * TILE_SIZE) << 4;
+  player_y_upscaled = (destination_y * TILE_SIZE) << 4;
+  player_draw_x = player_x_upscaled >> 4;
+  player_draw_y = player_y_upscaled >> 4;
+  player_x_next_upscaled = player_x_upscaled;
+  player_y_next_upscaled = player_y_upscaled;
+
+  vel_x = 0;
+  vel_y = 0;
+  display_jump_frame = FALSE;
+  display_slide_frame = FALSE;
+  display_walk_animation = FALSE;
+  frame_counter = 0;
+  mario_flip = FALSE;
+  touch_ground = FALSE;
+
+  //if (pipe->destination_level->page_count > 1) {
+    scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+  //}
+
+  load_col_at = COLUMN_SIZE;
+
+//#ifdef GAMEBOY
+//  music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
+//#endif
+
+#ifdef USE_COMPRESSED_LEVELS
+  cached_page_index = 0xFF;
+#endif
+
+  // Load columns starting from the beginning of the destination page
+  level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
+
+  col_from = 0;
+  for (uint8_t c = 0; c <= DEVICE_SCREEN_WIDTH + 1; c++) {
+    level_load_objects(c);
+  }
+
+  //uint8_t _saved_bank = _current_bank;
+  //SWITCH_ROM(pipe->destination_level->lookup_bank);
+  //level_lookup_bank = pipe->destination_level->lookup_bank;
+  //level_lookup = pipe->destination_level->lookup;
+  //level_lookup_size = pipe->destination_level->lookup_size;
+  //SWITCH_ROM(_saved_bank);
+}
+
 void player_move(void) BANKED {
   int8_t target_vel_x = 0;
   int8_t max_speed;

@@ -88,5 +88,6 @@ void player_on_touch_ground(void) NONBANKED;
 bool player_is_on_platform(void) BANKED;
 bool player_check_pipe_entry(void) NONBANKED;
 void player_enter_pipe(pipe_params *pipe_params) NONBANKED;
+void player_reset(uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED;
 
 #endif
