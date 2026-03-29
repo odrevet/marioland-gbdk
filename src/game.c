@@ -118,17 +118,18 @@ void die(void) {
 #endif
 
   //init();
-  player_reset(0, 2, 5);
 
   lives--;
   if (lives == 0) {
     lives = INITIAL_LIVES;
     current_map = 0;
     current_page = 0;
-    set_level(0);
+    current_level = 0;
+    set_level(current_level);
   }
 
+  player_warp_to(levels + current_level, 0, 5, 12);
+
   hud_update_lives();
-  //load_current_level();
-  //level_set_current();
+
 }
