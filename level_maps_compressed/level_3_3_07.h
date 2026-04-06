@@ -1,5 +1,5 @@
-#ifndef GBCOMPRESS_level_3_3_07_H
-#define GBCOMPRESS_level_3_3_07_H
+#ifndef GBCOMPRESS_level_3_3_07_map_H
+#define GBCOMPRESS_level_3_3_07_map_H
 
 #include <gbdk/metasprites.h>
 
@@ -7,8 +7,8 @@ BANKREF_EXTERN(level_3_3_07)
 
 
 
-#define level_3_3_07_sz_comp 133
-#define level_3_3_07_sz_decomp 320
+#define level_3_3_07_map_sz_comp 133
+#define level_3_3_07_map_sz_decomp 320
 
 extern const unsigned char level_3_3_07_map[];
 

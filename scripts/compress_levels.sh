@@ -7,8 +7,9 @@ compress_level() {
   local bank=$3
 
   gbcompress --cin --cout \
-    --varname="level_${level_number}_${page}" \
+    --varname="level_${level_number}_${page}_map" \
     --bank=$bank \
+    --bankrefname="level_${level_number}_${page}" \
     "$input_dir/level_${level_number}_${page}.c" \
     "$output_dir/level_${level_number}_${page}.c"
 }
@@ -73,13 +74,28 @@ for i in {0..9}; do
   compress_level 4_3 $(printf "%02d" $i) 255
 done
 
-gbcompress --cin --cout --varname="level_gates" --bank=255 "$input_dir/level_gates.c" "$output_dir/level_gates.c"
+gbcompress --cin \
+           --cout \
+           --varname="level_gates_map" \
+           --bankrefname="level_gates" \
+           --bank=255 \
+           "$input_dir/level_gates.c" \
+           "$output_dir/level_gates.c"
 
-gbcompress --cin --cout --varname="stage_end" --bank=255 "$input_dir/stage_end.c" "$output_dir/stage_end.c"
+gbcompress --cin \
+           --cout \
+           --varname="stage_end_map" \
+           --bankrefname="stage_end" \
+           --bank=255 \
+           "$input_dir/stage_end.c" \
+           "$output_dir/stage_end.c"
 
 for i in {0..9}; do
-  gbcompress --cin --cout --varname="underground_${i}" --bank=255 "$input_dir/underground_${i}.c" "$output_dir/underground_${i}.c"
+  gbcompress --cin \
+             --cout \
+             --varname="underground_${i}_map" \
+             --bank=255 \
+             --bankrefname="underground_${i}" \
+             "$input_dir/underground_${i}.c" \
+             "$output_dir/underground_${i}.c"
 done
-
-# correct level map name by adding _map
-find $output_dir -type f \( -name "*.h" -o -name "*.c" \) -exec sed -i 's/\[\]/_map[]/g' {} +

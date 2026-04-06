@@ -1,5 +1,5 @@
-#ifndef GBCOMPRESS_level_4_1_04_H
-#define GBCOMPRESS_level_4_1_04_H
+#ifndef GBCOMPRESS_level_4_1_04_map_H
+#define GBCOMPRESS_level_4_1_04_map_H
 
 #include <gbdk/metasprites.h>
 
@@ -7,8 +7,8 @@ BANKREF_EXTERN(level_4_1_04)
 
 
 
-#define level_4_1_04_sz_comp 111
-#define level_4_1_04_sz_decomp 320
+#define level_4_1_04_map_sz_comp 111
+#define level_4_1_04_map_sz_decomp 320
 
 extern const unsigned char level_4_1_04_map[];
 
