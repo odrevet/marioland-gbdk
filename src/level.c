@@ -539,9 +539,8 @@ void level_load_objects(uint16_t col) NONBANKED {
                              (obj->y + MARGIN_TOP) * TILE_SIZE);
       }
       else if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
-        // Pipes are rendered as part of the background tiles
-        // They are checked in player_check_pipe_entry() when player presses down
-        // No special loading needed here - just skip
+        EMU_printf("********************\nPIPE NEW\n");
+        pipe_new((uint8_t)obj->x, (uint8_t)obj->y, &obj->data.pipe);
       }
     } else if (obj->x > col) {
       col_from = i;
@@ -650,6 +649,8 @@ void load_current_level(void) NONBANKED {
 #ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
 #endif
+
+  pipe_clear();
 
   level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;

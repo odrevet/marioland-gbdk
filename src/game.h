@@ -19,6 +19,7 @@
 #include "musics/hUGEDriver.h"
 #include "text.h"
 #include "player.h"
+#include "pipe.h"
 
 #include "musics/musics.h"
 

@@ -86,53 +86,32 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
  * Returns true if player should enter the pipe
  */
 bool player_check_pipe_entry(void) NONBANKED {
-  // Only check if player is on ground and pressing down
-  if (!touch_ground || !(joypad_current & J_DOWN)) {
-    return FALSE;
-  }
-  
-  // Only trigger on button press, not hold
-  if (joypad_previous & J_DOWN) {
-    return FALSE;
-  }
-  
-  // Get player's tile position in world coordinates
-  uint8_t player_tile_x = (player_x) >> 3;
-  uint8_t player_tile_y = (player_y >> 3);
-  
-  // Check pipe lookup table
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(level_lookup_bank);
-  
-  bool pipe_found = FALSE;
-  pipe_params found_pipe; // Create a local copy
-  
-  EMU_printf("---------- CHECK PIPE\n");
-  for (uint16_t i = 0; i < level_lookup_size && !pipe_found; i++) {
-    level_object *obj = &level_lookup[i];
-    
-    EMU_printf("index %d -> type %d x %d y %d. Mario at %d %d\n", i, obj->type, obj->x, obj->y, player_tile_x, player_tile_y);
-    if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
-      // Check if player is within the pipe's horizontal bounds
-      // Pipes are typically 2 tiles wide, so check x and x+1
-      if ((player_tile_x == obj->x || player_tile_x == obj->x + 1) &&
-          player_tile_y + 2 == obj->y) {
-        pipe_found = TRUE;
-        // Copy the pipe data while we're in the correct bank
-        found_pipe = obj->data.pipe;
-      }
+    // Only check if player is on ground and pressing down (on fresh press)
+    if (!touch_ground || !(joypad_current & J_DOWN) || (joypad_previous & J_DOWN)) {
+        return FALSE;
     }
-  }
-  
-  SWITCH_ROM(_saved_bank);
-  
-  if (pipe_found) {
-    // Trigger pipe transition with copied pipe data
-    player_enter_pipe(&found_pipe);
-    return TRUE;
-  }
-  
-  return FALSE;
+
+    // No active pipe loaded for this area
+    if (!pipe_active) {
+        return FALSE;
+    }
+
+    // Player's tile position in world coordinates
+    uint8_t player_tile_x = player_x >> 3;
+    uint8_t player_tile_y = player_y >> 3;
+
+    // Check if player is standing on top of the active pipe
+    // Pipe occupies tile_x and tile_x+1 horizontally,
+    // and player feet (tile_y+2) must align with the pipe top row
+    if ((player_tile_x == active_pipe_tile_x ||
+         player_tile_x == active_pipe_tile_x + 1) &&
+        player_tile_y + 2 == active_pipe_tile_y) {
+
+        player_enter_pipe(&active_pipe);
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 /**
@@ -158,6 +137,8 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 }
 
 void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED {
+  pipe_clear();
+  
   level_page_x_offset = destination_page * PAGE_SIZE;
 
   
