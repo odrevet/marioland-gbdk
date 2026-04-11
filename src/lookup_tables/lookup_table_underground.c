@@ -5,9 +5,9 @@ BANKREF(underground_lookup)
 
 const level_object underground_0_lookup[] = {
     {.x = 16,
-     .y = 12,
-     .type = OBJECT_TYPE_PIPE_VERTICAL,
+     .y = 13,
+     .type = OBJECT_TYPE_PIPE_HORIZONTAL,
      .data.pipe = {.destination_level = levels + 0,
                    .destination_page = 2,
-                   .destination_x = 4, 
-                   .destination_y = 12}}};
+                   .destination_x = 2, 
+                   .destination_y = 10}}};

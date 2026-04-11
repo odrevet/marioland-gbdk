@@ -88,6 +88,7 @@ void player_move(void) BANKED;
 void player_on_touch_ground(void) NONBANKED;
 bool player_is_on_platform(void) BANKED;
 bool player_check_pipe_entry(void) NONBANKED;
+bool player_check_horizontal_pipe_entry(void) NONBANKED;
 void player_enter_pipe(pipe_params *pipe_params) NONBANKED;
 void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED;
 

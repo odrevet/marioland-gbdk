@@ -86,31 +86,22 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
  * Returns true if player should enter the pipe
  */
 bool player_check_pipe_entry(void) NONBANKED {
-    // Only check if player is on ground and pressing down (on fresh press)
     if (!touch_ground || !(joypad_current & J_DOWN) || (joypad_previous & J_DOWN)) {
         return FALSE;
     }
-
-    // No active pipe loaded for this area
-    if (!pipe_active) {
+    if (!pipe_active || active_pipe_direction != PIPE_DIRECTION_VERTICAL) {
         return FALSE;
     }
 
-    // Player's tile position in world coordinates
     uint8_t player_tile_x = player_x >> 3;
     uint8_t player_tile_y = player_y >> 3;
 
-    // Check if player is standing on top of the active pipe
-    // Pipe occupies tile_x and tile_x+1 horizontally,
-    // and player feet (tile_y+2) must align with the pipe top row
     if ((player_tile_x == active_pipe_tile_x ||
          player_tile_x == active_pipe_tile_x + 1) &&
         player_tile_y + 2 == active_pipe_tile_y) {
-
         player_enter_pipe(&active_pipe);
         return TRUE;
     }
-
     return FALSE;
 }
 
@@ -136,9 +127,43 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
 
 }
 
+
+bool player_check_horizontal_pipe_entry(void) NONBANKED {
+    if (!touch_ground || vel_x == 0) {
+        return FALSE;
+    }
+    if (!pipe_active || active_pipe_direction != PIPE_DIRECTION_HORIZONTAL) {
+        return FALSE;
+    }
+
+    uint8_t player_tile_x = player_x >> 3;
+    uint8_t player_tile_y = player_y >> 3;
+
+    bool row_match = (player_tile_y == active_pipe_tile_y ||
+                      player_tile_y == active_pipe_tile_y - 1);
+    if (!row_match) {
+        return FALSE;
+    }
+
+    if (vel_x > 0) {
+        uint8_t player_right_tile = (player_x + MARIO_WIDTH) >> 3;
+        if (player_right_tile == active_pipe_tile_x) {
+            player_enter_pipe(&active_pipe);
+            return TRUE;
+        }
+    } else {
+        if (player_tile_x == active_pipe_tile_x + 1) {
+            player_enter_pipe(&active_pipe);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+
 void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED {
   pipe_clear();
-  
+
   level_page_x_offset = destination_page * PAGE_SIZE;
 
   
@@ -204,6 +229,10 @@ void player_move(void) BANKED {
   if (player_check_pipe_entry()) {
     // Pipe entry handled, skip rest of movement for this frame
     return;
+  }
+
+  if (player_check_horizontal_pipe_entry()) {
+      return;
   }
 
   if (joypad_current & J_RIGHT) {

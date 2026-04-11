@@ -4,10 +4,12 @@ bool pipe_active = FALSE;
 pipe_params active_pipe;
 uint8_t active_pipe_tile_x;
 uint8_t active_pipe_tile_y;
+uint8_t active_pipe_direction;
 
-void pipe_new(uint8_t tile_x, uint8_t tile_y, pipe_params *params) {
+void pipe_new(uint8_t tile_x, uint8_t tile_y, uint8_t direction, pipe_params *params) {
     active_pipe_tile_x = tile_x;
     active_pipe_tile_y = tile_y;
+    active_pipe_direction = direction;
     active_pipe = *params;
     pipe_active = TRUE;
 }

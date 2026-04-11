@@ -539,8 +539,10 @@ void level_load_objects(uint16_t col) NONBANKED {
                              (obj->y + MARGIN_TOP) * TILE_SIZE);
       }
       else if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
-        EMU_printf("********************\nPIPE NEW\n");
-        pipe_new((uint8_t)obj->x, (uint8_t)obj->y, &obj->data.pipe);
+          pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_VERTICAL, &obj->data.pipe);
+      }
+      else if (obj->type == OBJECT_TYPE_PIPE_HORIZONTAL) {
+          pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_HORIZONTAL, &obj->data.pipe);
       }
     } else if (obj->x > col) {
       col_from = i;
