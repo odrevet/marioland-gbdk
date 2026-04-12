@@ -6,7 +6,6 @@
 #include "level.h"
 #include <stdint.h>
 
-
 #include "player.h"
 
 #ifdef USE_COMPRESSED_LEVELS
@@ -22,7 +21,6 @@ uint16_t time;
 uint8_t lives;
 uint8_t joypad_previous, joypad_current;
 
-// player coords and movements
 uint16_t player_x_upscaled;
 uint16_t player_y_upscaled;
 uint16_t player_x_next_upscaled;
@@ -46,6 +44,7 @@ uint8_t player_frame = 0;
 uint8_t frame_counter = 0;
 bool mario_flip;
 uint16_t scroll_limit;
+bool player_is_big = FALSE;
 
 uint8_t tile_next_1;
 uint8_t tile_next_2;
@@ -65,7 +64,8 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(mario));
 
-  const metasprite_t *const mario_metasprite = mario_metasprites[player_frame];
+  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
+  const metasprite_t *const mario_metasprite = mario_metasprites[frame_index];
   if (mario_flip) {
     base_sprite += move_metasprite_flipx(mario_metasprite, 0, 0, 0,
                                          player_draw_x, player_draw_y);
@@ -81,10 +81,6 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 
 #include <gbdk/emu_debug.h>
 
-/**
- * Check if player is standing on a pipe and can enter it
- * Returns true if player should enter the pipe
- */
 bool player_check_pipe_entry(void) NONBANKED {
     if (!touch_ground || !(joypad_current & J_DOWN) || (joypad_previous & J_DOWN)) {
         return FALSE;
@@ -105,9 +101,6 @@ bool player_check_pipe_entry(void) NONBANKED {
     return FALSE;
 }
 
-/**
- * Handle entering a pipe and loading destination
- */
 void player_enter_pipe(pipe_params* pipe) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(pipe->destination_level->lookup_bank);
@@ -115,7 +108,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
   level_lookup = pipe->destination_level->lookup;
   level_lookup_size = pipe->destination_level->lookup_size;
   SWITCH_ROM(_saved_bank);
-  
+
   player_warp_to(pipe->destination_level, pipe->destination_page, pipe->destination_x, pipe->destination_y);
 
 #ifdef GAMEBOY
@@ -123,10 +116,7 @@ void player_enter_pipe(pipe_params* pipe) NONBANKED {
                  MUSIC_SFX_PRIORITY_NORMAL);
   music_load(pipe->destination_level->music_bank, pipe->destination_level->music);
 #endif
-
-
 }
-
 
 bool player_check_horizontal_pipe_entry(void) NONBANKED {
     if (!touch_ground || vel_x == 0) {
@@ -160,17 +150,14 @@ bool player_check_horizontal_pipe_entry(void) NONBANKED {
     return FALSE;
 }
 
-
 void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED {
   pipe_clear();
 
   level_page_x_offset = destination_page * PAGE_SIZE;
 
-  
   if (destination_level->page_count == destination_page - 1) {
     level_end_reached = true;
-  }
-  else{
+  } else {
     scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
   }
 
@@ -187,7 +174,6 @@ void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t 
   current_column_in_page = 0;
   map_column = 0;
 
-  // Player position is relative to the start of the destination page
   player_x_upscaled = (destination_x * TILE_SIZE) << 4;
   player_y_upscaled = (destination_y * TILE_SIZE) << 4;
   player_draw_x = player_x_upscaled >> 4;
@@ -206,7 +192,7 @@ void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t 
 
   load_col_at = COLUMN_SIZE;
 
-  #ifdef USE_COMPRESSED_LEVELS
+#ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
 #endif
 
@@ -225,14 +211,12 @@ void player_move(void) BANKED {
   int8_t decel;
   bool on_ground = touch_ground || player_is_on_platform();
 
-  // Check for pipe entry first (before any movement)
   if (player_check_pipe_entry()) {
-    // Pipe entry handled, skip rest of movement for this frame
     return;
   }
 
   if (player_check_horizontal_pipe_entry()) {
-      return;
+    return;
   }
 
   if (joypad_current & J_RIGHT) {
@@ -252,12 +236,10 @@ void player_move(void) BANKED {
     display_walk_animation = FALSE;
   }
 
-  // Choose acceleration/deceleration based on ground state
   if (on_ground) {
     accel = ACCELERATION;
     decel = DECELERATION;
 
-    // Check for skidding (changing direction at speed)
     if ((vel_x > 8 && target_vel_x < 0) || (vel_x < -8 && target_vel_x > 0)) {
       decel = SKID_DECELERATION;
       display_slide_frame = TRUE;
@@ -270,9 +252,7 @@ void player_move(void) BANKED {
     display_slide_frame = FALSE;
   }
 
-  // Apply acceleration/deceleration
   if (target_vel_x == 0) {
-    // Decelerate to stop
     if (vel_x > 0) {
       vel_x -= decel;
       if (vel_x < 0)
@@ -283,12 +263,10 @@ void player_move(void) BANKED {
         vel_x = 0;
     }
   } else if (target_vel_x > vel_x) {
-    // Accelerate right
     vel_x += accel;
     if (vel_x > target_vel_x)
       vel_x = target_vel_x;
   } else if (target_vel_x < vel_x) {
-    // Accelerate left
     vel_x -= accel;
     if (vel_x < target_vel_x)
       vel_x = target_vel_x;
@@ -297,42 +275,32 @@ void player_move(void) BANKED {
   if (is_jumping) {
     current_jump++;
 
-    // Apply gravity based on state
     if (vel_y < 0) {
-      // Moving upward
       if ((joypad_current & J_A) && current_jump < JUMP_MAX_FRAMES) {
-        // Still holding jump and can boost
         vel_y += GRAVITY_RISING;
-        vel_y += JUMP_HOLD_BOOST; // Extra boost while holding
+        vel_y += JUMP_HOLD_BOOST;
       } else {
-        // Released button or reached max - faster fall
         vel_y += GRAVITY_FAST_FALL;
       }
     } else {
-      // Started falling
       vel_y += GRAVITY;
     }
 
-    // End jump state when falling for a bit
     if (vel_y >= 0 && current_jump > JUMP_MIN_FRAMES) {
       is_jumping = FALSE;
     }
 
-    // Force end at max frames
     if (current_jump >= JUMP_MAX_FRAMES + 10) {
       is_jumping = FALSE;
     }
   } else if (!touch_ground || !player_is_on_platform()) {
-    // Not jumping but not grounded - apply falling gravity
     vel_y += GRAVITY;
   }
 
-  // Cap fall speed
   if (vel_y > MAX_FALL_SPEED) {
     vel_y = MAX_FALL_SPEED;
   }
 
-  // Jump initiation
   if (joypad_current & J_A && !(joypad_previous & J_A) && !is_jumping &&
       touch_ground) {
     current_jump = 0;
@@ -340,13 +308,12 @@ void player_move(void) BANKED {
     display_jump_frame = TRUE;
     vel_y = JUMP_INITIAL_VELOCITY;
     touch_ground = FALSE;
-    #ifdef GAMEBOY
+#ifdef GAMEBOY
     music_play_sfx(BANK(sound_jump_small), sound_jump_small,
                    SFX_MUTE_MASK(sound_jump_small), MUSIC_SFX_PRIORITY_NORMAL);
-    #endif 
+#endif
   }
 
-  // Horizontal collision detection
   player_x_next_upscaled = player_x_upscaled + vel_x;
   player_y_next_upscaled = player_y_upscaled;
 
@@ -354,7 +321,6 @@ void player_move(void) BANKED {
   player_y_next = player_y_next_upscaled >> 4;
 
   if (vel_x > 0) {
-    // move right
     tile_next_1 = get_tile(player_x_next + MARIO_WIDTH -
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + PLAYER_TOP_MARGIN);
@@ -375,7 +341,7 @@ void player_move(void) BANKED {
                                player_y_next + mario_HEIGHT - 1);
       }
 
-      if(tile_next_1 == SWITCH){
+      if (tile_next_1 == SWITCH) {
         init();
         map_column = 0;
         current_level = (++current_level) % NB_LEVELS;
@@ -385,7 +351,6 @@ void player_move(void) BANKED {
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
 
-      // check if end of level reached
       if (load_col_at ==
           current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
@@ -393,32 +358,25 @@ void player_move(void) BANKED {
         move_bkg(camera_x, -16);
       }
 
-      // check scroll limit
       if (!level_end_reached && player_x > scroll_limit) {
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
         move_bkg(camera_x, -16);
         scroll_limit = player_x;
-        //EMU_printf("CAM=%d page=%d PAGING=%d\n", (camera_x >> 3) + DEVICE_SCREEN_WIDTH, current_page * PAGE_SIZE, current_page * PAGE_SIZE + current_column_in_page - 7);
-        //level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH);
         level_load_objects(current_page * PAGE_SIZE + current_column_in_page - 7);
       }
 
-      // load level background
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {
 #if defined(GAMEBOY)
         level_load_column(1, levels + current_level);
 #elif defined(NINTENDO_NES)
         level_load_column(1, levels + current_level);
 #endif
-
-        
         load_col_at++;
       }
     }
   } else if (vel_x < 0 && player_draw_x > 12) {
-    // move left
     tile_next_1 =
         get_tile(player_x_next - camera_x, player_y_next + PLAYER_TOP_MARGIN);
     tile_next_2 =
@@ -440,7 +398,6 @@ void player_move(void) BANKED {
     }
   }
 
-  // Vertical collision detection
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled + vel_y;
 
@@ -448,7 +405,6 @@ void player_move(void) BANKED {
   player_y_next = player_y_next_upscaled >> 4;
 
   if (vel_y > 0) {
-    // move down
     tile_next_1 = get_tile(player_x_next + MARIO_WIDTH -
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + mario_HEIGHT - 1);
@@ -477,7 +433,6 @@ void player_move(void) BANKED {
       player_y = player_y_upscaled >> 4;
     }
   } else if (vel_y < 0) {
-    // move up
     tile_next_1 = get_tile(player_x_next + PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + PLAYER_TOP_MARGIN);
     tile_next_2 = get_tile(player_x_next + MARIO_WIDTH -
@@ -507,7 +462,6 @@ void player_move(void) BANKED {
       player_y_upscaled = ((player_y_next_upscaled >> 3) << 3) + 32;
       player_y = player_y_upscaled >> 4;
 
-      // Bonk head - stop upward movement
       vel_y = 0;
       is_jumping = FALSE;
       current_jump = 0;
