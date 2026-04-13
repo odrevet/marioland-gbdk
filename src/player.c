@@ -79,7 +79,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   return base_sprite;
 }
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 bool player_check_pipe_entry(void) NONBANKED {
     if (!touch_ground || !(joypad_current & J_DOWN) || (joypad_previous & J_DOWN)) {

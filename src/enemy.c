@@ -385,7 +385,7 @@ void enemy_update(void) BANKED {
   }
 }
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
 
@@ -399,8 +399,8 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     uint8_t draw_index = enemies[index_enemy].current_frame;
 
 
-    EMU_printf("ENEMY %d %d\n", enemies[index_enemy].x,
-               enemies[index_enemy].y);
+    //EMU_printf("ENEMY %d %d\n", enemies[index_enemy].x,
+    //           enemies[index_enemy].y);
 
     uint8_t _saved_bank = _current_bank;
     

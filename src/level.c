@@ -509,7 +509,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 /**
  * Load level objects (enemies, platforms, etc.) at a specific column
@@ -526,7 +526,7 @@ void level_load_objects(uint16_t col) NONBANKED {
         enemy_new(relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
                   obj->data.enemy.type);
-        EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
+        //EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         // Powerups handled by interrogation blocks
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
@@ -552,8 +552,6 @@ void level_load_objects(uint16_t col) NONBANKED {
   
   SWITCH_ROM(_saved_bank);
 }
-
-#include <gbdk/emu_debug.h>
 
 uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
@@ -584,7 +582,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
 
     #ifdef USE_COMPRESSED_LEVELS
     if (cached_page_index != current_page) {
-      EMU_printf("    decompress page %d\n", current_page);
+      //EMU_printf("    decompress page %d\n", current_page);
       gb_decompress(page_entry->map, decompression_buffer);
       current_page_data = decompression_buffer;
       cached_page_index = current_page;
