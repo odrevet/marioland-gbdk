@@ -20,6 +20,7 @@
 #include "sfxplayer.h"
 #include "sounds/sound_coin.h"
 #include "sounds/sound_oneup.h"
+#include "sounds/sound_destroyed.h"
 
 // musics
 #include "musicmanager.h"

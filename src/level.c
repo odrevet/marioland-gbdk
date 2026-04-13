@@ -443,6 +443,13 @@ void on_break_tile(uint8_t x, uint8_t y) {
 
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+
+  // TODO break animation (4 sprites of tile shards)
+
+  #ifdef GAMEBOY
+  music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
+                 MUSIC_SFX_PRIORITY_NORMAL);
+  #endif
 }
 
 /**
