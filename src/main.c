@@ -113,11 +113,28 @@ bool enemy_collide() {
 #endif
         continue;
       } else {
-        die();
+        if(player_is_big){
+          player_is_big = FALSE;
+#ifdef GAMEBOY
+        music_play_sfx(BANK(sound_pipe), sound_pipe,
+                       SFX_MUTE_MASK(sound_pipe), MUSIC_SFX_PRIORITY_NORMAL);
+#endif     
+
+        // collid with enemy when big remove the enemy
+        // TODO: invincibility frames !  
         uint8_t _saved_bank = _current_bank;
         SWITCH_ROM(BANK(enemy));
-        enemy_reset_all();
+        enemy_stomp(enemy_index);
         SWITCH_ROM(_saved_bank);
+
+        }
+        else{
+          die();
+          uint8_t _saved_bank = _current_bank;
+          SWITCH_ROM(BANK(enemy));
+          enemy_reset_all();
+          SWITCH_ROM(_saved_bank);
+        }
       }
       return true;
     }
