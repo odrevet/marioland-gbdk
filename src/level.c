@@ -437,6 +437,14 @@ void on_get_coin_background(uint8_t x, uint8_t y) {
   on_get_coin();
 }
 
+void on_break_tile(uint8_t x, uint8_t y) {
+  uint8_t index_x = TILE_INDEX_X(x, camera_x);
+  uint8_t index_y = TILE_INDEX_Y(y);
+
+  map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
+  set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+}
+
 /**
  * Handle coin collection logic
  */

@@ -243,6 +243,8 @@ bool is_coin(uint8_t tile);
  */
 void on_get_coin_background(uint8_t x, uint8_t y);
 
+void on_break_tile(uint8_t x, uint8_t y);
+
 /**
  * play sfx. increment coin counter.
  * check if 100 coins reached and give a bonus life if so.

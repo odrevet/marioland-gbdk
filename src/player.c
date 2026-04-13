@@ -448,6 +448,18 @@ void player_move(void) BANKED {
                                       PLAYER_HORIZONTAL_MARGIN - camera_x,
                                   player_y_next + PLAYER_TOP_MARGIN);
       }
+      else if(player_is_big){
+        if(tile_next_1 == BREAKABLE_BLOCK){
+          on_break_tile(player_x_next + PLAYER_HORIZONTAL_MARGIN - camera_x,
+                           player_y_next + PLAYER_TOP_MARGIN);
+        }
+        else if(tile_next_2 == BREAKABLE_BLOCK){
+          on_break_tile(player_x_next + MARIO_WIDTH -
+                               PLAYER_HORIZONTAL_MARGIN - camera_x,
+                           player_y_next + PLAYER_TOP_MARGIN);
+        }
+      }
+      
 
       if (is_coin(tile_next_1)) {
         on_get_coin_background(player_x_next + PLAYER_HORIZONTAL_MARGIN -
