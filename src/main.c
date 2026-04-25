@@ -226,7 +226,6 @@ void main(void) {
 
   current_level = 0;
   map_column = 0;
-  init();
   level_set_current();
 
   score = 0;
@@ -346,7 +345,6 @@ void main(void) {
       HIDE_SPRITES;
       HIDE_BKG;
 
-      map_column = 0;
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
