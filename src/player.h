@@ -71,6 +71,7 @@ extern bool player_is_big;
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;
 void player_move(void) BANKED;
+void player_move_vehicle(void) BANKED;
 void player_on_touch_ground(void) NONBANKED;
 bool player_is_on_platform(void) BANKED;
 bool player_check_pipe_entry(void) NONBANKED;

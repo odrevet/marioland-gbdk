@@ -261,7 +261,17 @@ void main(void) {
     }
 
     enemy_collide();
-    player_move();
+
+    SWITCH_ROM(BANK(player));
+    // TODO create a bool to check movement type
+    if(current_level == 5 || current_level == 11){
+      player_move_vehicle();
+    }
+    else{
+      player_move();
+    }
+    SWITCH_ROM(_saved_bank);
+
 
     if (display_jump_frame) {
       player_frame = 4;
