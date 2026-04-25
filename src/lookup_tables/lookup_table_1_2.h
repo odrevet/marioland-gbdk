@@ -10,7 +10,7 @@
 
 BANKREF_EXTERN(level_1_2_lookup)
 
-#define level_1_2_lookup_ENTRY_COUNT 20
+#define level_1_2_lookup_ENTRY_COUNT 22
 
 extern const level_object level_1_2_lookup[];
 
