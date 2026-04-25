@@ -9,7 +9,16 @@ void init(void) {
   camera_x_upscaled = 0;
 
   player_x_upscaled = (5 * TILE_SIZE) << 4;
-  player_y_upscaled = (14 * TILE_SIZE) << 4;
+
+  if(current_level == 3 || current_level == 4 || current_level == 5){
+    player_y_upscaled = (12 * TILE_SIZE) << 4;
+  }
+  else{
+    player_y_upscaled = (14 * TILE_SIZE) << 4;
+  }
+
+
+
   player_draw_x = player_x_upscaled >> 4;
   player_draw_y = player_y_upscaled >> 4;
   player_x_next_upscaled = player_x_upscaled;
@@ -53,8 +62,8 @@ void state_pause(void) {
 
     if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
       map_column = 0;
-      init();
       current_level = (++current_level) % NB_LEVELS;
+      init();
       level_set_current();
     }
 
