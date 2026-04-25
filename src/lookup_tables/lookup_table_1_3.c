@@ -13,6 +13,10 @@ const level_object level_1_3_lookup[] = {
      .y = 10,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_KOOPA}},
+    {.x = 206,
+     .y = 11,
+     .type = OBJECT_TYPE_POWERUP,
+     .data.enemy = {.type = POWERUP_MUSHROOM}},
     {.x = 251,
      .y = 12,
      .type = OBJECT_TYPE_ENEMY,
@@ -24,5 +28,5 @@ const level_object level_1_3_lookup[] = {
     {.x = 292,
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GAO}},
+     .data.enemy = {.type = ENEMY_GAO}}
 };
