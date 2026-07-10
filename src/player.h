@@ -34,7 +34,6 @@ extern uint16_t score;
 extern uint8_t joy;
 extern uint16_t time;
 extern uint8_t lives;
-extern uint8_t level_index;
 extern uint8_t joypad_previous, joypad_current;
 extern uint16_t scroll_limit;
 
@@ -61,10 +60,8 @@ extern uint8_t player_frame;
 extern uint8_t frame_counter;
 extern bool mario_flip;
 extern uint16_t scroll_limit;
-extern uint8_t current_gravity;
 extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;
-extern uint8_t scroll;
 extern bool plane_mode;
 extern bool player_is_big;
 

@@ -262,8 +262,7 @@ void main(void) {
     enemy_collide();
 
     SWITCH_ROM(BANK(player));
-    // TODO create a bool to check movement type
-    if(current_level == 5 || current_level == 11){
+    if(IS_VEHICLE_LEVEL(current_level)){
       player_move_vehicle();
     }
     else{
@@ -301,6 +300,8 @@ void main(void) {
 
     coin_animated_update();
     base_sprite = coin_animated_draw(base_sprite);
+    block_bump_update();
+    base_sprite = block_bump_draw(base_sprite);
 
     if (powerup_active && powerups_collide()) {
       powerup_active = FALSE;
@@ -353,7 +354,7 @@ void main(void) {
       SHOW_BKG;
     }
 
-    if (current_level == 2) {
+    if (current_level == LEVEL_WORLD1_END) {
       uint8_t _saved_bank = _current_bank;
       anim_frame_counter++;
       if (anim_frame_counter >= 12) {

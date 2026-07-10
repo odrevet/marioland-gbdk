@@ -20,6 +20,7 @@ typedef struct coin_animated {
 extern coin_animated_t coin_animated_array[NB_COIN_ANIMATED];
 extern uint8_t coin_index;
 
+#define COIN_HW_SPRITE_BASE 10
 #define COIN_ANIMATED_INITIAL_TTL 20
 
 void coin_animated_new(uint8_t index_x, uint8_t index_y);

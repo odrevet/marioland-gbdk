@@ -21,6 +21,7 @@
 #include "sounds/sound_coin.h"
 #include "sounds/sound_oneup.h"
 #include "sounds/sound_destroyed.h"
+#include "sounds/sound_bump.h"
 
 // musics
 #include "musicmanager.h"
@@ -245,6 +246,9 @@ bool is_coin(uint8_t tile);
 void on_get_coin_background(uint8_t x, uint8_t y);
 
 void on_break_tile(uint8_t x, uint8_t y);
+void on_block_bump(uint8_t x, uint8_t y) BANKED;
+void block_bump_update(void) BANKED;
+uint8_t block_bump_draw(uint8_t base_sprite) BANKED;
 
 /**
  * play sfx. increment coin counter.

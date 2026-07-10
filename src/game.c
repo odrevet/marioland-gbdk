@@ -10,7 +10,7 @@ void init(void) {
 
   player_x_upscaled = (5 * TILE_SIZE) << 4;
 
-  if(current_level == 3 || current_level == 4 || current_level == 5){
+  if(current_level >= LEVEL_WORLD2_START && current_level <= LEVEL_WORLD2_END){
     player_y_upscaled = (12 * TILE_SIZE) << 4;
   }
   else{
@@ -138,6 +138,10 @@ void die(void) {
   }
 
   player_warp_to(levels + current_level, 0, 5, 12);
+
+#ifdef GAMEBOY
+  music_load(levels[current_level].music_bank, levels[current_level].music);
+#endif
 
   hud_update_lives();
 

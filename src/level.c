@@ -355,23 +355,20 @@ bool is_tile_solid(uint8_t tile) {
   }
 
   // Check world-specific tiles
-  if (current_level >= 0 && current_level <= 2) {
-    // Birabuto world
+  if (current_level <= LEVEL_WORLD1_END) {
     return ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
             (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
             (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
             (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) || 
             (tile == GREY_BLOCK));
-  } else if (current_level >= 3 && current_level <= 5) {
-    // Muda world
+  } else if (current_level <= LEVEL_WORLD2_END) {
     return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
             (tile == BIG_BLOCK_BOTTOM_LEFT) ||
             (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
             (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
             (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
             (tile == HALF_BIG_BLOCK_TOP_RIGHT));
-  } else if (current_level >= 6 && current_level <= 8) {
-    // Easton world
+  } else if (current_level <= LEVEL_WORLD3_END) {
     return ((tile == EASTON_FLOOR_1) || (tile == EASTON_FLOOR_2) ||
             (tile == EASTON_STONE_PLATEFORM_1) ||
             (tile == EASTON_STONE_PLATEFORM_2) ||
@@ -384,8 +381,7 @@ bool is_tile_solid(uint8_t tile) {
             (tile == EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT) ||
             (tile == EASTON_BLOCK) || (tile == EASTON_STONE_PLATEFORM_LEFT) ||
             (tile == EASTON_STONE_PLATEFORM_RIGHT));
-  } else if (current_level >= 9 && current_level <= 12) {
-    // Chai world
+  } else {
     return ((tile == CHAI_FLOOR_LEFT) || (tile == CHAI_FLOOR_MIDDLE_1) ||
             (tile == CHAI_FLOOR_MIDDLE_2) ||
             (tile == CHAI_FLOOR_MIDDLE_RIGHT) || (tile == CHAI_GREY_BLOCK) ||
@@ -403,13 +399,13 @@ bool is_tile_solid(uint8_t tile) {
  * Check if tiles can be passed through from below (semi-solid platforms)
  */
 bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom) {
-  return (current_level == 1 && ((tile_left_bottom == PALM_TREE_LEFT) ||
+  return (current_level == LEVEL_1_2 && ((tile_left_bottom == PALM_TREE_LEFT) ||
                                  (tile_left_bottom == PALM_TREE_CENTER) ||
                                  (tile_left_bottom == PALM_TREE_RIGHT) ||
                                  (tile_right_bottom == PALM_TREE_LEFT) ||
                                  (tile_right_bottom == PALM_TREE_CENTER) ||
                                  (tile_right_bottom == PALM_TREE_RIGHT))) ||
-         (current_level == 3 && ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
+         (current_level == LEVEL_2_1 && ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
                                  (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
                                  (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
                                  (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
@@ -450,6 +446,74 @@ void on_break_tile(uint8_t x, uint8_t y) {
   music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
                  MUSIC_SFX_PRIORITY_NORMAL);
   #endif
+}
+
+#define BLOCK_BUMP_FRAMES 12
+#define BLOCK_BUMP_RISE 6
+
+static struct {
+  bool active;
+  uint8_t timer;
+  uint8_t screen_x;
+  uint8_t screen_y_base;
+  uint8_t index_x;
+  uint8_t index_y;
+  uint8_t hw_sprite;
+} block_bump_state;
+
+void on_block_bump(uint8_t x, uint8_t y) BANKED {
+  uint8_t index_x = TILE_INDEX_X(x, camera_x);
+  uint8_t index_y = TILE_INDEX_Y(y);
+
+  map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
+  set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+
+#ifdef GAMEBOY
+  music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump),
+                 MUSIC_SFX_PRIORITY_NORMAL);
+
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(common));
+  set_sprite_data(90, 1, common_tiles + ((BREAKABLE_BLOCK - common_TILE_ORIGIN) * 16));
+  SWITCH_ROM(_saved_bank);
+
+  block_bump_state.active = true;
+  block_bump_state.timer = 0;
+  block_bump_state.screen_x = (index_x << 3) + DEVICE_SPRITE_PX_OFFSET_X - (uint8_t)camera_x;
+  block_bump_state.screen_y_base = (index_y << 3) + 5 * TILE_SIZE;
+  block_bump_state.index_x = index_x;
+  block_bump_state.index_y = index_y;
+#endif
+}
+
+void block_bump_update(void) BANKED {
+  if (!block_bump_state.active) return;
+
+  block_bump_state.timer++;
+  if (block_bump_state.timer >= BLOCK_BUMP_FRAMES) {
+    block_bump_state.active = false;
+    hide_sprite(block_bump_state.hw_sprite);
+    map_buffer[block_bump_state.index_y * DEVICE_SCREEN_BUFFER_WIDTH + block_bump_state.index_x] = BREAKABLE_BLOCK;
+    set_bkg_tile_xy(block_bump_state.index_x, block_bump_state.index_y, BREAKABLE_BLOCK);
+  }
+}
+
+uint8_t block_bump_draw(uint8_t base_sprite) BANKED {
+  if (!block_bump_state.active) return base_sprite;
+
+  block_bump_state.hw_sprite = base_sprite;
+
+  int8_t y_offset;
+  if (block_bump_state.timer < BLOCK_BUMP_RISE) {
+    y_offset = -(block_bump_state.timer + 1) * 2;
+  } else {
+    y_offset = -((BLOCK_BUMP_FRAMES - 1) - block_bump_state.timer) * 2;
+  }
+
+  move_sprite(base_sprite, block_bump_state.screen_x, block_bump_state.screen_y_base + y_offset);
+  set_sprite_tile(base_sprite, 90);
+
+  return base_sprite + 1;
 }
 
 /**
@@ -655,7 +719,7 @@ void level_set_current(void) NONBANKED {
  */
 void load_current_level(void) NONBANKED {
   camera_x = 0;
-  move_bkg(0, -16);
+  move_bkg(0, SCROLL_TOP_OFFSET);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;

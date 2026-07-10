@@ -10,8 +10,8 @@ void coin_animated_new(uint8_t index_x, uint8_t index_y) {
   coin_animated_array[coin_index].draw_x = index_x << 3;
   coin_animated_array[coin_index].draw_y = index_y << 3;
   coin_animated_array[coin_index].ttl = COIN_ANIMATED_INITIAL_TTL;
-  hide_sprite(10 + coin_index);
-  coin_animated_array[coin_index].hw_sprite_index = 10 + coin_index;
+  hide_sprite(COIN_HW_SPRITE_BASE + coin_index);
+  coin_animated_array[coin_index].hw_sprite_index = COIN_HW_SPRITE_BASE + coin_index;
   coin_index = (coin_index + 1) % NB_COIN_ANIMATED;
 }
 

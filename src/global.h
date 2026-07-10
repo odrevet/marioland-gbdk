@@ -43,4 +43,37 @@
 #define MARGIN_TOP_PX 2 * TILE_SIZE
 #define DEVICE_SPRITE_OFFSET_Y 2
 
+// World level ranges
+#define LEVEL_WORLD1_END 2
+#define LEVEL_WORLD2_START 3
+#define LEVEL_WORLD2_END 5
+#define LEVEL_WORLD3_START 6
+#define LEVEL_WORLD3_END 8
+#define LEVEL_WORLD4_START 9
+#define LEVEL_WORLD4_END 11
+
+#define IS_VEHICLE_LEVEL(l) ((l) == 5 || (l) == 11)
+
+// Specific level indices
+#define LEVEL_1_2 1
+#define LEVEL_1_3 2
+#define LEVEL_2_1 3
+
+// Constants for collision snapping
+#define TILE_SNAP_MASK (TILE_SIZE - 1)
+#define TILE_ALIGN(n) (((n) + TILE_SNAP_MASK) & ~TILE_SNAP_MASK)
+
+// Render constants
+#define SCROLL_TOP_OFFSET (-(MARGIN_TOP * TILE_SIZE))
+#define PLAYER_SCREEN_LEFT_MARGIN 12
+
+// Bank switching helper macro
+#define WITH_BANK(bank, body) \
+  do {                        \
+    uint8_t _saved = _current_bank; \
+    SWITCH_ROM(bank);         \
+    body;                     \
+    SWITCH_ROM(_saved);       \
+  } while (0)
+
 #endif
