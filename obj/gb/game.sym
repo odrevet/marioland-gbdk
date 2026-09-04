@@ -1,0 +1,75 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+  0 ___str_0                                                        0000011A R
+  0 ___str_1                                                        00000120 R
+    __moduchar                                                      ******** GX
+    _camera_x                                                       ******** GX
+    _camera_x_upscaled                                              ******** GX
+    _current_column_in_page                                         ******** GX
+    _current_level                                                  ******** GX
+    _current_map                                                    ******** GX
+    _current_page                                                   ******** GX
+    _delay                                                          ******** GX
+  0 _die                                                            00000126 GR
+    _display_jump_frame                                             ******** GX
+    _display_slide_frame                                            ******** GX
+    _display_walk_animation                                         ******** GX
+    _frame_counter                                                  ******** GX
+    _hUGE_mute_channel                                              ******** GX
+    _hud_update_lives                                               ******** GX
+    _hud_update_time                                                ******** GX
+  0 _init                                                           00000000 GR
+    _joypad                                                         ******** GX
+    _joypad_current                                                 ******** GX
+    _joypad_previous                                                ******** GX
+    _level_set_current                                              ******** GX
+    _levels                                                         ******** GX
+    _lives                                                          ******** GX
+    _map_column                                                     ******** GX
+    _marioSpritesflip                                               ******** GX
+    _music_current_track_bank                                       ******** GX
+    _music_next_track                                               ******** GX
+    _player_draw                                                    ******** GX
+    _player_draw_x                                                  ******** GX
+    _player_draw_y                                                  ******** GX
+    _player_frame                                                   ******** GX
+    _player_warp_to                                                 ******** GX
+    _player_x_next_upscaled                                         ******** GX
+    _player_x_upscaled                                              ******** GX
+    _player_y                                                       ******** GX
+    _player_y_next_upscaled                                         ******** GX
+    _player_y_upscaled                                              ******** GX
+    _set_level                                                      ******** GX
+  0 _state_pause                                                    000000A8 GR
+  0 _state_title                                                    0000008F GR
+    _text_print_string                                              ******** GX
+    _time                                                           ******** GX
+    _touch_ground                                                   ******** GX
+    _vel_x                                                          ******** GX
+    _vel_y                                                          ******** GX
+    _vsync                                                          ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      204   flags    0
+   1 _HRAM                                      size        0   flags    0
+   2 _DATA                                      size        0   flags    0
+   3 _INITIALIZED                               size        0   flags    0
+   4 _DABS                                      size        0   flags    8
+   5 _HOME                                      size        0   flags    0
+   6 _GSINIT                                    size        0   flags    0
+   7 _GSFINAL                                   size        0   flags    0
+   8 _INITIALIZER                               size        0   flags    0
+   9 _CABS                                      size        0   flags    8
+

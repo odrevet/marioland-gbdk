@@ -1,0 +1,58 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _NR12_REG                                                       ******** GX
+    _NR14_REG                                                       ******** GX
+    _NR22_REG                                                       ******** GX
+    _NR24_REG                                                       ******** GX
+    _NR32_REG                                                       ******** GX
+    _NR42_REG                                                       ******** GX
+    _NR44_REG                                                       ******** GX
+    _NR51_REG                                                       ******** GX
+    __current_bank                                                  ******** GX
+  8 __xinit__music_current_track_bank                               00000000 R
+  8 __xinit__music_mute_mask                                        00000001 R
+  8 __xinit__music_play_isr_counter                                 00000002 R
+  8 __xinit__music_play_isr_pause                                   00000003 R
+  8 __xinit__music_sfx_priority                                     00000004 R
+  8 __xinit__music_tick_mask                                        00000005 R
+    _hUGE_current_wave                                              ******** GX
+    _hUGE_dosound                                                   ******** GX
+    _hUGE_init                                                      ******** GX
+    _hUGE_mute_mask                                                 ******** GX
+  3 _music_current_track_bank                                       00000000 GR
+  3 _music_mute_mask                                                00000001 GR
+  2 _music_next_track                                               00000000 GR
+  0 _music_pause                                                    00000000 GR
+  5 _music_play_isr                                                 00000000 GR
+  3 _music_play_isr_counter                                         00000002 GR
+  3 _music_play_isr_pause                                           00000003 GR
+  3 _music_sfx_priority                                             00000004 GR
+  3 _music_tick_mask                                                00000005 GR
+    _rROMB0                                                         ******** GX
+    _sfx_play_bank                                                  ******** GX
+    _sfx_play_isr                                                   ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size       22   flags    0
+   1 _HRAM                                      size        0   flags    0
+   2 _DATA                                      size        2   flags    0
+   3 _INITIALIZED                               size        6   flags    0
+   4 _DABS                                      size        0   flags    8
+   5 _HOME                                      size       87   flags    0
+   6 _GSINIT                                    size        0   flags    0
+   7 _GSFINAL                                   size        0   flags    0
+   8 _INITIALIZER                               size        6   flags    0
+   9 _CABS                                      size        0   flags    8
+

@@ -11,7 +11,7 @@
 
 #include "level.h"
 
-#include "graphics/sprite_common.h"
+#include "commonSprites.h"
 
 typedef enum {
   DIRECTION_VERTICAL,

@@ -1,0 +1,3170 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.1 #15267 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module level
+                                      6 	
+                                      7 ;--------------------------------------------------------
+                                      8 ; Public variables in this module
+                                      9 ;--------------------------------------------------------
+                                     10 	.globl _powerup_new
+                                     11 	.globl _enemy_new
+                                     12 	.globl _hud_update_lives
+                                     13 	.globl _hud_update_score
+                                     14 	.globl _hud_update_coins
+                                     15 	.globl _hud_set_level
+                                     16 	.globl _pipe_clear
+                                     17 	.globl _pipe_new
+                                     18 	.globl _platform_falling_new
+                                     19 	.globl _platform_moving_new
+                                     20 	.globl _coin_animated_new
+                                     21 	.globl _hide_sprites_range
+                                     22 	.globl _set_sprite_data
+                                     23 	.globl _set_bkg_tile_xy
+                                     24 	.globl _set_bkg_tiles
+                                     25 	.globl _set_bkg_data
+                                     26 	.globl _col_from
+                                     27 	.globl _current_page
+                                     28 	.globl _level_page_x_offset
+                                     29 	.globl _current_column_in_page
+                                     30 	.globl _map_column
+                                     31 	.globl _map_buffer
+                                     32 	.globl _level_lookup_size
+                                     33 	.globl _level_lookup
+                                     34 	.globl _level_lookup_bank
+                                     35 	.globl _level_bank
+                                     36 	.globl _current_map_width_in_tiles
+                                     37 	.globl _current_map_width
+                                     38 	.globl _current_map_tile_count
+                                     39 	.globl _current_map_tiles
+                                     40 	.globl _current_map_tile_origin
+                                     41 	.globl _current_level
+                                     42 	.globl _level_end_reached
+                                     43 	.globl _coldata
+                                     44 	.globl _current_map
+                                     45 	.globl _load_col_at
+                                     46 	.globl _camera_x_upscaled
+                                     47 	.globl _camera_x
+                                     48 	.globl _undergrounds
+                                     49 	.globl _levels
+                                     50 	.globl _get_tile
+                                     51 	.globl _is_tile_solid
+                                     52 	.globl _is_tile_passthought
+                                     53 	.globl _is_coin
+                                     54 	.globl _on_get_coin_background
+                                     55 	.globl _on_break_tile
+                                     56 	.globl b_on_block_bump
+                                     57 	.globl _on_block_bump
+                                     58 	.globl b_block_bump_update
+                                     59 	.globl _block_bump_update
+                                     60 	.globl b_block_bump_draw
+                                     61 	.globl _block_bump_draw
+                                     62 	.globl _on_get_coin
+                                     63 	.globl _on_interogation_block_hit
+                                     64 	.globl _level_load_objects
+                                     65 	.globl _level_load_column
+                                     66 	.globl _level_set_current
+                                     67 	.globl _load_current_level
+                                     68 	.globl _set_level
+                                     69 ;--------------------------------------------------------
+                                     70 ; special function registers
+                                     71 ;--------------------------------------------------------
+                                     72 	.area _HRAM
+                                     73 ;--------------------------------------------------------
+                                     74 ; ram data
+                                     75 ;--------------------------------------------------------
+                                     76 	.area _DATA
+    00000000                         77 _camera_x::
+    00000000                         78 	.ds 2
+    00000002                         79 _camera_x_upscaled::
+    00000002                         80 	.ds 2
+    00000004                         81 _load_col_at::
+    00000004                         82 	.ds 2
+    00000006                         83 _current_map::
+    00000006                         84 	.ds 2
+    00000008                         85 _coldata::
+    00000008                         86 	.ds 16
+    00000018                         87 _level_end_reached::
+    00000018                         88 	.ds 1
+    00000019                         89 _current_level::
+    00000019                         90 	.ds 1
+    0000001A                         91 _current_map_tile_origin::
+    0000001A                         92 	.ds 2
+    0000001C                         93 _current_map_tiles::
+    0000001C                         94 	.ds 2
+    0000001E                         95 _current_map_tile_count::
+    0000001E                         96 	.ds 2
+    00000020                         97 _current_map_width::
+    00000020                         98 	.ds 2
+    00000022                         99 _current_map_width_in_tiles::
+    00000022                        100 	.ds 2
+    00000024                        101 _level_bank::
+    00000024                        102 	.ds 1
+    00000025                        103 _level_lookup_bank::
+    00000025                        104 	.ds 1
+    00000026                        105 _level_lookup::
+    00000026                        106 	.ds 2
+    00000028                        107 _level_lookup_size::
+    00000028                        108 	.ds 2
+    0000002A                        109 _block_bump_state:
+    0000002A                        110 	.ds 7
+                                    111 ;--------------------------------------------------------
+                                    112 ; ram data
+                                    113 ;--------------------------------------------------------
+                                    114 	.area _INITIALIZED
+    00000000                        115 _map_buffer::
+    00000000                        116 	.ds 512
+    00000200                        117 _map_column::
+    00000200                        118 	.ds 1
+    00000201                        119 _current_column_in_page::
+    00000201                        120 	.ds 1
+    00000202                        121 _level_page_x_offset::
+    00000202                        122 	.ds 2
+    00000204                        123 _current_page::
+    00000204                        124 	.ds 1
+    00000205                        125 _col_from::
+    00000205                        126 	.ds 2
+                                    127 ;--------------------------------------------------------
+                                    128 ; absolute external ram data
+                                    129 ;--------------------------------------------------------
+                                    130 	.area _DABS (ABS)
+                                    131 ;--------------------------------------------------------
+                                    132 ; global & static initialisations
+                                    133 ;--------------------------------------------------------
+                                    134 	.area _HOME
+                                    135 	.area _GSINIT
+                                    136 	.area _GSFINAL
+                                    137 	.area _GSINIT
+                                    138 ;--------------------------------------------------------
+                                    139 ; Home
+                                    140 ;--------------------------------------------------------
+                                    141 	.area _HOME
+                                    142 ;src/level.c:597: void level_load_objects(uint16_t col) NONBANKED {
+                                    143 ;	---------------------------------
+                                    144 ; Function level_load_objects
+                                    145 ; ---------------------------------
+    00000000                        146 _level_load_objects::
+    00000000 E8 F0            [16]  147 	add	sp, #-16
+    00000002 F8 0C            [12]  148 	ldhl	sp,	#12
+    00000004 73               [ 8]  149 	ld	(hl), e
+    00000005 23               [ 8]  150 	inc	hl
+    00000006 72               [ 8]  151 	ld	(hl), d
+                                    152 ;src/level.c:598: uint8_t _saved_bank = _current_bank;
+    00000007 F0r00            [12]  153 	ldh	a, (__current_bank + 0)
+    00000009 F8 04            [12]  154 	ldhl	sp,	#4
+    0000000B 77               [ 8]  155 	ld	(hl), a
+                                    156 ;src/level.c:599: SWITCH_ROM(level_lookup_bank);
+    0000000C FAr25r00         [16]  157 	ld	a, (_level_lookup_bank)
+    0000000F E0r00            [12]  158 	ldh	(__current_bank + 0), a
+    00000011 EAr00r00         [16]  159 	ld	(#_rROMB0),a
+                                    160 ;src/level.c:601: for (uint16_t i = col_from; i < level_lookup_size; i++) {
+    00000014 FAr05r02         [16]  161 	ld	a, (#_col_from)
+    00000017 F8 0A            [12]  162 	ldhl	sp,	#10
+    00000019 77               [ 8]  163 	ld	(hl), a
+    0000001A FAr06r02         [16]  164 	ld	a, (#_col_from + 1)
+    0000001D F8 0B            [12]  165 	ldhl	sp,	#11
+    0000001F 32               [ 8]  166 	ld	(hl-), a
+    00000020 7E               [ 8]  167 	ld	a, (hl)
+    00000021 F8 0E            [12]  168 	ldhl	sp,	#14
+    00000023 77               [ 8]  169 	ld	(hl), a
+    00000024 F8 0B            [12]  170 	ldhl	sp,	#11
+    00000026 7E               [ 8]  171 	ld	a, (hl)
+    00000027 F8 0F            [12]  172 	ldhl	sp,	#15
+    00000029 77               [ 8]  173 	ld	(hl), a
+    0000002A                        174 00125$:
+    0000002A F8 0E            [12]  175 	ldhl	sp,	#14
+    0000002C 2A               [ 8]  176 	ld	a, (hl+)
+    0000002D 4F               [ 4]  177 	ld	c, a
+    0000002E 46               [ 8]  178 	ld	b, (hl)
+    0000002F 21r28r00         [12]  179 	ld	hl, #_level_lookup_size
+    00000032 79               [ 4]  180 	ld	a, c
+    00000033 96               [ 8]  181 	sub	a, (hl)
+    00000034 23               [ 8]  182 	inc	hl
+    00000035 78               [ 4]  183 	ld	a, b
+    00000036 9E               [ 8]  184 	sbc	a, (hl)
+    00000037 D2r18r02         [16]  185 	jp	NC, 00123$
+                                    186 ;src/level.c:602: level_object *obj = &level_lookup[i];
+    0000003A F8 0E            [12]  187 	ldhl	sp,#14
+    0000003C 2A               [ 8]  188 	ld	a, (hl+)
+    0000003D 4F               [ 4]  189 	ld	c, a
+    0000003E 46               [ 8]  190 	ld	b, (hl)
+    0000003F 69               [ 4]  191 	ld	l, c
+    00000040 60               [ 4]  192 	ld	h, b
+    00000041 29               [ 8]  193 	add	hl, hl
+    00000042 29               [ 8]  194 	add	hl, hl
+    00000043 09               [ 8]  195 	add	hl, bc
+    00000044 29               [ 8]  196 	add	hl, hl
+    00000045 09               [ 8]  197 	add	hl, bc
+    00000046 4D               [ 4]  198 	ld	c, l
+    00000047 44               [ 4]  199 	ld	b, h
+    00000048 21r26r00         [12]  200 	ld	hl, #_level_lookup
+    0000004B 2A               [ 8]  201 	ld	a,	(hl+)
+    0000004C 66               [ 8]  202 	ld	h, (hl)
+    0000004D 6F               [ 4]  203 	ld	l, a
+    0000004E 09               [ 8]  204 	add	hl, bc
+    0000004F 33               [ 8]  205 	inc	sp
+    00000050 33               [ 8]  206 	inc	sp
+                                    207 ;src/level.c:603: if (obj->x == col) {
+    00000051 5D               [ 4]  208 	ld	e, l
+    00000052 54               [ 4]  209 	ld	d, h
+    00000053 D5               [16]  210 	push	de
+    00000054 1A               [ 8]  211 	ld	a, (de)
+    00000055 F8 07            [12]  212 	ldhl	sp,	#7
+    00000057 22               [ 8]  213 	ld	(hl+), a
+    00000058 13               [ 8]  214 	inc	de
+    00000059 1A               [ 8]  215 	ld	a, (de)
+    0000005A 32               [ 8]  216 	ld	(hl-), a
+    0000005B 7E               [ 8]  217 	ld	a, (hl)
+    0000005C F8 0C            [12]  218 	ldhl	sp,	#12
+    0000005E 96               [ 8]  219 	sub	a, (hl)
+    0000005F C2rE6r01         [16]  220 	jp	NZ, 00121$
+    00000062 F8 08            [12]  221 	ldhl	sp,	#8
+    00000064 7E               [ 8]  222 	ld	a, (hl)
+    00000065 F8 0D            [12]  223 	ldhl	sp,	#13
+    00000067 96               [ 8]  224 	sub	a, (hl)
+    00000068 C2rE6r01         [16]  225 	jp	NZ, 00121$
+                                    226 ;src/level.c:604: if (obj->type == OBJECT_TYPE_ENEMY) {
+    0000006B C1               [12]  227 	pop	bc
+    0000006C C5               [16]  228 	push	bc
+    0000006D 03               [ 8]  229 	inc	bc
+    0000006E 03               [ 8]  230 	inc	bc
+    0000006F 03               [ 8]  231 	inc	bc
+    00000070 0A               [ 8]  232 	ld	a, (bc)
+    00000071 F8 09            [12]  233 	ldhl	sp,	#9
+    00000073 77               [ 8]  234 	ld	(hl), a
+                                    235 ;src/level.c:608: obj->data.enemy.type);
+    00000074 D1               [12]  236 	pop	de
+    00000075 D5               [16]  237 	push	de
+    00000076 21 04 00         [12]  238 	ld	hl, #0x0004
+    00000079 19               [ 8]  239 	add	hl, de
+    0000007A 4D               [ 4]  240 	ld	c, l
+    0000007B 44               [ 4]  241 	ld	b, h
+                                    242 ;src/level.c:607: (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
+    0000007C D1               [12]  243 	pop	de
+    0000007D D5               [16]  244 	push	de
+    0000007E 21 02 00         [12]  245 	ld	hl, #0x0002
+    00000081 19               [ 8]  246 	add	hl, de
+    00000082 E5               [16]  247 	push	hl
+    00000083 7D               [ 4]  248 	ld	a, l
+    00000084 F8 0C            [12]  249 	ldhl	sp,	#12
+    00000086 77               [ 8]  250 	ld	(hl), a
+    00000087 E1               [12]  251 	pop	hl
+    00000088 7C               [ 4]  252 	ld	a, h
+    00000089 F8 0B            [12]  253 	ldhl	sp,	#11
+                                    254 ;src/level.c:604: if (obj->type == OBJECT_TYPE_ENEMY) {
+    0000008B 32               [ 8]  255 	ld	(hl-), a
+    0000008C 2B               [ 8]  256 	dec	hl
+    0000008D 7E               [ 8]  257 	ld	a, (hl)
+    0000008E B7               [ 4]  258 	or	a, a
+    0000008F 20 41            [12]  259 	jr	NZ, 00116$
+                                    260 ;src/level.c:605: uint16_t relative_x = obj->x - level_page_x_offset;
+    00000091 2B               [ 8]  261 	dec	hl
+    00000092 2B               [ 8]  262 	dec	hl
+    00000093 2A               [ 8]  263 	ld	a, (hl+)
+    00000094 5F               [ 4]  264 	ld	e, a
+    00000095 56               [ 8]  265 	ld	d, (hl)
+    00000096 21r02r02         [12]  266 	ld	hl, #_level_page_x_offset
+    00000099 2A               [ 8]  267 	ld	a,	(hl+)
+    0000009A 66               [ 8]  268 	ld	h, (hl)
+    0000009B 6F               [ 4]  269 	ld	l, a
+    0000009C 7B               [ 4]  270 	ld	a, e
+    0000009D 95               [ 4]  271 	sub	a, l
+    0000009E 5F               [ 4]  272 	ld	e, a
+    0000009F 7A               [ 4]  273 	ld	a, d
+    000000A0 9C               [ 4]  274 	sbc	a, h
+    000000A1 F8 06            [12]  275 	ldhl	sp,	#6
+    000000A3 32               [ 8]  276 	ld	(hl-), a
+    000000A4 73               [ 8]  277 	ld	(hl), e
+                                    278 ;src/level.c:608: obj->data.enemy.type);
+    000000A5 0A               [ 8]  279 	ld	a, (bc)
+    000000A6 F8 09            [12]  280 	ldhl	sp,	#9
+                                    281 ;src/level.c:607: (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
+    000000A8 22               [ 8]  282 	ld	(hl+), a
+    000000A9 2A               [ 8]  283 	ld	a, (hl+)
+    000000AA 5F               [ 4]  284 	ld	e, a
+    000000AB 56               [ 8]  285 	ld	d, (hl)
+    000000AC 1A               [ 8]  286 	ld	a, (de)
+    000000AD 6F               [ 4]  287 	ld	l, a
+    000000AE AF               [ 4]  288 	xor	a, a
+    000000AF 67               [ 4]  289 	ld	h, a
+    000000B0 23               [ 8]  290 	inc	hl
+    000000B1 23               [ 8]  291 	inc	hl
+    000000B2 29               [ 8]  292 	add	hl, hl
+    000000B3 29               [ 8]  293 	add	hl, hl
+    000000B4 29               [ 8]  294 	add	hl, hl
+    000000B5 01 F0 FF         [12]  295 	ld	bc, #0xfff0
+    000000B8 09               [ 8]  296 	add	hl,bc
+    000000B9 4D               [ 4]  297 	ld	c, l
+    000000BA 44               [ 4]  298 	ld	b, h
+                                    299 ;src/level.c:606: enemy_new(relative_x * TILE_SIZE,
+    000000BB F8 05            [12]  300 	ldhl	sp,	#5
+    000000BD 2A               [ 8]  301 	ld	a, (hl+)
+    000000BE 5F               [ 4]  302 	ld	e, a
+    000000BF 56               [ 8]  303 	ld	d, (hl)
+    000000C0 6B               [ 4]  304 	ld	l, e
+    000000C1 62               [ 4]  305 	ld	h, d
+    000000C2 29               [ 8]  306 	add	hl, hl
+    000000C3 29               [ 8]  307 	add	hl, hl
+    000000C4 29               [ 8]  308 	add	hl, hl
+    000000C5 5D               [ 4]  309 	ld	e, l
+    000000C6 54               [ 4]  310 	ld	d, h
+    000000C7 F8 09            [12]  311 	ldhl	sp,	#9
+    000000C9 7E               [ 8]  312 	ld	a, (hl)
+    000000CA F5               [16]  313 	push	af
+    000000CB 33               [ 8]  314 	inc	sp
+    000000CC CDr00r00         [24]  315 	call	_enemy_new
+    000000CF C3r02r02         [16]  316 	jp	00126$
+    000000D2                        317 00116$:
+                                    318 ;src/level.c:610: } else if (obj->type == OBJECT_TYPE_POWERUP) {
+    000000D2 F8 09            [12]  319 	ldhl	sp,	#9
+    000000D4 7E               [ 8]  320 	ld	a, (hl)
+    000000D5 3D               [ 4]  321 	dec	a
+    000000D6 CAr02r02         [16]  322 	jp	Z, 00126$
+                                    323 ;src/level.c:614: obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE,
+    000000D9 F8 07            [12]  324 	ldhl	sp,	#7
+    000000DB 2A               [ 8]  325 	ld	a, (hl+)
+    000000DC 5E               [ 8]  326 	ld	e, (hl)
+    000000DD 87               [ 4]  327 	add	a, a
+    000000DE CB 13            [ 8]  328 	rl	e
+    000000E0 87               [ 4]  329 	add	a, a
+    000000E1 CB 13            [ 8]  330 	rl	e
+    000000E3 87               [ 4]  331 	add	a, a
+    000000E4 CB 13            [ 8]  332 	rl	e
+    000000E6 F8 05            [12]  333 	ldhl	sp,	#5
+    000000E8 22               [ 8]  334 	ld	(hl+), a
+    000000E9 73               [ 8]  335 	ld	(hl), e
+                                    336 ;src/level.c:612: } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
+    000000EA F8 09            [12]  337 	ldhl	sp,	#9
+    000000EC 7E               [ 8]  338 	ld	a, (hl)
+    000000ED D6 02            [ 8]  339 	sub	a, #0x02
+    000000EF 20 65            [12]  340 	jr	NZ, 00110$
+                                    341 ;src/level.c:616: obj->data.platform_moving.range, obj->data.platform_moving.width);
+    000000F1 D1               [12]  342 	pop	de
+    000000F2 D5               [16]  343 	push	de
+    000000F3 21 06 00         [12]  344 	ld	hl, #0x0006
+    000000F6 19               [ 8]  345 	add	hl, de
+    000000F7 5D               [ 4]  346 	ld	e, l
+    000000F8 54               [ 4]  347 	ld	d, h
+    000000F9 1A               [ 8]  348 	ld	a, (de)
+    000000FA F8 07            [12]  349 	ldhl	sp,	#7
+    000000FC 22               [ 8]  350 	ld	(hl+), a
+    000000FD 0A               [ 8]  351 	ld	a, (bc)
+    000000FE 77               [ 8]  352 	ld	(hl), a
+                                    353 ;src/level.c:615: obj->data.platform_moving.platform_direction,
+    000000FF D1               [12]  354 	pop	de
+    00000100 D5               [16]  355 	push	de
+    00000101 21 05 00         [12]  356 	ld	hl, #0x0005
+    00000104 19               [ 8]  357 	add	hl, de
+    00000105 E5               [16]  358 	push	hl
+    00000106 7D               [ 4]  359 	ld	a, l
+    00000107 F8 04            [12]  360 	ldhl	sp,	#4
+    00000109 77               [ 8]  361 	ld	(hl), a
+    0000010A E1               [12]  362 	pop	hl
+    0000010B 7C               [ 4]  363 	ld	a, h
+    0000010C F8 03            [12]  364 	ldhl	sp,	#3
+    0000010E 32               [ 8]  365 	ld	(hl-), a
+    0000010F 2A               [ 8]  366 	ld	a, (hl+)
+    00000110 5F               [ 4]  367 	ld	e, a
+    00000111 56               [ 8]  368 	ld	d, (hl)
+    00000112 1A               [ 8]  369 	ld	a, (de)
+    00000113 F8 09            [12]  370 	ldhl	sp,	#9
+                                    371 ;src/level.c:614: obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE,
+    00000115 22               [ 8]  372 	ld	(hl+), a
+    00000116 2A               [ 8]  373 	ld	a, (hl+)
+    00000117 5F               [ 4]  374 	ld	e, a
+    00000118 56               [ 8]  375 	ld	d, (hl)
+    00000119 1A               [ 8]  376 	ld	a, (de)
+    0000011A 77               [ 8]  377 	ld	(hl), a
+    0000011B 7E               [ 8]  378 	ld	a, (hl)
+    0000011C F8 02            [12]  379 	ldhl	sp,	#2
+    0000011E 22               [ 8]  380 	ld	(hl+), a
+    0000011F AF               [ 4]  381 	xor	a, a
+    00000120 32               [ 8]  382 	ld	(hl-), a
+    00000121 2A               [ 8]  383 	ld	a, (hl+)
+    00000122 5F               [ 4]  384 	ld	e, a
+    00000123 56               [ 8]  385 	ld	d, (hl)
+    00000124 21 02 00         [12]  386 	ld	hl, #0x0002
+    00000127 19               [ 8]  387 	add	hl, de
+    00000128 E5               [16]  388 	push	hl
+    00000129 7D               [ 4]  389 	ld	a, l
+    0000012A F8 0C            [12]  390 	ldhl	sp,	#12
+    0000012C 77               [ 8]  391 	ld	(hl), a
+    0000012D E1               [12]  392 	pop	hl
+    0000012E 7C               [ 4]  393 	ld	a, h
+    0000012F F8 0B            [12]  394 	ldhl	sp,	#11
+    00000131 77               [ 8]  395 	ld	(hl), a
+    00000132 3E 03            [ 8]  396 	ld	a, #0x03
+    00000134                        397 00205$:
+    00000134 F8 0A            [12]  398 	ldhl	sp,	#10
+    00000136 CB 26            [16]  399 	sla	(hl)
+    00000138 23               [ 8]  400 	inc	hl
+    00000139 CB 16            [16]  401 	rl	(hl)
+    0000013B 3D               [ 4]  402 	dec	a
+    0000013C 20 F6            [12]  403 	jr	NZ, 00205$
+    0000013E F8 07            [12]  404 	ldhl	sp,	#7
+    00000140 2A               [ 8]  405 	ld	a, (hl+)
+    00000141 57               [ 4]  406 	ld	d, a
+    00000142 2A               [ 8]  407 	ld	a, (hl+)
+    00000143 5F               [ 4]  408 	ld	e, a
+    00000144 D5               [16]  409 	push	de
+    00000145 2A               [ 8]  410 	ld	a, (hl+)
+    00000146 F5               [16]  411 	push	af
+    00000147 33               [ 8]  412 	inc	sp
+    00000148 2A               [ 8]  413 	ld	a, (hl+)
+    00000149 4F               [ 4]  414 	ld	c, a
+    0000014A 46               [ 8]  415 	ld	b, (hl)
+    0000014B F8 08            [12]  416 	ldhl	sp,	#8
+    0000014D 2A               [ 8]  417 	ld	a, (hl+)
+    0000014E 5F               [ 4]  418 	ld	e, a
+    0000014F 56               [ 8]  419 	ld	d, (hl)
+    00000150 CDr00r00         [24]  420 	call	_platform_moving_new
+    00000153 C3r02r02         [16]  421 	jp	00126$
+    00000156                        422 00110$:
+                                    423 ;src/level.c:617: } else if (obj->type == OBJECT_TYPE_PLATFORM_FALLING) {
+    00000156 F8 09            [12]  424 	ldhl	sp,	#9
+    00000158 7E               [ 8]  425 	ld	a, (hl)
+    00000159 D6 03            [ 8]  426 	sub	a, #0x03
+    0000015B 20 36            [12]  427 	jr	NZ, 00107$
+                                    428 ;src/level.c:619: (obj->y + MARGIN_TOP) * TILE_SIZE);
+    0000015D F8 0A            [12]  429 	ldhl	sp,#10
+    0000015F 2A               [ 8]  430 	ld	a, (hl+)
+    00000160 5F               [ 4]  431 	ld	e, a
+    00000161 56               [ 8]  432 	ld	d, (hl)
+    00000162 1A               [ 8]  433 	ld	a, (de)
+    00000163 F8 08            [12]  434 	ldhl	sp,	#8
+    00000165 22               [ 8]  435 	ld	(hl+), a
+    00000166 AF               [ 4]  436 	xor	a, a
+    00000167 32               [ 8]  437 	ld	(hl-), a
+    00000168 2A               [ 8]  438 	ld	a, (hl+)
+    00000169 5F               [ 4]  439 	ld	e, a
+    0000016A 56               [ 8]  440 	ld	d, (hl)
+    0000016B 21 02 00         [12]  441 	ld	hl, #0x0002
+    0000016E 19               [ 8]  442 	add	hl, de
+    0000016F E5               [16]  443 	push	hl
+    00000170 7D               [ 4]  444 	ld	a, l
+    00000171 F8 0C            [12]  445 	ldhl	sp,	#12
+    00000173 77               [ 8]  446 	ld	(hl), a
+    00000174 E1               [12]  447 	pop	hl
+    00000175 7C               [ 4]  448 	ld	a, h
+    00000176 F8 0B            [12]  449 	ldhl	sp,	#11
+    00000178 77               [ 8]  450 	ld	(hl), a
+    00000179 3E 03            [ 8]  451 	ld	a, #0x03
+    0000017B                        452 00208$:
+    0000017B F8 0A            [12]  453 	ldhl	sp,	#10
+    0000017D CB 26            [16]  454 	sla	(hl)
+    0000017F 23               [ 8]  455 	inc	hl
+    00000180 CB 16            [16]  456 	rl	(hl)
+    00000182 3D               [ 4]  457 	dec	a
+    00000183 20 F6            [12]  458 	jr	NZ, 00208$
+                                    459 ;src/level.c:618: platform_falling_new(obj->x * TILE_SIZE,
+    00000185 2B               [ 8]  460 	dec	hl
+    00000186 2A               [ 8]  461 	ld	a, (hl+)
+    00000187 4F               [ 4]  462 	ld	c, a
+    00000188 46               [ 8]  463 	ld	b, (hl)
+    00000189 F8 05            [12]  464 	ldhl	sp,	#5
+    0000018B 2A               [ 8]  465 	ld	a, (hl+)
+    0000018C 5F               [ 4]  466 	ld	e, a
+    0000018D 56               [ 8]  467 	ld	d, (hl)
+    0000018E CDr00r00         [24]  468 	call	_platform_falling_new
+    00000191 18 6F            [12]  469 	jr	00126$
+    00000193                        470 00107$:
+                                    471 ;src/level.c:622: pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_VERTICAL, &obj->data.pipe);
+    00000193 D1               [12]  472 	pop	de
+    00000194 D5               [16]  473 	push	de
+    00000195 21 04 00         [12]  474 	ld	hl, #0x0004
+    00000198 19               [ 8]  475 	add	hl, de
+    00000199 E5               [16]  476 	push	hl
+    0000019A 7D               [ 4]  477 	ld	a, l
+    0000019B F8 07            [12]  478 	ldhl	sp,	#7
+    0000019D 77               [ 8]  479 	ld	(hl), a
+    0000019E E1               [12]  480 	pop	hl
+    0000019F 7C               [ 4]  481 	ld	a, h
+    000001A0 F8 06            [12]  482 	ldhl	sp,	#6
+    000001A2 22               [ 8]  483 	ld	(hl+), a
+    000001A3 2A               [ 8]  484 	ld	a, (hl+)
+                                    485 ;src/level.c:621: else if (obj->type == OBJECT_TYPE_PIPE_VERTICAL) {
+    000001A4 22               [ 8]  486 	ld	(hl+), a
+    000001A5 7E               [ 8]  487 	ld	a, (hl)
+    000001A6 D6 04            [ 8]  488 	sub	a, #0x04
+    000001A8 20 19            [12]  489 	jr	NZ, 00104$
+                                    490 ;src/level.c:622: pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_VERTICAL, &obj->data.pipe);
+    000001AA F8 0A            [12]  491 	ldhl	sp,#10
+    000001AC 2A               [ 8]  492 	ld	a, (hl+)
+    000001AD 5F               [ 4]  493 	ld	e, a
+    000001AE 56               [ 8]  494 	ld	d, (hl)
+    000001AF 1A               [ 8]  495 	ld	a, (de)
+    000001B0 F8 05            [12]  496 	ldhl	sp,	#5
+    000001B2 5E               [ 8]  497 	ld	e, (hl)
+    000001B3 23               [ 8]  498 	inc	hl
+    000001B4 56               [ 8]  499 	ld	d, (hl)
+    000001B5 D5               [16]  500 	push	de
+    000001B6 26 00            [ 8]  501 	ld	h, #0x00
+    000001B8 E5               [16]  502 	push	hl
+    000001B9 33               [ 8]  503 	inc	sp
+    000001BA 5F               [ 4]  504 	ld	e, a
+    000001BB F8 0B            [12]  505 	ldhl	sp,	#11
+    000001BD 7E               [ 8]  506 	ld	a, (hl)
+    000001BE CDr00r00         [24]  507 	call	_pipe_new
+    000001C1 18 3F            [12]  508 	jr	00126$
+    000001C3                        509 00104$:
+                                    510 ;src/level.c:624: else if (obj->type == OBJECT_TYPE_PIPE_HORIZONTAL) {
+    000001C3 F8 09            [12]  511 	ldhl	sp,	#9
+    000001C5 7E               [ 8]  512 	ld	a, (hl)
+    000001C6 D6 05            [ 8]  513 	sub	a, #0x05
+    000001C8 20 38            [12]  514 	jr	NZ, 00126$
+                                    515 ;src/level.c:625: pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_HORIZONTAL, &obj->data.pipe);
+    000001CA F8 0A            [12]  516 	ldhl	sp,#10
+    000001CC 2A               [ 8]  517 	ld	a, (hl+)
+    000001CD 5F               [ 4]  518 	ld	e, a
+    000001CE 56               [ 8]  519 	ld	d, (hl)
+    000001CF 1A               [ 8]  520 	ld	a, (de)
+    000001D0 77               [ 8]  521 	ld	(hl), a
+    000001D1 F8 05            [12]  522 	ldhl	sp,	#5
+    000001D3 2A               [ 8]  523 	ld	a, (hl+)
+    000001D4 5F               [ 4]  524 	ld	e, a
+    000001D5 56               [ 8]  525 	ld	d, (hl)
+    000001D6 D5               [16]  526 	push	de
+    000001D7 3E 01            [ 8]  527 	ld	a, #0x01
+    000001D9 F5               [16]  528 	push	af
+    000001DA 33               [ 8]  529 	inc	sp
+    000001DB F8 0E            [12]  530 	ldhl	sp,	#14
+    000001DD 5E               [ 8]  531 	ld	e, (hl)
+    000001DE F8 0B            [12]  532 	ldhl	sp,	#11
+    000001E0 7E               [ 8]  533 	ld	a, (hl)
+    000001E1 CDr00r00         [24]  534 	call	_pipe_new
+    000001E4 18 1C            [12]  535 	jr	00126$
+    000001E6                        536 00121$:
+                                    537 ;src/level.c:627: } else if (obj->x > col) {
+    000001E6 F8 0C            [12]  538 	ldhl	sp,	#12
+    000001E8 5D               [ 4]  539 	ld	e, l
+    000001E9 54               [ 4]  540 	ld	d, h
+    000001EA F8 07            [12]  541 	ldhl	sp,	#7
+    000001EC 1A               [ 8]  542 	ld	a, (de)
+    000001ED 13               [ 8]  543 	inc	de
+    000001EE 96               [ 8]  544 	sub	a, (hl)
+    000001EF 23               [ 8]  545 	inc	hl
+    000001F0 1A               [ 8]  546 	ld	a, (de)
+    000001F1 9E               [ 8]  547 	sbc	a, (hl)
+    000001F2 30 0E            [12]  548 	jr	NC, 00126$
+                                    549 ;src/level.c:628: col_from = i;
+    000001F4 F8 0A            [12]  550 	ldhl	sp,	#10
+    000001F6 7E               [ 8]  551 	ld	a, (hl)
+    000001F7 EAr05r02         [16]  552 	ld	(#_col_from),a
+    000001FA F8 0B            [12]  553 	ldhl	sp,	#11
+    000001FC 7E               [ 8]  554 	ld	a, (hl)
+    000001FD EAr06r02         [16]  555 	ld	(#_col_from + 1),a
+                                    556 ;src/level.c:629: break;
+    00000200 18 16            [12]  557 	jr	00123$
+    00000202                        558 00126$:
+                                    559 ;src/level.c:601: for (uint16_t i = col_from; i < level_lookup_size; i++) {
+    00000202 F8 0E            [12]  560 	ldhl	sp,	#14
+    00000204 34               [12]  561 	inc	(hl)
+    00000205 20 02            [12]  562 	jr	NZ, 00213$
+    00000207 23               [ 8]  563 	inc	hl
+    00000208 34               [12]  564 	inc	(hl)
+    00000209                        565 00213$:
+    00000209 F8 0E            [12]  566 	ldhl	sp,	#14
+    0000020B 7E               [ 8]  567 	ld	a, (hl)
+    0000020C F8 0A            [12]  568 	ldhl	sp,	#10
+    0000020E 77               [ 8]  569 	ld	(hl), a
+    0000020F F8 0F            [12]  570 	ldhl	sp,	#15
+    00000211 7E               [ 8]  571 	ld	a, (hl)
+    00000212 F8 0B            [12]  572 	ldhl	sp,	#11
+    00000214 77               [ 8]  573 	ld	(hl), a
+    00000215 C3r2Ar00         [16]  574 	jp	00125$
+    00000218                        575 00123$:
+                                    576 ;src/level.c:633: SWITCH_ROM(_saved_bank);
+    00000218 F8 04            [12]  577 	ldhl	sp,	#4
+    0000021A 7E               [ 8]  578 	ld	a, (hl)
+    0000021B E0r00            [12]  579 	ldh	(__current_bank + 0), a
+    0000021D 7E               [ 8]  580 	ld	a, (hl)
+    0000021E EAr00r00         [16]  581 	ld	(#_rROMB0),a
+                                    582 ;src/level.c:634: }
+    00000221 E8 10            [16]  583 	add	sp, #16
+    00000223 C9               [16]  584 	ret
+                                    585 ;src/level.c:636: uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
+                                    586 ;	---------------------------------
+                                    587 ; Function level_load_column
+                                    588 ; ---------------------------------
+    00000224                        589 _level_load_column::
+    00000224 E8 F6            [16]  590 	add	sp, #-10
+    00000226 F8 06            [12]  591 	ldhl	sp,	#6
+    00000228 77               [ 8]  592 	ld	(hl), a
+    00000229 4B               [ 4]  593 	ld	c, e
+    0000022A 42               [ 4]  594 	ld	b, d
+                                    595 ;src/level.c:637: uint8_t _saved_bank = _current_bank;
+    0000022B F0r00            [12]  596 	ldh	a, (__current_bank + 0)
+    0000022D F8 00            [12]  597 	ldhl	sp,	#0
+    0000022F 77               [ 8]  598 	ld	(hl), a
+                                    599 ;src/level.c:638: uint8_t col = 0;
+    00000230 F8 09            [12]  600 	ldhl	sp,	#9
+    00000232 36 00            [12]  601 	ld	(hl), #0x00
+                                    602 ;src/level.c:642: while (col < nb) {
+    00000234 21 04 00         [12]  603 	ld	hl, #0x0004
+    00000237 09               [ 8]  604 	add	hl, bc
+    00000238 E5               [16]  605 	push	hl
+    00000239 7D               [ 4]  606 	ld	a, l
+    0000023A F8 03            [12]  607 	ldhl	sp,	#3
+    0000023C 77               [ 8]  608 	ld	(hl), a
+    0000023D E1               [12]  609 	pop	hl
+    0000023E 7C               [ 4]  610 	ld	a, h
+    0000023F F8 02            [12]  611 	ldhl	sp,	#2
+    00000241 22               [ 8]  612 	ld	(hl+), a
+    00000242 03               [ 8]  613 	inc	bc
+    00000243 03               [ 8]  614 	inc	bc
+    00000244 79               [ 4]  615 	ld	a, c
+    00000245 22               [ 8]  616 	ld	(hl+), a
+    00000246 70               [ 8]  617 	ld	(hl), b
+    00000247 F8 07            [12]  618 	ldhl	sp,	#7
+    00000249 36 00            [12]  619 	ld	(hl), #0x00
+    0000024B                        620 00106$:
+    0000024B F8 07            [12]  621 	ldhl	sp,	#7
+    0000024D 3A               [ 8]  622 	ld	a, (hl-)
+    0000024E 96               [ 8]  623 	sub	a, (hl)
+    0000024F D2r46r03         [16]  624 	jp	NC, 00108$
+                                    625 ;src/level.c:644: if (current_column_in_page == PAGE_SIZE) {
+    00000252 FAr01r02         [16]  626 	ld	a, (#_current_column_in_page)
+    00000255 D6 14            [ 8]  627 	sub	a, #0x14
+    00000257 20 08            [12]  628 	jr	NZ, 00102$
+                                    629 ;src/level.c:645: current_column_in_page = 0;
+    00000259 AF               [ 4]  630 	xor	a, a
+    0000025A EAr01r02         [16]  631 	ld	(#_current_column_in_page),a
+                                    632 ;src/level.c:646: current_page++;
+    0000025D 21r04r02         [12]  633 	ld	hl, #_current_page
+    00000260 34               [12]  634 	inc	(hl)
+    00000261                        635 00102$:
+                                    636 ;src/level.c:653: if (current_page >= level_to_load->page_count) {
+    00000261 F8 01            [12]  637 	ldhl	sp,#1
+    00000263 2A               [ 8]  638 	ld	a, (hl+)
+    00000264 5F               [ 4]  639 	ld	e, a
+    00000265 56               [ 8]  640 	ld	d, (hl)
+    00000266 1A               [ 8]  641 	ld	a, (de)
+    00000267 4F               [ 4]  642 	ld	c, a
+    00000268 FAr04r02         [16]  643 	ld	a, (#_current_page)
+    0000026B 91               [ 4]  644 	sub	a, c
+    0000026C 38 0F            [12]  645 	jr	C, 00104$
+                                    646 ;src/level.c:655: SWITCH_ROM(_saved_bank);
+    0000026E F8 00            [12]  647 	ldhl	sp,	#0
+    00000270 7E               [ 8]  648 	ld	a, (hl)
+    00000271 E0r00            [12]  649 	ldh	(__current_bank + 0), a
+    00000273 7E               [ 8]  650 	ld	a, (hl)
+    00000274 EAr00r00         [16]  651 	ld	(#_rROMB0),a
+                                    652 ;src/level.c:656: return col;
+    00000277 F8 09            [12]  653 	ldhl	sp,	#9
+    00000279 7E               [ 8]  654 	ld	a, (hl)
+    0000027A C3r52r03         [16]  655 	jp	00112$
+    0000027D                        656 00104$:
+                                    657 ;src/level.c:659: const banked_map_t *page_entry = level_to_load->map_pages + current_page;
+    0000027D F8 03            [12]  658 	ldhl	sp,#3
+    0000027F 2A               [ 8]  659 	ld	a, (hl+)
+    00000280 5F               [ 4]  660 	ld	e, a
+    00000281 56               [ 8]  661 	ld	d, (hl)
+    00000282 1A               [ 8]  662 	ld	a, (de)
+    00000283 F8 08            [12]  663 	ldhl	sp,	#8
+    00000285 22               [ 8]  664 	ld	(hl+), a
+    00000286 13               [ 8]  665 	inc	de
+    00000287 1A               [ 8]  666 	ld	a, (de)
+    00000288 77               [ 8]  667 	ld	(hl), a
+    00000289 21r04r02         [12]  668 	ld	hl, #_current_page
+    0000028C 4E               [ 8]  669 	ld	c, (hl)
+    0000028D 06 00            [ 8]  670 	ld	b, #0x00
+    0000028F 69               [ 4]  671 	ld	l, c
+    00000290 60               [ 4]  672 	ld	h, b
+    00000291 29               [ 8]  673 	add	hl, hl
+    00000292 09               [ 8]  674 	add	hl, bc
+    00000293 4D               [ 4]  675 	ld	c, l
+    00000294 44               [ 4]  676 	ld	b, h
+    00000295 F8 08            [12]  677 	ldhl	sp,	#8
+    00000297 2A               [ 8]  678 	ld	a,	(hl+)
+    00000298 66               [ 8]  679 	ld	h, (hl)
+    00000299 6F               [ 4]  680 	ld	l, a
+    0000029A 09               [ 8]  681 	add	hl, bc
+    0000029B 4D               [ 4]  682 	ld	c, l
+    0000029C 44               [ 4]  683 	ld	b, h
+                                    684 ;src/level.c:660: SWITCH_ROM(page_entry->bank);
+    0000029D 59               [ 4]  685 	ld	e, c
+    0000029E 50               [ 4]  686 	ld	d, b
+    0000029F 13               [ 8]  687 	inc	de
+    000002A0 13               [ 8]  688 	inc	de
+    000002A1 1A               [ 8]  689 	ld	a, (de)
+    000002A2 E0r00            [12]  690 	ldh	(__current_bank + 0), a
+    000002A4 1A               [ 8]  691 	ld	a, (de)
+    000002A5 EAr00r00         [16]  692 	ld	(#_rROMB0),a
+                                    693 ;src/level.c:673: current_page_data = page_entry->map;
+    000002A8 69               [ 4]  694 	ld	l, c
+    000002A9 60               [ 4]  695 	ld	h, b
+    000002AA 2A               [ 8]  696 	ld	a, (hl+)
+    000002AB 4F               [ 4]  697 	ld	c, a
+    000002AC 46               [ 8]  698 	ld	b, (hl)
+                                    699 ;src/level.c:679: for (int row = 0; row < LEVEL_HEIGHT; row++) {
+    000002AD AF               [ 4]  700 	xor	a, a
+    000002AE F8 08            [12]  701 	ldhl	sp,	#8
+    000002B0 22               [ 8]  702 	ld	(hl+), a
+    000002B1 77               [ 8]  703 	ld	(hl), a
+    000002B2                        704 00110$:
+    000002B2 F8 08            [12]  705 	ldhl	sp,	#8
+    000002B4 2A               [ 8]  706 	ld	a, (hl+)
+    000002B5 D6 10            [ 8]  707 	sub	a, #0x10
+    000002B7 7E               [ 8]  708 	ld	a, (hl)
+    000002B8 DE 00            [ 8]  709 	sbc	a, #0x00
+    000002BA 30 57            [12]  710 	jr	NC, 00105$
+                                    711 ;src/level.c:680: uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
+    000002BC 2B               [ 8]  712 	dec	hl
+    000002BD 2A               [ 8]  713 	ld	a, (hl+)
+    000002BE 5F               [ 4]  714 	ld	e, a
+    000002BF 56               [ 8]  715 	ld	d, (hl)
+    000002C0 6B               [ 4]  716 	ld	l, e
+    000002C1 62               [ 4]  717 	ld	h, d
+    000002C2 29               [ 8]  718 	add	hl, hl
+    000002C3 29               [ 8]  719 	add	hl, hl
+    000002C4 19               [ 8]  720 	add	hl, de
+    000002C5 29               [ 8]  721 	add	hl, hl
+    000002C6 29               [ 8]  722 	add	hl, hl
+    000002C7 FAr01r02         [16]  723 	ld	a, (_current_column_in_page)
+    000002CA 5F               [ 4]  724 	ld	e, a
+    000002CB 16 00            [ 8]  725 	ld	d, #0x00
+    000002CD 19               [ 8]  726 	add	hl, de
+    000002CE 09               [ 8]  727 	add	hl, bc
+    000002CF 7E               [ 8]  728 	ld	a, (hl)
+    000002D0 F8 05            [12]  729 	ldhl	sp,	#5
+    000002D2 77               [ 8]  730 	ld	(hl), a
+                                    731 ;src/level.c:681: map_buffer[row * DEVICE_SCREEN_BUFFER_WIDTH + map_column] = tile;
+    000002D3 F8 08            [12]  732 	ldhl	sp,	#8
+    000002D5 5E               [ 8]  733 	ld	e, (hl)
+    000002D6 16 00            [ 8]  734 	ld	d, #0x00
+    000002D8 CB 23            [ 8]  735 	sla	e
+    000002DA CB 12            [ 8]  736 	rl	d
+    000002DC CB 23            [ 8]  737 	sla	e
+    000002DE CB 12            [ 8]  738 	rl	d
+    000002E0 CB 23            [ 8]  739 	sla	e
+    000002E2 CB 12            [ 8]  740 	rl	d
+    000002E4 CB 23            [ 8]  741 	sla	e
+    000002E6 CB 12            [ 8]  742 	rl	d
+    000002E8 CB 23            [ 8]  743 	sla	e
+    000002EA CB 12            [ 8]  744 	rl	d
+    000002EC FAr00r02         [16]  745 	ld	a, (_map_column)
+    000002EF 6F               [ 4]  746 	ld	l, a
+    000002F0 26 00            [ 8]  747 	ld	h, #0x00
+    000002F2 19               [ 8]  748 	add	hl, de
+    000002F3 7D               [ 4]  749 	ld	a, l
+    000002F4 C6r00            [ 8]  750 	add	a, #<(_map_buffer)
+    000002F6 5F               [ 4]  751 	ld	e, a
+    000002F7 7C               [ 4]  752 	ld	a, h
+    000002F8 CEs00            [ 8]  753 	adc	a, #>(_map_buffer)
+    000002FA 57               [ 4]  754 	ld	d, a
+    000002FB F8 05            [12]  755 	ldhl	sp,	#5
+    000002FD 7E               [ 8]  756 	ld	a, (hl)
+    000002FE 12               [ 8]  757 	ld	(de), a
+                                    758 ;src/level.c:682: coldata[row] = tile;
+    000002FF 11r08r00         [12]  759 	ld	de, #_coldata
+    00000302 F8 08            [12]  760 	ldhl	sp,	#8
+    00000304 2A               [ 8]  761 	ld	a,	(hl+)
+    00000305 66               [ 8]  762 	ld	h, (hl)
+    00000306 6F               [ 4]  763 	ld	l, a
+    00000307 19               [ 8]  764 	add	hl, de
+    00000308 5D               [ 4]  765 	ld	e, l
+    00000309 54               [ 4]  766 	ld	d, h
+    0000030A F8 05            [12]  767 	ldhl	sp,	#5
+    0000030C 7E               [ 8]  768 	ld	a, (hl)
+    0000030D 12               [ 8]  769 	ld	(de), a
+                                    770 ;src/level.c:679: for (int row = 0; row < LEVEL_HEIGHT; row++) {
+    0000030E F8 08            [12]  771 	ldhl	sp,	#8
+    00000310 34               [12]  772 	inc	(hl)
+    00000311 18 9F            [12]  773 	jr	00110$
+    00000313                        774 00105$:
+                                    775 ;src/level.c:692: set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
+    00000313 11r08r00         [12]  776 	ld	de, #_coldata
+    00000316 D5               [16]  777 	push	de
+    00000317 21 01 10         [12]  778 	ld	hl, #0x1001
+    0000031A E5               [16]  779 	push	hl
+    0000031B AF               [ 4]  780 	xor	a, a
+    0000031C F5               [16]  781 	push	af
+    0000031D 33               [ 8]  782 	inc	sp
+    0000031E FAr00r02         [16]  783 	ld	a, (_map_column)
+    00000321 F5               [16]  784 	push	af
+    00000322 33               [ 8]  785 	inc	sp
+    00000323 CDr00r00         [24]  786 	call	_set_bkg_tiles
+    00000326 E8 06            [16]  787 	add	sp, #6
+                                    788 ;src/level.c:694: current_column_in_page++;
+    00000328 21r01r02         [12]  789 	ld	hl, #_current_column_in_page
+    0000032B 34               [12]  790 	inc	(hl)
+                                    791 ;src/level.c:695: col++;
+    0000032C F8 07            [12]  792 	ldhl	sp,	#7
+    0000032E 34               [12]  793 	inc	(hl)
+    0000032F 2A               [ 8]  794 	ld	a, (hl+)
+    00000330 23               [ 8]  795 	inc	hl
+    00000331 77               [ 8]  796 	ld	(hl), a
+                                    797 ;src/level.c:696: map_column = (map_column + 1) % 32;
+    00000332 FAr00r02         [16]  798 	ld	a, (_map_column)
+    00000335 16 00            [ 8]  799 	ld	d, #0x00
+    00000337 5F               [ 4]  800 	ld	e, a
+    00000338 13               [ 8]  801 	inc	de
+    00000339 01 20 00         [12]  802 	ld	bc, #0x0020
+    0000033C CDr00r00         [24]  803 	call	__modsint
+    0000033F 21r00r02         [12]  804 	ld	hl, #_map_column
+    00000342 71               [ 8]  805 	ld	(hl), c
+    00000343 C3r4Br02         [16]  806 	jp	00106$
+    00000346                        807 00108$:
+                                    808 ;src/level.c:701: SWITCH_ROM(_saved_bank);
+    00000346 F8 00            [12]  809 	ldhl	sp,	#0
+    00000348 7E               [ 8]  810 	ld	a, (hl)
+    00000349 E0r00            [12]  811 	ldh	(__current_bank + 0), a
+    0000034B 7E               [ 8]  812 	ld	a, (hl)
+    0000034C EAr00r00         [16]  813 	ld	(#_rROMB0),a
+                                    814 ;src/level.c:702: return col;
+    0000034F F8 09            [12]  815 	ldhl	sp,	#9
+    00000351 7E               [ 8]  816 	ld	a, (hl)
+    00000352                        817 00112$:
+                                    818 ;src/level.c:703: }
+    00000352 E8 0A            [16]  819 	add	sp, #10
+    00000354 C9               [16]  820 	ret
+                                    821 ;src/level.c:708: void level_set_current(void) NONBANKED {
+                                    822 ;	---------------------------------
+                                    823 ; Function level_set_current
+                                    824 ; ---------------------------------
+    00000355                        825 _level_set_current::
+                                    826 ;src/level.c:709: set_level(current_level);
+    00000355 FAr19r00         [16]  827 	ld	a, (_current_level)
+    00000358 CDrBFr03         [24]  828 	call	_set_level
+                                    829 ;src/level.c:710: scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+    0000035B 21r00r00         [12]  830 	ld	hl, #_scroll_limit
+    0000035E 3E 50            [ 8]  831 	ld	a, #0x50
+    00000360 22               [ 8]  832 	ld	(hl+), a
+                                    833 ;src/level.c:711: enemy_count = 0;
+                                    834 ;src/level.c:712: platform_moving_count = 0;
+    00000361 AF               [ 4]  835 	xor	a, a
+    00000362 77               [ 8]  836 	ld	(hl), a
+    00000363 EAr00r00         [16]  837 	ld	(#_enemy_count), a
+    00000366 EAr00r00         [16]  838 	ld	(#_platform_moving_count),a
+                                    839 ;src/level.c:713: col_from = 0;
+    00000369 AF               [ 4]  840 	xor	a, a
+    0000036A 21r05r02         [12]  841 	ld	hl, #_col_from
+    0000036D 22               [ 8]  842 	ld	(hl+), a
+    0000036E 77               [ 8]  843 	ld	(hl), a
+                                    844 ;src/level.c:714: hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+    0000036F 1E 28            [ 8]  845 	ld	e, #0x28
+    00000371 3E 01            [ 8]  846 	ld	a, #0x01
+    00000373 CDr00r00         [24]  847 	call	_hide_sprites_range
+                                    848 ;src/level.c:715: load_current_level();
+                                    849 ;src/level.c:716: }
+    00000376 C3r79r03         [16]  850 	jp	_load_current_level
+                                    851 ;src/level.c:721: void load_current_level(void) NONBANKED {
+                                    852 ;	---------------------------------
+                                    853 ; Function load_current_level
+                                    854 ; ---------------------------------
+    00000379                        855 _load_current_level::
+                                    856 ;src/level.c:722: camera_x = 0;
+    00000379 AF               [ 4]  857 	xor	a, a
+    0000037A 21r00r00         [12]  858 	ld	hl, #_camera_x
+    0000037D 22               [ 8]  859 	ld	(hl+), a
+    0000037E 77               [ 8]  860 	ld	(hl), a
+                                    861 ;/home/odrevet/projects/gbdk/include/gb/gb.h:1461: SCX_REG=x, SCY_REG=y;
+    0000037F AF               [ 4]  862 	xor	a, a
+    00000380 E0r00            [12]  863 	ldh	(_SCX_REG + 0), a
+    00000382 3E F0            [ 8]  864 	ld	a, #0xf0
+    00000384 E0r00            [12]  865 	ldh	(_SCY_REG + 0), a
+                                    866 ;src/level.c:724: camera_x_upscaled = 0;
+    00000386 AF               [ 4]  867 	xor	a, a
+    00000387 21r02r00         [12]  868 	ld	hl, #_camera_x_upscaled
+    0000038A 22               [ 8]  869 	ld	(hl+), a
+    0000038B 77               [ 8]  870 	ld	(hl), a
+                                    871 ;src/level.c:725: level_end_reached = false;
+                                    872 ;src/level.c:726: current_page = 0;
+    0000038C AF               [ 4]  873 	xor	a, a
+    0000038D EAr18r00         [16]  874 	ld	(#_level_end_reached), a
+    00000390 EAr04r02         [16]  875 	ld	(#_current_page),a
+                                    876 ;src/level.c:727: level_page_x_offset = 0;
+    00000393 AF               [ 4]  877 	xor	a, a
+    00000394 21r02r02         [12]  878 	ld	hl, #_level_page_x_offset
+    00000397 22               [ 8]  879 	ld	(hl+), a
+    00000398 77               [ 8]  880 	ld	(hl), a
+                                    881 ;src/level.c:733: pipe_clear();
+    00000399 CDr00r00         [24]  882 	call	_pipe_clear
+                                    883 ;src/level.c:735: level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
+    0000039C 21r19r00         [12]  884 	ld	hl, #_current_level
+    0000039F 4E               [ 8]  885 	ld	c, (hl)
+    000003A0 06 00            [ 8]  886 	ld	b, #0x00
+    000003A2 69               [ 4]  887 	ld	l, c
+    000003A3 60               [ 4]  888 	ld	h, b
+    000003A4 29               [ 8]  889 	add	hl, hl
+    000003A5 29               [ 8]  890 	add	hl, hl
+    000003A6 09               [ 8]  891 	add	hl, bc
+    000003A7 29               [ 8]  892 	add	hl, hl
+    000003A8 09               [ 8]  893 	add	hl, bc
+    000003A9 29               [ 8]  894 	add	hl, hl
+    000003AA 09               [ 8]  895 	add	hl, bc
+    000003AB 01r41r00         [12]  896 	ld	bc, #_levels
+    000003AE 09               [ 8]  897 	add	hl, bc
+    000003AF 5D               [ 4]  898 	ld	e, l
+    000003B0 54               [ 4]  899 	ld	d, h
+    000003B1 3E 1B            [ 8]  900 	ld	a, #0x1b
+    000003B3 CDr24r02         [24]  901 	call	_level_load_column
+                                    902 ;src/level.c:736: load_col_at = COLUMN_SIZE;
+    000003B6 21r04r00         [12]  903 	ld	hl, #_load_col_at
+    000003B9 3E 01            [ 8]  904 	ld	a, #0x01
+    000003BB 22               [ 8]  905 	ld	(hl+), a
+    000003BC AF               [ 4]  906 	xor	a, a
+    000003BD 77               [ 8]  907 	ld	(hl), a
+                                    908 ;src/level.c:737: }
+    000003BE C9               [16]  909 	ret
+                                    910 ;src/level.c:742: void set_level(uint8_t level_index) NONBANKED {
+                                    911 ;	---------------------------------
+                                    912 ; Function set_level
+                                    913 ; ---------------------------------
+    000003BF                        914 _set_level::
+    000003BF 3B               [ 8]  915 	dec	sp
+    000003C0 4F               [ 4]  916 	ld	c, a
+                                    917 ;src/level.c:743: hud_set_level(levels[level_index].major, levels[level_index].minor);
+    000003C1 06 00            [ 8]  918 	ld	b, #0x00
+    000003C3 69               [ 4]  919 	ld	l, c
+    000003C4 60               [ 4]  920 	ld	h, b
+    000003C5 29               [ 8]  921 	add	hl, hl
+    000003C6 29               [ 8]  922 	add	hl, hl
+    000003C7 09               [ 8]  923 	add	hl, bc
+    000003C8 29               [ 8]  924 	add	hl, hl
+    000003C9 09               [ 8]  925 	add	hl, bc
+    000003CA 29               [ 8]  926 	add	hl, hl
+    000003CB 09               [ 8]  927 	add	hl, bc
+    000003CC 3Er41            [ 8]  928 	ld	a, #<(_levels)
+    000003CE 85               [ 4]  929 	add	a, l
+    000003CF 4F               [ 4]  930 	ld	c, a
+    000003D0 3Es00            [ 8]  931 	ld	a, #>(_levels)
+    000003D2 8C               [ 4]  932 	adc	a, h
+    000003D3 47               [ 4]  933 	ld	b, a
+    000003D4 69               [ 4]  934 	ld	l, c
+    000003D5 60               [ 4]  935 	ld	h, b
+    000003D6 23               [ 8]  936 	inc	hl
+    000003D7 5E               [ 8]  937 	ld	e, (hl)
+    000003D8 0A               [ 8]  938 	ld	a, (bc)
+    000003D9 C5               [16]  939 	push	bc
+    000003DA CDr00r00         [24]  940 	call	_hud_set_level
+    000003DD C1               [12]  941 	pop	bc
+                                    942 ;src/level.c:746: music_load(levels[level_index].music_bank, levels[level_index].music);
+    000003DE 21 15 00         [12]  943 	ld	hl, #0x0015
+    000003E1 09               [ 8]  944 	add	hl, bc
+    000003E2 2A               [ 8]  945 	ld	a,	(hl+)
+    000003E3 66               [ 8]  946 	ld	h, (hl)
+    000003E4 6F               [ 4]  947 	ld	l, a
+    000003E5 79               [ 4]  948 	ld	a, c
+    000003E6 C6 14            [ 8]  949 	add	a, #0x14
+    000003E8 5F               [ 4]  950 	ld	e, a
+    000003E9 78               [ 4]  951 	ld	a, b
+    000003EA CE 00            [ 8]  952 	adc	a, #0x00
+    000003EC 57               [ 4]  953 	ld	d, a
+    000003ED 1A               [ 8]  954 	ld	a, (de)
+    000003EE 5F               [ 4]  955 	ld	e, a
+                                    956 ;sm83/musicmanager.h:88: music_current_track_bank = MUSIC_STOP_BANK, music_next_track = data; music_current_track_bank = bank;
+    000003EF 3E FF            [ 8]  957 	ld	a, #0xff
+    000003F1 EAr00r00         [16]  958 	ld	(_music_current_track_bank), a
+    000003F4 7D               [ 4]  959 	ld	a, l
+    000003F5 EAr00r00         [16]  960 	ld	(_music_next_track), a
+    000003F8 7C               [ 4]  961 	ld	a, h
+    000003F9 EAr01r00         [16]  962 	ld	(_music_next_track + 1), a
+    000003FC 21r00r00         [12]  963 	ld	hl, #_music_current_track_bank
+    000003FF 73               [ 8]  964 	ld	(hl), e
+                                    965 ;src/level.c:749: uint8_t _saved_bank = _current_bank;
+    00000400 F0r00            [12]  966 	ldh	a, (__current_bank + 0)
+    00000402 F8 00            [12]  967 	ldhl	sp,	#0
+    00000404 77               [ 8]  968 	ld	(hl), a
+                                    969 ;src/level.c:752: SWITCH_ROM(levels[level_index].map_tiles_bank);
+    00000405 21 09 00         [12]  970 	ld	hl, #0x0009
+    00000408 09               [ 8]  971 	add	hl, bc
+    00000409 7E               [ 8]  972 	ld	a, (hl)
+    0000040A E0r00            [12]  973 	ldh	(__current_bank + 0), a
+    0000040C EAr00r00         [16]  974 	ld	(#_rROMB0),a
+                                    975 ;src/level.c:753: current_map_tiles = levels[level_index].map_tiles;
+    0000040F 21 0A 00         [12]  976 	ld	hl, #0x000a
+    00000412 09               [ 8]  977 	add	hl, bc
+    00000413 5D               [ 4]  978 	ld	e, l
+    00000414 54               [ 4]  979 	ld	d, h
+    00000415 1A               [ 8]  980 	ld	a, (de)
+    00000416 21r1Cr00         [12]  981 	ld	hl, #_current_map_tiles
+    00000419 22               [ 8]  982 	ld	(hl+), a
+    0000041A 13               [ 8]  983 	inc	de
+    0000041B 1A               [ 8]  984 	ld	a, (de)
+    0000041C 77               [ 8]  985 	ld	(hl), a
+                                    986 ;src/level.c:754: current_map_tile_origin = levels[level_index].map_tile_origin;
+    0000041D 21 0C 00         [12]  987 	ld	hl, #0x000c
+    00000420 09               [ 8]  988 	add	hl, bc
+    00000421 7E               [ 8]  989 	ld	a, (hl)
+    00000422 21r1Ar00         [12]  990 	ld	hl, #_current_map_tile_origin
+    00000425 22               [ 8]  991 	ld	(hl+), a
+    00000426 36 00            [12]  992 	ld	(hl), #0x00
+                                    993 ;src/level.c:755: current_map_tile_count = levels[level_index].map_tiles_count;
+    00000428 21 0D 00         [12]  994 	ld	hl, #0x000d
+    0000042B 09               [ 8]  995 	add	hl, bc
+    0000042C 5D               [ 4]  996 	ld	e, l
+    0000042D 54               [ 4]  997 	ld	d, h
+    0000042E 1A               [ 8]  998 	ld	a, (de)
+    0000042F 21r1Er00         [12]  999 	ld	hl, #_current_map_tile_count
+    00000432 22               [ 8] 1000 	ld	(hl+), a
+    00000433 13               [ 8] 1001 	inc	de
+    00000434 1A               [ 8] 1002 	ld	a, (de)
+    00000435 77               [ 8] 1003 	ld	(hl), a
+                                   1004 ;src/level.c:756: set_bkg_data(current_map_tile_origin, current_map_tile_count,
+    00000436 FAr1Er00         [16] 1005 	ld	a, (_current_map_tile_count)
+    00000439 57               [ 4] 1006 	ld	d, a
+    0000043A FAr1Ar00         [16] 1007 	ld	a, (_current_map_tile_origin)
+    0000043D 5F               [ 4] 1008 	ld	e, a
+    0000043E FAr1Cr00         [16] 1009 	ld	a, (_current_map_tiles)
+    00000441 6F               [ 4] 1010 	ld	l, a
+    00000442 FAr1Dr00         [16] 1011 	ld	a, (_current_map_tiles + 1)
+    00000445 67               [ 4] 1012 	ld	h, a
+    00000446 E5               [16] 1013 	push	hl
+    00000447 D5               [16] 1014 	push	de
+    00000448 CDr00r00         [24] 1015 	call	_set_bkg_data
+    0000044B E8 04            [16] 1016 	add	sp, #4
+                                   1017 ;src/level.c:760: current_map_width = levels[level_index].map_width;
+    0000044D 21 05 00         [12] 1018 	ld	hl, #0x0005
+    00000450 09               [ 8] 1019 	add	hl, bc
+    00000451 5D               [ 4] 1020 	ld	e, l
+    00000452 54               [ 4] 1021 	ld	d, h
+    00000453 1A               [ 8] 1022 	ld	a, (de)
+    00000454 21r20r00         [12] 1023 	ld	hl, #_current_map_width
+    00000457 22               [ 8] 1024 	ld	(hl+), a
+    00000458 13               [ 8] 1025 	inc	de
+    00000459 1A               [ 8] 1026 	ld	a, (de)
+    0000045A 77               [ 8] 1027 	ld	(hl), a
+                                   1028 ;src/level.c:761: current_map_width_in_tiles = levels[level_index].map_width_in_tiles;
+    0000045B 21 07 00         [12] 1029 	ld	hl, #0x0007
+    0000045E 09               [ 8] 1030 	add	hl, bc
+    0000045F 5D               [ 4] 1031 	ld	e, l
+    00000460 54               [ 4] 1032 	ld	d, h
+    00000461 1A               [ 8] 1033 	ld	a, (de)
+    00000462 21r22r00         [12] 1034 	ld	hl, #_current_map_width_in_tiles
+    00000465 22               [ 8] 1035 	ld	(hl+), a
+    00000466 13               [ 8] 1036 	inc	de
+    00000467 1A               [ 8] 1037 	ld	a, (de)
+    00000468 77               [ 8] 1038 	ld	(hl), a
+                                   1039 ;src/level.c:764: SWITCH_ROM(levels[level_index].lookup_bank);
+    00000469 21 0F 00         [12] 1040 	ld	hl, #0x000f
+    0000046C 09               [ 8] 1041 	add	hl, bc
+    0000046D 7E               [ 8] 1042 	ld	a, (hl)
+    0000046E E0r00            [12] 1043 	ldh	(__current_bank + 0), a
+    00000470 EAr00r00         [16] 1044 	ld	(#_rROMB0),a
+                                   1045 ;src/level.c:765: level_lookup_bank = levels[level_index].lookup_bank;
+    00000473 EAr25r00         [16] 1046 	ld	(#_level_lookup_bank),a
+                                   1047 ;src/level.c:766: level_lookup = levels[level_index].lookup;
+    00000476 21 10 00         [12] 1048 	ld	hl, #0x0010
+    00000479 09               [ 8] 1049 	add	hl, bc
+    0000047A 5D               [ 4] 1050 	ld	e, l
+    0000047B 54               [ 4] 1051 	ld	d, h
+    0000047C 1A               [ 8] 1052 	ld	a, (de)
+    0000047D 21r26r00         [12] 1053 	ld	hl, #_level_lookup
+    00000480 22               [ 8] 1054 	ld	(hl+), a
+    00000481 13               [ 8] 1055 	inc	de
+    00000482 1A               [ 8] 1056 	ld	a, (de)
+    00000483 77               [ 8] 1057 	ld	(hl), a
+                                   1058 ;src/level.c:767: level_lookup_size = levels[level_index].lookup_size;
+    00000484 21 12 00         [12] 1059 	ld	hl, #0x0012
+    00000487 09               [ 8] 1060 	add	hl, bc
+    00000488 5D               [ 4] 1061 	ld	e, l
+    00000489 54               [ 4] 1062 	ld	d, h
+    0000048A 1A               [ 8] 1063 	ld	a, (de)
+    0000048B 21r28r00         [12] 1064 	ld	hl, #_level_lookup_size
+    0000048E 22               [ 8] 1065 	ld	(hl+), a
+    0000048F 13               [ 8] 1066 	inc	de
+    00000490 1A               [ 8] 1067 	ld	a, (de)
+    00000491 77               [ 8] 1068 	ld	(hl), a
+                                   1069 ;src/level.c:769: SWITCH_ROM(_saved_bank);
+    00000492 F8 00            [12] 1070 	ldhl	sp,	#0
+    00000494 7E               [ 8] 1071 	ld	a, (hl)
+    00000495 E0r00            [12] 1072 	ldh	(__current_bank + 0), a
+    00000497 7E               [ 8] 1073 	ld	a, (hl)
+    00000498 EAr00r00         [16] 1074 	ld	(#_rROMB0),a
+                                   1075 ;src/level.c:770: }
+    0000049B 33               [ 8] 1076 	inc	sp
+    0000049C C9               [16] 1077 	ret
+                                   1078 	.area _HOME
+                                   1079 ;--------------------------------------------------------
+                                   1080 ; code
+                                   1081 ;--------------------------------------------------------
+                                   1082 	.area _CODE
+                                   1083 ;src/level.c:320: uint8_t get_tile(uint8_t x, uint8_t y) {
+                                   1084 ;	---------------------------------
+                                   1085 ; Function get_tile
+                                   1086 ; ---------------------------------
+    00000000                       1087 _get_tile::
+    00000000 4F               [ 4] 1088 	ld	c, a
+                                   1089 ;src/level.c:321: if (y >> 3 < 2 || y >> 3 > MAP_BUFFER_HEIGHT + 1) {
+    00000001 CB 3B            [ 8] 1090 	srl	e
+    00000003 CB 3B            [ 8] 1091 	srl	e
+    00000005 CB 3B            [ 8] 1092 	srl	e
+    00000007 7B               [ 4] 1093 	ld	a, e
+    00000008 D6 02            [ 8] 1094 	sub	a, #0x02
+    0000000A 38 05            [12] 1095 	jr	C, 00101$
+    0000000C 3E 11            [ 8] 1096 	ld	a, #0x11
+    0000000E 93               [ 4] 1097 	sub	a, e
+    0000000F 30 03            [12] 1098 	jr	NC, 00102$
+    00000011                       1099 00101$:
+                                   1100 ;src/level.c:322: return TILE_EMPTY;
+    00000011 3E 28            [ 8] 1101 	ld	a, #0x28
+    00000013 C9               [16] 1102 	ret
+    00000014                       1103 00102$:
+                                   1104 ;src/level.c:325: uint8_t tile_x = TILE_INDEX_X(x, camera_x);
+    00000014 06 00            [ 8] 1105 	ld	b, #0x00
+    00000016 79               [ 4] 1106 	ld	a, c
+    00000017 21r00r00         [12] 1107 	ld	hl, #_camera_x
+    0000001A 86               [ 8] 1108 	add	a, (hl)
+    0000001B 23               [ 8] 1109 	inc	hl
+    0000001C 4F               [ 4] 1110 	ld	c, a
+    0000001D 78               [ 4] 1111 	ld	a, b
+    0000001E 8E               [ 8] 1112 	adc	a, (hl)
+    0000001F 47               [ 4] 1113 	ld	b, a
+    00000020 CB 38            [ 8] 1114 	srl	b
+    00000022 CB 19            [ 8] 1115 	rr	c
+    00000024 CB 38            [ 8] 1116 	srl	b
+    00000026 CB 19            [ 8] 1117 	rr	c
+    00000028 CB 38            [ 8] 1118 	srl	b
+    0000002A CB 19            [ 8] 1119 	rr	c
+    0000002C 79               [ 4] 1120 	ld	a, c
+    0000002D E6 1F            [ 8] 1121 	and	a, #0x1f
+    0000002F 4F               [ 4] 1122 	ld	c, a
+                                   1123 ;src/level.c:326: uint8_t tile_y = TILE_INDEX_Y(y);
+                                   1124 ;src/level.c:327: return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
+    00000030 6B               [ 4] 1125 	ld	l, e
+    00000031 26 00            [ 8] 1126 	ld	h, #0x00
+    00000033 29               [ 8] 1127 	add	hl, hl
+    00000034 29               [ 8] 1128 	add	hl, hl
+    00000035 29               [ 8] 1129 	add	hl, hl
+    00000036 29               [ 8] 1130 	add	hl, hl
+    00000037 29               [ 8] 1131 	add	hl, hl
+    00000038 06 00            [ 8] 1132 	ld	b, #0x00
+    0000003A 09               [ 8] 1133 	add	hl, bc
+    0000003B 11r00r00         [12] 1134 	ld	de, #_map_buffer
+    0000003E 19               [ 8] 1135 	add	hl, de
+    0000003F 7E               [ 8] 1136 	ld	a, (hl)
+                                   1137 ;src/level.c:328: }
+    00000040 C9               [16] 1138 	ret
+    00000041                       1139 _levels:
+    00000041 31                    1140 	.db #0x31	;  49	'1'
+    00000042 31                    1141 	.db #0x31	;  49	'1'
+    00000043r00r00                 1142 	.dw _level_1_1_map
+    00000045 0F                    1143 	.db #0x0f	; 15
+    00000046 60 09                 1144 	.dw #0x0960
+    00000048 2C 01                 1145 	.dw #0x012c
+    0000004Ar00                    1146 	.byte ___bank_birabutoTileset
+    0000004Br00r00                 1147 	.dw _birabutoTileset_tiles
+    0000004D 60                    1148 	.db #0x60	; 96
+    0000004E 3C 00                 1149 	.dw #0x003c
+    00000050r00                    1150 	.byte ___bank_level_1_1_lookup
+    00000051r00r00                 1151 	.dw _level_1_1_lookup
+    00000053 14 00                 1152 	.dw #0x0014
+    00000055r00                    1153 	.byte ___bank_music_overworld
+    00000056r00r00                 1154 	.dw _music_overworld
+    00000058 31                    1155 	.db #0x31	;  49	'1'
+    00000059 32                    1156 	.db #0x32	;  50	'2'
+    0000005Ar00r00                 1157 	.dw _level_1_2_map
+    0000005C 0E                    1158 	.db #0x0e	; 14
+    0000005D C0 08                 1159 	.dw #0x08c0
+    0000005F 18 01                 1160 	.dw #0x0118
+    00000061r00                    1161 	.byte ___bank_birabutoTileset
+    00000062r00r00                 1162 	.dw _birabutoTileset_tiles
+    00000064 60                    1163 	.db #0x60	; 96
+    00000065 3C 00                 1164 	.dw #0x003c
+    00000067r00                    1165 	.byte ___bank_level_1_2_lookup
+    00000068r00r00                 1166 	.dw _level_1_2_lookup
+    0000006A 16 00                 1167 	.dw #0x0016
+    0000006Cr00                    1168 	.byte ___bank_music_overworld
+    0000006Dr00r00                 1169 	.dw _music_overworld
+    0000006F 31                    1170 	.db #0x31	;  49	'1'
+    00000070 33                    1171 	.db #0x33	;  51	'3'
+    00000071r00r00                 1172 	.dw _level_1_3_map
+    00000073 11                    1173 	.db #0x11	; 17
+    00000074 A0 0A                 1174 	.dw #0x0aa0
+    00000076 54 01                 1175 	.dw #0x0154
+    00000078r00                    1176 	.byte ___bank_birabutoTileset
+    00000079r00r00                 1177 	.dw _birabutoTileset_tiles
+    0000007B 60                    1178 	.db #0x60	; 96
+    0000007C 3C 00                 1179 	.dw #0x003c
+    0000007Er00                    1180 	.byte ___bank_level_1_3_lookup
+    0000007Fr00r00                 1181 	.dw _level_1_3_lookup
+    00000081 06 00                 1182 	.dw #0x0006
+    00000083r00                    1183 	.byte ___bank_music_castle
+    00000084r00r00                 1184 	.dw _music_castle
+    00000086 32                    1185 	.db #0x32	;  50	'2'
+    00000087 31                    1186 	.db #0x31	;  49	'1'
+    00000088r00r00                 1187 	.dw _level_2_1_map
+    0000008A 10                    1188 	.db #0x10	; 16
+    0000008B 00 0A                 1189 	.dw #0x0a00
+    0000008D 40 01                 1190 	.dw #0x0140
+    0000008Fr00                    1191 	.byte ___bank_mudaTileset
+    00000090r00r00                 1192 	.dw _mudaTileset_tiles
+    00000092 60                    1193 	.db #0x60	; 96
+    00000093 3C 00                 1194 	.dw #0x003c
+    00000095r00                    1195 	.byte ___bank_level_2_1_lookup
+    00000096r00r00                 1196 	.dw _level_2_1_lookup
+    00000098 23 00                 1197 	.dw #0x0023
+    0000009Ar00                    1198 	.byte ___bank_music_overworld
+    0000009Br00r00                 1199 	.dw _music_overworld
+    0000009D 32                    1200 	.db #0x32	;  50	'2'
+    0000009E 32                    1201 	.db #0x32	;  50	'2'
+    0000009Fr00r00                 1202 	.dw _level_2_2_map
+    000000A1 0C                    1203 	.db #0x0c	; 12
+    000000A2 80 07                 1204 	.dw #0x0780
+    000000A4 F0 00                 1205 	.dw #0x00f0
+    000000A6r00                    1206 	.byte ___bank_mudaTileset
+    000000A7r00r00                 1207 	.dw _mudaTileset_tiles
+    000000A9 60                    1208 	.db #0x60	; 96
+    000000AA 3C 00                 1209 	.dw #0x003c
+    000000ACr00                    1210 	.byte ___bank_level_2_2_lookup
+    000000ADr00r00                 1211 	.dw _level_2_2_lookup
+    000000AF 1D 00                 1212 	.dw #0x001d
+    000000B1r00                    1213 	.byte ___bank_music_overworld
+    000000B2r00r00                 1214 	.dw _music_overworld
+    000000B4 32                    1215 	.db #0x32	;  50	'2'
+    000000B5 33                    1216 	.db #0x33	;  51	'3'
+    000000B6r00r00                 1217 	.dw _level_2_3_map
+    000000B8 13                    1218 	.db #0x13	; 19
+    000000B9 E0 0B                 1219 	.dw #0x0be0
+    000000BB 7C 01                 1220 	.dw #0x017c
+    000000BDr00                    1221 	.byte ___bank_mudaTileset
+    000000BEr00r00                 1222 	.dw _mudaTileset_tiles
+    000000C0 60                    1223 	.db #0x60	; 96
+    000000C1 3C 00                 1224 	.dw #0x003c
+    000000C3r00                    1225 	.byte ___bank_level_2_3_lookup
+    000000C4r00r00                 1226 	.dw _level_2_3_lookup
+    000000C6 01 00                 1227 	.dw #0x0001
+    000000C8r00                    1228 	.byte ___bank_music_underwater
+    000000C9r00r00                 1229 	.dw _music_underwater
+    000000CB 33                    1230 	.db #0x33	;  51	'3'
+    000000CC 31                    1231 	.db #0x31	;  49	'1'
+    000000CDr00r00                 1232 	.dw _level_3_1_map
+    000000CF 17                    1233 	.db #0x17	; 23
+    000000D0 60 0E                 1234 	.dw #0x0e60
+    000000D2 CC 01                 1235 	.dw #0x01cc
+    000000D4r00                    1236 	.byte ___bank_eastonTileset
+    000000D5r00r00                 1237 	.dw _eastonTileset_tiles
+    000000D7 60                    1238 	.db #0x60	; 96
+    000000D8 46 00                 1239 	.dw #0x0046
+    000000DAr00                    1240 	.byte ___bank_level_3_1_lookup
+    000000DBr00r00                 1241 	.dw _level_3_1_lookup
+    000000DD 2B 00                 1242 	.dw #0x002b
+    000000DFr00                    1243 	.byte ___bank_music_overworld
+    000000E0r00r00                 1244 	.dw _music_overworld
+    000000E2 33                    1245 	.db #0x33	;  51	'3'
+    000000E3 32                    1246 	.db #0x32	;  50	'2'
+    000000E4r00r00                 1247 	.dw _level_3_2_map
+    000000E6 10                    1248 	.db #0x10	; 16
+    000000E7 00 0A                 1249 	.dw #0x0a00
+    000000E9 40 01                 1250 	.dw #0x0140
+    000000EBr00                    1251 	.byte ___bank_eastonTileset
+    000000ECr00r00                 1252 	.dw _eastonTileset_tiles
+    000000EE 60                    1253 	.db #0x60	; 96
+    000000EF 46 00                 1254 	.dw #0x0046
+    000000F1r00                    1255 	.byte ___bank_level_3_2_lookup
+    000000F2r00r00                 1256 	.dw _level_3_2_lookup
+    000000F4 2C 00                 1257 	.dw #0x002c
+    000000F6r00                    1258 	.byte ___bank_music_overworld
+    000000F7r00r00                 1259 	.dw _music_overworld
+    000000F9 33                    1260 	.db #0x33	;  51	'3'
+    000000FA 33                    1261 	.db #0x33	;  51	'3'
+    000000FBr00r00                 1262 	.dw _level_3_3_map
+    000000FD 10                    1263 	.db #0x10	; 16
+    000000FE 00 0A                 1264 	.dw #0x0a00
+    00000100 40 01                 1265 	.dw #0x0140
+    00000102r00                    1266 	.byte ___bank_eastonTileset
+    00000103r00r00                 1267 	.dw _eastonTileset_tiles
+    00000105 60                    1268 	.db #0x60	; 96
+    00000106 46 00                 1269 	.dw #0x0046
+    00000108r00                    1270 	.byte ___bank_level_3_3_lookup
+    00000109r00r00                 1271 	.dw _level_3_3_lookup
+    0000010B 13 00                 1272 	.dw #0x0013
+    0000010Dr00                    1273 	.byte ___bank_music_castle
+    0000010Er00r00                 1274 	.dw _music_castle
+    00000110 34                    1275 	.db #0x34	;  52	'4'
+    00000111 31                    1276 	.db #0x31	;  49	'1'
+    00000112r00r00                 1277 	.dw _level_4_1_map
+    00000114 17                    1278 	.db #0x17	; 23
+    00000115 60 0E                 1279 	.dw #0x0e60
+    00000117 CC 01                 1280 	.dw #0x01cc
+    00000119r00                    1281 	.byte ___bank_chaiTileset
+    0000011Ar00r00                 1282 	.dw _chaiTileset_tiles
+    0000011C 60                    1283 	.db #0x60	; 96
+    0000011D 5A 00                 1284 	.dw #0x005a
+    0000011Fr00                    1285 	.byte ___bank_level_4_1_lookup
+    00000120r00r00                 1286 	.dw _level_4_1_lookup
+    00000122 39 00                 1287 	.dw #0x0039
+    00000124r00                    1288 	.byte ___bank_music_overworld
+    00000125r00r00                 1289 	.dw _music_overworld
+    00000127 34                    1290 	.db #0x34	;  52	'4'
+    00000128 32                    1291 	.db #0x32	;  50	'2'
+    00000129r00r00                 1292 	.dw _level_4_2_map
+    0000012B 14                    1293 	.db #0x14	; 20
+    0000012C 80 0C                 1294 	.dw #0x0c80
+    0000012E 90 01                 1295 	.dw #0x0190
+    00000130r00                    1296 	.byte ___bank_chaiTileset
+    00000131r00r00                 1297 	.dw _chaiTileset_tiles
+    00000133 60                    1298 	.db #0x60	; 96
+    00000134 5A 00                 1299 	.dw #0x005a
+    00000136r00                    1300 	.byte ___bank_level_4_2_lookup
+    00000137r00r00                 1301 	.dw _level_4_2_lookup
+    00000139 28 00                 1302 	.dw #0x0028
+    0000013Br00                    1303 	.byte ___bank_music_overworld
+    0000013Cr00r00                 1304 	.dw _music_overworld
+    0000013E 34                    1305 	.db #0x34	;  52	'4'
+    0000013F 33                    1306 	.db #0x33	;  51	'3'
+    00000140r00r00                 1307 	.dw _level_4_3_map
+    00000142 18                    1308 	.db #0x18	; 24
+    00000143 00 0F                 1309 	.dw #0x0f00
+    00000145 E0 01                 1310 	.dw #0x01e0
+    00000147r00                    1311 	.byte ___bank_chaiTileset
+    00000148r00r00                 1312 	.dw _chaiTileset_tiles
+    0000014A 60                    1313 	.db #0x60	; 96
+    0000014B 5A 00                 1314 	.dw #0x005a
+    0000014Dr00                    1315 	.byte ___bank_level_4_3_lookup
+    0000014Er00r00                 1316 	.dw _level_4_3_lookup
+    00000150 01 00                 1317 	.dw #0x0001
+    00000152r00                    1318 	.byte ___bank_music_underwater
+    00000153r00r00                 1319 	.dw _music_underwater
+    00000155                       1320 _undergrounds:
+    00000155 31                    1321 	.db #0x31	;  49	'1'
+    00000156 31                    1322 	.db #0x31	;  49	'1'
+    00000157r00r00                 1323 	.dw _underground_0_map_pages
+    00000159 01                    1324 	.db #0x01	; 1
+    0000015A A0 00                 1325 	.dw #0x00a0
+    0000015C 14 00                 1326 	.dw #0x0014
+    0000015E 00                    1327 	.db #0x00	; 0
+    0000015F 00 00                 1328 	.dw #0x0000
+    00000161 00                    1329 	.db #0x00	; 0
+    00000162 00 00                 1330 	.dw #0x0000
+    00000164r00                    1331 	.byte ___bank_underground_lookup
+    00000165r00r00                 1332 	.dw _underground_0_lookup
+    00000167 01 00                 1333 	.dw #0x0001
+    00000169r00                    1334 	.byte ___bank_music_underground
+    0000016Ar00r00                 1335 	.dw _music_underground
+                                   1336 ;src/level.c:333: bool is_tile_solid(uint8_t tile) {
+                                   1337 ;	---------------------------------
+                                   1338 ; Function is_tile_solid
+                                   1339 ; ---------------------------------
+    0000016C                       1340 _is_tile_solid::
+    0000016C E8 FC            [16] 1341 	add	sp, #-4
+                                   1342 ;src/level.c:335: switch (tile) {
+    0000016E 4F               [ 4] 1343 	ld	c, a
+    0000016F D6 29            [ 8] 1344 	sub	a, #0x29
+    00000171 28 49            [12] 1345 	jr	Z, 00119$
+    00000173 79               [ 4] 1346 	ld	a,c
+    00000174 FE 2A            [ 8] 1347 	cp	a,#0x2a
+    00000176 28 44            [12] 1348 	jr	Z, 00119$
+    00000178 FE 2B            [ 8] 1349 	cp	a,#0x2b
+    0000017A 28 40            [12] 1350 	jr	Z, 00119$
+    0000017C FE 2C            [ 8] 1351 	cp	a,#0x2c
+    0000017E 28 3C            [12] 1352 	jr	Z, 00119$
+    00000180 FE 30            [ 8] 1353 	cp	a,#0x30
+    00000182 28 38            [12] 1354 	jr	Z, 00119$
+    00000184 FE 31            [ 8] 1355 	cp	a,#0x31
+    00000186 28 34            [12] 1356 	jr	Z, 00119$
+    00000188 FE 3C            [ 8] 1357 	cp	a,#0x3c
+    0000018A 28 30            [12] 1358 	jr	Z, 00119$
+    0000018C FE 3E            [ 8] 1359 	cp	a,#0x3e
+    0000018E 28 2C            [12] 1360 	jr	Z, 00119$
+    00000190 FE 3F            [ 8] 1361 	cp	a,#0x3f
+    00000192 28 28            [12] 1362 	jr	Z, 00119$
+    00000194 FE 4A            [ 8] 1363 	cp	a,#0x4a
+    00000196 28 24            [12] 1364 	jr	Z, 00119$
+    00000198 FE 4B            [ 8] 1365 	cp	a,#0x4b
+    0000019A 28 20            [12] 1366 	jr	Z, 00119$
+    0000019C FE 4C            [ 8] 1367 	cp	a,#0x4c
+    0000019E 28 1C            [12] 1368 	jr	Z, 00119$
+    000001A0 FE 4D            [ 8] 1369 	cp	a,#0x4d
+    000001A2 28 18            [12] 1370 	jr	Z, 00119$
+    000001A4 FE 56            [ 8] 1371 	cp	a,#0x56
+    000001A6 28 14            [12] 1372 	jr	Z, 00119$
+    000001A8 FE 57            [ 8] 1373 	cp	a,#0x57
+    000001AA 28 10            [12] 1374 	jr	Z, 00119$
+    000001AC FE 58            [ 8] 1375 	cp	a,#0x58
+    000001AE 28 0C            [12] 1376 	jr	Z, 00119$
+    000001B0 FE 59            [ 8] 1377 	cp	a,#0x59
+    000001B2 28 08            [12] 1378 	jr	Z, 00119$
+    000001B4 FE 5A            [ 8] 1379 	cp	a,#0x5a
+    000001B6 28 04            [12] 1380 	jr	Z, 00119$
+    000001B8 D6 5B            [ 8] 1381 	sub	a, #0x5b
+    000001BA 20 05            [12] 1382 	jr	NZ, 00120$
+                                   1383 ;src/level.c:354: case METAL_BLOCK_RIGHT:
+    000001BC                       1384 00119$:
+                                   1385 ;src/level.c:355: return true;
+    000001BC 3E 01            [ 8] 1386 	ld	a, #0x01
+    000001BE C3r18r03         [16] 1387 	jp	00130$
+                                   1388 ;src/level.c:356: }
+    000001C1                       1389 00120$:
+                                   1390 ;src/level.c:362: (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
+    000001C1 79               [ 4] 1391 	ld	a, c
+    000001C2 D6 91            [ 8] 1392 	sub	a, #0x91
+    000001C4 3E 01            [ 8] 1393 	ld	a, #0x01
+    000001C6 28 01            [12] 1394 	jr	Z, 00758$
+    000001C8 AF               [ 4] 1395 	xor	a, a
+    000001C9                       1396 00758$:
+    000001C9 47               [ 4] 1397 	ld	b, a
+    000001CA 79               [ 4] 1398 	ld	a, c
+    000001CB D6 99            [ 8] 1399 	sub	a, #0x99
+    000001CD 3E 01            [ 8] 1400 	ld	a, #0x01
+    000001CF 28 01            [12] 1401 	jr	Z, 00760$
+    000001D1 AF               [ 4] 1402 	xor	a, a
+    000001D2                       1403 00760$:
+    000001D2 5F               [ 4] 1404 	ld	e, a
+                                   1405 ;src/level.c:363: (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) || 
+    000001D3 79               [ 4] 1406 	ld	a, c
+    000001D4 D6 9A            [ 8] 1407 	sub	a, #0x9a
+    000001D6 3E 01            [ 8] 1408 	ld	a, #0x01
+    000001D8 28 01            [12] 1409 	jr	Z, 00762$
+    000001DA AF               [ 4] 1410 	xor	a, a
+    000001DB                       1411 00762$:
+    000001DB F8 00            [12] 1412 	ldhl	sp,	#0
+    000001DD 77               [ 8] 1413 	ld	(hl), a
+    000001DE 79               [ 4] 1414 	ld	a, c
+    000001DF D6 9B            [ 8] 1415 	sub	a, #0x9b
+    000001E1 3E 01            [ 8] 1416 	ld	a, #0x01
+    000001E3 28 01            [12] 1417 	jr	Z, 00764$
+    000001E5 AF               [ 4] 1418 	xor	a, a
+    000001E6                       1419 00764$:
+    000001E6 57               [ 4] 1420 	ld	d, a
+                                   1421 ;src/level.c:359: if (current_level <= LEVEL_WORLD1_END) {
+    000001E7 3E 02            [ 8] 1422 	ld	a, #0x02
+    000001E9 21r19r00         [12] 1423 	ld	hl, #_current_level
+    000001EC 96               [ 8] 1424 	sub	a, (hl)
+    000001ED 38 31            [12] 1425 	jr	C, 00128$
+                                   1426 ;src/level.c:360: return ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
+    000001EF 79               [ 4] 1427 	ld	a,c
+    000001F0 FE 75            [ 8] 1428 	cp	a,#0x75
+    000001F2 28 27            [12] 1429 	jr	Z, 00133$
+                                   1430 ;src/level.c:361: (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
+    000001F4 FE 7F            [ 8] 1431 	cp	a,#0x7f
+    000001F6 28 23            [12] 1432 	jr	Z, 00133$
+    000001F8 FE 5C            [ 8] 1433 	cp	a,#0x5c
+    000001FA 28 1F            [12] 1434 	jr	Z, 00133$
+    000001FC D6 5D            [ 8] 1435 	sub	a, #0x5d
+    000001FE 28 1B            [12] 1436 	jr	Z, 00133$
+                                   1437 ;src/level.c:362: (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
+    00000200 CB 40            [ 8] 1438 	bit	0, b
+    00000202 20 17            [12] 1439 	jr	NZ, 00133$
+    00000204 CB 43            [ 8] 1440 	bit	0, e
+    00000206 20 13            [12] 1441 	jr	NZ, 00133$
+                                   1442 ;src/level.c:363: (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) || 
+    00000208 F8 00            [12] 1443 	ldhl	sp,	#0
+    0000020A CB 46            [12] 1444 	bit	0, (hl)
+    0000020C 20 0D            [12] 1445 	jr	NZ, 00133$
+    0000020E CB 42            [ 8] 1446 	bit	0, d
+    00000210 20 09            [12] 1447 	jr	NZ, 00133$
+                                   1448 ;src/level.c:364: (tile == GREY_BLOCK));
+    00000212 79               [ 4] 1449 	ld	a, c
+    00000213 D6 61            [ 8] 1450 	sub	a, #0x61
+    00000215 28 04            [12] 1451 	jr	Z, 00133$
+    00000217 AF               [ 4] 1452 	xor	a, a
+    00000218 C3r18r03         [16] 1453 	jp	00130$
+    0000021B                       1454 00133$:
+    0000021B 3E 01            [ 8] 1455 	ld	a, #0x01
+    0000021D C3r18r03         [16] 1456 	jp	00130$
+    00000220                       1457 00128$:
+                                   1458 ;src/level.c:366: return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
+    00000220 79               [ 4] 1459 	ld	a, c
+    00000221 D6 87            [ 8] 1460 	sub	a, #0x87
+    00000223 3E 01            [ 8] 1461 	ld	a, #0x01
+    00000225 28 01            [12] 1462 	jr	Z, 00771$
+    00000227 AF               [ 4] 1463 	xor	a, a
+    00000228                       1464 00771$:
+    00000228 F8 01            [12] 1465 	ldhl	sp,	#1
+    0000022A 77               [ 8] 1466 	ld	(hl), a
+                                   1467 ;src/level.c:368: (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
+    0000022B 79               [ 4] 1468 	ld	a, c
+    0000022C D6 88            [ 8] 1469 	sub	a, #0x88
+    0000022E 3E 01            [ 8] 1470 	ld	a, #0x01
+    00000230 28 01            [12] 1471 	jr	Z, 00773$
+    00000232 AF               [ 4] 1472 	xor	a, a
+    00000233                       1473 00773$:
+    00000233 F8 02            [12] 1474 	ldhl	sp,	#2
+    00000235 77               [ 8] 1475 	ld	(hl), a
+                                   1476 ;src/level.c:369: (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
+    00000236 79               [ 4] 1477 	ld	a, c
+    00000237 D6 89            [ 8] 1478 	sub	a, #0x89
+    00000239 3E 01            [ 8] 1479 	ld	a, #0x01
+    0000023B 28 01            [12] 1480 	jr	Z, 00775$
+    0000023D AF               [ 4] 1481 	xor	a, a
+    0000023E                       1482 00775$:
+    0000023E F8 03            [12] 1483 	ldhl	sp,	#3
+    00000240 77               [ 8] 1484 	ld	(hl), a
+                                   1485 ;src/level.c:365: } else if (current_level <= LEVEL_WORLD2_END) {
+    00000241 3E 05            [ 8] 1486 	ld	a, #0x05
+    00000243 21r19r00         [12] 1487 	ld	hl, #_current_level
+    00000246 96               [ 8] 1488 	sub	a, (hl)
+    00000247 38 35            [12] 1489 	jr	C, 00125$
+                                   1490 ;src/level.c:366: return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
+    00000249 79               [ 4] 1491 	ld	a, c
+    0000024A D6 86            [ 8] 1492 	sub	a, #0x86
+    0000024C 28 2B            [12] 1493 	jr	Z, 00157$
+    0000024E F8 01            [12] 1494 	ldhl	sp,	#1
+    00000250 CB 46            [12] 1495 	bit	0, (hl)
+    00000252 20 25            [12] 1496 	jr	NZ, 00157$
+                                   1497 ;src/level.c:367: (tile == BIG_BLOCK_BOTTOM_LEFT) ||
+    00000254 79               [ 4] 1498 	ld	a, c
+    00000255 D6 90            [ 8] 1499 	sub	a, #0x90
+    00000257 28 20            [12] 1500 	jr	Z, 00157$
+                                   1501 ;src/level.c:368: (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
+    00000259 CB 40            [ 8] 1502 	bit	0, b
+    0000025B 20 1C            [12] 1503 	jr	NZ, 00157$
+    0000025D 23               [ 8] 1504 	inc	hl
+    0000025E CB 46            [12] 1505 	bit	0, (hl)
+    00000260 20 17            [12] 1506 	jr	NZ, 00157$
+                                   1507 ;src/level.c:369: (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
+    00000262 23               [ 8] 1508 	inc	hl
+    00000263 CB 46            [12] 1509 	bit	0, (hl)
+    00000265 20 12            [12] 1510 	jr	NZ, 00157$
+    00000267 CB 43            [ 8] 1511 	bit	0, e
+    00000269 20 0E            [12] 1512 	jr	NZ, 00157$
+                                   1513 ;src/level.c:370: (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
+    0000026B F8 00            [12] 1514 	ldhl	sp,	#0
+    0000026D CB 46            [12] 1515 	bit	0, (hl)
+    0000026F 20 08            [12] 1516 	jr	NZ, 00157$
+                                   1517 ;src/level.c:371: (tile == HALF_BIG_BLOCK_TOP_RIGHT));
+    00000271 CB 42            [ 8] 1518 	bit	0, d
+    00000273 20 04            [12] 1519 	jr	NZ, 00157$
+    00000275 AF               [ 4] 1520 	xor	a, a
+    00000276 C3r18r03         [16] 1521 	jp	00130$
+    00000279                       1522 00157$:
+    00000279 3E 01            [ 8] 1523 	ld	a, #0x01
+    0000027B C3r18r03         [16] 1524 	jp	00130$
+    0000027E                       1525 00125$:
+                                   1526 ;src/level.c:373: return ((tile == EASTON_FLOOR_1) || (tile == EASTON_FLOOR_2) ||
+    0000027E 79               [ 4] 1527 	ld	a, c
+    0000027F D6 9C            [ 8] 1528 	sub	a, #0x9c
+    00000281 3E 01            [ 8] 1529 	ld	a, #0x01
+    00000283 28 01            [12] 1530 	jr	Z, 00779$
+    00000285 AF               [ 4] 1531 	xor	a, a
+    00000286                       1532 00779$:
+    00000286 5F               [ 4] 1533 	ld	e, a
+                                   1534 ;src/level.c:372: } else if (current_level <= LEVEL_WORLD3_END) {
+    00000287 3E 08            [ 8] 1535 	ld	a, #0x08
+    00000289 21r19r00         [12] 1536 	ld	hl, #_current_level
+    0000028C 96               [ 8] 1537 	sub	a, (hl)
+    0000028D 38 44            [12] 1538 	jr	C, 00122$
+                                   1539 ;src/level.c:373: return ((tile == EASTON_FLOOR_1) || (tile == EASTON_FLOOR_2) ||
+    0000028F 79               [ 4] 1540 	ld	a, c
+    00000290 D6 9D            [ 8] 1541 	sub	a, #0x9d
+    00000292 28 3B            [12] 1542 	jr	Z, 00181$
+    00000294 CB 43            [ 8] 1543 	bit	0, e
+    00000296 20 37            [12] 1544 	jr	NZ, 00181$
+                                   1545 ;src/level.c:374: (tile == EASTON_STONE_PLATEFORM_1) ||
+    00000298 F8 01            [12] 1546 	ldhl	sp,	#1
+    0000029A CB 46            [12] 1547 	bit	0, (hl)
+    0000029C 20 31            [12] 1548 	jr	NZ, 00181$
+                                   1549 ;src/level.c:375: (tile == EASTON_STONE_PLATEFORM_2) ||
+    0000029E CB 40            [ 8] 1550 	bit	0, b
+    000002A0 20 2D            [12] 1551 	jr	NZ, 00181$
+                                   1552 ;src/level.c:376: (tile == EASTON_STONE_PLATEFORM_3) ||
+                                   1553 ;src/level.c:377: (tile == EASTON_STONE_PLATEFORM_4) ||
+    000002A2 79               [ 4] 1554 	ld	a,c
+    000002A3 FE 9E            [ 8] 1555 	cp	a,#0x9e
+    000002A5 28 28            [12] 1556 	jr	Z, 00181$
+    000002A7 D6 9F            [ 8] 1557 	sub	a, #0x9f
+    000002A9 28 24            [12] 1558 	jr	Z, 00181$
+                                   1559 ;src/level.c:378: (tile == EASTON_STONE_PLATEFORM_BOTTOM) ||
+    000002AB CB 42            [ 8] 1560 	bit	0, d
+    000002AD 20 20            [12] 1561 	jr	NZ, 00181$
+                                   1562 ;src/level.c:379: (tile == EASTON_LARGE_BLACK_BLOCK_TOP_LEFT) ||
+                                   1563 ;src/level.c:380: (tile == EASTON_LARGE_BLACK_BLOCK_TOP_RIGHT) ||
+    000002AF 79               [ 4] 1564 	ld	a,c
+    000002B0 FE 72            [ 8] 1565 	cp	a,#0x72
+    000002B2 28 1B            [12] 1566 	jr	Z, 00181$
+                                   1567 ;src/level.c:381: (tile == EASTON_LARGE_BLACK_BLOCK_BOTOM_LEFT) ||
+                                   1568 ;src/level.c:382: (tile == EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT) ||
+    000002B4 FE 73            [ 8] 1569 	cp	a,#0x73
+    000002B6 28 17            [12] 1570 	jr	Z, 00181$
+    000002B8 FE 7C            [ 8] 1571 	cp	a,#0x7c
+    000002BA 28 13            [12] 1572 	jr	Z, 00181$
+                                   1573 ;src/level.c:383: (tile == EASTON_BLOCK) || (tile == EASTON_STONE_PLATEFORM_LEFT) ||
+    000002BC FE 7D            [ 8] 1574 	cp	a,#0x7d
+    000002BE 28 0F            [12] 1575 	jr	Z, 00181$
+    000002C0 FE A0            [ 8] 1576 	cp	a,#0xa0
+    000002C2 28 0B            [12] 1577 	jr	Z, 00181$
+                                   1578 ;src/level.c:384: (tile == EASTON_STONE_PLATEFORM_RIGHT));
+    000002C4 FE A1            [ 8] 1579 	cp	a,#0xa1
+    000002C6 28 07            [12] 1580 	jr	Z, 00181$
+    000002C8 D6 A2            [ 8] 1581 	sub	a, #0xa2
+    000002CA 28 03            [12] 1582 	jr	Z, 00181$
+    000002CC AF               [ 4] 1583 	xor	a, a
+    000002CD 18 49            [12] 1584 	jr	00130$
+    000002CF                       1585 00181$:
+    000002CF 3E 01            [ 8] 1586 	ld	a, #0x01
+    000002D1 18 45            [12] 1587 	jr	00130$
+    000002D3                       1588 00122$:
+                                   1589 ;src/level.c:386: return ((tile == CHAI_FLOOR_LEFT) || (tile == CHAI_FLOOR_MIDDLE_1) ||
+    000002D3 F8 02            [12] 1590 	ldhl	sp,	#2
+    000002D5 CB 46            [12] 1591 	bit	0, (hl)
+    000002D7 20 3D            [12] 1592 	jr	NZ, 00220$
+    000002D9 23               [ 8] 1593 	inc	hl
+    000002DA CB 46            [12] 1594 	bit	0, (hl)
+    000002DC 20 38            [12] 1595 	jr	NZ, 00220$
+                                   1596 ;src/level.c:387: (tile == CHAI_FLOOR_MIDDLE_2) ||
+                                   1597 ;src/level.c:388: (tile == CHAI_FLOOR_MIDDLE_RIGHT) || (tile == CHAI_GREY_BLOCK) ||
+    000002DE 79               [ 4] 1598 	ld	a,c
+    000002DF FE 8A            [ 8] 1599 	cp	a,#0x8a
+    000002E1 28 33            [12] 1600 	jr	Z, 00220$
+                                   1601 ;src/level.c:389: (tile == CHAI_PIPE) || (tile == CHAI_PIPE_LEFT) ||
+    000002E3 FE 8B            [ 8] 1602 	cp	a,#0x8b
+    000002E5 28 2F            [12] 1603 	jr	Z, 00220$
+    000002E7 FE 93            [ 8] 1604 	cp	a,#0x93
+    000002E9 28 2B            [12] 1605 	jr	Z, 00220$
+                                   1606 ;src/level.c:390: (tile == CHAI_PIPE_RIGHT) || (tile == CHAI_PIPE_BOTTOM_LEFT) ||
+    000002EB FE AF            [ 8] 1607 	cp	a,#0xaf
+    000002ED 28 27            [12] 1608 	jr	Z, 00220$
+    000002EF FE B6            [ 8] 1609 	cp	a,#0xb6
+    000002F1 28 23            [12] 1610 	jr	Z, 00220$
+                                   1611 ;src/level.c:391: (tile == CHAI_PIPE_BOTTOM_RIGHT) || (tile == CHAI_BLOCK) ||
+    000002F3 FE B7            [ 8] 1612 	cp	a,#0xb7
+    000002F5 28 1F            [12] 1613 	jr	Z, 00220$
+    000002F7 FE B8            [ 8] 1614 	cp	a,#0xb8
+    000002F9 28 1B            [12] 1615 	jr	Z, 00220$
+                                   1616 ;src/level.c:392: (tile == CHAI_BRICK_BLOCK) || (tile == CHAI_BLACK_BLOCK_LEFT) ||
+    000002FB FE B9            [ 8] 1617 	cp	a,#0xb9
+    000002FD 28 17            [12] 1618 	jr	Z, 00220$
+    000002FF FE 63            [ 8] 1619 	cp	a,#0x63
+    00000301 28 13            [12] 1620 	jr	Z, 00220$
+                                   1621 ;src/level.c:393: (tile == CHAI_BLACK_BLOCK_RIGHT) || (tile == CHAI_FIRE_BLOCK));
+    00000303 FE 83            [ 8] 1622 	cp	a,#0x83
+    00000305 28 0F            [12] 1623 	jr	Z, 00220$
+    00000307 FE 96            [ 8] 1624 	cp	a,#0x96
+    00000309 28 0B            [12] 1625 	jr	Z, 00220$
+    0000030B D6 97            [ 8] 1626 	sub	a, #0x97
+    0000030D 28 07            [12] 1627 	jr	Z, 00220$
+    0000030F CB 43            [ 8] 1628 	bit	0, e
+    00000311 20 03            [12] 1629 	jr	NZ, 00220$
+    00000313 AF               [ 4] 1630 	xor	a, a
+    00000314 18 02            [12] 1631 	jr	00221$
+    00000316                       1632 00220$:
+    00000316 3E 01            [ 8] 1633 	ld	a, #0x01
+    00000318                       1634 00221$:
+                                   1635 ;src/level.c:396: return false;
+    00000318                       1636 00130$:
+                                   1637 ;src/level.c:397: }
+    00000318 E8 04            [16] 1638 	add	sp, #4
+    0000031A C9               [16] 1639 	ret
+                                   1640 ;src/level.c:402: bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom) {
+                                   1641 ;	---------------------------------
+                                   1642 ; Function is_tile_passthought
+                                   1643 ; ---------------------------------
+    0000031B                       1644 _is_tile_passthought::
+    0000031B 4F               [ 4] 1645 	ld	c, a
+                                   1646 ;src/level.c:403: return (current_level == LEVEL_1_2 && ((tile_left_bottom == PALM_TREE_LEFT) ||
+    0000031C FAr19r00         [16] 1647 	ld	a, (#_current_level)
+    0000031F 3D               [ 4] 1648 	dec	a
+    00000320 20 1A            [12] 1649 	jr	NZ, 00108$
+                                   1650 ;src/level.c:404: (tile_left_bottom == PALM_TREE_CENTER) ||
+    00000322 79               [ 4] 1651 	ld	a,c
+    00000323 FE 79            [ 8] 1652 	cp	a,#0x79
+    00000325 28 38            [12] 1653 	jr	Z, 00104$
+                                   1654 ;src/level.c:405: (tile_left_bottom == PALM_TREE_RIGHT) ||
+    00000327 FE 7A            [ 8] 1655 	cp	a,#0x7a
+    00000329 28 34            [12] 1656 	jr	Z, 00104$
+    0000032B D6 7B            [ 8] 1657 	sub	a, #0x7b
+    0000032D 28 30            [12] 1658 	jr	Z, 00104$
+                                   1659 ;src/level.c:406: (tile_right_bottom == PALM_TREE_LEFT) ||
+                                   1660 ;src/level.c:407: (tile_right_bottom == PALM_TREE_CENTER) ||
+    0000032F 7B               [ 4] 1661 	ld	a,e
+    00000330 FE 79            [ 8] 1662 	cp	a,#0x79
+    00000332 28 2B            [12] 1663 	jr	Z, 00104$
+                                   1664 ;src/level.c:408: (tile_right_bottom == PALM_TREE_RIGHT))) ||
+    00000334 FE 7A            [ 8] 1665 	cp	a,#0x7a
+    00000336 28 27            [12] 1666 	jr	Z, 00104$
+    00000338 D6 7B            [ 8] 1667 	sub	a, #0x7b
+    0000033A 28 23            [12] 1668 	jr	Z, 00104$
+    0000033C                       1669 00108$:
+                                   1670 ;src/level.c:409: (current_level == LEVEL_2_1 && ((tile_left_bottom == MUDA_PLATEFORM_LEFT) ||
+    0000033C FAr19r00         [16] 1671 	ld	a, (#_current_level)
+    0000033F D6 03            [ 8] 1672 	sub	a, #0x03
+    00000341 20 1A            [12] 1673 	jr	NZ, 00103$
+                                   1674 ;src/level.c:410: (tile_left_bottom == MUDA_PLATEFORM_CENTER) ||
+    00000343 79               [ 4] 1675 	ld	a,c
+    00000344 FE 83            [ 8] 1676 	cp	a,#0x83
+    00000346 28 17            [12] 1677 	jr	Z, 00104$
+                                   1678 ;src/level.c:411: (tile_left_bottom == MUDA_PLATEFORM_RIGHT) ||
+    00000348 FE 84            [ 8] 1679 	cp	a,#0x84
+    0000034A 28 13            [12] 1680 	jr	Z, 00104$
+    0000034C D6 85            [ 8] 1681 	sub	a, #0x85
+    0000034E 28 0F            [12] 1682 	jr	Z, 00104$
+                                   1683 ;src/level.c:412: (tile_right_bottom == MUDA_PLATEFORM_LEFT) ||
+                                   1684 ;src/level.c:413: (tile_right_bottom == MUDA_PLATEFORM_CENTER) ||
+    00000350 7B               [ 4] 1685 	ld	a,e
+    00000351 FE 83            [ 8] 1686 	cp	a,#0x83
+    00000353 28 0A            [12] 1687 	jr	Z, 00104$
+                                   1688 ;src/level.c:414: (tile_right_bottom == MUDA_PLATEFORM_RIGHT)));
+    00000355 FE 84            [ 8] 1689 	cp	a,#0x84
+    00000357 28 06            [12] 1690 	jr	Z, 00104$
+    00000359 D6 85            [ 8] 1691 	sub	a, #0x85
+    0000035B 28 02            [12] 1692 	jr	Z, 00104$
+    0000035D                       1693 00103$:
+    0000035D AF               [ 4] 1694 	xor	a, a
+    0000035E C9               [16] 1695 	ret
+    0000035F                       1696 00104$:
+    0000035F 3E 01            [ 8] 1697 	ld	a, #0x01
+                                   1698 ;src/level.c:415: }
+    00000361 C9               [16] 1699 	ret
+                                   1700 ;src/level.c:420: bool is_coin(uint8_t tile) { 
+                                   1701 ;	---------------------------------
+                                   1702 ; Function is_coin
+                                   1703 ; ---------------------------------
+    00000362                       1704 _is_coin::
+                                   1705 ;src/level.c:421: return tile == TILE_COIN; 
+    00000362 D6 37            [ 8] 1706 	sub	a, #0x37
+    00000364 3E 01            [ 8] 1707 	ld	a, #0x01
+    00000366 C8               [20] 1708 	ret	Z
+    00000367 AF               [ 4] 1709 	xor	a, a
+                                   1710 ;src/level.c:422: }
+    00000368 C9               [16] 1711 	ret
+                                   1712 ;src/level.c:427: void on_get_coin_background(uint8_t x, uint8_t y) {
+                                   1713 ;	---------------------------------
+                                   1714 ; Function on_get_coin_background
+                                   1715 ; ---------------------------------
+    00000369                       1716 _on_get_coin_background::
+                                   1717 ;src/level.c:428: uint8_t index_x = TILE_INDEX_X(x, camera_x);
+    00000369 4F               [ 4] 1718 	ld	c, a
+    0000036A 06 00            [ 8] 1719 	ld	b, #0x00
+    0000036C 79               [ 4] 1720 	ld	a, c
+    0000036D 21r00r00         [12] 1721 	ld	hl, #_camera_x
+    00000370 86               [ 8] 1722 	add	a, (hl)
+    00000371 23               [ 8] 1723 	inc	hl
+    00000372 4F               [ 4] 1724 	ld	c, a
+    00000373 78               [ 4] 1725 	ld	a, b
+    00000374 8E               [ 8] 1726 	adc	a, (hl)
+    00000375 47               [ 4] 1727 	ld	b, a
+    00000376 CB 38            [ 8] 1728 	srl	b
+    00000378 CB 19            [ 8] 1729 	rr	c
+    0000037A CB 38            [ 8] 1730 	srl	b
+    0000037C CB 19            [ 8] 1731 	rr	c
+    0000037E CB 38            [ 8] 1732 	srl	b
+    00000380 CB 19            [ 8] 1733 	rr	c
+    00000382 79               [ 4] 1734 	ld	a, c
+    00000383 E6 1F            [ 8] 1735 	and	a, #0x1f
+    00000385 57               [ 4] 1736 	ld	d, a
+                                   1737 ;src/level.c:429: uint8_t index_y = TILE_INDEX_Y(y);
+    00000386 CB 3B            [ 8] 1738 	srl	e
+    00000388 CB 3B            [ 8] 1739 	srl	e
+    0000038A CB 3B            [ 8] 1740 	srl	e
+                                   1741 ;src/level.c:431: map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
+    0000038C 6B               [ 4] 1742 	ld	l, e
+    0000038D 26 00            [ 8] 1743 	ld	h, #0x00
+    0000038F 29               [ 8] 1744 	add	hl, hl
+    00000390 29               [ 8] 1745 	add	hl, hl
+    00000391 29               [ 8] 1746 	add	hl, hl
+    00000392 29               [ 8] 1747 	add	hl, hl
+    00000393 29               [ 8] 1748 	add	hl, hl
+    00000394 4A               [ 4] 1749 	ld	c, d
+    00000395 06 00            [ 8] 1750 	ld	b, #0x00
+    00000397 09               [ 8] 1751 	add	hl, bc
+    00000398 01r00r00         [12] 1752 	ld	bc, #_map_buffer
+    0000039B 09               [ 8] 1753 	add	hl, bc
+                                   1754 ;src/level.c:432: set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+    0000039C 3E 28            [ 8] 1755 	ld	a,#0x28
+    0000039E 77               [ 8] 1756 	ld	(hl),a
+    0000039F F5               [16] 1757 	push	af
+    000003A0 33               [ 8] 1758 	inc	sp
+    000003A1 7A               [ 4] 1759 	ld	a, d
+    000003A2 CDr00r00         [24] 1760 	call	_set_bkg_tile_xy
+                                   1761 ;src/level.c:434: on_get_coin();
+                                   1762 ;src/level.c:435: }
+    000003A5 C3rF2r05         [16] 1763 	jp	_on_get_coin
+                                   1764 ;src/level.c:437: void on_break_tile(uint8_t x, uint8_t y) {
+                                   1765 ;	---------------------------------
+                                   1766 ; Function on_break_tile
+                                   1767 ; ---------------------------------
+    000003A8                       1768 _on_break_tile::
+                                   1769 ;src/level.c:438: uint8_t index_x = TILE_INDEX_X(x, camera_x);
+    000003A8 4F               [ 4] 1770 	ld	c, a
+    000003A9 06 00            [ 8] 1771 	ld	b, #0x00
+    000003AB 79               [ 4] 1772 	ld	a, c
+    000003AC 21r00r00         [12] 1773 	ld	hl, #_camera_x
+    000003AF 86               [ 8] 1774 	add	a, (hl)
+    000003B0 23               [ 8] 1775 	inc	hl
+    000003B1 4F               [ 4] 1776 	ld	c, a
+    000003B2 78               [ 4] 1777 	ld	a, b
+    000003B3 8E               [ 8] 1778 	adc	a, (hl)
+    000003B4 47               [ 4] 1779 	ld	b, a
+    000003B5 CB 38            [ 8] 1780 	srl	b
+    000003B7 CB 19            [ 8] 1781 	rr	c
+    000003B9 CB 38            [ 8] 1782 	srl	b
+    000003BB CB 19            [ 8] 1783 	rr	c
+    000003BD CB 38            [ 8] 1784 	srl	b
+    000003BF CB 19            [ 8] 1785 	rr	c
+    000003C1 79               [ 4] 1786 	ld	a, c
+    000003C2 E6 1F            [ 8] 1787 	and	a, #0x1f
+    000003C4 57               [ 4] 1788 	ld	d, a
+                                   1789 ;src/level.c:439: uint8_t index_y = TILE_INDEX_Y(y);
+    000003C5 CB 3B            [ 8] 1790 	srl	e
+    000003C7 CB 3B            [ 8] 1791 	srl	e
+    000003C9 CB 3B            [ 8] 1792 	srl	e
+                                   1793 ;src/level.c:441: map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
+    000003CB 6B               [ 4] 1794 	ld	l, e
+    000003CC 26 00            [ 8] 1795 	ld	h, #0x00
+    000003CE 29               [ 8] 1796 	add	hl, hl
+    000003CF 29               [ 8] 1797 	add	hl, hl
+    000003D0 29               [ 8] 1798 	add	hl, hl
+    000003D1 29               [ 8] 1799 	add	hl, hl
+    000003D2 29               [ 8] 1800 	add	hl, hl
+    000003D3 4A               [ 4] 1801 	ld	c, d
+    000003D4 06 00            [ 8] 1802 	ld	b, #0x00
+    000003D6 09               [ 8] 1803 	add	hl, bc
+    000003D7 01r00r00         [12] 1804 	ld	bc, #_map_buffer
+    000003DA 09               [ 8] 1805 	add	hl, bc
+    000003DB 36 28            [12] 1806 	ld	(hl), #0x28
+                                   1807 ;src/level.c:442: set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+    000003DD 3E 28            [ 8] 1808 	ld	a, #0x28
+    000003DF F5               [16] 1809 	push	af
+    000003E0 33               [ 8] 1810 	inc	sp
+    000003E1 7A               [ 4] 1811 	ld	a, d
+    000003E2 CDr00r00         [24] 1812 	call	_set_bkg_tile_xy
+                                   1813 ;src/level.c:447: music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
+    000003E5 0Er00            [ 8] 1814 	ld	c, #<(___mute_mask_sound_destroyed)
+    000003E7 06r00            [ 8] 1815 	ld	b, #<(___bank_sound_destroyed)
+                                   1816 ;sm83/musicmanager.h:105: if (music_sfx_priority > priority) return;
+    000003E9 3E 04            [ 8] 1817 	ld	a, #0x04
+    000003EB 21r00r00         [12] 1818 	ld	hl, #_music_sfx_priority
+    000003EE 96               [ 8] 1819 	sub	a, (hl)
+    000003EF D8               [20] 1820 	ret	C
+                                   1821 ;sm83/musicmanager.h:106: sfx_play_bank = SFX_STOP_BANK;
+    000003F0 21r00r00         [12] 1822 	ld	hl, #_sfx_play_bank
+    000003F3 36 FF            [12] 1823 	ld	(hl), #0xff
+                                   1824 ;sm83/musicmanager.h:107: music_sfx_priority = priority;
+    000003F5 21r00r00         [12] 1825 	ld	hl, #_music_sfx_priority
+    000003F8 36 04            [12] 1826 	ld	(hl), #0x04
+                                   1827 ;sm83/musicmanager.h:108: music_sound_cut_mask(music_mute_mask);
+    000003FA FAr00r00         [16] 1828 	ld	a, (_music_mute_mask)
+                                   1829 ;sm83/musicmanager.h:80: sfx_sound_cut_mask(mask);
+    000003FD 5F               [ 4] 1830 	ld	e, a
+                                   1831 ;sm83/sfxplayer.h:47: if (mask & SFX_CH_1) NR12_REG = 0, NR14_REG = SFX_CH_RETRIGGER;
+    000003FE 0F               [ 4] 1832 	rrca
+    000003FF 30 07            [12] 1833 	jr	NC, 00104$
+    00000401 AF               [ 4] 1834 	xor	a, a
+    00000402 E0r00            [12] 1835 	ldh	(_NR12_REG + 0), a
+    00000404 3E C0            [ 8] 1836 	ld	a, #0xc0
+    00000406 E0r00            [12] 1837 	ldh	(_NR14_REG + 0), a
+    00000408                       1838 00104$:
+                                   1839 ;sm83/sfxplayer.h:48: if (mask & SFX_CH_2) NR22_REG = 0, NR24_REG = SFX_CH_RETRIGGER;
+    00000408 CB 4B            [ 8] 1840 	bit	1, e
+    0000040A 28 07            [12] 1841 	jr	Z, 00106$
+    0000040C AF               [ 4] 1842 	xor	a, a
+    0000040D E0r00            [12] 1843 	ldh	(_NR22_REG + 0), a
+    0000040F 3E C0            [ 8] 1844 	ld	a, #0xc0
+    00000411 E0r00            [12] 1845 	ldh	(_NR24_REG + 0), a
+    00000413                       1846 00106$:
+                                   1847 ;sm83/sfxplayer.h:49: if (mask & SFX_CH_3) NR32_REG = 0;
+    00000413 CB 53            [ 8] 1848 	bit	2, e
+    00000415 28 03            [12] 1849 	jr	Z, 00108$
+    00000417 AF               [ 4] 1850 	xor	a, a
+    00000418 E0r00            [12] 1851 	ldh	(_NR32_REG + 0), a
+    0000041A                       1852 00108$:
+                                   1853 ;sm83/sfxplayer.h:50: if (mask & SFX_CH_4) NR42_REG = 0, NR44_REG = SFX_CH_RETRIGGER;
+    0000041A CB 5B            [ 8] 1854 	bit	3, e
+    0000041C 28 07            [12] 1855 	jr	Z, 00110$
+    0000041E AF               [ 4] 1856 	xor	a, a
+    0000041F E0r00            [12] 1857 	ldh	(_NR42_REG + 0), a
+    00000421 3E C0            [ 8] 1858 	ld	a, #0xc0
+    00000423 E0r00            [12] 1859 	ldh	(_NR44_REG + 0), a
+    00000425                       1860 00110$:
+                                   1861 ;sm83/sfxplayer.h:51: NR51_REG = 0xFF;
+    00000425 3E FF            [ 8] 1862 	ld	a, #0xff
+    00000427 E0r00            [12] 1863 	ldh	(_NR51_REG + 0), a
+                                   1864 ;sm83/musicmanager.h:109: music_mute_mask = mute_mask;
+    00000429 21r00r00         [12] 1865 	ld	hl, #_music_mute_mask
+    0000042C 71               [ 8] 1866 	ld	(hl), c
+                                   1867 ;sm83/sfxplayer.h:64: sfx_play_bank = SFX_STOP_BANK, sfx_frame_skip = 0, sfx_play_sample = sample, sfx_play_bank = bank;
+    0000042D 21r00r00         [12] 1868 	ld	hl, #_sfx_play_bank
+    00000430 36 FF            [12] 1869 	ld	(hl), #0xff
+    00000432 AF               [ 4] 1870 	xor	a, a
+    00000433 EAr00r00         [16] 1871 	ld	(#_sfx_frame_skip),a
+    00000436 21r00r00         [12] 1872 	ld	hl, #_sfx_play_sample
+    00000439 36r00            [12] 1873 	ld	(hl), #<(_sound_destroyed)
+    0000043B 23               [ 8] 1874 	inc	hl
+    0000043C 36s00            [12] 1875 	ld	(hl), #>(_sound_destroyed)
+    0000043E 21r00r00         [12] 1876 	ld	hl, #_sfx_play_bank
+    00000441 70               [ 8] 1877 	ld	(hl), b
+                                   1878 ;src/level.c:448: MUSIC_SFX_PRIORITY_NORMAL);
+                                   1879 ;src/level.c:450: }
+    00000442 C9               [16] 1880 	ret
+                                   1881 ;src/level.c:465: void on_block_bump(uint8_t x, uint8_t y) BANKED {
+                                   1882 ;	---------------------------------
+                                   1883 ; Function on_block_bump
+                                   1884 ; ---------------------------------
+                         00000000  1885 	b_on_block_bump	= 0
+    00000443                       1886 _on_block_bump::
+    00000443 E8 FD            [16] 1887 	add	sp, #-3
+                                   1888 ;src/level.c:466: uint8_t index_x = TILE_INDEX_X(x, camera_x);
+    00000445 F8 09            [12] 1889 	ldhl	sp,	#9
+    00000447 4E               [ 8] 1890 	ld	c, (hl)
+    00000448 06 00            [ 8] 1891 	ld	b, #0x00
+    0000044A 79               [ 4] 1892 	ld	a, c
+    0000044B 21r00r00         [12] 1893 	ld	hl, #_camera_x
+    0000044E 86               [ 8] 1894 	add	a, (hl)
+    0000044F 23               [ 8] 1895 	inc	hl
+    00000450 4F               [ 4] 1896 	ld	c, a
+    00000451 78               [ 4] 1897 	ld	a, b
+    00000452 8E               [ 8] 1898 	adc	a, (hl)
+    00000453 47               [ 4] 1899 	ld	b, a
+    00000454 CB 38            [ 8] 1900 	srl	b
+    00000456 CB 19            [ 8] 1901 	rr	c
+    00000458 CB 38            [ 8] 1902 	srl	b
+    0000045A CB 19            [ 8] 1903 	rr	c
+    0000045C CB 38            [ 8] 1904 	srl	b
+    0000045E CB 19            [ 8] 1905 	rr	c
+    00000460 79               [ 4] 1906 	ld	a, c
+    00000461 E6 1F            [ 8] 1907 	and	a, #0x1f
+    00000463 F8 00            [12] 1908 	ldhl	sp,	#0
+    00000465 77               [ 8] 1909 	ld	(hl), a
+                                   1910 ;src/level.c:467: uint8_t index_y = TILE_INDEX_Y(y);
+    00000466 F8 0A            [12] 1911 	ldhl	sp,	#10
+    00000468 7E               [ 8] 1912 	ld	a, (hl)
+    00000469 CB 37            [ 8] 1913 	swap	a
+    0000046B 07               [ 4] 1914 	rlca
+    0000046C E6 1F            [ 8] 1915 	and	a, #0x1f
+    0000046E F8 01            [12] 1916 	ldhl	sp,	#1
+    00000470 77               [ 8] 1917 	ld	(hl), a
+                                   1918 ;src/level.c:469: map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
+    00000471 3A               [ 8] 1919 	ld	a, (hl-)
+    00000472 4F               [ 4] 1920 	ld	c, a
+    00000473 06 00            [ 8] 1921 	ld	b, #0x00
+    00000475 79               [ 4] 1922 	ld	a, c
+    00000476 87               [ 4] 1923 	add	a, a
+    00000477 CB 10            [ 8] 1924 	rl	b
+    00000479 87               [ 4] 1925 	add	a, a
+    0000047A CB 10            [ 8] 1926 	rl	b
+    0000047C 87               [ 4] 1927 	add	a, a
+    0000047D CB 10            [ 8] 1928 	rl	b
+    0000047F 87               [ 4] 1929 	add	a, a
+    00000480 CB 10            [ 8] 1930 	rl	b
+    00000482 87               [ 4] 1931 	add	a, a
+    00000483 CB 10            [ 8] 1932 	rl	b
+    00000485 5E               [ 8] 1933 	ld	e, (hl)
+    00000486 16 00            [ 8] 1934 	ld	d, #0x00
+    00000488 6F               [ 4] 1935 	ld	l, a
+    00000489 60               [ 4] 1936 	ld	h, b
+    0000048A 19               [ 8] 1937 	add	hl, de
+    0000048B 11r00r00         [12] 1938 	ld	de, #_map_buffer
+    0000048E 19               [ 8] 1939 	add	hl, de
+    0000048F 36 28            [12] 1940 	ld	(hl), #0x28
+                                   1941 ;src/level.c:470: set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
+    00000491 3E 28            [ 8] 1942 	ld	a, #0x28
+    00000493 F5               [16] 1943 	push	af
+    00000494 33               [ 8] 1944 	inc	sp
+    00000495 F8 02            [12] 1945 	ldhl	sp,	#2
+    00000497 3A               [ 8] 1946 	ld	a, (hl-)
+    00000498 5F               [ 4] 1947 	ld	e, a
+    00000499 7E               [ 8] 1948 	ld	a, (hl)
+    0000049A CDr00r00         [24] 1949 	call	_set_bkg_tile_xy
+                                   1950 ;src/level.c:473: music_play_sfx(BANK(sound_bump), sound_bump, SFX_MUTE_MASK(sound_bump),
+    0000049D 0Er00            [ 8] 1951 	ld	c, #<(___mute_mask_sound_bump)
+    0000049F F8 02            [12] 1952 	ldhl	sp,	#2
+    000004A1 36r00            [12] 1953 	ld	(hl), #<(___bank_sound_bump)
+                                   1954 ;sm83/musicmanager.h:105: if (music_sfx_priority > priority) return;
+    000004A3 3E 04            [ 8] 1955 	ld	a, #0x04
+    000004A5 21r00r00         [12] 1956 	ld	hl, #_music_sfx_priority
+    000004A8 96               [ 8] 1957 	sub	a, (hl)
+    000004A9 38 54            [12] 1958 	jr	C, 00114$
+                                   1959 ;sm83/musicmanager.h:106: sfx_play_bank = SFX_STOP_BANK;
+    000004AB 21r00r00         [12] 1960 	ld	hl, #_sfx_play_bank
+    000004AE 36 FF            [12] 1961 	ld	(hl), #0xff
+                                   1962 ;sm83/musicmanager.h:107: music_sfx_priority = priority;
+    000004B0 21r00r00         [12] 1963 	ld	hl, #_music_sfx_priority
+    000004B3 36 04            [12] 1964 	ld	(hl), #0x04
+                                   1965 ;sm83/musicmanager.h:108: music_sound_cut_mask(music_mute_mask);
+    000004B5 FAr00r00         [16] 1966 	ld	a, (_music_mute_mask)
+                                   1967 ;sm83/musicmanager.h:80: sfx_sound_cut_mask(mask);
+    000004B8 47               [ 4] 1968 	ld	b, a
+                                   1969 ;sm83/sfxplayer.h:47: if (mask & SFX_CH_1) NR12_REG = 0, NR14_REG = SFX_CH_RETRIGGER;
+    000004B9 0F               [ 4] 1970 	rrca
+    000004BA 30 07            [12] 1971 	jr	NC, 00104$
+    000004BC AF               [ 4] 1972 	xor	a, a
+    000004BD E0r00            [12] 1973 	ldh	(_NR12_REG + 0), a
+    000004BF 3E C0            [ 8] 1974 	ld	a, #0xc0
+    000004C1 E0r00            [12] 1975 	ldh	(_NR14_REG + 0), a
+    000004C3                       1976 00104$:
+                                   1977 ;sm83/sfxplayer.h:48: if (mask & SFX_CH_2) NR22_REG = 0, NR24_REG = SFX_CH_RETRIGGER;
+    000004C3 CB 48            [ 8] 1978 	bit	1, b
+    000004C5 28 07            [12] 1979 	jr	Z, 00106$
+    000004C7 AF               [ 4] 1980 	xor	a, a
+    000004C8 E0r00            [12] 1981 	ldh	(_NR22_REG + 0), a
+    000004CA 3E C0            [ 8] 1982 	ld	a, #0xc0
+    000004CC E0r00            [12] 1983 	ldh	(_NR24_REG + 0), a
+    000004CE                       1984 00106$:
+                                   1985 ;sm83/sfxplayer.h:49: if (mask & SFX_CH_3) NR32_REG = 0;
+    000004CE CB 50            [ 8] 1986 	bit	2, b
+    000004D0 28 03            [12] 1987 	jr	Z, 00108$
+    000004D2 AF               [ 4] 1988 	xor	a, a
+    000004D3 E0r00            [12] 1989 	ldh	(_NR32_REG + 0), a
+    000004D5                       1990 00108$:
+                                   1991 ;sm83/sfxplayer.h:50: if (mask & SFX_CH_4) NR42_REG = 0, NR44_REG = SFX_CH_RETRIGGER;
+    000004D5 CB 58            [ 8] 1992 	bit	3, b
+    000004D7 28 07            [12] 1993 	jr	Z, 00110$
+    000004D9 AF               [ 4] 1994 	xor	a, a
+    000004DA E0r00            [12] 1995 	ldh	(_NR42_REG + 0), a
+    000004DC 3E C0            [ 8] 1996 	ld	a, #0xc0
+    000004DE E0r00            [12] 1997 	ldh	(_NR44_REG + 0), a
+    000004E0                       1998 00110$:
+                                   1999 ;sm83/sfxplayer.h:51: NR51_REG = 0xFF;
+    000004E0 3E FF            [ 8] 2000 	ld	a, #0xff
+    000004E2 E0r00            [12] 2001 	ldh	(_NR51_REG + 0), a
+                                   2002 ;sm83/musicmanager.h:109: music_mute_mask = mute_mask;
+    000004E4 21r00r00         [12] 2003 	ld	hl, #_music_mute_mask
+    000004E7 71               [ 8] 2004 	ld	(hl), c
+                                   2005 ;sm83/sfxplayer.h:64: sfx_play_bank = SFX_STOP_BANK, sfx_frame_skip = 0, sfx_play_sample = sample, sfx_play_bank = bank;
+    000004E8 21r00r00         [12] 2006 	ld	hl, #_sfx_play_bank
+    000004EB 36 FF            [12] 2007 	ld	(hl), #0xff
+    000004ED AF               [ 4] 2008 	xor	a, a
+    000004EE EAr00r00         [16] 2009 	ld	(#_sfx_frame_skip),a
+    000004F1 21r00r00         [12] 2010 	ld	hl, #_sfx_play_sample
+    000004F4 3Er00            [ 8] 2011 	ld	a, #<(_sound_bump)
+    000004F6 22               [ 8] 2012 	ld	(hl+), a
+    000004F7 36s00            [12] 2013 	ld	(hl), #>(_sound_bump)
+    000004F9 F8 02            [12] 2014 	ldhl	sp,	#2
+    000004FB 7E               [ 8] 2015 	ld	a, (hl)
+    000004FC EAr00r00         [16] 2016 	ld	(#_sfx_play_bank),a
+                                   2017 ;src/level.c:474: MUSIC_SFX_PRIORITY_NORMAL);
+    000004FF                       2018 00114$:
+                                   2019 ;src/level.c:476: uint8_t _saved_bank = _current_bank;
+    000004FF F0r00            [12] 2020 	ldh	a, (__current_bank + 0)
+    00000501 4F               [ 4] 2021 	ld	c, a
+                                   2022 ;src/level.c:477: SWITCH_ROM(BANK(commonTileset));
+    00000502 3Er00            [ 8] 2023 	ld	a, #<(___bank_commonTileset)
+    00000504 E0r00            [12] 2024 	ldh	(__current_bank + 0), a
+    00000506 EAr00r00         [16] 2025 	ld	(#_rROMB0),a
+                                   2026 ;src/level.c:478: set_sprite_data(90, 1, commonTileset_tiles + ((BREAKABLE_BLOCK - commonTileset_TILE_ORIGIN) * 16));
+    00000509 11r20r00         [12] 2027 	ld	de, #(_commonTileset_tiles + 32)
+    0000050C D5               [16] 2028 	push	de
+    0000050D 21 5A 01         [12] 2029 	ld	hl, #0x15a
+    00000510 E5               [16] 2030 	push	hl
+    00000511 CDr00r00         [24] 2031 	call	_set_sprite_data
+    00000514 E8 04            [16] 2032 	add	sp, #4
+                                   2033 ;src/level.c:479: SWITCH_ROM(_saved_bank);
+    00000516 79               [ 4] 2034 	ld	a, c
+    00000517 E0r00            [12] 2035 	ldh	(__current_bank + 0), a
+    00000519 21r00r00         [12] 2036 	ld	hl, #_rROMB0
+    0000051C 71               [ 8] 2037 	ld	(hl), c
+                                   2038 ;src/level.c:481: block_bump_state.active = true;
+    0000051D 21r2Ar00         [12] 2039 	ld	hl, #_block_bump_state
+                                   2040 ;src/level.c:482: block_bump_state.timer = 0;
+    00000520 3E 01            [ 8] 2041 	ld	a, #0x01
+    00000522 22               [ 8] 2042 	ld	(hl+), a
+    00000523 36 00            [12] 2043 	ld	(hl), #0x00
+                                   2044 ;src/level.c:483: block_bump_state.screen_x = (index_x << 3) + DEVICE_SPRITE_PX_OFFSET_X - (uint8_t)camera_x;
+    00000525 F8 00            [12] 2045 	ldhl	sp,	#0
+    00000527 7E               [ 8] 2046 	ld	a, (hl)
+    00000528 87               [ 4] 2047 	add	a, a
+    00000529 87               [ 4] 2048 	add	a, a
+    0000052A 87               [ 4] 2049 	add	a, a
+    0000052B C6 08            [ 8] 2050 	add	a, #0x08
+    0000052D 21r00r00         [12] 2051 	ld	hl, #_camera_x
+    00000530 4E               [ 8] 2052 	ld	c, (hl)
+    00000531 91               [ 4] 2053 	sub	a, c
+    00000532 EAr2Cr00         [16] 2054 	ld	(#(_block_bump_state + 2)),a
+                                   2055 ;src/level.c:484: block_bump_state.screen_y_base = (index_y << 3) + 5 * TILE_SIZE;
+    00000535 F8 01            [12] 2056 	ldhl	sp,	#1
+    00000537 7E               [ 8] 2057 	ld	a, (hl)
+    00000538 87               [ 4] 2058 	add	a, a
+    00000539 87               [ 4] 2059 	add	a, a
+    0000053A 87               [ 4] 2060 	add	a, a
+    0000053B C6 28            [ 8] 2061 	add	a, #0x28
+    0000053D EAr2Dr00         [16] 2062 	ld	(#(_block_bump_state + 3)),a
+                                   2063 ;src/level.c:485: block_bump_state.index_x = index_x;
+    00000540 11r2Er00         [12] 2064 	ld	de, #(_block_bump_state + 4)
+    00000543 F8 00            [12] 2065 	ldhl	sp,	#0
+                                   2066 ;src/level.c:486: block_bump_state.index_y = index_y;
+    00000545 2A               [ 8] 2067 	ld	a, (hl+)
+    00000546 12               [ 8] 2068 	ld	(de), a
+    00000547 11r2Fr00         [12] 2069 	ld	de, #(_block_bump_state + 5)
+    0000054A 7E               [ 8] 2070 	ld	a, (hl)
+    0000054B 12               [ 8] 2071 	ld	(de), a
+                                   2072 ;src/level.c:488: }
+    0000054C E8 03            [16] 2073 	add	sp, #3
+    0000054E C9               [16] 2074 	ret
+                                   2075 ;src/level.c:490: void block_bump_update(void) BANKED {
+                                   2076 ;	---------------------------------
+                                   2077 ; Function block_bump_update
+                                   2078 ; ---------------------------------
+                         00000000  2079 	b_block_bump_update	= 0
+    0000054F                       2080 _block_bump_update::
+                                   2081 ;src/level.c:491: if (!block_bump_state.active) return;
+    0000054F 01r2Ar00         [12] 2082 	ld	bc, #_block_bump_state
+    00000552 0A               [ 8] 2083 	ld	a, (bc)
+    00000553 5F               [ 4] 2084 	ld	e, a
+    00000554 CB 43            [ 8] 2085 	bit	0, e
+    00000556 C8               [20] 2086 	ret	Z
+                                   2087 ;src/level.c:493: block_bump_state.timer++;
+    00000557 21r2Br00         [12] 2088 	ld	hl, #_block_bump_state + 1
+    0000055A 34               [12] 2089 	inc	(hl)
+    0000055B 7E               [ 8] 2090 	ld	a, (hl)
+                                   2091 ;src/level.c:494: if (block_bump_state.timer >= BLOCK_BUMP_FRAMES) {
+    0000055C D6 0C            [ 8] 2092 	sub	a, #0x0c
+    0000055E D8               [20] 2093 	ret	C
+                                   2094 ;src/level.c:495: block_bump_state.active = false;
+    0000055F AF               [ 4] 2095 	xor	a, a
+    00000560 02               [ 8] 2096 	ld	(bc), a
+                                   2097 ;src/level.c:496: hide_sprite(block_bump_state.hw_sprite);
+    00000561 21r30r00         [12] 2098 	ld	hl, #(_block_bump_state + 6)
+    00000564 4E               [ 8] 2099 	ld	c, (hl)
+                                   2100 ;/home/odrevet/projects/gbdk/include/gb/gb.h:2001: shadow_OAM[nb].y = 0;
+    00000565 AF               [ 4] 2101 	xor	a, a
+    00000566 69               [ 4] 2102 	ld	l, c
+    00000567 67               [ 4] 2103 	ld	h, a
+    00000568 29               [ 8] 2104 	add	hl, hl
+    00000569 29               [ 8] 2105 	add	hl, hl
+    0000056A 11r00r00         [12] 2106 	ld	de, #_shadow_OAM
+    0000056D 19               [ 8] 2107 	add	hl, de
+    0000056E 36 00            [12] 2108 	ld	(hl), #0x00
+                                   2109 ;src/level.c:497: map_buffer[block_bump_state.index_y * DEVICE_SCREEN_BUFFER_WIDTH + block_bump_state.index_x] = BREAKABLE_BLOCK;
+    00000570 21r2Fr00         [12] 2110 	ld	hl, #(_block_bump_state + 5)
+    00000573 6E               [ 8] 2111 	ld	l, (hl)
+    00000574 26 00            [ 8] 2112 	ld	h, #0x00
+    00000576 29               [ 8] 2113 	add	hl, hl
+    00000577 29               [ 8] 2114 	add	hl, hl
+    00000578 29               [ 8] 2115 	add	hl, hl
+    00000579 29               [ 8] 2116 	add	hl, hl
+    0000057A 29               [ 8] 2117 	add	hl, hl
+    0000057B 4D               [ 4] 2118 	ld	c, l
+    0000057C 44               [ 4] 2119 	ld	b, h
+    0000057D 21r2Er00         [12] 2120 	ld	hl, #(_block_bump_state + 4)
+    00000580 6E               [ 8] 2121 	ld	l, (hl)
+    00000581 26 00            [ 8] 2122 	ld	h, #0x00
+    00000583 09               [ 8] 2123 	add	hl, bc
+    00000584 11r00r00         [12] 2124 	ld	de, #_map_buffer
+    00000587 19               [ 8] 2125 	add	hl, de
+    00000588 36 2A            [12] 2126 	ld	(hl), #0x2a
+                                   2127 ;src/level.c:498: set_bkg_tile_xy(block_bump_state.index_x, block_bump_state.index_y, BREAKABLE_BLOCK);
+    0000058A 21r2Fr00         [12] 2128 	ld	hl, #(_block_bump_state + 5)
+    0000058D 4E               [ 8] 2129 	ld	c, (hl)
+    0000058E FAr2Er00         [16] 2130 	ld	a, (#(_block_bump_state + 4) + 0)
+    00000591 26 2A            [ 8] 2131 	ld	h, #0x2a
+    00000593 E5               [16] 2132 	push	hl
+    00000594 33               [ 8] 2133 	inc	sp
+    00000595 59               [ 4] 2134 	ld	e, c
+    00000596 CDr00r00         [24] 2135 	call	_set_bkg_tile_xy
+                                   2136 ;src/level.c:500: }
+    00000599 C9               [16] 2137 	ret
+                                   2138 ;src/level.c:502: uint8_t block_bump_draw(uint8_t base_sprite) BANKED {
+                                   2139 ;	---------------------------------
+                                   2140 ; Function block_bump_draw
+                                   2141 ; ---------------------------------
+                         00000000  2142 	b_block_bump_draw	= 0
+    0000059A                       2143 _block_bump_draw::
+    0000059A 3B               [ 8] 2144 	dec	sp
+                                   2145 ;src/level.c:503: if (!block_bump_state.active) return base_sprite;
+    0000059B 21r2Ar00         [12] 2146 	ld	hl, #_block_bump_state
+    0000059E CB 46            [12] 2147 	bit	0, (hl)
+    000005A0 20 05            [12] 2148 	jr	NZ, 00102$
+    000005A2 F8 07            [12] 2149 	ldhl	sp,	#7
+    000005A4 7E               [ 8] 2150 	ld	a, (hl)
+    000005A5 18 49            [12] 2151 	jr	00108$
+    000005A7                       2152 00102$:
+                                   2153 ;src/level.c:505: block_bump_state.hw_sprite = base_sprite;
+    000005A7 11r30r00         [12] 2154 	ld	de, #(_block_bump_state + 6)
+    000005AA F8 07            [12] 2155 	ldhl	sp,	#7
+    000005AC 7E               [ 8] 2156 	ld	a, (hl)
+    000005AD 12               [ 8] 2157 	ld	(de), a
+                                   2158 ;src/level.c:508: if (block_bump_state.timer < BLOCK_BUMP_RISE) {
+    000005AE FAr2Br00         [16] 2159 	ld	a, (#(_block_bump_state + 1) + 0)
+                                   2160 ;src/level.c:509: y_offset = -(block_bump_state.timer + 1) * 2;
+    000005B1 4F               [ 4] 2161 	ld	c, a
+                                   2162 ;src/level.c:508: if (block_bump_state.timer < BLOCK_BUMP_RISE) {
+    000005B2 D6 06            [ 8] 2163 	sub	a, #0x06
+    000005B4 30 08            [12] 2164 	jr	NC, 00104$
+                                   2165 ;src/level.c:509: y_offset = -(block_bump_state.timer + 1) * 2;
+    000005B6 0C               [ 4] 2166 	inc	c
+    000005B7 AF               [ 4] 2167 	xor	a, a
+    000005B8 91               [ 4] 2168 	sub	a, c
+    000005B9 4F               [ 4] 2169 	ld	c, a
+    000005BA CB 21            [ 8] 2170 	sla	c
+    000005BC 18 09            [12] 2171 	jr	00105$
+    000005BE                       2172 00104$:
+                                   2173 ;src/level.c:511: y_offset = -((BLOCK_BUMP_FRAMES - 1) - block_bump_state.timer) * 2;
+    000005BE 3E 0B            [ 8] 2174 	ld	a, #0x0b
+    000005C0 91               [ 4] 2175 	sub	a, c
+    000005C1 4F               [ 4] 2176 	ld	c, a
+    000005C2 AF               [ 4] 2177 	xor	a, a
+    000005C3 91               [ 4] 2178 	sub	a, c
+    000005C4 4F               [ 4] 2179 	ld	c, a
+    000005C5 CB 21            [ 8] 2180 	sla	c
+    000005C7                       2181 00105$:
+                                   2182 ;src/level.c:514: move_sprite(base_sprite, block_bump_state.screen_x, block_bump_state.screen_y_base + y_offset);
+    000005C7 FAr2Dr00         [16] 2183 	ld	a, (#(_block_bump_state + 3) + 0)
+    000005CA 81               [ 4] 2184 	add	a, c
+    000005CB F8 00            [12] 2185 	ldhl	sp,	#0
+    000005CD 77               [ 8] 2186 	ld	(hl), a
+    000005CE 21r2Cr00         [12] 2187 	ld	hl, #(_block_bump_state + 2)
+    000005D1 46               [ 8] 2188 	ld	b, (hl)
+    000005D2 F8 07            [12] 2189 	ldhl	sp,	#7
+    000005D4 4E               [ 8] 2190 	ld	c, (hl)
+                                   2191 ;/home/odrevet/projects/gbdk/include/gb/gb.h:1973: OAM_item_t * itm = &shadow_OAM[nb];
+    000005D5 69               [ 4] 2192 	ld	l, c
+    000005D6 26 00            [ 8] 2193 	ld	h, #0x00
+    000005D8 29               [ 8] 2194 	add	hl, hl
+    000005D9 29               [ 8] 2195 	add	hl, hl
+    000005DA 5D               [ 4] 2196 	ld	e, l
+    000005DB 54               [ 4] 2197 	ld	d, h
+    000005DC 21r00r00         [12] 2198 	ld	hl, #_shadow_OAM
+    000005DF 19               [ 8] 2199 	add	hl, de
+                                   2200 ;/home/odrevet/projects/gbdk/include/gb/gb.h:1974: itm->y=y, itm->x=x;
+    000005E0 E5               [16] 2201 	push	hl
+    000005E1 F8 02            [12] 2202 	ldhl	sp,	#2
+    000005E3 7E               [ 8] 2203 	ld	a, (hl)
+    000005E4 E1               [12] 2204 	pop	hl
+    000005E5 22               [ 8] 2205 	ld	(hl+), a
+    000005E6 70               [ 8] 2206 	ld	(hl), b
+                                   2207 ;/home/odrevet/projects/gbdk/include/gb/gb.h:1887: shadow_OAM[nb].tile=tile;
+    000005E7 21r01r00         [12] 2208 	ld	hl,#_shadow_OAM + 1
+    000005EA 19               [ 8] 2209 	add	hl,de
+    000005EB 23               [ 8] 2210 	inc	hl
+    000005EC 36 5A            [12] 2211 	ld	(hl), #0x5a
+                                   2212 ;src/level.c:517: return base_sprite + 1;
+    000005EE 79               [ 4] 2213 	ld	a, c
+    000005EF 3C               [ 4] 2214 	inc	a
+    000005F0                       2215 00108$:
+                                   2216 ;src/level.c:518: }
+    000005F0 33               [ 8] 2217 	inc	sp
+    000005F1 C9               [16] 2218 	ret
+                                   2219 ;src/level.c:523: void on_get_coin() {
+                                   2220 ;	---------------------------------
+                                   2221 ; Function on_get_coin
+                                   2222 ; ---------------------------------
+    000005F2                       2223 _on_get_coin::
+                                   2224 ;src/level.c:525: music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
+    000005F2 0Er00            [ 8] 2225 	ld	c, #<(___mute_mask_sound_coin)
+    000005F4 06r00            [ 8] 2226 	ld	b, #<(___bank_sound_coin)
+                                   2227 ;sm83/musicmanager.h:105: if (music_sfx_priority > priority) return;
+    000005F6 3E 04            [ 8] 2228 	ld	a, #0x04
+    000005F8 21r00r00         [12] 2229 	ld	hl, #_music_sfx_priority
+    000005FB 96               [ 8] 2230 	sub	a, (hl)
+    000005FC 38 52            [12] 2231 	jr	C, 00116$
+                                   2232 ;sm83/musicmanager.h:106: sfx_play_bank = SFX_STOP_BANK;
+    000005FE 21r00r00         [12] 2233 	ld	hl, #_sfx_play_bank
+    00000601 36 FF            [12] 2234 	ld	(hl), #0xff
+                                   2235 ;sm83/musicmanager.h:107: music_sfx_priority = priority;
+    00000603 21r00r00         [12] 2236 	ld	hl, #_music_sfx_priority
+    00000606 36 04            [12] 2237 	ld	(hl), #0x04
+                                   2238 ;sm83/musicmanager.h:108: music_sound_cut_mask(music_mute_mask);
+    00000608 FAr00r00         [16] 2239 	ld	a, (_music_mute_mask)
+                                   2240 ;sm83/musicmanager.h:80: sfx_sound_cut_mask(mask);
+    0000060B 5F               [ 4] 2241 	ld	e, a
+                                   2242 ;sm83/sfxplayer.h:47: if (mask & SFX_CH_1) NR12_REG = 0, NR14_REG = SFX_CH_RETRIGGER;
+    0000060C 0F               [ 4] 2243 	rrca
+    0000060D 30 07            [12] 2244 	jr	NC, 00106$
+    0000060F AF               [ 4] 2245 	xor	a, a
+    00000610 E0r00            [12] 2246 	ldh	(_NR12_REG + 0), a
+    00000612 3E C0            [ 8] 2247 	ld	a, #0xc0
+    00000614 E0r00            [12] 2248 	ldh	(_NR14_REG + 0), a
+    00000616                       2249 00106$:
+                                   2250 ;sm83/sfxplayer.h:48: if (mask & SFX_CH_2) NR22_REG = 0, NR24_REG = SFX_CH_RETRIGGER;
+    00000616 CB 4B            [ 8] 2251 	bit	1, e
+    00000618 28 07            [12] 2252 	jr	Z, 00108$
+    0000061A AF               [ 4] 2253 	xor	a, a
+    0000061B E0r00            [12] 2254 	ldh	(_NR22_REG + 0), a
+    0000061D 3E C0            [ 8] 2255 	ld	a, #0xc0
+    0000061F E0r00            [12] 2256 	ldh	(_NR24_REG + 0), a
+    00000621                       2257 00108$:
+                                   2258 ;sm83/sfxplayer.h:49: if (mask & SFX_CH_3) NR32_REG = 0;
+    00000621 CB 53            [ 8] 2259 	bit	2, e
+    00000623 28 03            [12] 2260 	jr	Z, 00110$
+    00000625 AF               [ 4] 2261 	xor	a, a
+    00000626 E0r00            [12] 2262 	ldh	(_NR32_REG + 0), a
+    00000628                       2263 00110$:
+                                   2264 ;sm83/sfxplayer.h:50: if (mask & SFX_CH_4) NR42_REG = 0, NR44_REG = SFX_CH_RETRIGGER;
+    00000628 CB 5B            [ 8] 2265 	bit	3, e
+    0000062A 28 07            [12] 2266 	jr	Z, 00112$
+    0000062C AF               [ 4] 2267 	xor	a, a
+    0000062D E0r00            [12] 2268 	ldh	(_NR42_REG + 0), a
+    0000062F 3E C0            [ 8] 2269 	ld	a, #0xc0
+    00000631 E0r00            [12] 2270 	ldh	(_NR44_REG + 0), a
+    00000633                       2271 00112$:
+                                   2272 ;sm83/sfxplayer.h:51: NR51_REG = 0xFF;
+    00000633 3E FF            [ 8] 2273 	ld	a, #0xff
+    00000635 E0r00            [12] 2274 	ldh	(_NR51_REG + 0), a
+                                   2275 ;sm83/musicmanager.h:109: music_mute_mask = mute_mask;
+    00000637 21r00r00         [12] 2276 	ld	hl, #_music_mute_mask
+    0000063A 71               [ 8] 2277 	ld	(hl), c
+                                   2278 ;sm83/sfxplayer.h:64: sfx_play_bank = SFX_STOP_BANK, sfx_frame_skip = 0, sfx_play_sample = sample, sfx_play_bank = bank;
+    0000063B 21r00r00         [12] 2279 	ld	hl, #_sfx_play_bank
+    0000063E 36 FF            [12] 2280 	ld	(hl), #0xff
+    00000640 AF               [ 4] 2281 	xor	a, a
+    00000641 EAr00r00         [16] 2282 	ld	(#_sfx_frame_skip),a
+    00000644 21r00r00         [12] 2283 	ld	hl, #_sfx_play_sample
+    00000647 3Er00            [ 8] 2284 	ld	a, #<(_sound_coin)
+    00000649 22               [ 8] 2285 	ld	(hl+), a
+    0000064A 36s00            [12] 2286 	ld	(hl), #>(_sound_coin)
+    0000064C 21r00r00         [12] 2287 	ld	hl, #_sfx_play_bank
+    0000064F 70               [ 8] 2288 	ld	(hl), b
+                                   2289 ;src/level.c:526: MUSIC_SFX_PRIORITY_NORMAL);
+    00000650                       2290 00116$:
+                                   2291 ;src/level.c:529: coins++;
+    00000650 21r00r00         [12] 2292 	ld	hl, #_coins
+    00000653 34               [12] 2293 	inc	(hl)
+                                   2294 ;src/level.c:530: score += 10;
+    00000654 FAr00r00         [16] 2295 	ld	a, (_score)
+    00000657 21r01r00         [12] 2296 	ld	hl, #_score + 1
+    0000065A 46               [ 8] 2297 	ld	b, (hl)
+    0000065B 2B               [ 8] 2298 	dec	hl
+    0000065C C6 0A            [ 8] 2299 	add	a, #0x0a
+    0000065E 4F               [ 4] 2300 	ld	c, a
+    0000065F 78               [ 4] 2301 	ld	a, b
+    00000660 CE 00            [ 8] 2302 	adc	a, #0x00
+    00000662 71               [ 8] 2303 	ld	(hl), c
+    00000663 23               [ 8] 2304 	inc	hl
+    00000664 77               [ 8] 2305 	ld	(hl), a
+                                   2306 ;src/level.c:532: if (coins == 100) {
+    00000665 FAr00r00         [16] 2307 	ld	a, (#_coins)
+    00000668 D6 64            [ 8] 2308 	sub	a, #0x64
+    0000066A 20 69            [12] 2309 	jr	NZ, 00102$
+                                   2310 ;src/level.c:533: lives++;
+    0000066C 21r00r00         [12] 2311 	ld	hl, #_lives
+    0000066F 34               [12] 2312 	inc	(hl)
+                                   2313 ;src/level.c:534: hud_update_lives();
+    00000670 CDr00r00         [24] 2314 	call	_hud_update_lives
+                                   2315 ;src/level.c:535: coins = 0;
+    00000673 AF               [ 4] 2316 	xor	a, a
+    00000674 EAr00r00         [16] 2317 	ld	(#_coins),a
+                                   2318 ;src/level.c:537: music_play_sfx(BANK(sound_oneup), sound_oneup, SFX_MUTE_MASK(sound_oneup),
+    00000677 0Er00            [ 8] 2319 	ld	c, #<(___mute_mask_sound_oneup)
+    00000679 06r00            [ 8] 2320 	ld	b, #<(___bank_sound_oneup)
+                                   2321 ;sm83/musicmanager.h:105: if (music_sfx_priority > priority) return;
+    0000067B 3E 04            [ 8] 2322 	ld	a, #0x04
+    0000067D 21r00r00         [12] 2323 	ld	hl, #_music_sfx_priority
+    00000680 96               [ 8] 2324 	sub	a, (hl)
+    00000681 38 52            [12] 2325 	jr	C, 00102$
+                                   2326 ;sm83/musicmanager.h:106: sfx_play_bank = SFX_STOP_BANK;
+    00000683 21r00r00         [12] 2327 	ld	hl, #_sfx_play_bank
+    00000686 36 FF            [12] 2328 	ld	(hl), #0xff
+                                   2329 ;sm83/musicmanager.h:107: music_sfx_priority = priority;
+    00000688 21r00r00         [12] 2330 	ld	hl, #_music_sfx_priority
+    0000068B 36 04            [12] 2331 	ld	(hl), #0x04
+                                   2332 ;sm83/musicmanager.h:108: music_sound_cut_mask(music_mute_mask);
+    0000068D FAr00r00         [16] 2333 	ld	a, (_music_mute_mask)
+                                   2334 ;sm83/musicmanager.h:80: sfx_sound_cut_mask(mask);
+    00000690 5F               [ 4] 2335 	ld	e, a
+                                   2336 ;sm83/sfxplayer.h:47: if (mask & SFX_CH_1) NR12_REG = 0, NR14_REG = SFX_CH_RETRIGGER;
+    00000691 0F               [ 4] 2337 	rrca
+    00000692 30 07            [12] 2338 	jr	NC, 00120$
+    00000694 AF               [ 4] 2339 	xor	a, a
+    00000695 E0r00            [12] 2340 	ldh	(_NR12_REG + 0), a
+    00000697 3E C0            [ 8] 2341 	ld	a, #0xc0
+    00000699 E0r00            [12] 2342 	ldh	(_NR14_REG + 0), a
+    0000069B                       2343 00120$:
+                                   2344 ;sm83/sfxplayer.h:48: if (mask & SFX_CH_2) NR22_REG = 0, NR24_REG = SFX_CH_RETRIGGER;
+    0000069B CB 4B            [ 8] 2345 	bit	1, e
+    0000069D 28 07            [12] 2346 	jr	Z, 00122$
+    0000069F AF               [ 4] 2347 	xor	a, a
+    000006A0 E0r00            [12] 2348 	ldh	(_NR22_REG + 0), a
+    000006A2 3E C0            [ 8] 2349 	ld	a, #0xc0
+    000006A4 E0r00            [12] 2350 	ldh	(_NR24_REG + 0), a
+    000006A6                       2351 00122$:
+                                   2352 ;sm83/sfxplayer.h:49: if (mask & SFX_CH_3) NR32_REG = 0;
+    000006A6 CB 53            [ 8] 2353 	bit	2, e
+    000006A8 28 03            [12] 2354 	jr	Z, 00124$
+    000006AA AF               [ 4] 2355 	xor	a, a
+    000006AB E0r00            [12] 2356 	ldh	(_NR32_REG + 0), a
+    000006AD                       2357 00124$:
+                                   2358 ;sm83/sfxplayer.h:50: if (mask & SFX_CH_4) NR42_REG = 0, NR44_REG = SFX_CH_RETRIGGER;
+    000006AD CB 5B            [ 8] 2359 	bit	3, e
+    000006AF 28 07            [12] 2360 	jr	Z, 00126$
+    000006B1 AF               [ 4] 2361 	xor	a, a
+    000006B2 E0r00            [12] 2362 	ldh	(_NR42_REG + 0), a
+    000006B4 3E C0            [ 8] 2363 	ld	a, #0xc0
+    000006B6 E0r00            [12] 2364 	ldh	(_NR44_REG + 0), a
+    000006B8                       2365 00126$:
+                                   2366 ;sm83/sfxplayer.h:51: NR51_REG = 0xFF;
+    000006B8 3E FF            [ 8] 2367 	ld	a, #0xff
+    000006BA E0r00            [12] 2368 	ldh	(_NR51_REG + 0), a
+                                   2369 ;sm83/musicmanager.h:109: music_mute_mask = mute_mask;
+    000006BC 21r00r00         [12] 2370 	ld	hl, #_music_mute_mask
+    000006BF 71               [ 8] 2371 	ld	(hl), c
+                                   2372 ;sm83/sfxplayer.h:64: sfx_play_bank = SFX_STOP_BANK, sfx_frame_skip = 0, sfx_play_sample = sample, sfx_play_bank = bank;
+    000006C0 21r00r00         [12] 2373 	ld	hl, #_sfx_play_bank
+    000006C3 36 FF            [12] 2374 	ld	(hl), #0xff
+    000006C5 AF               [ 4] 2375 	xor	a, a
+    000006C6 EAr00r00         [16] 2376 	ld	(#_sfx_frame_skip),a
+    000006C9 21r00r00         [12] 2377 	ld	hl, #_sfx_play_sample
+    000006CC 3Er00            [ 8] 2378 	ld	a, #<(_sound_oneup)
+    000006CE 22               [ 8] 2379 	ld	(hl+), a
+    000006CF 36s00            [12] 2380 	ld	(hl), #>(_sound_oneup)
+    000006D1 21r00r00         [12] 2381 	ld	hl, #_sfx_play_bank
+    000006D4 70               [ 8] 2382 	ld	(hl), b
+                                   2383 ;src/level.c:538: MUSIC_SFX_PRIORITY_NORMAL);
+    000006D5                       2384 00102$:
+                                   2385 ;src/level.c:542: hud_update_coins();
+    000006D5 CDr00r00         [24] 2386 	call	_hud_update_coins
+                                   2387 ;src/level.c:543: hud_update_score();
+                                   2388 ;src/level.c:544: }
+    000006D8 C3r00r00         [16] 2389 	jp	_hud_update_score
+                                   2390 ;src/level.c:549: void on_interogation_block_hit(uint8_t x, uint8_t y) {
+                                   2391 ;	---------------------------------
+                                   2392 ; Function on_interogation_block_hit
+                                   2393 ; ---------------------------------
+    000006DB                       2394 _on_interogation_block_hit::
+    000006DB E8 F5            [16] 2395 	add	sp, #-11
+                                   2396 ;src/level.c:551: uint8_t index_x = TILE_INDEX_X(x, camera_x);
+    000006DD 4F               [ 4] 2397 	ld	c, a
+    000006DE 06 00            [ 8] 2398 	ld	b, #0x00
+    000006E0 79               [ 4] 2399 	ld	a, c
+    000006E1 21r00r00         [12] 2400 	ld	hl, #_camera_x
+    000006E4 86               [ 8] 2401 	add	a, (hl)
+    000006E5 23               [ 8] 2402 	inc	hl
+    000006E6 4F               [ 4] 2403 	ld	c, a
+    000006E7 78               [ 4] 2404 	ld	a, b
+    000006E8 8E               [ 8] 2405 	adc	a, (hl)
+    000006E9 47               [ 4] 2406 	ld	b, a
+    000006EA CB 38            [ 8] 2407 	srl	b
+    000006EC CB 19            [ 8] 2408 	rr	c
+    000006EE CB 38            [ 8] 2409 	srl	b
+    000006F0 CB 19            [ 8] 2410 	rr	c
+    000006F2 CB 38            [ 8] 2411 	srl	b
+    000006F4 CB 19            [ 8] 2412 	rr	c
+    000006F6 79               [ 4] 2413 	ld	a, c
+    000006F7 E6 1F            [ 8] 2414 	and	a, #0x1f
+    000006F9 F8 00            [12] 2415 	ldhl	sp,	#0
+                                   2416 ;src/level.c:552: uint8_t index_y = TILE_INDEX_Y(y);
+    000006FB 22               [ 8] 2417 	ld	(hl+), a
+    000006FC 7B               [ 4] 2418 	ld	a, e
+    000006FD CB 37            [ 8] 2419 	swap	a
+    000006FF 07               [ 4] 2420 	rlca
+    00000700 E6 1F            [ 8] 2421 	and	a, #0x1f
+                                   2422 ;src/level.c:555: uint8_t world_tile_x = (x + camera_x) >> 3;
+    00000702 22               [ 8] 2423 	ld	(hl+), a
+                                   2424 ;src/level.c:558: map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
+    00000703 79               [ 4] 2425 	ld	a, c
+    00000704 32               [ 8] 2426 	ld	(hl-), a
+    00000705 4E               [ 8] 2427 	ld	c, (hl)
+    00000706 06 00            [ 8] 2428 	ld	b, #0x00
+    00000708 F8 09            [12] 2429 	ldhl	sp,	#9
+    0000070A 79               [ 4] 2430 	ld	a, c
+    0000070B 22               [ 8] 2431 	ld	(hl+), a
+    0000070C 70               [ 8] 2432 	ld	(hl), b
+    0000070D 3E 05            [ 8] 2433 	ld	a, #0x05
+    0000070F                       2434 00156$:
+    0000070F F8 09            [12] 2435 	ldhl	sp,	#9
+    00000711 CB 26            [16] 2436 	sla	(hl)
+    00000713 23               [ 8] 2437 	inc	hl
+    00000714 CB 16            [16] 2438 	rl	(hl)
+    00000716 3D               [ 4] 2439 	dec	a
+    00000717 20 F6            [12] 2440 	jr	NZ, 00156$
+    00000719 F8 00            [12] 2441 	ldhl	sp,	#0
+    0000071B 5E               [ 8] 2442 	ld	e, (hl)
+    0000071C 16 00            [ 8] 2443 	ld	d, #0x00
+    0000071E F8 09            [12] 2444 	ldhl	sp,	#9
+    00000720 2A               [ 8] 2445 	ld	a,	(hl+)
+    00000721 66               [ 8] 2446 	ld	h, (hl)
+    00000722 6F               [ 4] 2447 	ld	l, a
+    00000723 19               [ 8] 2448 	add	hl, de
+    00000724 5D               [ 4] 2449 	ld	e, l
+    00000725 54               [ 4] 2450 	ld	d, h
+    00000726 21r00r00         [12] 2451 	ld	hl, #_map_buffer
+    00000729 19               [ 8] 2452 	add	hl, de
+    0000072A 36 29            [12] 2453 	ld	(hl), #0x29
+                                   2454 ;src/level.c:561: set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
+    0000072C C5               [16] 2455 	push	bc
+    0000072D 3E 29            [ 8] 2456 	ld	a, #0x29
+    0000072F F5               [16] 2457 	push	af
+    00000730 33               [ 8] 2458 	inc	sp
+    00000731 F8 04            [12] 2459 	ldhl	sp,	#4
+    00000733 3A               [ 8] 2460 	ld	a, (hl-)
+    00000734 5F               [ 4] 2461 	ld	e, a
+    00000735 7E               [ 8] 2462 	ld	a, (hl)
+    00000736 CDr00r00         [24] 2463 	call	_set_bkg_tile_xy
+    00000739 C1               [12] 2464 	pop	bc
+                                   2465 ;src/level.c:567: uint8_t _saved_bank = _current_bank;
+    0000073A F0r00            [12] 2466 	ldh	a, (__current_bank + 0)
+    0000073C F8 03            [12] 2467 	ldhl	sp,	#3
+    0000073E 77               [ 8] 2468 	ld	(hl), a
+                                   2469 ;src/level.c:568: SWITCH_ROM(level_lookup_bank);
+    0000073F FAr25r00         [16] 2470 	ld	a, (_level_lookup_bank)
+    00000742 E0r00            [12] 2471 	ldh	(__current_bank + 0), a
+    00000744 EAr00r00         [16] 2472 	ld	(#_rROMB0),a
+                                   2473 ;src/level.c:571: bool lookup_found = FALSE;
+    00000747 F8 04            [12] 2474 	ldhl	sp,	#4
+    00000749 36 00            [12] 2475 	ld	(hl), #0x00
+                                   2476 ;src/level.c:572: for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
+    0000074B CB 21            [ 8] 2477 	sla	c
+    0000074D CB 10            [ 8] 2478 	rl	b
+    0000074F CB 21            [ 8] 2479 	sla	c
+    00000751 CB 10            [ 8] 2480 	rl	b
+    00000753 CB 21            [ 8] 2481 	sla	c
+    00000755 CB 10            [ 8] 2482 	rl	b
+    00000757 F8 09            [12] 2483 	ldhl	sp,	#9
+    00000759 79               [ 4] 2484 	ld	a, c
+    0000075A 22               [ 8] 2485 	ld	(hl+), a
+    0000075B 78               [ 4] 2486 	ld	a, b
+    0000075C 32               [ 8] 2487 	ld	(hl-), a
+    0000075D 7E               [ 8] 2488 	ld	a, (hl)
+    0000075E F8 05            [12] 2489 	ldhl	sp,	#5
+    00000760 22               [ 8] 2490 	ld	(hl+), a
+    00000761 36 00            [12] 2491 	ld	(hl), #0x00
+    00000763 3E 04            [ 8] 2492 	ld	a, #0x04
+    00000765                       2493 00158$:
+    00000765 F8 05            [12] 2494 	ldhl	sp,	#5
+    00000767 CB 26            [16] 2495 	sla	(hl)
+    00000769 23               [ 8] 2496 	inc	hl
+    0000076A CB 16            [16] 2497 	rl	(hl)
+    0000076C 3D               [ 4] 2498 	dec	a
+    0000076D 20 F6            [12] 2499 	jr	NZ, 00158$
+    0000076F F8 09            [12] 2500 	ldhl	sp,	#9
+    00000771 22               [ 8] 2501 	ld	(hl+), a
+    00000772 77               [ 8] 2502 	ld	(hl), a
+    00000773                       2503 00109$:
+    00000773 F8 09            [12] 2504 	ldhl	sp,	#9
+    00000775 3A               [ 8] 2505 	ld	a, (hl-)
+    00000776 2B               [ 8] 2506 	dec	hl
+    00000777 77               [ 8] 2507 	ld	(hl), a
+    00000778 F8 0A            [12] 2508 	ldhl	sp,	#10
+    0000077A 3A               [ 8] 2509 	ld	a, (hl-)
+    0000077B 2B               [ 8] 2510 	dec	hl
+    0000077C 77               [ 8] 2511 	ld	(hl), a
+    0000077D F8 07            [12] 2512 	ldhl	sp,	#7
+    0000077F 5D               [ 4] 2513 	ld	e, l
+    00000780 54               [ 4] 2514 	ld	d, h
+    00000781 21r28r00         [12] 2515 	ld	hl, #_level_lookup_size
+    00000784 1A               [ 8] 2516 	ld	a, (de)
+    00000785 13               [ 8] 2517 	inc	de
+    00000786 96               [ 8] 2518 	sub	a, (hl)
+    00000787 23               [ 8] 2519 	inc	hl
+    00000788 1A               [ 8] 2520 	ld	a, (de)
+    00000789 9E               [ 8] 2521 	sbc	a, (hl)
+    0000078A 30 7B            [12] 2522 	jr	NC, 00104$
+    0000078C F8 04            [12] 2523 	ldhl	sp,	#4
+    0000078E CB 46            [12] 2524 	bit	0, (hl)
+    00000790 20 75            [12] 2525 	jr	NZ, 00104$
+                                   2526 ;src/level.c:573: level_object *obj = &level_lookup[i];
+    00000792 F8 09            [12] 2527 	ldhl	sp,#9
+    00000794 2A               [ 8] 2528 	ld	a, (hl+)
+    00000795 4F               [ 4] 2529 	ld	c, a
+    00000796 46               [ 8] 2530 	ld	b, (hl)
+    00000797 69               [ 4] 2531 	ld	l, c
+    00000798 60               [ 4] 2532 	ld	h, b
+    00000799 29               [ 8] 2533 	add	hl, hl
+    0000079A 29               [ 8] 2534 	add	hl, hl
+    0000079B 09               [ 8] 2535 	add	hl, bc
+    0000079C 29               [ 8] 2536 	add	hl, hl
+    0000079D 09               [ 8] 2537 	add	hl, bc
+    0000079E E5               [16] 2538 	push	hl
+    0000079F 7D               [ 4] 2539 	ld	a, l
+    000007A0 F8 09            [12] 2540 	ldhl	sp,	#9
+    000007A2 77               [ 8] 2541 	ld	(hl), a
+    000007A3 E1               [12] 2542 	pop	hl
+    000007A4 7C               [ 4] 2543 	ld	a, h
+    000007A5 F8 08            [12] 2544 	ldhl	sp,	#8
+    000007A7 77               [ 8] 2545 	ld	(hl), a
+    000007A8 21r26r00         [12] 2546 	ld	hl, #_level_lookup
+    000007AB 2A               [ 8] 2547 	ld	a, (hl+)
+    000007AC 5F               [ 4] 2548 	ld	e, a
+    000007AD 56               [ 8] 2549 	ld	d, (hl)
+    000007AE F8 07            [12] 2550 	ldhl	sp,	#7
+    000007B0 2A               [ 8] 2551 	ld	a,	(hl+)
+    000007B1 66               [ 8] 2552 	ld	h, (hl)
+    000007B2 6F               [ 4] 2553 	ld	l, a
+    000007B3 19               [ 8] 2554 	add	hl, de
+    000007B4 4D               [ 4] 2555 	ld	c, l
+    000007B5 44               [ 4] 2556 	ld	b, h
+                                   2557 ;src/level.c:575: if (obj->x == world_tile_x && obj->y == index_y) {
+    000007B6 59               [ 4] 2558 	ld	e, c
+    000007B7 50               [ 4] 2559 	ld	d, b
+    000007B8 1A               [ 8] 2560 	ld	a, (de)
+    000007B9 F8 07            [12] 2561 	ldhl	sp,	#7
+    000007BB 22               [ 8] 2562 	ld	(hl+), a
+    000007BC 13               [ 8] 2563 	inc	de
+    000007BD 1A               [ 8] 2564 	ld	a, (de)
+    000007BE 77               [ 8] 2565 	ld	(hl), a
+    000007BF F8 02            [12] 2566 	ldhl	sp,	#2
+    000007C1 5E               [ 8] 2567 	ld	e, (hl)
+    000007C2 16 00            [ 8] 2568 	ld	d, #0x00
+    000007C4 F8 07            [12] 2569 	ldhl	sp,	#7
+    000007C6 7E               [ 8] 2570 	ld	a, (hl)
+    000007C7 93               [ 4] 2571 	sub	a, e
+    000007C8 20 32            [12] 2572 	jr	NZ, 00110$
+    000007CA 23               [ 8] 2573 	inc	hl
+    000007CB 7E               [ 8] 2574 	ld	a, (hl)
+    000007CC 92               [ 4] 2575 	sub	a, d
+    000007CD 20 2D            [12] 2576 	jr	NZ, 00110$
+    000007CF 69               [ 4] 2577 	ld	l, c
+    000007D0 60               [ 4] 2578 	ld	h, b
+    000007D1 23               [ 8] 2579 	inc	hl
+    000007D2 23               [ 8] 2580 	inc	hl
+    000007D3 5E               [ 8] 2581 	ld	e, (hl)
+    000007D4 F8 01            [12] 2582 	ldhl	sp,	#1
+    000007D6 7E               [ 8] 2583 	ld	a, (hl)
+    000007D7 93               [ 4] 2584 	sub	a, e
+    000007D8 20 22            [12] 2585 	jr	NZ, 00110$
+                                   2586 ;src/level.c:576: lookup_found = TRUE;
+    000007DA F8 04            [12] 2587 	ldhl	sp,	#4
+    000007DC 36 01            [12] 2588 	ld	(hl), #0x01
+                                   2589 ;src/level.c:577: powerup_new((index_x << 3) << 4, (index_y << 3) << 4, obj->data.enemy.type);
+    000007DE 21 04 00         [12] 2590 	ld	hl, #0x0004
+    000007E1 09               [ 8] 2591 	add	hl, bc
+    000007E2 56               [ 8] 2592 	ld	d, (hl)
+    000007E3 F8 05            [12] 2593 	ldhl	sp,	#5
+    000007E5 2A               [ 8] 2594 	ld	a, (hl+)
+    000007E6 4F               [ 4] 2595 	ld	c, a
+    000007E7 46               [ 8] 2596 	ld	b, (hl)
+    000007E8 F8 00            [12] 2597 	ldhl	sp,	#0
+    000007EA 5E               [ 8] 2598 	ld	e, (hl)
+    000007EB AF               [ 4] 2599 	xor	a, a
+    000007EC 6B               [ 4] 2600 	ld	l, e
+    000007ED 67               [ 4] 2601 	ld	h, a
+    000007EE 29               [ 8] 2602 	add	hl, hl
+    000007EF 29               [ 8] 2603 	add	hl, hl
+    000007F0 29               [ 8] 2604 	add	hl, hl
+    000007F1 29               [ 8] 2605 	add	hl, hl
+    000007F2 29               [ 8] 2606 	add	hl, hl
+    000007F3 29               [ 8] 2607 	add	hl, hl
+    000007F4 29               [ 8] 2608 	add	hl, hl
+    000007F5 D5               [16] 2609 	push	de
+    000007F6 33               [ 8] 2610 	inc	sp
+    000007F7 5D               [ 4] 2611 	ld	e, l
+    000007F8 54               [ 4] 2612 	ld	d, h
+    000007F9 CDr00r00         [24] 2613 	call	_powerup_new
+    000007FC                       2614 00110$:
+                                   2615 ;src/level.c:572: for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
+    000007FC F8 09            [12] 2616 	ldhl	sp,	#9
+    000007FE 34               [12] 2617 	inc	(hl)
+    000007FF C2r73r07         [16] 2618 	jp	NZ, 00109$
+    00000802 23               [ 8] 2619 	inc	hl
+    00000803 34               [12] 2620 	inc	(hl)
+    00000804 C3r73r07         [16] 2621 	jp	00109$
+    00000807                       2622 00104$:
+                                   2623 ;src/level.c:581: SWITCH_ROM(_saved_bank);
+    00000807 F8 03            [12] 2624 	ldhl	sp,	#3
+    00000809 7E               [ 8] 2625 	ld	a, (hl)
+    0000080A E0r00            [12] 2626 	ldh	(__current_bank + 0), a
+    0000080C 7E               [ 8] 2627 	ld	a, (hl)
+    0000080D EAr00r00         [16] 2628 	ld	(#_rROMB0),a
+                                   2629 ;src/level.c:584: if (lookup_found == FALSE) {
+    00000810 F8 04            [12] 2630 	ldhl	sp,	#4
+    00000812 CB 46            [12] 2631 	bit	0, (hl)
+    00000814 20 0B            [12] 2632 	jr	NZ, 00111$
+                                   2633 ;src/level.c:585: on_get_coin();
+    00000816 CDrF2r05         [24] 2634 	call	_on_get_coin
+                                   2635 ;src/level.c:586: coin_animated_new(index_x, index_y);
+    00000819 F8 01            [12] 2636 	ldhl	sp,	#1
+    0000081B 3A               [ 8] 2637 	ld	a, (hl-)
+    0000081C 5F               [ 4] 2638 	ld	e, a
+    0000081D 7E               [ 8] 2639 	ld	a, (hl)
+    0000081E CDr00r00         [24] 2640 	call	_coin_animated_new
+    00000821                       2641 00111$:
+                                   2642 ;src/level.c:588: }
+    00000821 E8 0B            [16] 2643 	add	sp, #11
+    00000823 C9               [16] 2644 	ret
+                                   2645 	.area _CODE
+                                   2646 	.area _INITIALIZER
+    00000000                       2647 __xinit__map_buffer:
+    00000000 28                    2648 	.db #0x28	; 40
+    00000001 00                    2649 	.db 0x00
+    00000002 00                    2650 	.db 0x00
+    00000003 00                    2651 	.db 0x00
+    00000004 00                    2652 	.db 0x00
+    00000005 00                    2653 	.db 0x00
+    00000006 00                    2654 	.db 0x00
+    00000007 00                    2655 	.db 0x00
+    00000008 00                    2656 	.db 0x00
+    00000009 00                    2657 	.db 0x00
+    0000000A 00                    2658 	.db 0x00
+    0000000B 00                    2659 	.db 0x00
+    0000000C 00                    2660 	.db 0x00
+    0000000D 00                    2661 	.db 0x00
+    0000000E 00                    2662 	.db 0x00
+    0000000F 00                    2663 	.db 0x00
+    00000010 00                    2664 	.db 0x00
+    00000011 00                    2665 	.db 0x00
+    00000012 00                    2666 	.db 0x00
+    00000013 00                    2667 	.db 0x00
+    00000014 00                    2668 	.db 0x00
+    00000015 00                    2669 	.db 0x00
+    00000016 00                    2670 	.db 0x00
+    00000017 00                    2671 	.db 0x00
+    00000018 00                    2672 	.db 0x00
+    00000019 00                    2673 	.db 0x00
+    0000001A 00                    2674 	.db 0x00
+    0000001B 00                    2675 	.db 0x00
+    0000001C 00                    2676 	.db 0x00
+    0000001D 00                    2677 	.db 0x00
+    0000001E 00                    2678 	.db 0x00
+    0000001F 00                    2679 	.db 0x00
+    00000020 00                    2680 	.db 0x00
+    00000021 00                    2681 	.db 0x00
+    00000022 00                    2682 	.db 0x00
+    00000023 00                    2683 	.db 0x00
+    00000024 00                    2684 	.db 0x00
+    00000025 00                    2685 	.db 0x00
+    00000026 00                    2686 	.db 0x00
+    00000027 00                    2687 	.db 0x00
+    00000028 00                    2688 	.db 0x00
+    00000029 00                    2689 	.db 0x00
+    0000002A 00                    2690 	.db 0x00
+    0000002B 00                    2691 	.db 0x00
+    0000002C 00                    2692 	.db 0x00
+    0000002D 00                    2693 	.db 0x00
+    0000002E 00                    2694 	.db 0x00
+    0000002F 00                    2695 	.db 0x00
+    00000030 00                    2696 	.db 0x00
+    00000031 00                    2697 	.db 0x00
+    00000032 00                    2698 	.db 0x00
+    00000033 00                    2699 	.db 0x00
+    00000034 00                    2700 	.db 0x00
+    00000035 00                    2701 	.db 0x00
+    00000036 00                    2702 	.db 0x00
+    00000037 00                    2703 	.db 0x00
+    00000038 00                    2704 	.db 0x00
+    00000039 00                    2705 	.db 0x00
+    0000003A 00                    2706 	.db 0x00
+    0000003B 00                    2707 	.db 0x00
+    0000003C 00                    2708 	.db 0x00
+    0000003D 00                    2709 	.db 0x00
+    0000003E 00                    2710 	.db 0x00
+    0000003F 00                    2711 	.db 0x00
+    00000040 00                    2712 	.db 0x00
+    00000041 00                    2713 	.db 0x00
+    00000042 00                    2714 	.db 0x00
+    00000043 00                    2715 	.db 0x00
+    00000044 00                    2716 	.db 0x00
+    00000045 00                    2717 	.db 0x00
+    00000046 00                    2718 	.db 0x00
+    00000047 00                    2719 	.db 0x00
+    00000048 00                    2720 	.db 0x00
+    00000049 00                    2721 	.db 0x00
+    0000004A 00                    2722 	.db 0x00
+    0000004B 00                    2723 	.db 0x00
+    0000004C 00                    2724 	.db 0x00
+    0000004D 00                    2725 	.db 0x00
+    0000004E 00                    2726 	.db 0x00
+    0000004F 00                    2727 	.db 0x00
+    00000050 00                    2728 	.db 0x00
+    00000051 00                    2729 	.db 0x00
+    00000052 00                    2730 	.db 0x00
+    00000053 00                    2731 	.db 0x00
+    00000054 00                    2732 	.db 0x00
+    00000055 00                    2733 	.db 0x00
+    00000056 00                    2734 	.db 0x00
+    00000057 00                    2735 	.db 0x00
+    00000058 00                    2736 	.db 0x00
+    00000059 00                    2737 	.db 0x00
+    0000005A 00                    2738 	.db 0x00
+    0000005B 00                    2739 	.db 0x00
+    0000005C 00                    2740 	.db 0x00
+    0000005D 00                    2741 	.db 0x00
+    0000005E 00                    2742 	.db 0x00
+    0000005F 00                    2743 	.db 0x00
+    00000060 00                    2744 	.db 0x00
+    00000061 00                    2745 	.db 0x00
+    00000062 00                    2746 	.db 0x00
+    00000063 00                    2747 	.db 0x00
+    00000064 00                    2748 	.db 0x00
+    00000065 00                    2749 	.db 0x00
+    00000066 00                    2750 	.db 0x00
+    00000067 00                    2751 	.db 0x00
+    00000068 00                    2752 	.db 0x00
+    00000069 00                    2753 	.db 0x00
+    0000006A 00                    2754 	.db 0x00
+    0000006B 00                    2755 	.db 0x00
+    0000006C 00                    2756 	.db 0x00
+    0000006D 00                    2757 	.db 0x00
+    0000006E 00                    2758 	.db 0x00
+    0000006F 00                    2759 	.db 0x00
+    00000070 00                    2760 	.db 0x00
+    00000071 00                    2761 	.db 0x00
+    00000072 00                    2762 	.db 0x00
+    00000073 00                    2763 	.db 0x00
+    00000074 00                    2764 	.db 0x00
+    00000075 00                    2765 	.db 0x00
+    00000076 00                    2766 	.db 0x00
+    00000077 00                    2767 	.db 0x00
+    00000078 00                    2768 	.db 0x00
+    00000079 00                    2769 	.db 0x00
+    0000007A 00                    2770 	.db 0x00
+    0000007B 00                    2771 	.db 0x00
+    0000007C 00                    2772 	.db 0x00
+    0000007D 00                    2773 	.db 0x00
+    0000007E 00                    2774 	.db 0x00
+    0000007F 00                    2775 	.db 0x00
+    00000080 00                    2776 	.db 0x00
+    00000081 00                    2777 	.db 0x00
+    00000082 00                    2778 	.db 0x00
+    00000083 00                    2779 	.db 0x00
+    00000084 00                    2780 	.db 0x00
+    00000085 00                    2781 	.db 0x00
+    00000086 00                    2782 	.db 0x00
+    00000087 00                    2783 	.db 0x00
+    00000088 00                    2784 	.db 0x00
+    00000089 00                    2785 	.db 0x00
+    0000008A 00                    2786 	.db 0x00
+    0000008B 00                    2787 	.db 0x00
+    0000008C 00                    2788 	.db 0x00
+    0000008D 00                    2789 	.db 0x00
+    0000008E 00                    2790 	.db 0x00
+    0000008F 00                    2791 	.db 0x00
+    00000090 00                    2792 	.db 0x00
+    00000091 00                    2793 	.db 0x00
+    00000092 00                    2794 	.db 0x00
+    00000093 00                    2795 	.db 0x00
+    00000094 00                    2796 	.db 0x00
+    00000095 00                    2797 	.db 0x00
+    00000096 00                    2798 	.db 0x00
+    00000097 00                    2799 	.db 0x00
+    00000098 00                    2800 	.db 0x00
+    00000099 00                    2801 	.db 0x00
+    0000009A 00                    2802 	.db 0x00
+    0000009B 00                    2803 	.db 0x00
+    0000009C 00                    2804 	.db 0x00
+    0000009D 00                    2805 	.db 0x00
+    0000009E 00                    2806 	.db 0x00
+    0000009F 00                    2807 	.db 0x00
+    000000A0 00                    2808 	.db 0x00
+    000000A1 00                    2809 	.db 0x00
+    000000A2 00                    2810 	.db 0x00
+    000000A3 00                    2811 	.db 0x00
+    000000A4 00                    2812 	.db 0x00
+    000000A5 00                    2813 	.db 0x00
+    000000A6 00                    2814 	.db 0x00
+    000000A7 00                    2815 	.db 0x00
+    000000A8 00                    2816 	.db 0x00
+    000000A9 00                    2817 	.db 0x00
+    000000AA 00                    2818 	.db 0x00
+    000000AB 00                    2819 	.db 0x00
+    000000AC 00                    2820 	.db 0x00
+    000000AD 00                    2821 	.db 0x00
+    000000AE 00                    2822 	.db 0x00
+    000000AF 00                    2823 	.db 0x00
+    000000B0 00                    2824 	.db 0x00
+    000000B1 00                    2825 	.db 0x00
+    000000B2 00                    2826 	.db 0x00
+    000000B3 00                    2827 	.db 0x00
+    000000B4 00                    2828 	.db 0x00
+    000000B5 00                    2829 	.db 0x00
+    000000B6 00                    2830 	.db 0x00
+    000000B7 00                    2831 	.db 0x00
+    000000B8 00                    2832 	.db 0x00
+    000000B9 00                    2833 	.db 0x00
+    000000BA 00                    2834 	.db 0x00
+    000000BB 00                    2835 	.db 0x00
+    000000BC 00                    2836 	.db 0x00
+    000000BD 00                    2837 	.db 0x00
+    000000BE 00                    2838 	.db 0x00
+    000000BF 00                    2839 	.db 0x00
+    000000C0 00                    2840 	.db 0x00
+    000000C1 00                    2841 	.db 0x00
+    000000C2 00                    2842 	.db 0x00
+    000000C3 00                    2843 	.db 0x00
+    000000C4 00                    2844 	.db 0x00
+    000000C5 00                    2845 	.db 0x00
+    000000C6 00                    2846 	.db 0x00
+    000000C7 00                    2847 	.db 0x00
+    000000C8 00                    2848 	.db 0x00
+    000000C9 00                    2849 	.db 0x00
+    000000CA 00                    2850 	.db 0x00
+    000000CB 00                    2851 	.db 0x00
+    000000CC 00                    2852 	.db 0x00
+    000000CD 00                    2853 	.db 0x00
+    000000CE 00                    2854 	.db 0x00
+    000000CF 00                    2855 	.db 0x00
+    000000D0 00                    2856 	.db 0x00
+    000000D1 00                    2857 	.db 0x00
+    000000D2 00                    2858 	.db 0x00
+    000000D3 00                    2859 	.db 0x00
+    000000D4 00                    2860 	.db 0x00
+    000000D5 00                    2861 	.db 0x00
+    000000D6 00                    2862 	.db 0x00
+    000000D7 00                    2863 	.db 0x00
+    000000D8 00                    2864 	.db 0x00
+    000000D9 00                    2865 	.db 0x00
+    000000DA 00                    2866 	.db 0x00
+    000000DB 00                    2867 	.db 0x00
+    000000DC 00                    2868 	.db 0x00
+    000000DD 00                    2869 	.db 0x00
+    000000DE 00                    2870 	.db 0x00
+    000000DF 00                    2871 	.db 0x00
+    000000E0 00                    2872 	.db 0x00
+    000000E1 00                    2873 	.db 0x00
+    000000E2 00                    2874 	.db 0x00
+    000000E3 00                    2875 	.db 0x00
+    000000E4 00                    2876 	.db 0x00
+    000000E5 00                    2877 	.db 0x00
+    000000E6 00                    2878 	.db 0x00
+    000000E7 00                    2879 	.db 0x00
+    000000E8 00                    2880 	.db 0x00
+    000000E9 00                    2881 	.db 0x00
+    000000EA 00                    2882 	.db 0x00
+    000000EB 00                    2883 	.db 0x00
+    000000EC 00                    2884 	.db 0x00
+    000000ED 00                    2885 	.db 0x00
+    000000EE 00                    2886 	.db 0x00
+    000000EF 00                    2887 	.db 0x00
+    000000F0 00                    2888 	.db 0x00
+    000000F1 00                    2889 	.db 0x00
+    000000F2 00                    2890 	.db 0x00
+    000000F3 00                    2891 	.db 0x00
+    000000F4 00                    2892 	.db 0x00
+    000000F5 00                    2893 	.db 0x00
+    000000F6 00                    2894 	.db 0x00
+    000000F7 00                    2895 	.db 0x00
+    000000F8 00                    2896 	.db 0x00
+    000000F9 00                    2897 	.db 0x00
+    000000FA 00                    2898 	.db 0x00
+    000000FB 00                    2899 	.db 0x00
+    000000FC 00                    2900 	.db 0x00
+    000000FD 00                    2901 	.db 0x00
+    000000FE 00                    2902 	.db 0x00
+    000000FF 00                    2903 	.db 0x00
+    00000100 00                    2904 	.db 0x00
+    00000101 00                    2905 	.db 0x00
+    00000102 00                    2906 	.db 0x00
+    00000103 00                    2907 	.db 0x00
+    00000104 00                    2908 	.db 0x00
+    00000105 00                    2909 	.db 0x00
+    00000106 00                    2910 	.db 0x00
+    00000107 00                    2911 	.db 0x00
+    00000108 00                    2912 	.db 0x00
+    00000109 00                    2913 	.db 0x00
+    0000010A 00                    2914 	.db 0x00
+    0000010B 00                    2915 	.db 0x00
+    0000010C 00                    2916 	.db 0x00
+    0000010D 00                    2917 	.db 0x00
+    0000010E 00                    2918 	.db 0x00
+    0000010F 00                    2919 	.db 0x00
+    00000110 00                    2920 	.db 0x00
+    00000111 00                    2921 	.db 0x00
+    00000112 00                    2922 	.db 0x00
+    00000113 00                    2923 	.db 0x00
+    00000114 00                    2924 	.db 0x00
+    00000115 00                    2925 	.db 0x00
+    00000116 00                    2926 	.db 0x00
+    00000117 00                    2927 	.db 0x00
+    00000118 00                    2928 	.db 0x00
+    00000119 00                    2929 	.db 0x00
+    0000011A 00                    2930 	.db 0x00
+    0000011B 00                    2931 	.db 0x00
+    0000011C 00                    2932 	.db 0x00
+    0000011D 00                    2933 	.db 0x00
+    0000011E 00                    2934 	.db 0x00
+    0000011F 00                    2935 	.db 0x00
+    00000120 00                    2936 	.db 0x00
+    00000121 00                    2937 	.db 0x00
+    00000122 00                    2938 	.db 0x00
+    00000123 00                    2939 	.db 0x00
+    00000124 00                    2940 	.db 0x00
+    00000125 00                    2941 	.db 0x00
+    00000126 00                    2942 	.db 0x00
+    00000127 00                    2943 	.db 0x00
+    00000128 00                    2944 	.db 0x00
+    00000129 00                    2945 	.db 0x00
+    0000012A 00                    2946 	.db 0x00
+    0000012B 00                    2947 	.db 0x00
+    0000012C 00                    2948 	.db 0x00
+    0000012D 00                    2949 	.db 0x00
+    0000012E 00                    2950 	.db 0x00
+    0000012F 00                    2951 	.db 0x00
+    00000130 00                    2952 	.db 0x00
+    00000131 00                    2953 	.db 0x00
+    00000132 00                    2954 	.db 0x00
+    00000133 00                    2955 	.db 0x00
+    00000134 00                    2956 	.db 0x00
+    00000135 00                    2957 	.db 0x00
+    00000136 00                    2958 	.db 0x00
+    00000137 00                    2959 	.db 0x00
+    00000138 00                    2960 	.db 0x00
+    00000139 00                    2961 	.db 0x00
+    0000013A 00                    2962 	.db 0x00
+    0000013B 00                    2963 	.db 0x00
+    0000013C 00                    2964 	.db 0x00
+    0000013D 00                    2965 	.db 0x00
+    0000013E 00                    2966 	.db 0x00
+    0000013F 00                    2967 	.db 0x00
+    00000140 00                    2968 	.db 0x00
+    00000141 00                    2969 	.db 0x00
+    00000142 00                    2970 	.db 0x00
+    00000143 00                    2971 	.db 0x00
+    00000144 00                    2972 	.db 0x00
+    00000145 00                    2973 	.db 0x00
+    00000146 00                    2974 	.db 0x00
+    00000147 00                    2975 	.db 0x00
+    00000148 00                    2976 	.db 0x00
+    00000149 00                    2977 	.db 0x00
+    0000014A 00                    2978 	.db 0x00
+    0000014B 00                    2979 	.db 0x00
+    0000014C 00                    2980 	.db 0x00
+    0000014D 00                    2981 	.db 0x00
+    0000014E 00                    2982 	.db 0x00
+    0000014F 00                    2983 	.db 0x00
+    00000150 00                    2984 	.db 0x00
+    00000151 00                    2985 	.db 0x00
+    00000152 00                    2986 	.db 0x00
+    00000153 00                    2987 	.db 0x00
+    00000154 00                    2988 	.db 0x00
+    00000155 00                    2989 	.db 0x00
+    00000156 00                    2990 	.db 0x00
+    00000157 00                    2991 	.db 0x00
+    00000158 00                    2992 	.db 0x00
+    00000159 00                    2993 	.db 0x00
+    0000015A 00                    2994 	.db 0x00
+    0000015B 00                    2995 	.db 0x00
+    0000015C 00                    2996 	.db 0x00
+    0000015D 00                    2997 	.db 0x00
+    0000015E 00                    2998 	.db 0x00
+    0000015F 00                    2999 	.db 0x00
+    00000160 00                    3000 	.db 0x00
+    00000161 00                    3001 	.db 0x00
+    00000162 00                    3002 	.db 0x00
+    00000163 00                    3003 	.db 0x00
+    00000164 00                    3004 	.db 0x00
+    00000165 00                    3005 	.db 0x00
+    00000166 00                    3006 	.db 0x00
+    00000167 00                    3007 	.db 0x00
+    00000168 00                    3008 	.db 0x00
+    00000169 00                    3009 	.db 0x00
+    0000016A 00                    3010 	.db 0x00
+    0000016B 00                    3011 	.db 0x00
+    0000016C 00                    3012 	.db 0x00
+    0000016D 00                    3013 	.db 0x00
+    0000016E 00                    3014 	.db 0x00
+    0000016F 00                    3015 	.db 0x00
+    00000170 00                    3016 	.db 0x00
+    00000171 00                    3017 	.db 0x00
+    00000172 00                    3018 	.db 0x00
+    00000173 00                    3019 	.db 0x00
+    00000174 00                    3020 	.db 0x00
+    00000175 00                    3021 	.db 0x00
+    00000176 00                    3022 	.db 0x00
+    00000177 00                    3023 	.db 0x00
+    00000178 00                    3024 	.db 0x00
+    00000179 00                    3025 	.db 0x00
+    0000017A 00                    3026 	.db 0x00
+    0000017B 00                    3027 	.db 0x00
+    0000017C 00                    3028 	.db 0x00
+    0000017D 00                    3029 	.db 0x00
+    0000017E 00                    3030 	.db 0x00
+    0000017F 00                    3031 	.db 0x00
+    00000180 00                    3032 	.db 0x00
+    00000181 00                    3033 	.db 0x00
+    00000182 00                    3034 	.db 0x00
+    00000183 00                    3035 	.db 0x00
+    00000184 00                    3036 	.db 0x00
+    00000185 00                    3037 	.db 0x00
+    00000186 00                    3038 	.db 0x00
+    00000187 00                    3039 	.db 0x00
+    00000188 00                    3040 	.db 0x00
+    00000189 00                    3041 	.db 0x00
+    0000018A 00                    3042 	.db 0x00
+    0000018B 00                    3043 	.db 0x00
+    0000018C 00                    3044 	.db 0x00
+    0000018D 00                    3045 	.db 0x00
+    0000018E 00                    3046 	.db 0x00
+    0000018F 00                    3047 	.db 0x00
+    00000190 00                    3048 	.db 0x00
+    00000191 00                    3049 	.db 0x00
+    00000192 00                    3050 	.db 0x00
+    00000193 00                    3051 	.db 0x00
+    00000194 00                    3052 	.db 0x00
+    00000195 00                    3053 	.db 0x00
+    00000196 00                    3054 	.db 0x00
+    00000197 00                    3055 	.db 0x00
+    00000198 00                    3056 	.db 0x00
+    00000199 00                    3057 	.db 0x00
+    0000019A 00                    3058 	.db 0x00
+    0000019B 00                    3059 	.db 0x00
+    0000019C 00                    3060 	.db 0x00
+    0000019D 00                    3061 	.db 0x00
+    0000019E 00                    3062 	.db 0x00
+    0000019F 00                    3063 	.db 0x00
+    000001A0 00                    3064 	.db 0x00
+    000001A1 00                    3065 	.db 0x00
+    000001A2 00                    3066 	.db 0x00
+    000001A3 00                    3067 	.db 0x00
+    000001A4 00                    3068 	.db 0x00
+    000001A5 00                    3069 	.db 0x00
+    000001A6 00                    3070 	.db 0x00
+    000001A7 00                    3071 	.db 0x00
+    000001A8 00                    3072 	.db 0x00
+    000001A9 00                    3073 	.db 0x00
+    000001AA 00                    3074 	.db 0x00
+    000001AB 00                    3075 	.db 0x00
+    000001AC 00                    3076 	.db 0x00
+    000001AD 00                    3077 	.db 0x00
+    000001AE 00                    3078 	.db 0x00
+    000001AF 00                    3079 	.db 0x00
+    000001B0 00                    3080 	.db 0x00
+    000001B1 00                    3081 	.db 0x00
+    000001B2 00                    3082 	.db 0x00
+    000001B3 00                    3083 	.db 0x00
+    000001B4 00                    3084 	.db 0x00
+    000001B5 00                    3085 	.db 0x00
+    000001B6 00                    3086 	.db 0x00
+    000001B7 00                    3087 	.db 0x00
+    000001B8 00                    3088 	.db 0x00
+    000001B9 00                    3089 	.db 0x00
+    000001BA 00                    3090 	.db 0x00
+    000001BB 00                    3091 	.db 0x00
+    000001BC 00                    3092 	.db 0x00
+    000001BD 00                    3093 	.db 0x00
+    000001BE 00                    3094 	.db 0x00
+    000001BF 00                    3095 	.db 0x00
+    000001C0 00                    3096 	.db 0x00
+    000001C1 00                    3097 	.db 0x00
+    000001C2 00                    3098 	.db 0x00
+    000001C3 00                    3099 	.db 0x00
+    000001C4 00                    3100 	.db 0x00
+    000001C5 00                    3101 	.db 0x00
+    000001C6 00                    3102 	.db 0x00
+    000001C7 00                    3103 	.db 0x00
+    000001C8 00                    3104 	.db 0x00
+    000001C9 00                    3105 	.db 0x00
+    000001CA 00                    3106 	.db 0x00
+    000001CB 00                    3107 	.db 0x00
+    000001CC 00                    3108 	.db 0x00
+    000001CD 00                    3109 	.db 0x00
+    000001CE 00                    3110 	.db 0x00
+    000001CF 00                    3111 	.db 0x00
+    000001D0 00                    3112 	.db 0x00
+    000001D1 00                    3113 	.db 0x00
+    000001D2 00                    3114 	.db 0x00
+    000001D3 00                    3115 	.db 0x00
+    000001D4 00                    3116 	.db 0x00
+    000001D5 00                    3117 	.db 0x00
+    000001D6 00                    3118 	.db 0x00
+    000001D7 00                    3119 	.db 0x00
+    000001D8 00                    3120 	.db 0x00
+    000001D9 00                    3121 	.db 0x00
+    000001DA 00                    3122 	.db 0x00
+    000001DB 00                    3123 	.db 0x00
+    000001DC 00                    3124 	.db 0x00
+    000001DD 00                    3125 	.db 0x00
+    000001DE 00                    3126 	.db 0x00
+    000001DF 00                    3127 	.db 0x00
+    000001E0 00                    3128 	.db 0x00
+    000001E1 00                    3129 	.db 0x00
+    000001E2 00                    3130 	.db 0x00
+    000001E3 00                    3131 	.db 0x00
+    000001E4 00                    3132 	.db 0x00
+    000001E5 00                    3133 	.db 0x00
+    000001E6 00                    3134 	.db 0x00
+    000001E7 00                    3135 	.db 0x00
+    000001E8 00                    3136 	.db 0x00
+    000001E9 00                    3137 	.db 0x00
+    000001EA 00                    3138 	.db 0x00
+    000001EB 00                    3139 	.db 0x00
+    000001EC 00                    3140 	.db 0x00
+    000001ED 00                    3141 	.db 0x00
+    000001EE 00                    3142 	.db 0x00
+    000001EF 00                    3143 	.db 0x00
+    000001F0 00                    3144 	.db 0x00
+    000001F1 00                    3145 	.db 0x00
+    000001F2 00                    3146 	.db 0x00
+    000001F3 00                    3147 	.db 0x00
+    000001F4 00                    3148 	.db 0x00
+    000001F5 00                    3149 	.db 0x00
+    000001F6 00                    3150 	.db 0x00
+    000001F7 00                    3151 	.db 0x00
+    000001F8 00                    3152 	.db 0x00
+    000001F9 00                    3153 	.db 0x00
+    000001FA 00                    3154 	.db 0x00
+    000001FB 00                    3155 	.db 0x00
+    000001FC 00                    3156 	.db 0x00
+    000001FD 00                    3157 	.db 0x00
+    000001FE 00                    3158 	.db 0x00
+    000001FF 00                    3159 	.db 0x00
+    00000200                       3160 __xinit__map_column:
+    00000200 00                    3161 	.db #0x00	; 0
+    00000201                       3162 __xinit__current_column_in_page:
+    00000201 00                    3163 	.db #0x00	; 0
+    00000202                       3164 __xinit__level_page_x_offset:
+    00000202 00 00                 3165 	.dw #0x0000
+    00000204                       3166 __xinit__current_page:
+    00000204 00                    3167 	.db #0x00	; 0
+    00000205                       3168 __xinit__col_from:
+    00000205 00 00                 3169 	.dw #0x0000
+                                   3170 	.area _CABS (ABS)

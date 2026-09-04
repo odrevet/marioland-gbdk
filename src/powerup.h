@@ -12,7 +12,7 @@
 
 #include "global.h"
 
-#include "graphics/sprite_common.h"
+#include "commonSprites.h"
 
 
 enum powerup_type {

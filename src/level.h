@@ -18,38 +18,40 @@
 #ifdef GAMEBOY
 // sounds
 #include "sfxplayer.h"
-#include "sounds/sound_coin.h"
-#include "sounds/sound_oneup.h"
-#include "sounds/sound_destroyed.h"
-#include "sounds/sound_bump.h"
+#include "sound_coin.h"
+#include "sound_oneup.h"
+#include "sound_destroyed.h"
+#include "sound_bump.h"
+#endif
 
 // musics
+#ifdef NINTENDO
 #include "musicmanager.h"
-#include "musics/musics.h"
-#endif 
+#include "musics.h"
+#endif
 
 // tilesets
-#include "graphics/birabuto.h"
-#include "graphics/chai.h"
-#include "graphics/common.h"
-#include "graphics/easton.h"
-#include "graphics/muda.h"
+#include "birabutoTileset.h"
+#include "chaiTileset.h"
+#include "commonTileset.h"
+#include "eastonTileset.h"
+#include "mudaTileset.h"
 
 // lookup tables
 #include "level_object.h"
-#include "lookup_tables/lookup_table_1_1.h"
-#include "lookup_tables/lookup_table_1_2.h"
-#include "lookup_tables/lookup_table_1_3.h"
-#include "lookup_tables/lookup_table_2_1.h"
-#include "lookup_tables/lookup_table_2_2.h"
-#include "lookup_tables/lookup_table_2_3.h"
-#include "lookup_tables/lookup_table_3_1.h"
-#include "lookup_tables/lookup_table_3_2.h"
-#include "lookup_tables/lookup_table_3_3.h"
-#include "lookup_tables/lookup_table_4_1.h"
-#include "lookup_tables/lookup_table_4_2.h"
-#include "lookup_tables/lookup_table_4_3.h"
-#include "lookup_tables/lookup_table_underground.h"
+#include "lookup_table_1_1.h"
+#include "lookup_table_1_2.h"
+#include "lookup_table_1_3.h"
+#include "lookup_table_2_1.h"
+#include "lookup_table_2_2.h"
+#include "lookup_table_2_3.h"
+#include "lookup_table_3_1.h"
+#include "lookup_table_3_2.h"
+#include "lookup_table_3_3.h"
+#include "lookup_table_4_1.h"
+#include "lookup_table_4_2.h"
+#include "lookup_table_4_3.h"
+#include "lookup_table_underground.h"
 
 #include "level_tables.h"
 
@@ -136,10 +138,9 @@ extern const level undergrounds[1];
   ((((x) + (camera_x)) >> 3) % DEVICE_SCREEN_BUFFER_WIDTH)
 #define TILE_INDEX_Y(y) ((y) >> 3)
 
-// Common tiles (shared across all worlds)
 enum tileset_index_common {
-  TILE_EMPTY = 0x27,
-  TILE_INTEROGATION_BLOCK = 0x28,
+  TILE_EMPTY = 0x28,
+  TILE_INTEROGATION_BLOCK = 0x2C,
   TILE_EMPTIED = 0x29,
   BREAKABLE_BLOCK = 0x2A,
   TILE_UNBREAKABLE = 0x2B,
@@ -162,7 +163,6 @@ enum tileset_index_common {
   METAL_BLOCK_RIGHT = 0x57
 };
 
-// Birabuto world tiles
 enum tileset_index_birabuto {
   GREY_BLOCK = 0x61,
   TILE_TORCH = 0x72,
@@ -181,7 +181,6 @@ enum tileset_index_birabuto {
   PALM_TREE_RIGHT = 0x7B
 };
 
-// Muda world tiles
 enum tileset_index_muda {
   MUDA_PLATEFORM_LEFT = 0x83,
   MUDA_PLATEFORM_CENTER = 0x84,
@@ -197,7 +196,6 @@ enum tileset_index_muda {
   HALF_BIG_BLOCK_TOP_RIGHT = 0X9B
 };
 
-// Easton world tiles
 enum tileset_index_easton {
   EASTON_FLOOR_1 = 0x9D,
   EASTON_FLOOR_2 = 0x9C,
@@ -212,7 +210,7 @@ enum tileset_index_easton {
   EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT = 0X7D,
   EASTON_BLOCK = 0xA0,
   EASTON_STONE_PLATEFORM_LEFT = 0xA1,
-  EASTON_STONE_PLATEFORM_RIGHT = 0xA2,
+  EASTON_STONE_PLATEFORM_RIGHT = 0xA2
 };
 
 enum tileset_index_chai {

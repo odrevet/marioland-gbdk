@@ -1,0 +1,469 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.1 #15267 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module text
+                                      6 	
+                                      7 ;--------------------------------------------------------
+                                      8 ; Public variables in this module
+                                      9 ;--------------------------------------------------------
+                                     10 	.globl _set_win_tile_xy
+                                     11 	.globl _text_print_char
+                                     12 	.globl _text_print_string
+                                     13 ;--------------------------------------------------------
+                                     14 ; special function registers
+                                     15 ;--------------------------------------------------------
+                                     16 	.area _HRAM
+                                     17 ;--------------------------------------------------------
+                                     18 ; ram data
+                                     19 ;--------------------------------------------------------
+                                     20 	.area _DATA
+                                     21 ;--------------------------------------------------------
+                                     22 ; ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area _INITIALIZED
+                                     25 ;--------------------------------------------------------
+                                     26 ; absolute external ram data
+                                     27 ;--------------------------------------------------------
+                                     28 	.area _DABS (ABS)
+                                     29 ;--------------------------------------------------------
+                                     30 ; global & static initialisations
+                                     31 ;--------------------------------------------------------
+                                     32 	.area _HOME
+                                     33 	.area _GSINIT
+                                     34 	.area _GSFINAL
+                                     35 	.area _GSINIT
+                                     36 ;--------------------------------------------------------
+                                     37 ; Home
+                                     38 ;--------------------------------------------------------
+                                     39 	.area _HOME
+                                     40 	.area _HOME
+                                     41 ;--------------------------------------------------------
+                                     42 ; code
+                                     43 ;--------------------------------------------------------
+                                     44 	.area _CODE
+                                     45 ;src/text.c:3: void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
+                                     46 ;	---------------------------------
+                                     47 ; Function text_print_char
+                                     48 ; ---------------------------------
+    00000000                         49 _text_print_char::
+    00000000 4F               [ 4]   50 	ld	c, a
+                                     51 ;src/text.c:6: if (chr >= '1' && chr <= '9') {
+    00000001 F8 02            [12]   52 	ldhl	sp,	#2
+    00000003 7E               [ 8]   53 	ld	a, (hl)
+    00000004 D6 31            [ 8]   54 	sub	a, #0x31
+    00000006 38 0B            [12]   55 	jr	C, 00136$
+    00000008 3E 39            [ 8]   56 	ld	a, #0x39
+    0000000A 96               [ 8]   57 	sub	a, (hl)
+    0000000B 38 06            [12]   58 	jr	C, 00136$
+                                     59 ;src/text.c:7: tile = chr - '0';
+    0000000D 7E               [ 8]   60 	ld	a, (hl)
+    0000000E C6 D0            [ 8]   61 	add	a, #0xd0
+    00000010 C3r91r01         [16]   62 	jp	00137$
+    00000013                         63 00136$:
+                                     64 ;src/text.c:9: switch (chr) {
+    00000013 F8 02            [12]   65 	ldhl	sp,	#2
+    00000015 7E               [ 8]   66 	ld	a, (hl)
+    00000016 D6 20            [ 8]   67 	sub	a, #0x20
+    00000018 CAr8Cr01         [16]   68 	jp	Z, 00132$
+    0000001B F8 02            [12]   69 	ldhl	sp,	#2
+    0000001D 7E               [ 8]   70 	ld	a, (hl)
+    0000001E D6 21            [ 8]   71 	sub	a, #0x21
+    00000020 CAr84r01         [16]   72 	jp	Z, 00130$
+    00000023 F8 02            [12]   73 	ldhl	sp,	#2
+    00000025 7E               [ 8]   74 	ld	a, (hl)
+    00000026 D6 2C            [ 8]   75 	sub	a, #0x2c
+    00000028 CAr80r01         [16]   76 	jp	Z, 00129$
+    0000002B F8 02            [12]   77 	ldhl	sp,	#2
+    0000002D 7E               [ 8]   78 	ld	a, (hl)
+    0000002E D6 2D            [ 8]   79 	sub	a, #0x2d
+    00000030 CAr78r01         [16]   80 	jp	Z, 00127$
+    00000033 F8 02            [12]   81 	ldhl	sp,	#2
+    00000035 7E               [ 8]   82 	ld	a, (hl)
+    00000036 D6 2E            [ 8]   83 	sub	a, #0x2e
+    00000038 CAr7Cr01         [16]   84 	jp	Z, 00128$
+    0000003B F8 02            [12]   85 	ldhl	sp,	#2
+    0000003D 7E               [ 8]   86 	ld	a, (hl)
+    0000003E D6 30            [ 8]   87 	sub	a, #0x30
+    00000040 CAr0Fr01         [16]   88 	jp	Z, 00101$
+    00000043 F8 02            [12]   89 	ldhl	sp,	#2
+    00000045 7E               [ 8]   90 	ld	a, (hl)
+    00000046 D6 3F            [ 8]   91 	sub	a, #0x3f
+    00000048 CAr88r01         [16]   92 	jp	Z, 00131$
+    0000004B F8 02            [12]   93 	ldhl	sp,	#2
+    0000004D 7E               [ 8]   94 	ld	a, (hl)
+    0000004E D6 41            [ 8]   95 	sub	a, #0x41
+    00000050 CAr14r01         [16]   96 	jp	Z, 00102$
+    00000053 F8 02            [12]   97 	ldhl	sp,	#2
+    00000055 7E               [ 8]   98 	ld	a, (hl)
+    00000056 D6 42            [ 8]   99 	sub	a, #0x42
+    00000058 CAr18r01         [16]  100 	jp	Z, 00103$
+    0000005B F8 02            [12]  101 	ldhl	sp,	#2
+    0000005D 7E               [ 8]  102 	ld	a, (hl)
+    0000005E D6 43            [ 8]  103 	sub	a, #0x43
+    00000060 CAr1Cr01         [16]  104 	jp	Z, 00104$
+    00000063 F8 02            [12]  105 	ldhl	sp,	#2
+    00000065 7E               [ 8]  106 	ld	a, (hl)
+    00000066 D6 44            [ 8]  107 	sub	a, #0x44
+    00000068 CAr20r01         [16]  108 	jp	Z, 00105$
+    0000006B F8 02            [12]  109 	ldhl	sp,	#2
+    0000006D 7E               [ 8]  110 	ld	a, (hl)
+    0000006E D6 45            [ 8]  111 	sub	a, #0x45
+    00000070 CAr24r01         [16]  112 	jp	Z, 00106$
+    00000073 F8 02            [12]  113 	ldhl	sp,	#2
+    00000075 7E               [ 8]  114 	ld	a, (hl)
+    00000076 D6 46            [ 8]  115 	sub	a, #0x46
+    00000078 CAr28r01         [16]  116 	jp	Z, 00107$
+    0000007B F8 02            [12]  117 	ldhl	sp,	#2
+    0000007D 7E               [ 8]  118 	ld	a, (hl)
+    0000007E D6 47            [ 8]  119 	sub	a, #0x47
+    00000080 CAr2Cr01         [16]  120 	jp	Z, 00108$
+    00000083 F8 02            [12]  121 	ldhl	sp,	#2
+    00000085 7E               [ 8]  122 	ld	a, (hl)
+    00000086 D6 48            [ 8]  123 	sub	a, #0x48
+    00000088 CAr30r01         [16]  124 	jp	Z, 00109$
+    0000008B F8 02            [12]  125 	ldhl	sp,	#2
+    0000008D 7E               [ 8]  126 	ld	a, (hl)
+    0000008E D6 49            [ 8]  127 	sub	a, #0x49
+    00000090 CAr34r01         [16]  128 	jp	Z, 00110$
+    00000093 F8 02            [12]  129 	ldhl	sp,	#2
+    00000095 7E               [ 8]  130 	ld	a, (hl)
+    00000096 D6 4B            [ 8]  131 	sub	a, #0x4b
+    00000098 CAr38r01         [16]  132 	jp	Z, 00111$
+    0000009B F8 02            [12]  133 	ldhl	sp,	#2
+    0000009D 7E               [ 8]  134 	ld	a, (hl)
+    0000009E D6 4C            [ 8]  135 	sub	a, #0x4c
+    000000A0 CAr3Cr01         [16]  136 	jp	Z, 00112$
+    000000A3 F8 02            [12]  137 	ldhl	sp,	#2
+    000000A5 7E               [ 8]  138 	ld	a, (hl)
+    000000A6 D6 4D            [ 8]  139 	sub	a, #0x4d
+    000000A8 CAr40r01         [16]  140 	jp	Z, 00113$
+    000000AB F8 02            [12]  141 	ldhl	sp,	#2
+    000000AD 7E               [ 8]  142 	ld	a, (hl)
+    000000AE D6 4E            [ 8]  143 	sub	a, #0x4e
+    000000B0 CAr44r01         [16]  144 	jp	Z, 00114$
+    000000B3 F8 02            [12]  145 	ldhl	sp,	#2
+    000000B5 7E               [ 8]  146 	ld	a, (hl)
+    000000B6 D6 4F            [ 8]  147 	sub	a, #0x4f
+    000000B8 CAr48r01         [16]  148 	jp	Z, 00115$
+    000000BB F8 02            [12]  149 	ldhl	sp,	#2
+    000000BD 7E               [ 8]  150 	ld	a, (hl)
+    000000BE D6 50            [ 8]  151 	sub	a, #0x50
+    000000C0 CAr4Cr01         [16]  152 	jp	Z, 00116$
+    000000C3 F8 02            [12]  153 	ldhl	sp,	#2
+    000000C5 7E               [ 8]  154 	ld	a, (hl)
+    000000C6 D6 51            [ 8]  155 	sub	a, #0x51
+    000000C8 CAr50r01         [16]  156 	jp	Z, 00117$
+    000000CB F8 02            [12]  157 	ldhl	sp,	#2
+    000000CD 7E               [ 8]  158 	ld	a, (hl)
+    000000CE D6 52            [ 8]  159 	sub	a, #0x52
+    000000D0 CAr54r01         [16]  160 	jp	Z, 00118$
+    000000D3 F8 02            [12]  161 	ldhl	sp,	#2
+    000000D5 7E               [ 8]  162 	ld	a, (hl)
+    000000D6 D6 53            [ 8]  163 	sub	a, #0x53
+    000000D8 CAr58r01         [16]  164 	jp	Z, 00119$
+    000000DB F8 02            [12]  165 	ldhl	sp,	#2
+    000000DD 7E               [ 8]  166 	ld	a, (hl)
+    000000DE D6 54            [ 8]  167 	sub	a, #0x54
+    000000E0 28 7A            [12]  168 	jr	Z, 00120$
+    000000E2 F8 02            [12]  169 	ldhl	sp,	#2
+    000000E4 7E               [ 8]  170 	ld	a, (hl)
+    000000E5 D6 55            [ 8]  171 	sub	a, #0x55
+    000000E7 28 77            [12]  172 	jr	Z, 00121$
+    000000E9 F8 02            [12]  173 	ldhl	sp,	#2
+    000000EB 7E               [ 8]  174 	ld	a, (hl)
+    000000EC D6 56            [ 8]  175 	sub	a, #0x56
+    000000EE 28 74            [12]  176 	jr	Z, 00122$
+    000000F0 F8 02            [12]  177 	ldhl	sp,	#2
+    000000F2 7E               [ 8]  178 	ld	a, (hl)
+    000000F3 D6 57            [ 8]  179 	sub	a, #0x57
+    000000F5 28 71            [12]  180 	jr	Z, 00123$
+    000000F7 F8 02            [12]  181 	ldhl	sp,	#2
+    000000F9 7E               [ 8]  182 	ld	a, (hl)
+    000000FA D6 59            [ 8]  183 	sub	a, #0x59
+    000000FC 28 6E            [12]  184 	jr	Z, 00124$
+    000000FE F8 02            [12]  185 	ldhl	sp,	#2
+    00000100 7E               [ 8]  186 	ld	a, (hl)
+    00000101 D6 5A            [ 8]  187 	sub	a, #0x5a
+    00000103 28 6B            [12]  188 	jr	Z, 00125$
+    00000105 F8 02            [12]  189 	ldhl	sp,	#2
+    00000107 7E               [ 8]  190 	ld	a, (hl)
+    00000108 D6 78            [ 8]  191 	sub	a, #0x78
+    0000010A 28 68            [12]  192 	jr	Z, 00126$
+    0000010C C3r8Fr01         [16]  193 	jp	00133$
+                                    194 ;src/text.c:10: case '0':
+    0000010F                        195 00101$:
+                                    196 ;src/text.c:11: tile = LETTERS_STARTS_AT + 13;
+    0000010F 3E 17            [ 8]  197 	ld	a, #0x17
+                                    198 ;src/text.c:12: break;
+    00000111 C3r91r01         [16]  199 	jp	00137$
+                                    200 ;src/text.c:13: case 'A':
+    00000114                        201 00102$:
+                                    202 ;src/text.c:14: tile = LETTERS_STARTS_AT + 0;
+    00000114 3E 0A            [ 8]  203 	ld	a, #0x0a
+                                    204 ;src/text.c:15: break;
+    00000116 18 79            [12]  205 	jr	00137$
+                                    206 ;src/text.c:16: case 'B':
+    00000118                        207 00103$:
+                                    208 ;src/text.c:17: tile = LETTERS_STARTS_AT + 1;
+    00000118 3E 0B            [ 8]  209 	ld	a, #0x0b
+                                    210 ;src/text.c:18: break;
+    0000011A 18 75            [12]  211 	jr	00137$
+                                    212 ;src/text.c:19: case 'C':
+    0000011C                        213 00104$:
+                                    214 ;src/text.c:20: tile = LETTERS_STARTS_AT + 2;
+    0000011C 3E 0C            [ 8]  215 	ld	a, #0x0c
+                                    216 ;src/text.c:21: break;
+    0000011E 18 71            [12]  217 	jr	00137$
+                                    218 ;src/text.c:22: case 'D':
+    00000120                        219 00105$:
+                                    220 ;src/text.c:23: tile = LETTERS_STARTS_AT + 3;
+    00000120 3E 0D            [ 8]  221 	ld	a, #0x0d
+                                    222 ;src/text.c:24: break;
+    00000122 18 6D            [12]  223 	jr	00137$
+                                    224 ;src/text.c:25: case 'E':
+    00000124                        225 00106$:
+                                    226 ;src/text.c:26: tile = LETTERS_STARTS_AT + 4;
+    00000124 3E 0E            [ 8]  227 	ld	a, #0x0e
+                                    228 ;src/text.c:27: break;
+    00000126 18 69            [12]  229 	jr	00137$
+                                    230 ;src/text.c:28: case 'F':
+    00000128                        231 00107$:
+                                    232 ;src/text.c:29: tile = LETTERS_STARTS_AT + 5;
+    00000128 3E 0F            [ 8]  233 	ld	a, #0x0f
+                                    234 ;src/text.c:30: break;
+    0000012A 18 65            [12]  235 	jr	00137$
+                                    236 ;src/text.c:31: case 'G':
+    0000012C                        237 00108$:
+                                    238 ;src/text.c:32: tile = LETTERS_STARTS_AT + 6;
+    0000012C 3E 10            [ 8]  239 	ld	a, #0x10
+                                    240 ;src/text.c:33: break;
+    0000012E 18 61            [12]  241 	jr	00137$
+                                    242 ;src/text.c:34: case 'H':
+    00000130                        243 00109$:
+                                    244 ;src/text.c:35: tile = LETTERS_STARTS_AT + 7;
+    00000130 3E 11            [ 8]  245 	ld	a, #0x11
+                                    246 ;src/text.c:36: break;
+    00000132 18 5D            [12]  247 	jr	00137$
+                                    248 ;src/text.c:37: case 'I':
+    00000134                        249 00110$:
+                                    250 ;src/text.c:38: tile = LETTERS_STARTS_AT + 8;
+    00000134 3E 12            [ 8]  251 	ld	a, #0x12
+                                    252 ;src/text.c:39: break;
+    00000136 18 59            [12]  253 	jr	00137$
+                                    254 ;src/text.c:40: case 'K':
+    00000138                        255 00111$:
+                                    256 ;src/text.c:41: tile = LETTERS_STARTS_AT + 9;
+    00000138 3E 13            [ 8]  257 	ld	a, #0x13
+                                    258 ;src/text.c:42: break;
+    0000013A 18 55            [12]  259 	jr	00137$
+                                    260 ;src/text.c:43: case 'L':
+    0000013C                        261 00112$:
+                                    262 ;src/text.c:44: tile = LETTERS_STARTS_AT + 10;
+    0000013C 3E 14            [ 8]  263 	ld	a, #0x14
+                                    264 ;src/text.c:45: break;
+    0000013E 18 51            [12]  265 	jr	00137$
+                                    266 ;src/text.c:46: case 'M':
+    00000140                        267 00113$:
+                                    268 ;src/text.c:47: tile = LETTERS_STARTS_AT + 11;
+    00000140 3E 15            [ 8]  269 	ld	a, #0x15
+                                    270 ;src/text.c:48: break;
+    00000142 18 4D            [12]  271 	jr	00137$
+                                    272 ;src/text.c:49: case 'N':
+    00000144                        273 00114$:
+                                    274 ;src/text.c:50: tile = LETTERS_STARTS_AT + 12;
+    00000144 3E 16            [ 8]  275 	ld	a, #0x16
+                                    276 ;src/text.c:51: break;
+    00000146 18 49            [12]  277 	jr	00137$
+                                    278 ;src/text.c:52: case 'O':
+    00000148                        279 00115$:
+                                    280 ;src/text.c:53: tile = LETTERS_STARTS_AT + 13;
+    00000148 3E 17            [ 8]  281 	ld	a, #0x17
+                                    282 ;src/text.c:54: break;
+    0000014A 18 45            [12]  283 	jr	00137$
+                                    284 ;src/text.c:55: case 'P':
+    0000014C                        285 00116$:
+                                    286 ;src/text.c:56: tile = LETTERS_STARTS_AT + 14;
+    0000014C 3E 18            [ 8]  287 	ld	a, #0x18
+                                    288 ;src/text.c:57: break;
+    0000014E 18 41            [12]  289 	jr	00137$
+                                    290 ;src/text.c:58: case 'Q':
+    00000150                        291 00117$:
+                                    292 ;src/text.c:59: tile = LETTERS_STARTS_AT + 15;
+    00000150 3E 19            [ 8]  293 	ld	a, #0x19
+                                    294 ;src/text.c:60: break;
+    00000152 18 3D            [12]  295 	jr	00137$
+                                    296 ;src/text.c:61: case 'R':
+    00000154                        297 00118$:
+                                    298 ;src/text.c:62: tile = LETTERS_STARTS_AT + 16;
+    00000154 3E 1A            [ 8]  299 	ld	a, #0x1a
+                                    300 ;src/text.c:63: break;
+    00000156 18 39            [12]  301 	jr	00137$
+                                    302 ;src/text.c:64: case 'S':
+    00000158                        303 00119$:
+                                    304 ;src/text.c:65: tile = LETTERS_STARTS_AT + 17;
+    00000158 3E 1B            [ 8]  305 	ld	a, #0x1b
+                                    306 ;src/text.c:66: break;
+    0000015A 18 35            [12]  307 	jr	00137$
+                                    308 ;src/text.c:67: case 'T':
+    0000015C                        309 00120$:
+                                    310 ;src/text.c:68: tile = LETTERS_STARTS_AT + 18;
+    0000015C 3E 1C            [ 8]  311 	ld	a, #0x1c
+                                    312 ;src/text.c:69: break;
+    0000015E 18 31            [12]  313 	jr	00137$
+                                    314 ;src/text.c:70: case 'U':
+    00000160                        315 00121$:
+                                    316 ;src/text.c:71: tile = LETTERS_STARTS_AT + 19;
+    00000160 3E 1D            [ 8]  317 	ld	a, #0x1d
+                                    318 ;src/text.c:72: break;
+    00000162 18 2D            [12]  319 	jr	00137$
+                                    320 ;src/text.c:73: case 'V':
+    00000164                        321 00122$:
+                                    322 ;src/text.c:74: tile = LETTERS_STARTS_AT + 20;
+    00000164 3E 1E            [ 8]  323 	ld	a, #0x1e
+                                    324 ;src/text.c:75: break;
+    00000166 18 29            [12]  325 	jr	00137$
+                                    326 ;src/text.c:76: case 'W':
+    00000168                        327 00123$:
+                                    328 ;src/text.c:77: tile = LETTERS_STARTS_AT + 21;
+    00000168 3E 1F            [ 8]  329 	ld	a, #0x1f
+                                    330 ;src/text.c:78: break;
+    0000016A 18 25            [12]  331 	jr	00137$
+                                    332 ;src/text.c:79: case 'Y':
+    0000016C                        333 00124$:
+                                    334 ;src/text.c:80: tile = LETTERS_STARTS_AT + 22;
+    0000016C 3E 20            [ 8]  335 	ld	a, #0x20
+                                    336 ;src/text.c:81: break;
+    0000016E 18 21            [12]  337 	jr	00137$
+                                    338 ;src/text.c:82: case 'Z':
+    00000170                        339 00125$:
+                                    340 ;src/text.c:83: tile = LETTERS_STARTS_AT + 23;
+    00000170 3E 21            [ 8]  341 	ld	a, #0x21
+                                    342 ;src/text.c:84: break;
+    00000172 18 1D            [12]  343 	jr	00137$
+                                    344 ;src/text.c:85: case 'x':
+    00000174                        345 00126$:
+                                    346 ;src/text.c:86: tile = LETTERS_STARTS_AT + 24;
+    00000174 3E 22            [ 8]  347 	ld	a, #0x22
+                                    348 ;src/text.c:87: break;
+    00000176 18 19            [12]  349 	jr	00137$
+                                    350 ;src/text.c:88: case '-':
+    00000178                        351 00127$:
+                                    352 ;src/text.c:89: tile = LETTERS_STARTS_AT + 25;
+    00000178 3E 23            [ 8]  353 	ld	a, #0x23
+                                    354 ;src/text.c:90: break;
+    0000017A 18 15            [12]  355 	jr	00137$
+                                    356 ;src/text.c:91: case '.':
+    0000017C                        357 00128$:
+                                    358 ;src/text.c:92: tile = LETTERS_STARTS_AT + 26;
+    0000017C 3E 24            [ 8]  359 	ld	a, #0x24
+                                    360 ;src/text.c:93: break;
+    0000017E 18 11            [12]  361 	jr	00137$
+                                    362 ;src/text.c:94: case ',':
+    00000180                        363 00129$:
+                                    364 ;src/text.c:95: tile = LETTERS_STARTS_AT + 27;
+    00000180 3E 25            [ 8]  365 	ld	a, #0x25
+                                    366 ;src/text.c:96: break;
+    00000182 18 0D            [12]  367 	jr	00137$
+                                    368 ;src/text.c:97: case '!':
+    00000184                        369 00130$:
+                                    370 ;src/text.c:98: tile = LETTERS_STARTS_AT + 28;
+    00000184 3E 26            [ 8]  371 	ld	a, #0x26
+                                    372 ;src/text.c:99: break;
+    00000186 18 09            [12]  373 	jr	00137$
+                                    374 ;src/text.c:100: case '?':
+    00000188                        375 00131$:
+                                    376 ;src/text.c:101: tile = LETTERS_STARTS_AT + 29;
+    00000188 3E 27            [ 8]  377 	ld	a, #0x27
+                                    378 ;src/text.c:102: break;
+    0000018A 18 05            [12]  379 	jr	00137$
+                                    380 ;src/text.c:103: case ' ':
+    0000018C                        381 00132$:
+                                    382 ;src/text.c:104: tile = 0;
+    0000018C AF               [ 4]  383 	xor	a, a
+                                    384 ;src/text.c:105: break;
+    0000018D 18 02            [12]  385 	jr	00137$
+                                    386 ;src/text.c:106: default:
+    0000018F                        387 00133$:
+                                    388 ;src/text.c:107: tile = LETTERS_STARTS_AT + 29;
+    0000018F 3E 27            [ 8]  389 	ld	a, #0x27
+                                    390 ;src/text.c:108: }
+    00000191                        391 00137$:
+                                    392 ;src/text.c:111: set_win_tile_xy(x, y, tile + textTileset_TILE_ORIGIN);
+    00000191 F5               [16]  393 	push	af
+    00000192 33               [ 8]  394 	inc	sp
+    00000193 79               [ 4]  395 	ld	a, c
+    00000194 CDr00r00         [24]  396 	call	_set_win_tile_xy
+                                    397 ;src/text.c:113: }
+    00000197 E1               [12]  398 	pop	hl
+    00000198 33               [ 8]  399 	inc	sp
+    00000199 E9               [ 4]  400 	jp	(hl)
+                                    401 ;src/text.c:115: void text_print_string(uint8_t x, uint8_t y, unsigned char *string) {
+                                    402 ;	---------------------------------
+                                    403 ; Function text_print_string
+                                    404 ; ---------------------------------
+    0000019A                        405 _text_print_string::
+    0000019A E8 FC            [16]  406 	add	sp, #-4
+    0000019C F8 01            [12]  407 	ldhl	sp,	#1
+    0000019E 32               [ 8]  408 	ld	(hl-), a
+                                    409 ;src/text.c:116: uint8_t offset_x = 0;
+    0000019F 7B               [ 4]  410 	ld	a, e
+    000001A0 22               [ 8]  411 	ld	(hl+), a
+    000001A1 23               [ 8]  412 	inc	hl
+                                    413 ;src/text.c:119: while (string[0]) {
+    000001A2 AF               [ 4]  414 	xor	a, a
+    000001A3 22               [ 8]  415 	ld	(hl+), a
+    000001A4 77               [ 8]  416 	ld	(hl), a
+    000001A5                        417 00104$:
+    000001A5 F8 06            [12]  418 	ldhl	sp,#6
+    000001A7 2A               [ 8]  419 	ld	a, (hl+)
+    000001A8 5F               [ 4]  420 	ld	e, a
+    000001A9 56               [ 8]  421 	ld	d, (hl)
+    000001AA 1A               [ 8]  422 	ld	a, (de)
+                                    423 ;src/text.c:120: if (string[0] == '\n') {
+    000001AB 47               [ 4]  424 	ld	b,a
+    000001AC B7               [ 4]  425 	or	a,a
+    000001AD 28 27            [12]  426 	jr	Z, 00107$
+    000001AF D6 0A            [ 8]  427 	sub	a, #0x0a
+    000001B1 20 07            [12]  428 	jr	NZ, 00102$
+                                    429 ;src/text.c:121: offset_x = 0;
+    000001B3 F8 02            [12]  430 	ldhl	sp,	#2
+                                    431 ;src/text.c:122: offset_y++;
+    000001B5 AF               [ 4]  432 	xor	a, a
+    000001B6 22               [ 8]  433 	ld	(hl+), a
+    000001B7 34               [12]  434 	inc	(hl)
+    000001B8 18 13            [12]  435 	jr	00103$
+    000001BA                        436 00102$:
+                                    437 ;src/text.c:124: text_print_char(x + offset_x, y + offset_y, (unsigned char)string[0]);
+    000001BA F8 00            [12]  438 	ldhl	sp,	#0
+    000001BC 7E               [ 8]  439 	ld	a, (hl)
+    000001BD F8 03            [12]  440 	ldhl	sp,	#3
+    000001BF 86               [ 8]  441 	add	a, (hl)
+    000001C0 2B               [ 8]  442 	dec	hl
+    000001C1 2B               [ 8]  443 	dec	hl
+    000001C2 5F               [ 4]  444 	ld	e, a
+    000001C3 2A               [ 8]  445 	ld	a, (hl+)
+    000001C4 86               [ 8]  446 	add	a, (hl)
+    000001C5 C5               [16]  447 	push	bc
+    000001C6 33               [ 8]  448 	inc	sp
+    000001C7 CDr00r00         [24]  449 	call	_text_print_char
+                                    450 ;src/text.c:125: offset_x++;
+    000001CA F8 02            [12]  451 	ldhl	sp,	#2
+    000001CC 34               [12]  452 	inc	(hl)
+    000001CD                        453 00103$:
+                                    454 ;src/text.c:128: string += 1;
+    000001CD F8 06            [12]  455 	ldhl	sp,	#6
+    000001CF 34               [12]  456 	inc	(hl)
+    000001D0 20 D3            [12]  457 	jr	NZ, 00104$
+    000001D2 23               [ 8]  458 	inc	hl
+    000001D3 34               [12]  459 	inc	(hl)
+    000001D4 18 CF            [12]  460 	jr	00104$
+    000001D6                        461 00107$:
+                                    462 ;src/text.c:130: }
+    000001D6 E8 04            [16]  463 	add	sp, #4
+    000001D8 E1               [12]  464 	pop	hl
+    000001D9 F1               [12]  465 	pop	af
+    000001DA E9               [ 4]  466 	jp	(hl)
+                                    467 	.area _CODE
+                                    468 	.area _INITIALIZER
+                                    469 	.area _CABS (ABS)

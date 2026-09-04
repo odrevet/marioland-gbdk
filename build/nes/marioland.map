@@ -1,0 +1,741 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CABS                  00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000000  l_VECTORS |    00000000  l__BASE   |    00000000  l__CABS  
+     00000000  l__DABS   |    00000000  l__GSFINA |    00000000  l__GSINIT
+     00000000  l__HEAP   |    00000000  l__HEAP_E |    00000000  l__INITIA
+     00000000  l__INITIA |    00000000  l__LIT    |    00000000  l__OSEG  
+     00000000  l__RODATA |    00000000  s_OSEG    |    00000000  s_VECTORS
+     00000000  s_VECTORS |    00000000  s__CABS   |    00000000  s__DABS  
+     00000006  l_VECTORS |    00000007  l_OSEG    |    0000000E  l_GBDKOVR
+     00000010  s_GBDKOVR |    00000020  s__ZP     |    000000C1  l__ZP    
+     000000E1  s__OSEG   |    00000221  l__DATA   |    00000221  l__XINIT 
+     00000272  l__BSS    |    00000300  s__DATA   |    00000521  s__BSS   
+     00000793  s__HEAP   |    00000793  s__HEAP_E |    00000793  s__INITIA
+     000015DE  l__HOME   |    000021E5  l__CODE   |    00003620  l__CODE_4
+     00003FC0  l__CODE_3 |    00003FE6  l__CODE_2 |    00003FF6  l__CODE_1
+     0000C000  s__CODE   |    0000E1E5  s__HOME   |    0000F7C3  s__BASE  
+     0000F7C3  s__INITIA |    0000F7C3  s__LIT    |    0000F7C3  s__RODATA
+     0000F7C3  s__XINIT  |    0000F9E4  s__GSFINA |    0000F9E4  s__GSINIT
+     00018000  s__CODE_1 |    00028000  s__CODE_2 |    00038000  s__CODE_3
+     00048000  s__CODE_4
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+VECTORS0               00000000    00000006 =           6. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000000  .__.ABS.  |    00000000  b_block_b |    00000000  b_block_b
+     00000000  b_on_bloc |    00000001  ___bank_T |    00000001  ___bank_b
+     00000001  ___bank_c |    00000001  ___bank_c |    00000001  ___bank_e
+     00000001  ___bank_e |    00000001  ___bank_e |    00000001  ___bank_l
+     00000001  ___bank_l |    00000001  ___bank_m |    00000001  ___bank_m
+     00000001  ___bank_p |    00000001  b_enemy_a |    00000001  b_enemy_a
+     00000001  b_enemy_h |    00000001  b_enemy_h |    00000001  b_enemy_m
+     00000001  b_enemy_m |    00000001  b_enemy_m |    00000001  b_enemy_r
+     00000001  b_enemy_s |    00000001  b_enemy_u |    00000001  b_player_
+     00000001  b_player_ |    00000001  b_player_ |    00000002  ___bank_c
+     00000002  ___bank_e |    00000002  ___bank_e |    00000002  ___bank_e
+     00000002  ___bank_e |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_l
+     00000002  ___bank_l |    00000002  ___bank_l |    00000002  ___bank_t
+     00000002  ___bank_u |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_s
+     00000004  ___bank_u |    00000004  ___bank_u |    00000004  ___bank_u
+     00000004  ___bank_u |    00000004  ___bank_u |    00000004  ___bank_u
+     00000004  ___bank_u |    00000004  ___bank_u |    00000004  ___bank_u
+     00000004  ___bank_u |    00000100  __vram_tr |    00000188  _attribut
+     00000200  _shadow_O |    00002000  _PPUCTRL  |    00002001  _PPUMASK 
+     00002002  _PPUSTATU |    00002003  _OAMADDR  |    00002004  _OAMDATA 
+     00002005  _PPUSCROL |    00002006  _PPUADDR  |    00002007  _PPUDATA 
+     00004014  _OAMDMA  
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE                  0000C000    000021E5 =        8677. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000C000  .identity |    0000C000  _identity |    0000C1C2  .delay_to
+     0000C357  .wait_vbl |    0000C357  _vsync    |    0000C357  _wait_vbl
+     0000C374  .display_ |    0000C374  _display_ |    0000C38C  .display_
+     0000C38C  _display_ |    0000C55D  _coin_ani |    0000C617  _coin_ani
+     0000C670  _coin_ani |    0000C760  _init     |    0000C7FC  _state_ti
+     0000C817  _state_pa |    0000C87D  _die      |    0000C8D3  _hud_set_
+     0000C903  _hud_upda |    0000C951  _hud_upda |    0000C984  _hud_upda
+     0000C9DB  _hud_upda |    0000CA07  _get_tile |    0000CA6D  _is_tile_
+     0000CBEA  _is_tile_ |    0000CC2F  _is_coin  |    0000CC39  _on_get_c
+     0000CCA6  _on_break |    0000CD10  _on_block |    0000CD7A  _block_bu
+     0000CDE3  _block_bu |    0000CE39  _on_get_c |    0000CE66  _on_inter
+     0000CFF4  _levels   |    0000D0E4  _undergro |    0000D0F8  _level_1_
+     0000D125  _level_1_ |    0000D14F  _level_1_ |    0000D182  _level_2_
+     0000D1B2  _level_2_ |    0000D1D6  _level_2_ |    0000D20F  _level_3_
+     0000D254  _level_3_ |    0000D284  _level_3_ |    0000D2B4  _level_4_
+     0000D2F9  _level_4_ |    0000D335  _level_4_ |    0000D37D  _undergro
+     0000D380  _undergro |    0000D383  _undergro |    0000D386  _undergro
+     0000D389  _undergro |    0000D38C  _undergro |    0000D38F  _undergro
+     0000D392  _undergro |    0000D395  _undergro |    0000D398  _undergro
+     0000D39B  _powerups |    0000D47F  _enemy_co |    0000D641  _main    
+     0000D8F5  _pipe_new |    0000D924  _pipe_cle |    0000D92A  _platform
+     0000D9F5  _platform |    0000DBEC  _platform |    0000DBEF  _platform
+     0000DBF0  _powerup_ |    0000DC27  _powerup_ |    0000DC6B  _powerup_
+     0000DCD1  _text_pri |    0000DDBB  _text_pri |    0000DE08  ___memcpy
+     0000DE3A  _memset   |    0000DE88  ___uitoa  |    0000DF6F  _uitoa   
+     0000DF8B  _itoa     |    0000DFFB  __moducha |    0000E004  __mulscha
+     0000E030  __mulusch |    0000E03F  __mulsuch |    0000E04F  .add_TIM 
+     0000E04F  _add_TIM  |    0000E053  .add_LCD  |    0000E053  _add_LCD 
+     0000E057  .add_VBL  |    0000E057  _add_VBL  |    0000E06C  .remove_T
+     0000E06C  _remove_T |    0000E070  .remove_L |    0000E070  _remove_L
+     0000E074  .remove_V |    0000E074  _remove_V |    0000E095  _set_inte
+     0000E0B4  ___sdcc_b |    0000E0EC  __mulint  |    0000E116  __mulucha
+     0000E11A  ___umul8  |    0000E12F  __divuint |    0000E137  ___udivmo
+     0000E160  __switch_ |    0000E167  _abs      |    0000E16B  ___negax 
+     0000E179  _strlen   |    0000E19D  __modsint |    0000E1AC  __moduint
+     0000E1B4  __divsint |    0000E1C8  ___sdivmo
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HOME                  0000E1E5    000015DE =        5598. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000E1E5  _level_lo |    0000E45B  _level_lo |    0000E5DF  _level_se
+     0000E605  _load_cur |    0000E64E  _set_leve |    0000E753  _update_f
+     0000E771  _player_d |    0000E815  _player_c |    0000E8A4  _player_e
+     0000E95F  _player_c |    0000EA1F  _player_w |    0000EB9A  _player_o
+     0000EBAE  _enemy_ne |    0000ED50  _enemy_re |    0000ED88  _enemy_dr
+     0000EF00  .ppu_stri |    0000EF15  .ppu_stri |    0000EF5D  .ppu_stri
+     0000EF8B  .ppu_stri |    0000EF9F  .ppu_stri |    0000EF9F  _set_vram
+     0000F08C  .write_sh |    0000F0BF  .deferred |    0000F0CD  .deferred
+     0000F0D6  .deferred |    0000F158  _set_spri |    0000F160  _set_spri
+     0000F168  _move_spr |    0000F175  _scroll_s |    0000F18A  _hide_spr
+     0000F194  _get_spri |    0000F19B  _flush_sh |    0000F2B7  _hide_spr
+     0000F2CF  ___move_m |    0000F357  ___move_m |    0000F357  ___move_m
+     0000F3E5  ___hide_m |    0000F400  _set_bkg_ |    0000F412  _set_spri
+     0000F52A  _get_bkg_ |    0000F545  _set_bkg_ |    0000F54B  _set_bkg_
+     0000F54F  _set_bkg_ |    0000F576  .tim_emul |    0000F5DC  _strobe_j
+     0000F5E7  _read_joy |    0000F5EA  _read_joy |    0000F61D  .padup   
+     0000F61D  _waitpadu |    0000F623  .jpad     |    0000F623  _joypad  
+     0000F628  .wait_pad |    0000F628  _waitpad  |    0000F632  _set_bkg_
+     0000F636  _set_bkg_ |    0000F65A  .set_bkg_ |    0000F77F  .delay_1m
+     0000F77F  __delay_1 |    0000F796  .delay    |    0000F796  _delay   
+     0000F7A7  .move_met |    0000F7BC  .move_met
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_XINIT                 0000F7C3    00000221 =         545. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_DATA                  00000300    00000221 =         545. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000300  _coin_ind |    00000301  _map_buff |    00000501  _map_colu
+     00000502  _current_ |    00000503  _level_pa |    00000505  _current_
+     00000506  _col_from |    00000508  _pipe_act |    00000509  _platform
+     0000050A  _powerup_ |    0000050B  _is_jumpi |    0000050C  _touch_gr
+     0000050D  _current_ |    0000050F  _player_f |    00000510  _frame_co
+     00000511  _player_i |    00000512  _enemy_co |    00000513  ___render
+     00000514  .jmp_to_T |    00000514  .jmp_to_x |    00000517  .jmp_to_L
+     0000051A  .jmp_to_V |    0000051D  _TIMA_REG |    0000051F  _TMA_REG 
+     00000520  _TAC_REG 
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_BSS                   00000521    00000272 =         626. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000521  __crt0_pa |    0000053A  .mode     |    0000053B  __lcd_isr
+     00000545  __lcd_isr |    0000054F  __lcd_isr |    00000559  __lcd_isr
+     00000563  __lcd_isr |    0000056D  __lcd_isr |    00000577  _coin_ani
+     0000059D  _camera_x |    0000059F  _camera_x |    000005A1  _load_col
+     000005A3  _current_ |    000005A5  _coldata  |    000005B5  _level_en
+     000005B6  _current_ |    000005B7  _current_ |    000005B9  _current_
+     000005BB  _current_ |    000005BD  _current_ |    000005BF  _current_
+     000005C1  _level_ba |    000005C2  _level_lo |    000005C3  _level_lo
+     000005C5  _level_lo |    000005E8  _level_lo |    0000066D  _active_p
+     00000674  _active_p |    00000675  _active_p |    00000676  _active_p
+     00000677  _pipe_new |    00000678  _pipe_new |    0000067A  _platform
+     000006A4  _platform |    000006A6  _platform |    000006A7  _platform
+     000006A8  _platform |    000006B7  _platform |    000006B9  _powerup 
+     000006C3  _powerup_ |    000006C5  _powerup_ |    000006C7  _text_pri
+     000006C8  _text_pri |    000006CD  _coins    |    000006CE  _score   
+     000006D0  _time     |    000006D2  _lives    |    000006D3  _joypad_p
+     000006D4  _joypad_c |    000006D5  _player_x |    000006D7  _player_y
+     000006D9  _player_x |    000006DB  _player_y |    000006DD  _player_x
+     000006DF  _player_y |    000006E1  _player_x |    000006E3  _player_y
+     000006E5  _player_d |    000006E6  _player_d |    000006E7  _vel_x   
+     000006E8  _vel_y    |    000006E9  _display_ |    000006EA  _display_
+     000006EB  _display_ |    000006EC  _marioSpr |    000006ED  _scroll_l
+     000006EF  _tile_nex |    000006F0  _tile_nex |    000006F1  _plane_mo
+     000006FB  _player_w |    000006FC  _player_w |    000006FD  _player_w
+     00000703  _enemies  |    00000748  _enemy_ha |    0000074F  _enemy_ap
+     0000075C  _enemy_ap |    00000767  _enemy_ne |    00000769  _enemy_ne
+     0000077D  _memset_P |    0000077F  _memset_P |    00000783  ___uitoa_
+     00000785  ___uitoa_ |    00000789  _uitoa_PA |    0000078B  _uitoa_PA
+     0000078C  _itoa_PAR |    0000078E  _itoa_PAR
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+OSEG                   00000000    00000007 =           7. bytes (REL,OVR,PAG)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000000  ___memcpy |    00000000  __divsint |    00000000  __divuint
+     00000000  __modsint |    00000000  __moduint |    00000000  __mulint_
+     00000002  ___memcpy
+ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+GBDKOVR                00000010    0000000E =          14. bytes (REL,OVR,PAG)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000010  ___move_m |    00000010  ___move_m |    00000010  ___move_m
+     00000010  _move_spr |    00000010  _scroll_s |    00000010  _set_bkg_
+     00000010  _set_bkg_ |    00000010  _set_bkg_ |    00000010  _set_bkg_
+     00000010  _set_bkg_ |    00000010  _set_bkg_ |    00000010  _set_spri
+     00000010  _set_vram |    00000011  .bkg_tile |    00000011  _set_bkg_
+     00000011  _set_bkg_ |    00000011  _set_bkg_ |    00000011  _set_bkg_
+     00000012  ___move_m |    00000012  ___move_m |    00000012  ___move_m
+     00000012  _set_bkg_ |    00000012  _set_bkg_ |    00000012  _set_bkg_
+     00000012  _set_bkg_ |    00000014  ___curren |    00000014  _set_bkg_
+     00000014  _set_bkg_ |    00000014  _set_bkg_ |    00000015  .padding 
+     00000015  _set_bkg_ |    00000016  ___curren |    00000017  ___curren
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_ZP                    00000020    000000C1 =         193. bytes (REL,CON,PAG)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000020  __shadow_ |    00000021  __current |    00000022  _sys_time
+     00000024  _shadow_P |    00000025  _shadow_P |    00000026  _bkg_scro
+     00000027  _bkg_scro |    00000028  _attribut |    00000029  _attribut
+     0000002A  __oam_val |    0000002B  __SYSTEM  |    0000002C  __hblank_
+     000000C1  __vram_tr |    000000C2  __vram_tr |    000000C3  __vram_tr
+     000000C4  __vram_tr |    000000CE  ALL_REGTE |    000000CE  DPTR     
+     000000D0  REGTEMP   |    000000D8  ___SDCC_m |    000000D9  ___SDCC_m
+     000000DA  ___SDCC_m |    000000DB  ___SDCC_m |    000000DC  ___SDCC_m
+     000000DD  ___SDCC_m |    000000DE  ___SDCC_m |    000000DF  ___SDCC_m
+     000000E0  ALL_REGTE |    000000E0  __lcd_sca
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_1                00018000    00003FF6 =       16374. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00018000  ___func_p |    000180AC  _player_m |    000189DC  _player_m
+     00019123  _player_i |    00019238  ___func_e |    00019238  _enemy_ha
+     000192C8  _enemy_ha |    00019367  _enemy_ap |    0001952F  _enemy_ap
+     000196F2  _enemy_mo |    00019765  _enemy_mo |    000197D8  _enemy_mo
+     000198EE  _enemy_st |    0001999A  _enemy_re |    00019A3E  _enemy_up
+     00019C78  _TitleScr |    00019C78  ___func_T |    00019C7C  _TitleScr
+     0001A2BC  _TitleScr |    0001A424  ___func_c |    0001A424  _chaiTile
+     0001A428  _chaiTile |    0001A9C8  _chaiTile |    0001AA22  ___func_e
+     0001AA22  _eastonTi |    0001AA26  _eastonTi |    0001AE86  _eastonTi
+     0001AECC  ___func_m |    0001AECC  _marioSpr |    0001AEDC  _marioSpr
+     0001B22C  _marioSpr |    0001B240  _marioSpr |    0001B254  _marioSpr
+     0001B268  _marioSpr |    0001B27C  _marioSpr |    0001B290  _marioSpr
+     0001B2A4  _marioSpr |    0001B2B8  _marioSpr |    0001B2CC  _marioSpr
+     0001B2E0  _marioSpr |    0001B2F4  _marioSpr |    0001B308  _marioSpr
+     0001B31C  _marioSpr |    0001B330  _marioSpr |    0001B344  _marioSpr
+     0001B358  _marioSpr |    0001B376  ___func_b |    0001B376  _birabuto
+     0001B37A  _birabuto |    0001B73A  _birabuto |    0001B776  ___func_m
+     0001B776  _mudaTile |    0001B77A  _mudaTile |    0001BB3A  _mudaTile
+     0001BB76  ___func_c |    0001BB76  _commonTi |    0001BB7A  _commonTi
+     0001BEFA  _commonTi |    0001BF32  ___func_e |    0001BF32  _enemiesS
+     0001BF36  _enemiesS |    0001BFA6  _enemiesS |    0001BFAE  _enemiesS
+     0001BFB6  _enemiesS |    0001BFC2  _enemiesS |    0001BFCE  _enemiesS
+     0001BFD6  _enemiesS |    0001BFE0  ___func_l |    0001BFE0  _level_2_
+     0001BFEB  ___func_l |    0001BFEB  _level_4_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_2                00028000    00003FE6 =       16358. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00028000  ___func_e |    00028000  _enemiesC |    00028004  _enemiesC
+     00028284  _enemiesC |    00028298  _enemiesC |    000282AC  _enemiesC
+     000282B8  _enemiesC |    000282CC  _enemiesC |    000282E0  _enemiesC
+     000282F4  _enemiesC |    00028308  _enemiesC |    00028314  _enemiesC
+     00028328  _enemiesC |    0002833C  _enemiesC |    00028350  _enemiesC
+     00028364  _enemiesC |    0002837C  ___func_t |    0002837C  _textTile
+     00028380  _textTile |    00028600  _textTile |    00028628  ___func_l
+     00028628  _level_4_ |    0002889B  ___func_e |    0002889B  _enemiesB
+     0002889F  _enemiesB |    00028A5F  _enemiesB |    00028A73  _enemiesB
+     00028A87  _enemiesB |    00028A93  _enemiesB |    00028AA7  _enemiesB
+     00028ABB  _enemiesB |    00028AC7  _enemiesB |    00028ADB  _enemiesB
+     00028AEF  _enemiesB |    00028AFB  _enemiesB |    00028B0D  ___func_e
+     00028B0D  _enemiesE |    00028B11  _enemiesE |    00028CC1  _enemiesE
+     00028CD5  _enemiesE |    00028CE9  _enemiesE |    00028CF5  _enemiesE
+     00028D09  _enemiesE |    00028D1D  _enemiesE |    00028D31  _enemiesE
+     00028D45  _enemiesE |    00028D59  _enemiesE |    00028D65  _enemiesE
+     00028D77  ___func_e |    00028D77  _enemiesM |    00028D7B  _enemiesM
+     00028EDB  _enemiesM |    00028EEF  _enemiesM |    00028F03  _enemiesM
+     00028F17  _enemiesM |    00028F23  _enemiesM |    00028F37  _enemiesM
+     00028F4B  _enemiesM |    00028F5F  _enemiesM |    00028F73  _enemiesM
+     00028F83  ___func_l |    00028F83  _level_3_ |    00029167  ___func_l
+     00029167  _level_3_ |    00029340  ___func_l |    00029340  _level_4_
+     000294F8  ___func_l |    000294F8  _level_2_ |    00029679  ___func_c
+     00029679  _commonSp |    0002967D  _commonSp |    0002974D  _commonSp
+     00029755  _commonSp |    0002975D  _commonSp |    00029765  _commonSp
+     0002976D  _commonSp |    00029775  _commonSp |    0002977D  _commonSp
+     00029785  _commonSp |    0002978D  _commonSp |    00029795  _commonSp
+     0002979D  _commonSp |    000297A5  _commonSp |    000297AD  _commonSp
+     000297B1  _commonSp |    000297B9  _commonSp |    000297BD  _commonSp
+     000297DB  ___func_l |    000297DB  _level_1_ |    0002991B  ___func_l
+     0002991B  _level_1_ |    00029A5B  ___func_l |    00029A5B  _level_1_
+     00029B9B  ___func_l |    00029B9B  _level_1_ |    00029CDB  ___func_l
+     00029CDB  _level_1_ |    00029E1B  ___func_l |    00029E1B  _level_1_
+     00029F5B  ___func_l |    00029F5B  _level_1_ |    0002A09B  ___func_l
+     0002A09B  _level_1_ |    0002A1DB  ___func_l |    0002A1DB  _level_1_
+     0002A31B  ___func_l |    0002A31B  _level_1_ |    0002A45B  ___func_l
+     0002A45B  _level_1_ |    0002A59B  ___func_l |    0002A59B  _level_1_
+     0002A6DB  ___func_l |    0002A6DB  _level_1_ |    0002A81B  ___func_l
+     0002A81B  _level_1_ |    0002A95B  ___func_l |    0002A95B  _level_1_
+     0002AA9B  ___func_l |    0002AA9B  _level_1_ |    0002ABDB  ___func_l
+     0002ABDB  _level_1_ |    0002AD1B  ___func_l |    0002AD1B  _level_1_
+     0002AE5B  ___func_l |    0002AE5B  _level_1_ |    0002AF9B  ___func_l
+     0002AF9B  _level_1_ |    0002B0DB  ___func_l |    0002B0DB  _level_1_
+     0002B21B  ___func_l |    0002B21B  _level_1_ |    0002B35B  ___func_l
+     0002B35B  _level_1_ |    0002B49B  ___func_l |    0002B49B  _level_1_
+     0002B5DB  ___func_l |    0002B5DB  _level_1_ |    0002B71B  ___func_l
+     0002B71B  _level_2_ |    0002B85B  ___func_l |    0002B85B  _level_2_
+     0002B99B  ___func_l |    0002B99B  _level_2_ |    0002BADB  ___func_l
+     0002BADB  _level_2_ |    0002BC1B  ___func_l |    0002BC1B  _level_2_
+     0002BD5B  ___func_l |    0002BD5B  _level_2_ |    0002BE9B  ___func_l
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_2                00028000    00003FE6 =       16358. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0002BE9B  _level_2_ |    0002BFDB  ___func_u |    0002BFDB  _undergro
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_3                00038000    00003FC0 =       16320. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00038000  ___func_l |    00038000  _level_2_ |    00038140  ___func_l
+     00038140  _level_2_ |    00038280  ___func_l |    00038280  _level_2_
+     000383C0  ___func_l |    000383C0  _level_2_ |    00038500  ___func_l
+     00038500  _level_2_ |    00038640  ___func_l |    00038640  _level_2_
+     00038780  ___func_l |    00038780  _level_2_ |    000388C0  ___func_l
+     000388C0  _level_2_ |    00038A00  ___func_l |    00038A00  _level_2_
+     00038B40  ___func_l |    00038B40  _level_2_ |    00038C80  ___func_l
+     00038C80  _level_2_ |    00038DC0  ___func_l |    00038DC0  _level_2_
+     00038F00  ___func_l |    00038F00  _level_2_ |    00039040  ___func_l
+     00039040  _level_2_ |    00039180  ___func_l |    00039180  _level_2_
+     000392C0  ___func_l |    000392C0  _level_3_ |    00039400  ___func_l
+     00039400  _level_3_ |    00039540  ___func_l |    00039540  _level_3_
+     00039680  ___func_l |    00039680  _level_3_ |    000397C0  ___func_l
+     000397C0  _level_3_ |    00039900  ___func_l |    00039900  _level_3_
+     00039A40  ___func_l |    00039A40  _level_3_ |    00039B80  ___func_l
+     00039B80  _level_3_ |    00039CC0  ___func_l |    00039CC0  _level_3_
+     00039E00  ___func_l |    00039E00  _level_3_ |    00039F40  ___func_l
+     00039F40  _level_3_ |    0003A080  ___func_l |    0003A080  _level_3_
+     0003A1C0  ___func_l |    0003A1C0  _level_3_ |    0003A300  ___func_l
+     0003A300  _level_3_ |    0003A440  ___func_l |    0003A440  _level_3_
+     0003A580  ___func_l |    0003A580  _level_3_ |    0003A6C0  ___func_l
+     0003A6C0  _level_3_ |    0003A800  ___func_l |    0003A800  _level_3_
+     0003A940  ___func_l |    0003A940  _level_3_ |    0003AA80  ___func_l
+     0003AA80  _level_3_ |    0003ABC0  ___func_l |    0003ABC0  _level_3_
+     0003AD00  ___func_l |    0003AD00  _level_3_ |    0003AE40  ___func_l
+     0003AE40  _level_3_ |    0003AF80  ___func_l |    0003AF80  _level_3_
+     0003B0C0  ___func_l |    0003B0C0  _level_3_ |    0003B200  ___func_l
+     0003B200  _level_3_ |    0003B340  ___func_l |    0003B340  _level_3_
+     0003B480  ___func_l |    0003B480  _level_3_ |    0003B5C0  ___func_l
+     0003B5C0  _level_3_ |    0003B700  ___func_l |    0003B700  _level_3_
+     0003B840  ___func_l |    0003B840  _level_3_ |    0003B980  ___func_l
+     0003B980  _level_3_ |    0003BAC0  ___func_l |    0003BAC0  _level_4_
+     0003BC00  ___func_l |    0003BC00  _level_4_ |    0003BD40  ___func_l
+     0003BD40  _level_4_ |    0003BE80  ___func_l |    0003BE80  _level_4_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_4                00048000    00003620 =       13856. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00048000  ___func_l |    00048000  _level_4_ |    00048140  ___func_l
+     00048140  _level_4_ |    00048280  ___func_l |    00048280  _level_4_
+     000483C0  ___func_l |    000483C0  _level_4_ |    00048500  ___func_l
+     00048500  _level_4_ |    00048640  ___func_l |    00048640  _level_4_
+     00048780  ___func_l |    00048780  _level_4_ |    000488C0  ___func_l
+     000488C0  _level_4_ |    00048A00  ___func_l |    00048A00  _level_4_
+     00048B40  ___func_l |    00048B40  _level_4_ |    00048C80  ___func_l
+     00048C80  _level_4_ |    00048DC0  ___func_l |    00048DC0  _level_4_
+     00048F00  ___func_l |    00048F00  _level_4_ |    00049040  ___func_l
+     00049040  _level_4_ |    00049180  ___func_l |    00049180  _level_4_
+     000492C0  ___func_l |    000492C0  _level_4_ |    00049400  ___func_l
+     00049400  _level_4_ |    00049540  ___func_l |    00049540  _level_4_
+     00049680  ___func_l |    00049680  _level_4_ |    000497C0  ___func_l
+     000497C0  _level_4_ |    00049900  ___func_l |    00049900  _level_4_
+     00049A40  ___func_l |    00049A40  _level_4_ |    00049B80  ___func_l
+     00049B80  _level_4_ |    00049CC0  ___func_l |    00049CC0  _level_4_
+     00049E00  ___func_l |    00049E00  _level_4_ |    00049F40  ___func_l
+     00049F40  _level_4_ |    0004A080  ___func_l |    0004A080  _level_4_
+     0004A1C0  ___func_l |    0004A1C0  _level_4_ |    0004A300  ___func_l
+     0004A300  _level_ga |    0004A440  ___func_s |    0004A440  _stage_en
+     0004A580  ___func_u |    0004A580  _undergro |    0004A6C0  ___func_u
+     0004A6C0  _undergro |    0004A800  ___func_u |    0004A800  _undergro
+     0004A940  ___func_u |    0004A940  _undergro |    0004AA80  ___func_u
+     0004AA80  _undergro |    0004ABC0  ___func_u |    0004ABC0  _undergro
+     0004AD00  ___func_u |    0004AD00  _undergro |    0004AE40  ___func_u
+     0004AE40  _undergro |    0004AF80  ___func_u |    0004AF80  _undergro
+     0004B0C0  ___func_u |    0004B0C0  _undergro |    0004B200  ___func_l
+     0004B200  _level_2_ |    0004B33F  ___func_l |    0004B33F  _level_1_
+     0004B431  ___func_l |    0004B431  _level_1_ |    0004B50D  ___func_l
+     0004B50D  _level_3_ |    0004B5DE  ___func_l |    0004B5DE  _level_1_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 18.
+
+Files Linked                              [ module(s) ]
+
+/home/odrevet/projects/gbdk/lib/nes/crt0.o
+                                          [ crt0 ]
+obj/nes/coin_animated.rel                 [ coin_animated ]
+obj/nes/game.rel                          [ game ]
+obj/nes/hud.rel                           [ hud ]
+obj/nes/level.rel                         [ level ]
+obj/nes/level_tables.rel                  [ level_tables ]
+obj/nes/main.rel                          [ main ]
+obj/nes/pipe.rel                          [ pipe ]
+obj/nes/platforms.rel                     [ platforms ]
+obj/nes/powerup.rel                       [ powerup ]
+obj/nes/text.rel                          [ text ]
+obj/nes/player.rel                        [ player ]
+obj/nes/enemy.rel                         [ enemy ]
+/tmp/lcc110747126.rel                     [ TitleScreen ]
+/tmp/lcc1107471.rel                       [ chaiTileset ]
+/tmp/lcc1107474.rel                       [ eastonTileset ]
+/tmp/lcc110747122.rel                     [ marioSprites ]
+/tmp/lcc1107470.rel                       [ birabutoTileset ]
+/tmp/lcc110747123.rel                     [ mudaTileset ]
+/tmp/lcc1107473.rel                       [ commonTileset ]
+/tmp/lcc1107476.rel                       [ enemiesChaiSprites ]
+/tmp/lcc110747125.rel                     [ textTileset ]
+obj/nes/lookup_table_4_1.rel              [ lookup_table_4_1 ]
+/tmp/lcc1107475.rel                       [ enemiesBirabutoSprites ]
+/tmp/lcc1107477.rel                       [ enemiesEastonSprites ]
+/tmp/lcc1107478.rel                       [ enemiesMudaSprites ]
+obj/nes/lookup_table_3_2.rel              [ lookup_table_3_2 ]
+obj/nes/lookup_table_3_1.rel              [ lookup_table_3_1 ]
+obj/nes/lookup_table_4_2.rel              [ lookup_table_4_2 ]
+obj/nes/lookup_table_2_1.rel              [ lookup_table_2_1 ]
+/tmp/lcc1107472.rel                       [ commonSprites ]
+/tmp/lcc11074710.rel                      [ level_1_1_00 ]
+/tmp/lcc11074711.rel                      [ level_1_1_01 ]
+/tmp/lcc11074712.rel                      [ level_1_1_02 ]
+/tmp/lcc11074713.rel                      [ level_1_1_03 ]
+/tmp/lcc11074714.rel                      [ level_1_1_04 ]
+/tmp/lcc11074715.rel                      [ level_1_1_05 ]
+/tmp/lcc11074716.rel                      [ level_1_1_06 ]
+/tmp/lcc11074717.rel                      [ level_1_2_00 ]
+/tmp/lcc11074718.rel                      [ level_1_2_01 ]
+/tmp/lcc11074719.rel                      [ level_1_2_02 ]
+/tmp/lcc11074720.rel                      [ level_1_2_03 ]
+/tmp/lcc11074721.rel                      [ level_1_2_04 ]
+/tmp/lcc11074722.rel                      [ level_1_2_05 ]
+/tmp/lcc11074723.rel                      [ level_1_2_06 ]
+/tmp/lcc11074724.rel                      [ level_1_3_00 ]
+/tmp/lcc11074725.rel                      [ level_1_3_01 ]
+/tmp/lcc11074726.rel                      [ level_1_3_02 ]
+/tmp/lcc11074727.rel                      [ level_1_3_03 ]
+/tmp/lcc11074728.rel                      [ level_1_3_04 ]
+/tmp/lcc11074729.rel                      [ level_1_3_05 ]
+/tmp/lcc11074730.rel                      [ level_1_3_06 ]
+/tmp/lcc11074731.rel                      [ level_1_3_07 ]
+/tmp/lcc11074732.rel                      [ level_1_3_08 ]
+/tmp/lcc11074733.rel                      [ level_1_3_09 ]
+/tmp/lcc11074734.rel                      [ level_1_3_10 ]
+/tmp/lcc11074735.rel                      [ level_2_1_00 ]
+/tmp/lcc11074736.rel                      [ level_2_1_01 ]
+/tmp/lcc11074737.rel                      [ level_2_1_02 ]
+/tmp/lcc11074738.rel                      [ level_2_1_03 ]
+/tmp/lcc11074739.rel                      [ level_2_1_04 ]
+/tmp/lcc11074740.rel                      [ level_2_1_05 ]
+/tmp/lcc11074741.rel                      [ level_2_1_06 ]
+/tmp/lcc11074742.rel                      [ level_2_1_07 ]
+/tmp/lcc11074743.rel                      [ level_2_2_00 ]
+/tmp/lcc11074744.rel                      [ level_2_2_01 ]
+/tmp/lcc11074745.rel                      [ level_2_2_02 ]
+/tmp/lcc11074746.rel                      [ level_2_2_03 ]
+/tmp/lcc11074747.rel                      [ level_2_2_04 ]
+/tmp/lcc11074748.rel                      [ level_2_2_05 ]
+/tmp/lcc11074749.rel                      [ level_2_2_06 ]
+/tmp/lcc11074750.rel                      [ level_2_2_07 ]
+/tmp/lcc11074751.rel                      [ level_2_3_00 ]
+/tmp/lcc11074752.rel                      [ level_2_3_01 ]
+/tmp/lcc11074753.rel                      [ level_2_3_02 ]
+/tmp/lcc11074754.rel                      [ level_2_3_03 ]
+/tmp/lcc11074755.rel                      [ level_2_3_04 ]
+/tmp/lcc11074756.rel                      [ level_2_3_05 ]
+/tmp/lcc11074757.rel                      [ level_3_1_00 ]
+/tmp/lcc11074758.rel                      [ level_3_1_01 ]
+/tmp/lcc11074759.rel                      [ level_3_1_02 ]
+/tmp/lcc11074760.rel                      [ level_3_1_03 ]
+/tmp/lcc11074761.rel                      [ level_3_1_04 ]
+/tmp/lcc11074762.rel                      [ level_3_1_05 ]
+/tmp/lcc11074763.rel                      [ level_3_1_06 ]
+/tmp/lcc11074764.rel                      [ level_3_1_07 ]
+/tmp/lcc11074765.rel                      [ level_3_1_08 ]
+/tmp/lcc11074766.rel                      [ level_3_1_09 ]
+/tmp/lcc11074767.rel                      [ level_3_1_10 ]
+/tmp/lcc11074768.rel                      [ level_3_1_11 ]
+/tmp/lcc11074769.rel                      [ level_3_2_00 ]
+/tmp/lcc11074770.rel                      [ level_3_2_01 ]
+/tmp/lcc11074771.rel                      [ level_3_2_02 ]
+/tmp/lcc11074772.rel                      [ level_3_2_03 ]
+/tmp/lcc11074773.rel                      [ level_3_2_04 ]
+/tmp/lcc11074774.rel                      [ level_3_2_05 ]
+/tmp/lcc11074775.rel                      [ level_3_2_06 ]
+/tmp/lcc11074776.rel                      [ level_3_2_07 ]
+/tmp/lcc11074777.rel                      [ level_3_2_08 ]
+/tmp/lcc11074778.rel                      [ level_3_2_09 ]
+/tmp/lcc11074779.rel                      [ level_3_2_10 ]
+/tmp/lcc11074780.rel                      [ level_3_3_00 ]
+/tmp/lcc11074781.rel                      [ level_3_3_01 ]
+/tmp/lcc11074782.rel                      [ level_3_3_02 ]
+/tmp/lcc11074783.rel                      [ level_3_3_03 ]
+/tmp/lcc11074784.rel                      [ level_3_3_04 ]
+/tmp/lcc11074785.rel                      [ level_3_3_05 ]
+/tmp/lcc11074786.rel                      [ level_3_3_06 ]
+/tmp/lcc11074787.rel                      [ level_3_3_07 ]
+/tmp/lcc11074788.rel                      [ level_3_3_08 ]
+/tmp/lcc11074789.rel                      [ level_4_1_00 ]
+/tmp/lcc11074790.rel                      [ level_4_1_01 ]
+/tmp/lcc11074791.rel                      [ level_4_1_02 ]
+/tmp/lcc11074792.rel                      [ level_4_1_03 ]
+/tmp/lcc11074793.rel                      [ level_4_1_04 ]
+/tmp/lcc11074794.rel                      [ level_4_1_05 ]
+/tmp/lcc11074795.rel                      [ level_4_1_06 ]
+/tmp/lcc11074796.rel                      [ level_4_1_07 ]
+/tmp/lcc11074797.rel                      [ level_4_1_08 ]
+/tmp/lcc11074798.rel                      [ level_4_1_09 ]
+/tmp/lcc11074799.rel                      [ level_4_2_00 ]
+/tmp/lcc110747100.rel                     [ level_4_2_01 ]
+/tmp/lcc110747101.rel                     [ level_4_2_02 ]
+/tmp/lcc110747102.rel                     [ level_4_2_03 ]
+/tmp/lcc110747103.rel                     [ level_4_2_04 ]
+/tmp/lcc110747104.rel                     [ level_4_2_05 ]
+/tmp/lcc110747105.rel                     [ level_4_2_06 ]
+/tmp/lcc110747106.rel                     [ level_4_2_07 ]
+/tmp/lcc110747107.rel                     [ level_4_2_08 ]
+/tmp/lcc110747108.rel                     [ level_4_2_09 ]
+/tmp/lcc110747109.rel                     [ level_4_2_10 ]
+/tmp/lcc110747110.rel                     [ level_4_2_11 ]
+/tmp/lcc110747111.rel                     [ level_4_3_00 ]
+/tmp/lcc110747112.rel                     [ level_4_3_01 ]
+/tmp/lcc110747113.rel                     [ level_4_3_02 ]
+/tmp/lcc110747114.rel                     [ level_4_3_03 ]
+/tmp/lcc110747115.rel                     [ level_4_3_04 ]
+/tmp/lcc110747116.rel                     [ level_4_3_05 ]
+/tmp/lcc110747117.rel                     [ level_4_3_06 ]
+/tmp/lcc110747118.rel                     [ level_4_3_07 ]
+/tmp/lcc110747119.rel                     [ level_4_3_08 ]
+/tmp/lcc110747120.rel                     [ level_4_3_09 ]
+/tmp/lcc110747121.rel                     [ level_gates ]
+/tmp/lcc110747124.rel                     [ stage_end ]
+/tmp/lcc110747127.rel                     [ underground_0 ]
+/tmp/lcc110747128.rel                     [ underground_1 ]
+/tmp/lcc110747129.rel                     [ underground_2 ]
+/tmp/lcc110747130.rel                     [ underground_3 ]
+/tmp/lcc110747131.rel                     [ underground_4 ]
+/tmp/lcc110747132.rel                     [ underground_5 ]
+/tmp/lcc110747133.rel                     [ underground_6 ]
+/tmp/lcc110747134.rel                     [ underground_7 ]
+/tmp/lcc110747135.rel                     [ underground_8 ]
+/tmp/lcc110747136.rel                     [ underground_9 ]
+obj/nes/lookup_table_2_2.rel              [ lookup_table_2_2 ]
+obj/nes/lookup_table_1_2.rel              [ lookup_table_1_2 ]
+obj/nes/lookup_table_1_1.rel              [ lookup_table_1_1 ]
+obj/nes/lookup_table_3_3.rel              [ lookup_table_3_3 ]
+/tmp/lcc1107479.rel                       [ enemiesSprites ]
+obj/nes/lookup_table_1_3.rel              [ lookup_table_1_3 ]
+obj/nes/lookup_table_2_3.rel              [ lookup_table_2_3 ]
+obj/nes/lookup_table_4_3.rel              [ lookup_table_4_3 ]
+obj/nes/lookup_table_underground.rel      [ lookup_table_underground ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ vram_transfer_buffer.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ deferred_isr.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _memcpy.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _memset.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ set_sprite.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ __itoa.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ flush_attributes.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ metasprites_hide_spr.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _moduchar.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ metasprites.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _mulschar.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ metasprites_flipx.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ metasprites_hide.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _temp.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ lcd.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ sdcc_bcall.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _mulint.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _muluchar.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ set_data.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ set_tile.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _divuint.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ set_bk_ts.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ timer_isr.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ pad.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ set_tile_submap.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ mapper.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ delay.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ abs.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _strlen.o ]
+/home/odrevet/projects/gbdk/lib/nes/nes.lib
+                                          [ metasprites_common.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _modsint.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _moduint.o ]
+/home/odrevet/projects/gbdk/lib/mos6502/mos6502.lib
+                                          [ _divsint.o ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
+
+User Base Address Definitions
+
+_DATA=0x0300
+_CODE=0xC000
+VECTORS=0xFFFA
+OSEG=0x00
+GBDKOVR=0x10
+_ZP=0x20
+
+

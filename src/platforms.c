@@ -1,6 +1,6 @@
 #include "platforms.h"
 #include "global.h"
-#include "graphics/common.h"
+#include "commonSprites.h"
 
 uint8_t platform_moving_count = 0;
 platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
@@ -65,19 +65,19 @@ void platform_moving_update() {
 }
 
 uint8_t platform_moving_draw(uint8_t base_sprite) {
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(sprite_common));
+  /*uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(commonSprites));
 
   uint8_t draw_index = 4;
-  metasprite_t *sprite_common_metasprite =
-      sprite_common_metasprites[draw_index];
+  metasprite_t *commonSprites_metasprite =
+      commonSprites_metasprites[draw_index];
 
   for (uint8_t index_platform_moving = 0;
        index_platform_moving < platform_moving_count; index_platform_moving++) {
     for (uint8_t i = 0; i < PLATFORMS_MOVING_SIZE; i++) {
       base_sprite += move_metasprite_ex(
-          sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, base_sprite,
-          platforms_moving[index_platform_moving].draw_x + i * common_TILE_W +
+          commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, base_sprite,
+          platforms_moving[index_platform_moving].draw_x + i * commonSprite_TILE_W +
               DEVICE_SPRITE_PX_OFFSET_X + TILE_SIZE,
           platforms_moving[index_platform_moving].draw_y +
               +DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX + TILE_SIZE);
@@ -85,7 +85,8 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
   }
   SWITCH_ROM(_saved_bank);
 
-  return base_sprite;
+  return base_sprite;*/
+  return 0;
 }
 
 void platform_falling_new(uint16_t x, uint16_t y) {}

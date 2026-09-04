@@ -1,0 +1,187 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _IE_REG                                                         ******** GX
+    _LCDC_REG                                                       ******** GX
+    _LYC_REG                                                        ******** GX
+    _NR12_REG                                                       ******** GX
+    _NR14_REG                                                       ******** GX
+    _NR22_REG                                                       ******** GX
+    _NR24_REG                                                       ******** GX
+    _NR32_REG                                                       ******** GX
+    _NR42_REG                                                       ******** GX
+    _NR44_REG                                                       ******** GX
+    _NR50_REG                                                       ******** GX
+    _NR51_REG                                                       ******** GX
+    _NR52_REG                                                       ******** GX
+    _SCX_REG                                                        ******** GX
+    _SCY_REG                                                        ******** GX
+    _STAT_REG                                                       ******** GX
+    _TAC_REG                                                        ******** GX
+    _TMA_REG                                                        ******** GX
+    _TitleScreen_map                                                ******** GX
+    _TitleScreen_tiles                                              ******** GX
+    _WX_REG                                                         ******** GX
+    _WY_REG                                                         ******** GX
+    ___bank_TitleScreen                                             ******** GX
+    ___bank_commonSprites                                           ******** GX
+    ___bank_commonTileset                                           ******** GX
+    ___bank_enemiesBirabutoSprites                                  ******** GX
+    ___bank_enemiesSprites                                          ******** GX
+    ___bank_enemy                                                   ******** GX
+    ___bank_marioSprites                                            ******** GX
+    ___bank_music_stage_clear                                       ******** GX
+    ___bank_sound_coin                                              ******** GX
+    ___bank_sound_pause                                             ******** GX
+    ___bank_sound_pipe                                              ******** GX
+    ___bank_sound_skid                                              ******** GX
+    ___bank_sound_squish                                            ******** GX
+    ___bank_textTileset                                             ******** GX
+    ___current_metasprite                                           ******** GX
+    ___hide_metasprite                                              ******** GX
+    ___mute_mask_sound_coin                                         ******** GX
+    ___mute_mask_sound_pause                                        ******** GX
+    ___mute_mask_sound_pipe                                         ******** GX
+    ___mute_mask_sound_skid                                         ******** GX
+    ___mute_mask_sound_squish                                       ******** GX
+    ___sdcc_bcall_ehl                                               ******** GX
+  0 ___str_0                                                        00000880 R
+  0 ___str_1                                                        00000895 R
+    __cpu                                                           ******** GX
+    __current_bank                                                  ******** GX
+    __moduchar                                                      ******** GX
+    _add_LCD                                                        ******** GX
+    _add_VBL                                                        ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _add_low_priority_TIM                                           ******** GX
+    _block_bump_draw                                                ******** GX
+    _block_bump_update                                              ******** GX
+    _coin_animated_draw                                             ******** GX
+    _coin_animated_update                                           ******** GX
+    _coins                                                          ******** GX
+    _commonSprites_metasprites                                      ******** GX
+    _commonSprites_tiles                                            ******** GX
+    _commonTileset_tiles                                            ******** GX
+    _current_jump                                                   ******** GX
+    _current_level                                                  ******** GX
+    _delay                                                          ******** GX
+    _die                                                            ******** GX
+    _display_jump_frame                                             ******** GX
+    _display_slide_frame                                            ******** GX
+    _display_walk_animation                                         ******** GX
+    _enemies                                                        ******** GX
+    _enemiesBirabutoSprites_tiles                                   ******** GX
+    _enemiesSprites_tiles                                           ******** GX
+  0 _enemy_collide                                                  0000013B GR
+    _enemy_draw                                                     ******** GX
+    _enemy_reset_all                                                ******** GX
+    _enemy_stomp                                                    ******** GX
+    _enemy_update                                                   ******** GX
+    _hud_update_lives                                               ******** GX
+    _hud_update_score                                               ******** GX
+    _hud_update_time                                                ******** GX
+    _init                                                           ******** GX
+  0 _interruptLCD                                                   00000000 GR
+  0 _interruptVBL                                                   0000000E GR
+    _is_jumping                                                     ******** GX
+    _joypad                                                         ******** GX
+    _joypad_current                                                 ******** GX
+    _joypad_previous                                                ******** GX
+    _level_end_reached                                              ******** GX
+    _level_set_current                                              ******** GX
+    _lives                                                          ******** GX
+  0 _main                                                           00000364 GR
+    _map_column                                                     ******** GX
+    _marioSprites_tiles                                             ******** GX
+    _memset                                                         ******** GX
+    _music_current_track_bank                                       ******** GX
+    _music_mute_mask                                                ******** GX
+    _music_next_track                                               ******** GX
+    _music_pause                                                    ******** GX
+    _music_play_isr                                                 ******** GX
+    _music_sfx_priority                                             ******** GX
+    _music_stage_clear                                              ******** GX
+    _music_tick_mask                                                ******** GX
+    _on_get_coin                                                    ******** GX
+    _platform_moving_draw                                           ******** GX
+    _platform_moving_update                                         ******** GX
+    _player_draw                                                    ******** GX
+    _player_draw_x                                                  ******** GX
+    _player_draw_y                                                  ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 3
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _player_frame                                                   ******** GX
+    _player_is_big                                                  ******** GX
+    _player_move                                                    ******** GX
+    _player_move_vehicle                                            ******** GX
+    _player_x                                                       ******** GX
+    _player_y                                                       ******** GX
+    _powerup                                                        ******** GX
+    _powerup_active                                                 ******** GX
+    _powerup_draw                                                   ******** GX
+    _powerup_update                                                 ******** GX
+  0 _powerups_collide                                               00000015 GR
+    _rROMB0                                                         ******** GX
+    _score                                                          ******** GX
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_tiles                                                  ******** GX
+    _set_interrupts                                                 ******** GX
+    _set_sprite_data                                                ******** GX
+    _set_win_tile_xy                                                ******** GX
+    _set_win_tiles                                                  ******** GX
+    _sfx_frame_skip                                                 ******** GX
+    _sfx_play_bank                                                  ******** GX
+    _sfx_play_sample                                                ******** GX
+    _sound_coin                                                     ******** GX
+    _sound_pause                                                    ******** GX
+    _sound_pipe                                                     ******** GX
+    _sound_skid                                                     ******** GX
+    _sound_squish                                                   ******** GX
+    _state_pause                                                    ******** GX
+    _state_title                                                    ******** GX
+    _textTileset_tiles                                              ******** GX
+    _text_print_string                                              ******** GX
+    _time                                                           ******** GX
+    _touch_ground                                                   ******** GX
+    _update_frame_counter                                           ******** GX
+    _vel_y                                                          ******** GX
+    _vsync                                                          ******** GX
+  0 _window_location                                                0000000D GR
+    b_block_bump_draw                                               ******** GX
+    b_block_bump_update                                             ******** GX
+    b_enemy_reset_all                                               ******** GX
+    b_enemy_stomp                                                   ******** GX
+    b_enemy_update                                                  ******** GX
+    b_player_move                                                   ******** GX
+    b_player_move_vehicle                                           ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 4
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      8AA   flags    0
+   1 _HRAM                                      size        0   flags    0
+   2 _DATA                                      size        0   flags    0
+   3 _INITIALIZED                               size        0   flags    0
+   4 _DABS                                      size        0   flags    8
+   5 _HOME                                      size        0   flags    0
+   6 _GSINIT                                    size        0   flags    0
+   7 _GSFINAL                                   size        0   flags    0
+   8 _INITIALIZER                               size        0   flags    0
+   9 _CABS                                      size        0   flags    8
+

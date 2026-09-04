@@ -1,0 +1,538 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.1 #15267 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module level_tables
+                                      6 	
+                                      7 ;--------------------------------------------------------
+                                      8 ; Public variables in this module
+                                      9 ;--------------------------------------------------------
+                                     10 	.globl _underground_9_map_pages
+                                     11 	.globl _underground_8_map_pages
+                                     12 	.globl _underground_7_map_pages
+                                     13 	.globl _underground_6_map_pages
+                                     14 	.globl _underground_5_map_pages
+                                     15 	.globl _underground_4_map_pages
+                                     16 	.globl _underground_3_map_pages
+                                     17 	.globl _underground_2_map_pages
+                                     18 	.globl _underground_1_map_pages
+                                     19 	.globl _underground_0_map_pages
+                                     20 	.globl _level_4_3_map
+                                     21 	.globl _level_4_2_map
+                                     22 	.globl _level_4_1_map
+                                     23 	.globl _level_3_3_map
+                                     24 	.globl _level_3_2_map
+                                     25 	.globl _level_3_1_map
+                                     26 	.globl _level_2_3_map
+                                     27 	.globl _level_2_2_map
+                                     28 	.globl _level_2_1_map
+                                     29 	.globl _level_1_3_map
+                                     30 	.globl _level_1_2_map
+                                     31 	.globl _level_1_1_map
+                                     32 ;--------------------------------------------------------
+                                     33 ; special function registers
+                                     34 ;--------------------------------------------------------
+                                     35 	.area _HRAM
+                                     36 ;--------------------------------------------------------
+                                     37 ; ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area _DATA
+                                     40 ;--------------------------------------------------------
+                                     41 ; ram data
+                                     42 ;--------------------------------------------------------
+                                     43 	.area _INITIALIZED
+                                     44 ;--------------------------------------------------------
+                                     45 ; absolute external ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area _DABS (ABS)
+                                     48 ;--------------------------------------------------------
+                                     49 ; global & static initialisations
+                                     50 ;--------------------------------------------------------
+                                     51 	.area _HOME
+                                     52 	.area _GSINIT
+                                     53 	.area _GSFINAL
+                                     54 	.area _GSINIT
+                                     55 ;--------------------------------------------------------
+                                     56 ; Home
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _HOME
+                                     59 	.area _HOME
+                                     60 ;--------------------------------------------------------
+                                     61 ; code
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _CODE
+                                     64 	.area _CODE
+    00000000                         65 _level_1_1_map:
+    00000000r00r00                   66 	.dw _level_1_1_00_map
+    00000002r00                      67 	.byte ___bank_level_1_1_00
+    00000003r00r00                   68 	.dw _level_1_1_01_map
+    00000005r00                      69 	.byte ___bank_level_1_1_01
+    00000006r00r00                   70 	.dw _level_1_1_00_map
+    00000008r00                      71 	.byte ___bank_level_1_1_00
+    00000009r00r00                   72 	.dw _level_1_1_02_map
+    0000000Br00                      73 	.byte ___bank_level_1_1_02
+    0000000Cr00r00                   74 	.dw _level_1_1_03_map
+    0000000Er00                      75 	.byte ___bank_level_1_1_03
+    0000000Fr00r00                   76 	.dw _level_1_1_00_map
+    00000011r00                      77 	.byte ___bank_level_1_1_00
+    00000012r00r00                   78 	.dw _level_1_1_04_map
+    00000014r00                      79 	.byte ___bank_level_1_1_04
+    00000015r00r00                   80 	.dw _level_1_1_00_map
+    00000017r00                      81 	.byte ___bank_level_1_1_00
+    00000018r00r00                   82 	.dw _level_1_1_01_map
+    0000001Ar00                      83 	.byte ___bank_level_1_1_01
+    0000001Br00r00                   84 	.dw _level_1_1_02_map
+    0000001Dr00                      85 	.byte ___bank_level_1_1_02
+    0000001Er00r00                   86 	.dw _level_1_1_01_map
+    00000020r00                      87 	.byte ___bank_level_1_1_01
+    00000021r00r00                   88 	.dw _level_1_1_00_map
+    00000023r00                      89 	.byte ___bank_level_1_1_00
+    00000024r00r00                   90 	.dw _level_1_1_05_map
+    00000026r00                      91 	.byte ___bank_level_1_1_05
+    00000027r00r00                   92 	.dw _level_1_1_06_map
+    00000029r00                      93 	.byte ___bank_level_1_1_06
+    0000002Ar00r00                   94 	.dw _level_gates_map
+    0000002Cr00                      95 	.byte ___bank_level_gates
+    0000002D                         96 _level_1_2_map:
+    0000002Dr00r00                   97 	.dw _level_1_2_00_map
+    0000002Fr00                      98 	.byte ___bank_level_1_2_00
+    00000030r00r00                   99 	.dw _level_1_2_01_map
+    00000032r00                     100 	.byte ___bank_level_1_2_01
+    00000033r00r00                  101 	.dw _level_1_2_02_map
+    00000035r00                     102 	.byte ___bank_level_1_2_02
+    00000036r00r00                  103 	.dw _level_1_2_01_map
+    00000038r00                     104 	.byte ___bank_level_1_2_01
+    00000039r00r00                  105 	.dw _level_1_2_03_map
+    0000003Br00                     106 	.byte ___bank_level_1_2_03
+    0000003Cr00r00                  107 	.dw _level_1_2_04_map
+    0000003Er00                     108 	.byte ___bank_level_1_2_04
+    0000003Fr00r00                  109 	.dw _level_1_2_02_map
+    00000041r00                     110 	.byte ___bank_level_1_2_02
+    00000042r00r00                  111 	.dw _level_1_2_02_map
+    00000044r00                     112 	.byte ___bank_level_1_2_02
+    00000045r00r00                  113 	.dw _level_1_2_05_map
+    00000047r00                     114 	.byte ___bank_level_1_2_05
+    00000048r00r00                  115 	.dw _level_1_2_06_map
+    0000004Ar00                     116 	.byte ___bank_level_1_2_06
+    0000004Br00r00                  117 	.dw _level_1_2_03_map
+    0000004Dr00                     118 	.byte ___bank_level_1_2_03
+    0000004Er00r00                  119 	.dw _level_1_2_04_map
+    00000050r00                     120 	.byte ___bank_level_1_2_04
+    00000051r00r00                  121 	.dw _level_1_2_00_map
+    00000053r00                     122 	.byte ___bank_level_1_2_00
+    00000054r00r00                  123 	.dw _level_gates_map
+    00000056r00                     124 	.byte ___bank_level_gates
+    00000057                        125 _level_1_3_map:
+    00000057r00r00                  126 	.dw _level_1_3_00_map
+    00000059r00                     127 	.byte ___bank_level_1_3_00
+    0000005Ar00r00                  128 	.dw _level_1_3_01_map
+    0000005Cr00                     129 	.byte ___bank_level_1_3_01
+    0000005Dr00r00                  130 	.dw _level_1_3_02_map
+    0000005Fr00                     131 	.byte ___bank_level_1_3_02
+    00000060r00r00                  132 	.dw _level_1_3_02_map
+    00000062r00                     133 	.byte ___bank_level_1_3_02
+    00000063r00r00                  134 	.dw _level_1_3_03_map
+    00000065r00                     135 	.byte ___bank_level_1_3_03
+    00000066r00r00                  136 	.dw _level_1_3_01_map
+    00000068r00                     137 	.byte ___bank_level_1_3_01
+    00000069r00r00                  138 	.dw _level_1_3_00_map
+    0000006Br00                     139 	.byte ___bank_level_1_3_00
+    0000006Cr00r00                  140 	.dw _level_1_3_00_map
+    0000006Er00                     141 	.byte ___bank_level_1_3_00
+    0000006Fr00r00                  142 	.dw _level_1_3_04_map
+    00000071r00                     143 	.byte ___bank_level_1_3_04
+    00000072r00r00                  144 	.dw _level_1_3_05_map
+    00000074r00                     145 	.byte ___bank_level_1_3_05
+    00000075r00r00                  146 	.dw _level_1_3_06_map
+    00000077r00                     147 	.byte ___bank_level_1_3_06
+    00000078r00r00                  148 	.dw _level_1_3_07_map
+    0000007Ar00                     149 	.byte ___bank_level_1_3_07
+    0000007Br00r00                  150 	.dw _level_1_3_08_map
+    0000007Dr00                     151 	.byte ___bank_level_1_3_08
+    0000007Er00r00                  152 	.dw _level_1_3_09_map
+    00000080r00                     153 	.byte ___bank_level_1_3_09
+    00000081r00r00                  154 	.dw _level_1_3_09_map
+    00000083r00                     155 	.byte ___bank_level_1_3_09
+    00000084r00r00                  156 	.dw _level_1_3_10_map
+    00000086r00                     157 	.byte ___bank_level_1_3_10
+    00000087r00r00                  158 	.dw _stage_end_map
+    00000089r00                     159 	.byte ___bank_stage_end
+    0000008A                        160 _level_2_1_map:
+    0000008Ar00r00                  161 	.dw _level_2_1_00_map
+    0000008Cr00                     162 	.byte ___bank_level_2_1_00
+    0000008Dr00r00                  163 	.dw _level_2_1_01_map
+    0000008Fr00                     164 	.byte ___bank_level_2_1_01
+    00000090r00r00                  165 	.dw _level_2_1_02_map
+    00000092r00                     166 	.byte ___bank_level_2_1_02
+    00000093r00r00                  167 	.dw _level_2_1_03_map
+    00000095r00                     168 	.byte ___bank_level_2_1_03
+    00000096r00r00                  169 	.dw _level_2_1_04_map
+    00000098r00                     170 	.byte ___bank_level_2_1_04
+    00000099r00r00                  171 	.dw _level_2_1_05_map
+    0000009Br00                     172 	.byte ___bank_level_2_1_05
+    0000009Cr00r00                  173 	.dw _level_2_1_05_map
+    0000009Er00                     174 	.byte ___bank_level_2_1_05
+    0000009Fr00r00                  175 	.dw _level_2_1_06_map
+    000000A1r00                     176 	.byte ___bank_level_2_1_06
+    000000A2r00r00                  177 	.dw _level_2_1_01_map
+    000000A4r00                     178 	.byte ___bank_level_2_1_01
+    000000A5r00r00                  179 	.dw _level_2_1_02_map
+    000000A7r00                     180 	.byte ___bank_level_2_1_02
+    000000A8r00r00                  181 	.dw _level_2_1_02_map
+    000000AAr00                     182 	.byte ___bank_level_2_1_02
+    000000ABr00r00                  183 	.dw _level_2_1_04_map
+    000000ADr00                     184 	.byte ___bank_level_2_1_04
+    000000AEr00r00                  185 	.dw _level_2_1_01_map
+    000000B0r00                     186 	.byte ___bank_level_2_1_01
+    000000B1r00r00                  187 	.dw _level_2_1_05_map
+    000000B3r00                     188 	.byte ___bank_level_2_1_05
+    000000B4r00r00                  189 	.dw _level_2_1_07_map
+    000000B6r00                     190 	.byte ___bank_level_2_1_07
+    000000B7r00r00                  191 	.dw _level_gates_map
+    000000B9r00                     192 	.byte ___bank_level_gates
+    000000BA                        193 _level_2_2_map:
+    000000BAr00r00                  194 	.dw _level_2_2_00_map
+    000000BCr00                     195 	.byte ___bank_level_2_2_00
+    000000BDr00r00                  196 	.dw _level_2_2_01_map
+    000000BFr00                     197 	.byte ___bank_level_2_2_01
+    000000C0r00r00                  198 	.dw _level_2_2_02_map
+    000000C2r00                     199 	.byte ___bank_level_2_2_02
+    000000C3r00r00                  200 	.dw _level_2_2_03_map
+    000000C5r00                     201 	.byte ___bank_level_2_2_03
+    000000C6r00r00                  202 	.dw _level_2_2_04_map
+    000000C8r00                     203 	.byte ___bank_level_2_2_04
+    000000C9r00r00                  204 	.dw _level_2_2_05_map
+    000000CBr00                     205 	.byte ___bank_level_2_2_05
+    000000CCr00r00                  206 	.dw _level_2_2_05_map
+    000000CEr00                     207 	.byte ___bank_level_2_2_05
+    000000CFr00r00                  208 	.dw _level_2_2_06_map
+    000000D1r00                     209 	.byte ___bank_level_2_2_06
+    000000D2r00r00                  210 	.dw _level_2_2_00_map
+    000000D4r00                     211 	.byte ___bank_level_2_2_00
+    000000D5r00r00                  212 	.dw _level_2_2_07_map
+    000000D7r00                     213 	.byte ___bank_level_2_2_07
+    000000D8r00r00                  214 	.dw _level_2_2_02_map
+    000000DAr00                     215 	.byte ___bank_level_2_2_02
+    000000DBr00r00                  216 	.dw _level_gates_map
+    000000DDr00                     217 	.byte ___bank_level_gates
+    000000DE                        218 _level_2_3_map:
+    000000DEr00r00                  219 	.dw _level_2_3_00_map
+    000000E0r00                     220 	.byte ___bank_level_2_3_00
+    000000E1r00r00                  221 	.dw _level_2_3_01_map
+    000000E3r00                     222 	.byte ___bank_level_2_3_01
+    000000E4r00r00                  223 	.dw _level_2_3_02_map
+    000000E6r00                     224 	.byte ___bank_level_2_3_02
+    000000E7r00r00                  225 	.dw _level_2_3_01_map
+    000000E9r00                     226 	.byte ___bank_level_2_3_01
+    000000EAr00r00                  227 	.dw _level_2_3_00_map
+    000000ECr00                     228 	.byte ___bank_level_2_3_00
+    000000EDr00r00                  229 	.dw _level_2_3_00_map
+    000000EFr00                     230 	.byte ___bank_level_2_3_00
+    000000F0r00r00                  231 	.dw _level_2_3_02_map
+    000000F2r00                     232 	.byte ___bank_level_2_3_02
+    000000F3r00r00                  233 	.dw _level_2_3_02_map
+    000000F5r00                     234 	.byte ___bank_level_2_3_02
+    000000F6r00r00                  235 	.dw _level_2_3_01_map
+    000000F8r00                     236 	.byte ___bank_level_2_3_01
+    000000F9r00r00                  237 	.dw _level_2_3_03_map
+    000000FBr00                     238 	.byte ___bank_level_2_3_03
+    000000FCr00r00                  239 	.dw _level_2_3_03_map
+    000000FEr00                     240 	.byte ___bank_level_2_3_03
+    000000FFr00r00                  241 	.dw _level_2_3_02_map
+    00000101r00                     242 	.byte ___bank_level_2_3_02
+    00000102r00r00                  243 	.dw _level_2_3_02_map
+    00000104r00                     244 	.byte ___bank_level_2_3_02
+    00000105r00r00                  245 	.dw _level_2_3_00_map
+    00000107r00                     246 	.byte ___bank_level_2_3_00
+    00000108r00r00                  247 	.dw _level_2_3_04_map
+    0000010Ar00                     248 	.byte ___bank_level_2_3_04
+    0000010Br00r00                  249 	.dw _level_2_3_03_map
+    0000010Dr00                     250 	.byte ___bank_level_2_3_03
+    0000010Er00r00                  251 	.dw _level_2_3_03_map
+    00000110r00                     252 	.byte ___bank_level_2_3_03
+    00000111r00r00                  253 	.dw _level_2_3_05_map
+    00000113r00                     254 	.byte ___bank_level_2_3_05
+    00000114r00r00                  255 	.dw _stage_end_map
+    00000116r00                     256 	.byte ___bank_stage_end
+    00000117                        257 _level_3_1_map:
+    00000117r00r00                  258 	.dw _level_3_1_00_map
+    00000119r00                     259 	.byte ___bank_level_3_1_00
+    0000011Ar00r00                  260 	.dw _level_3_1_01_map
+    0000011Cr00                     261 	.byte ___bank_level_3_1_01
+    0000011Dr00r00                  262 	.dw _level_3_1_02_map
+    0000011Fr00                     263 	.byte ___bank_level_3_1_02
+    00000120r00r00                  264 	.dw _level_3_1_01_map
+    00000122r00                     265 	.byte ___bank_level_3_1_01
+    00000123r00r00                  266 	.dw _level_3_1_03_map
+    00000125r00                     267 	.byte ___bank_level_3_1_03
+    00000126r00r00                  268 	.dw _level_3_1_04_map
+    00000128r00                     269 	.byte ___bank_level_3_1_04
+    00000129r00r00                  270 	.dw _level_3_1_05_map
+    0000012Br00                     271 	.byte ___bank_level_3_1_05
+    0000012Cr00r00                  272 	.dw _level_3_1_01_map
+    0000012Er00                     273 	.byte ___bank_level_3_1_01
+    0000012Fr00r00                  274 	.dw _level_3_1_00_map
+    00000131r00                     275 	.byte ___bank_level_3_1_00
+    00000132r00r00                  276 	.dw _level_3_1_03_map
+    00000134r00                     277 	.byte ___bank_level_3_1_03
+    00000135r00r00                  278 	.dw _level_3_1_03_map
+    00000137r00                     279 	.byte ___bank_level_3_1_03
+    00000138r00r00                  280 	.dw _level_3_1_00_map
+    0000013Ar00                     281 	.byte ___bank_level_3_1_00
+    0000013Br00r00                  282 	.dw _level_3_1_01_map
+    0000013Dr00                     283 	.byte ___bank_level_3_1_01
+    0000013Er00r00                  284 	.dw _level_3_1_06_map
+    00000140r00                     285 	.byte ___bank_level_3_1_06
+    00000141r00r00                  286 	.dw _level_3_1_06_map
+    00000143r00                     287 	.byte ___bank_level_3_1_06
+    00000144r00r00                  288 	.dw _level_3_1_07_map
+    00000146r00                     289 	.byte ___bank_level_3_1_07
+    00000147r00r00                  290 	.dw _level_3_1_08_map
+    00000149r00                     291 	.byte ___bank_level_3_1_08
+    0000014Ar00r00                  292 	.dw _level_3_1_09_map
+    0000014Cr00                     293 	.byte ___bank_level_3_1_09
+    0000014Dr00r00                  294 	.dw _level_3_1_09_map
+    0000014Fr00                     295 	.byte ___bank_level_3_1_09
+    00000150r00r00                  296 	.dw _level_3_1_10_map
+    00000152r00                     297 	.byte ___bank_level_3_1_10
+    00000153r00r00                  298 	.dw _level_3_1_11_map
+    00000155r00                     299 	.byte ___bank_level_3_1_11
+    00000156r00r00                  300 	.dw _level_3_1_10_map
+    00000158r00                     301 	.byte ___bank_level_3_1_10
+    00000159r00r00                  302 	.dw _level_gates_map
+    0000015Br00                     303 	.byte ___bank_level_gates
+    0000015C                        304 _level_3_2_map:
+    0000015Cr00r00                  305 	.dw _level_3_2_00_map
+    0000015Er00                     306 	.byte ___bank_level_3_2_00
+    0000015Fr00r00                  307 	.dw _level_3_2_01_map
+    00000161r00                     308 	.byte ___bank_level_3_2_01
+    00000162r00r00                  309 	.dw _level_3_2_00_map
+    00000164r00                     310 	.byte ___bank_level_3_2_00
+    00000165r00r00                  311 	.dw _level_3_2_02_map
+    00000167r00                     312 	.byte ___bank_level_3_2_02
+    00000168r00r00                  313 	.dw _level_3_2_03_map
+    0000016Ar00                     314 	.byte ___bank_level_3_2_03
+    0000016Br00r00                  315 	.dw _level_3_2_02_map
+    0000016Dr00                     316 	.byte ___bank_level_3_2_02
+    0000016Er00r00                  317 	.dw _level_3_2_04_map
+    00000170r00                     318 	.byte ___bank_level_3_2_04
+    00000171r00r00                  319 	.dw _level_3_2_03_map
+    00000173r00                     320 	.byte ___bank_level_3_2_03
+    00000174r00r00                  321 	.dw _level_3_2_01_map
+    00000176r00                     322 	.byte ___bank_level_3_2_01
+    00000177r00r00                  323 	.dw _level_3_2_04_map
+    00000179r00                     324 	.byte ___bank_level_3_2_04
+    0000017Ar00r00                  325 	.dw _level_3_2_05_map
+    0000017Cr00                     326 	.byte ___bank_level_3_2_05
+    0000017Dr00r00                  327 	.dw _level_3_2_05_map
+    0000017Fr00                     328 	.byte ___bank_level_3_2_05
+    00000180r00r00                  329 	.dw _level_3_2_00_map
+    00000182r00                     330 	.byte ___bank_level_3_2_00
+    00000183r00r00                  331 	.dw _level_3_2_06_map
+    00000185r00                     332 	.byte ___bank_level_3_2_06
+    00000186r00r00                  333 	.dw _level_3_2_07_map
+    00000188r00                     334 	.byte ___bank_level_3_2_07
+    00000189r00r00                  335 	.dw _level_gates_map
+    0000018Br00                     336 	.byte ___bank_level_gates
+    0000018C                        337 _level_3_3_map:
+    0000018Cr00r00                  338 	.dw _level_3_3_00_map
+    0000018Er00                     339 	.byte ___bank_level_3_3_00
+    0000018Fr00r00                  340 	.dw _level_3_3_01_map
+    00000191r00                     341 	.byte ___bank_level_3_3_01
+    00000192r00r00                  342 	.dw _level_3_3_01_map
+    00000194r00                     343 	.byte ___bank_level_3_3_01
+    00000195r00r00                  344 	.dw _level_3_3_00_map
+    00000197r00                     345 	.byte ___bank_level_3_3_00
+    00000198r00r00                  346 	.dw _level_3_3_02_map
+    0000019Ar00                     347 	.byte ___bank_level_3_3_02
+    0000019Br00r00                  348 	.dw _level_3_3_03_map
+    0000019Dr00                     349 	.byte ___bank_level_3_3_03
+    0000019Er00r00                  350 	.dw _level_3_3_01_map
+    000001A0r00                     351 	.byte ___bank_level_3_3_01
+    000001A1r00r00                  352 	.dw _level_3_3_01_map
+    000001A3r00                     353 	.byte ___bank_level_3_3_01
+    000001A4r00r00                  354 	.dw _level_3_3_04_map
+    000001A6r00                     355 	.byte ___bank_level_3_3_04
+    000001A7r00r00                  356 	.dw _level_3_3_05_map
+    000001A9r00                     357 	.byte ___bank_level_3_3_05
+    000001AAr00r00                  358 	.dw _level_3_3_06_map
+    000001ACr00                     359 	.byte ___bank_level_3_3_06
+    000001ADr00r00                  360 	.dw _level_3_3_06_map
+    000001AFr00                     361 	.byte ___bank_level_3_3_06
+    000001B0r00r00                  362 	.dw _level_3_3_07_map
+    000001B2r00                     363 	.byte ___bank_level_3_3_07
+    000001B3r00r00                  364 	.dw _level_3_3_07_map
+    000001B5r00                     365 	.byte ___bank_level_3_3_07
+    000001B6r00r00                  366 	.dw _level_3_3_08_map
+    000001B8r00                     367 	.byte ___bank_level_3_3_08
+    000001B9r00r00                  368 	.dw _stage_end_map
+    000001BBr00                     369 	.byte ___bank_stage_end
+    000001BC                        370 _level_4_1_map:
+    000001BCr00r00                  371 	.dw _level_4_1_00_map
+    000001BEr00                     372 	.byte ___bank_level_4_1_00
+    000001BFr00r00                  373 	.dw _level_4_1_01_map
+    000001C1r00                     374 	.byte ___bank_level_4_1_01
+    000001C2r00r00                  375 	.dw _level_4_1_02_map
+    000001C4r00                     376 	.byte ___bank_level_4_1_02
+    000001C5r00r00                  377 	.dw _level_4_1_03_map
+    000001C7r00                     378 	.byte ___bank_level_4_1_03
+    000001C8r00r00                  379 	.dw _level_4_1_02_map
+    000001CAr00                     380 	.byte ___bank_level_4_1_02
+    000001CBr00r00                  381 	.dw _level_4_1_04_map
+    000001CDr00                     382 	.byte ___bank_level_4_1_04
+    000001CEr00r00                  383 	.dw _level_4_1_04_map
+    000001D0r00                     384 	.byte ___bank_level_4_1_04
+    000001D1r00r00                  385 	.dw _level_4_1_02_map
+    000001D3r00                     386 	.byte ___bank_level_4_1_02
+    000001D4r00r00                  387 	.dw _level_4_1_05_map
+    000001D6r00                     388 	.byte ___bank_level_4_1_05
+    000001D7r00r00                  389 	.dw _level_4_1_00_map
+    000001D9r00                     390 	.byte ___bank_level_4_1_00
+    000001DAr00r00                  391 	.dw _level_4_1_03_map
+    000001DCr00                     392 	.byte ___bank_level_4_1_03
+    000001DDr00r00                  393 	.dw _level_4_1_06_map
+    000001DFr00                     394 	.byte ___bank_level_4_1_06
+    000001E0r00r00                  395 	.dw _level_4_1_06_map
+    000001E2r00                     396 	.byte ___bank_level_4_1_06
+    000001E3r00r00                  397 	.dw _level_4_1_06_map
+    000001E5r00                     398 	.byte ___bank_level_4_1_06
+    000001E6r00r00                  399 	.dw _level_4_1_03_map
+    000001E8r00                     400 	.byte ___bank_level_4_1_03
+    000001E9r00r00                  401 	.dw _level_4_1_03_map
+    000001EBr00                     402 	.byte ___bank_level_4_1_03
+    000001ECr00r00                  403 	.dw _level_4_1_05_map
+    000001EEr00                     404 	.byte ___bank_level_4_1_05
+    000001EFr00r00                  405 	.dw _level_4_1_04_map
+    000001F1r00                     406 	.byte ___bank_level_4_1_04
+    000001F2r00r00                  407 	.dw _level_4_1_07_map
+    000001F4r00                     408 	.byte ___bank_level_4_1_07
+    000001F5r00r00                  409 	.dw _level_4_1_05_map
+    000001F7r00                     410 	.byte ___bank_level_4_1_05
+    000001F8r00r00                  411 	.dw _level_4_1_04_map
+    000001FAr00                     412 	.byte ___bank_level_4_1_04
+    000001FBr00r00                  413 	.dw _level_4_1_05_map
+    000001FDr00                     414 	.byte ___bank_level_4_1_05
+    000001FEr00r00                  415 	.dw _level_gates_map
+    00000200r00                     416 	.byte ___bank_level_gates
+    00000201                        417 _level_4_2_map:
+    00000201r00r00                  418 	.dw _level_4_2_00_map
+    00000203r00                     419 	.byte ___bank_level_4_2_00
+    00000204r00r00                  420 	.dw _level_4_2_01_map
+    00000206r00                     421 	.byte ___bank_level_4_2_01
+    00000207r00r00                  422 	.dw _level_4_2_01_map
+    00000209r00                     423 	.byte ___bank_level_4_2_01
+    0000020Ar00r00                  424 	.dw _level_4_2_00_map
+    0000020Cr00                     425 	.byte ___bank_level_4_2_00
+    0000020Dr00r00                  426 	.dw _level_4_2_00_map
+    0000020Fr00                     427 	.byte ___bank_level_4_2_00
+    00000210r00r00                  428 	.dw _level_4_2_02_map
+    00000212r00                     429 	.byte ___bank_level_4_2_02
+    00000213r00r00                  430 	.dw _level_4_2_02_map
+    00000215r00                     431 	.byte ___bank_level_4_2_02
+    00000216r00r00                  432 	.dw _level_4_2_01_map
+    00000218r00                     433 	.byte ___bank_level_4_2_01
+    00000219r00r00                  434 	.dw _level_4_2_03_map
+    0000021Br00                     435 	.byte ___bank_level_4_2_03
+    0000021Cr00r00                  436 	.dw _level_4_2_03_map
+    0000021Er00                     437 	.byte ___bank_level_4_2_03
+    0000021Fr00r00                  438 	.dw _level_4_2_04_map
+    00000221r00                     439 	.byte ___bank_level_4_2_04
+    00000222r00r00                  440 	.dw _level_4_2_05_map
+    00000224r00                     441 	.byte ___bank_level_4_2_05
+    00000225r00r00                  442 	.dw _level_4_2_04_map
+    00000227r00                     443 	.byte ___bank_level_4_2_04
+    00000228r00r00                  444 	.dw _level_4_2_05_map
+    0000022Ar00                     445 	.byte ___bank_level_4_2_05
+    0000022Br00r00                  446 	.dw _level_4_2_06_map
+    0000022Dr00                     447 	.byte ___bank_level_4_2_06
+    0000022Er00r00                  448 	.dw _level_4_2_03_map
+    00000230r00                     449 	.byte ___bank_level_4_2_03
+    00000231r00r00                  450 	.dw _level_4_2_06_map
+    00000233r00                     451 	.byte ___bank_level_4_2_06
+    00000234r00r00                  452 	.dw _level_4_2_07_map
+    00000236r00                     453 	.byte ___bank_level_4_2_07
+    00000237r00r00                  454 	.dw _level_4_2_08_map
+    00000239r00                     455 	.byte ___bank_level_4_2_08
+    0000023Ar00r00                  456 	.dw _level_gates_map
+    0000023Cr00                     457 	.byte ___bank_level_gates
+    0000023D                        458 _level_4_3_map:
+    0000023Dr00r00                  459 	.dw _level_4_3_00_map
+    0000023Fr00                     460 	.byte ___bank_level_4_3_00
+    00000240r00r00                  461 	.dw _level_4_3_00_map
+    00000242r00                     462 	.byte ___bank_level_4_3_00
+    00000243r00r00                  463 	.dw _level_4_3_00_map
+    00000245r00                     464 	.byte ___bank_level_4_3_00
+    00000246r00r00                  465 	.dw _level_4_3_00_map
+    00000248r00                     466 	.byte ___bank_level_4_3_00
+    00000249r00r00                  467 	.dw _level_4_3_01_map
+    0000024Br00                     468 	.byte ___bank_level_4_3_01
+    0000024Cr00r00                  469 	.dw _level_4_3_01_map
+    0000024Er00                     470 	.byte ___bank_level_4_3_01
+    0000024Fr00r00                  471 	.dw _level_4_3_01_map
+    00000251r00                     472 	.byte ___bank_level_4_3_01
+    00000252r00r00                  473 	.dw _level_4_3_00_map
+    00000254r00                     474 	.byte ___bank_level_4_3_00
+    00000255r00r00                  475 	.dw _level_4_3_00_map
+    00000257r00                     476 	.byte ___bank_level_4_3_00
+    00000258r00r00                  477 	.dw _level_4_3_00_map
+    0000025Ar00                     478 	.byte ___bank_level_4_3_00
+    0000025Br00r00                  479 	.dw _level_4_3_01_map
+    0000025Dr00                     480 	.byte ___bank_level_4_3_01
+    0000025Er00r00                  481 	.dw _level_4_3_01_map
+    00000260r00                     482 	.byte ___bank_level_4_3_01
+    00000261r00r00                  483 	.dw _level_4_3_00_map
+    00000263r00                     484 	.byte ___bank_level_4_3_00
+    00000264r00r00                  485 	.dw _level_4_3_02_map
+    00000266r00                     486 	.byte ___bank_level_4_3_02
+    00000267r00r00                  487 	.dw _level_4_3_02_map
+    00000269r00                     488 	.byte ___bank_level_4_3_02
+    0000026Ar00r00                  489 	.dw _level_4_3_03_map
+    0000026Cr00                     490 	.byte ___bank_level_4_3_03
+    0000026Dr00r00                  491 	.dw _level_4_3_04_map
+    0000026Fr00                     492 	.byte ___bank_level_4_3_04
+    00000270r00r00                  493 	.dw _level_4_3_05_map
+    00000272r00                     494 	.byte ___bank_level_4_3_05
+    00000273r00r00                  495 	.dw _level_4_3_05_map
+    00000275r00                     496 	.byte ___bank_level_4_3_05
+    00000276r00r00                  497 	.dw _level_4_3_04_map
+    00000278r00                     498 	.byte ___bank_level_4_3_04
+    00000279r00r00                  499 	.dw _level_4_3_06_map
+    0000027Br00                     500 	.byte ___bank_level_4_3_06
+    0000027Cr00r00                  501 	.dw _level_4_3_07_map
+    0000027Er00                     502 	.byte ___bank_level_4_3_07
+    0000027Fr00r00                  503 	.dw _level_4_3_08_map
+    00000281r00                     504 	.byte ___bank_level_4_3_08
+    00000282r00r00                  505 	.dw _level_4_3_09_map
+    00000284r00                     506 	.byte ___bank_level_4_3_09
+    00000285                        507 _underground_0_map_pages:
+    00000285r00r00                  508 	.dw _underground_0_map
+    00000287r00                     509 	.byte ___bank_underground_0
+    00000288                        510 _underground_1_map_pages:
+    00000288r00r00                  511 	.dw _underground_1_map
+    0000028Ar00                     512 	.byte ___bank_underground_1
+    0000028B                        513 _underground_2_map_pages:
+    0000028Br00r00                  514 	.dw _underground_2_map
+    0000028Dr00                     515 	.byte ___bank_underground_2
+    0000028E                        516 _underground_3_map_pages:
+    0000028Er00r00                  517 	.dw _underground_3_map
+    00000290r00                     518 	.byte ___bank_underground_3
+    00000291                        519 _underground_4_map_pages:
+    00000291r00r00                  520 	.dw _underground_4_map
+    00000293r00                     521 	.byte ___bank_underground_4
+    00000294                        522 _underground_5_map_pages:
+    00000294r00r00                  523 	.dw _underground_5_map
+    00000296r00                     524 	.byte ___bank_underground_5
+    00000297                        525 _underground_6_map_pages:
+    00000297r00r00                  526 	.dw _underground_6_map
+    00000299r00                     527 	.byte ___bank_underground_6
+    0000029A                        528 _underground_7_map_pages:
+    0000029Ar00r00                  529 	.dw _underground_7_map
+    0000029Cr00                     530 	.byte ___bank_underground_7
+    0000029D                        531 _underground_8_map_pages:
+    0000029Dr00r00                  532 	.dw _underground_8_map
+    0000029Fr00                     533 	.byte ___bank_underground_8
+    000002A0                        534 _underground_9_map_pages:
+    000002A0r00r00                  535 	.dw _underground_9_map
+    000002A2r00                     536 	.byte ___bank_underground_9
+                                    537 	.area _INITIALIZER
+                                    538 	.area _CABS (ABS)

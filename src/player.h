@@ -8,20 +8,24 @@
 #include "text.h"
 #include "level.h"
 #include "pipe.h"
+
 #ifdef GAMEBOY
-#include "musicmanager.h"
-#include "sfxplayer.h"
-#include "sounds/sound_bump.h"
-#include "sounds/sound_jump_small.h"
-#include "sounds/sound_pause.h"
-#include "sounds/sound_pipe.h"
-#include "musics/musics.h"
+#include "sound_bump.h"
+#include "sound_jump_small.h"
+#include "sound_pause.h"
+#include "sound_pipe.h"
 #endif
-#include "graphics/mario.h"
-#include "graphics/text.h"
+
+#ifdef NINTENDO
+#include "musicmanager.h"
+#include "musics.h"
+#endif
+
+#include "marioSprites.h"
+#include "textTileset.h"
 #include "level_object.h"
 
-BANKREF_EXTERN(player)
+//BANKREF_EXTERN(player)
 
 #define MARIO_HEIGHT_SMALL 8
 #define MARIO_HEIGHT_BIG 16
@@ -58,7 +62,7 @@ extern uint16_t current_jump;
 
 extern uint8_t player_frame;
 extern uint8_t frame_counter;
-extern bool mario_flip;
+extern bool marioSpritesflip;
 extern uint16_t scroll_limit;
 extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;

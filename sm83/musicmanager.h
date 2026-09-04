@@ -6,7 +6,7 @@
 
 #include "sfxplayer.h"
 #if defined(NINTENDO)
-#include "musics/hUGEDriver.h"
+#include "hUGEDriver.h"
 #define MUSIC_MODULE hUGESong_t
 #else
 #define MUSIC_MODULE void

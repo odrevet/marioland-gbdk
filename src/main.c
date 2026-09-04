@@ -5,21 +5,28 @@
 #include "coin_animated.h"
 #include "gb/hardware.h"
 #include "gb/metasprites.h"
-#include "graphics/birabuto_torch.h"
-#include "graphics/common.h"
-#include "graphics/enemies.h"
-#include "graphics/enemies_large_birabuto.h"
-#include "graphics/mario.h"
-#include "graphics/sprite_common.h"
-#include "graphics/text.h"
-#include "graphics/title.h"
+
+//#include "birabuto_torch.h"
+#include "commonTileset.h"
+#include "enemiesSprites.h"
+#include "enemiesBirabutoSprites.h"
+#include "marioSprites.h"
+#include "commonSprites.h"
+#include "textTileset.h"
+#include "TitleScreen.h"
 
 #include "hud.h"
-#include "musics/musics.h"
-#include "sounds/sound_coin.h"
-#include "sounds/sound_pause.h"
-#include "sounds/sound_skid.h"
-#include "sounds/sound_squish.h"
+
+#ifdef NINTENDO
+#include "musicmanager.h"
+#include "musics.h"
+
+#include "sound_coin.h"
+#include "sound_pause.h"
+#include "sound_skid.h"
+#include "sound_squish.h"
+#endif
+
 
 #include "game.h"
 #include "global.h"
@@ -57,7 +64,7 @@ bool powerups_collide() {
 
   uint16_t player_right = player_x + TILE_SIZE;
   uint16_t player_top = player_y + 8;
-  uint16_t player_bottom = player_y + mario_HEIGHT;
+  uint16_t player_bottom = player_y + marioSprites_HEIGHT;
 
   if (player_x < powerup_right && player_right > powerup_left &&
       player_top < powerup_bottom && player_bottom > powerup_top) {
@@ -90,13 +97,13 @@ bool enemy_collide() {
     uint16_t enemy_left = (enemies[enemy_index].x >> 4);
     uint16_t enemy_right = (enemies[enemy_index].x >> 4) + TILE_SIZE;
     uint16_t enemy_top = (enemies[enemy_index].y >> 4);
-    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemies_HEIGHT;
+    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemiesSprites_HEIGHT;
 
     if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
         player_y < enemy_bottom &&
-        player_y + mario_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
+        player_y + marioSprites_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
 
-      if (player_y + mario_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
+      if (player_y + marioSprites_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
         uint8_t _saved_bank = _current_bank;
         SWITCH_ROM(BANK(enemy));
         enemy_stomp(enemy_index);
@@ -176,32 +183,6 @@ void main(void) {
   }
 #endif
 
-  uint8_t _saved_bank = _current_bank;
-
-  SWITCH_ROM(BANK(mario));
-  set_sprite_data(mario_TILE_ORIGIN, mario_TILE_COUNT, mario_tiles);
-
-  SWITCH_ROM(BANK(enemies));
-  set_sprite_data(enemies_TILE_ORIGIN, enemies_TILE_COUNT, enemies_tiles);
-
-  SWITCH_ROM(BANK(enemies_large_birabuto));
-  set_sprite_data(enemies_large_birabuto_TILE_ORIGIN, enemies_large_birabuto_TILE_COUNT, enemies_large_birabuto_tiles);
-
-  SWITCH_ROM(BANK(sprite_common));
-  set_sprite_data(sprite_common_TILE_ORIGIN, sprite_common_TILE_COUNT,
-                  sprite_common_tiles);
-
-  SWITCH_ROM(BANK(text));
-  set_bkg_data(text_TILE_ORIGIN, text_TILE_COUNT, text_tiles);
-
-  SWITCH_ROM(BANK(common));
-  set_bkg_data(common_TILE_ORIGIN, common_TILE_COUNT, common_tiles);
-
-  SWITCH_ROM(BANK(title));
-  set_bkg_data(title_TILE_ORIGIN, title_TILE_COUNT, title_tiles);
-  set_bkg_tiles(0, 0, 20, 18, title_map);
-
-  SWITCH_ROM(_saved_bank);
 
   DISPLAY_ON;
   SHOW_BKG;
@@ -215,8 +196,39 @@ void main(void) {
   uint8_t base_sprite = 0;
   uint8_t background_animation_counter = 0;
   uint8_t anim_frame_counter = 0;
+  
+  uint8_t _saved_bank = _current_bank;
+
+  SWITCH_ROM(BANK(textTileset));
+  set_bkg_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);  
+
+  SWITCH_ROM(BANK(TitleScreen));
+  set_bkg_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
+  set_bkg_tiles(0, 0, 20, 18, TitleScreen_map);
 
   state_title();
+
+  SWITCH_ROM(BANK(textTileset));
+  set_bkg_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles); 
+
+  SWITCH_ROM(BANK(commonTileset));
+  set_bkg_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
+
+  SWITCH_ROM(BANK(marioSprites));
+  set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
+
+  SWITCH_ROM(BANK(enemiesSprites));
+  set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
+
+  SWITCH_ROM(BANK(enemiesBirabutoSprites));
+  set_sprite_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
+
+  SWITCH_ROM(BANK(commonSprites));
+  set_sprite_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT,
+                  commonSprites_tiles);
+
+  SWITCH_ROM(_saved_bank);
+
 #ifdef GAMEBOY
   disable_interrupts();
   add_VBL(interruptVBL);
@@ -261,7 +273,7 @@ void main(void) {
 
     enemy_collide();
 
-    SWITCH_ROM(BANK(player));
+    SWITCH_ROM(BANK(marioSprites));
     if(IS_VEHICLE_LEVEL(current_level)){
       player_move_vehicle();
     }
@@ -305,7 +317,7 @@ void main(void) {
 
     if (powerup_active && powerups_collide()) {
       powerup_active = FALSE;
-      hide_metasprite(sprite_common_metasprites[0], base_sprite - 1);
+      hide_metasprite(commonSprites_metasprites[0], base_sprite - 1);
       powerup.x = 0;
       powerup.draw_x = 0;
       powerup.y = 0;
@@ -361,14 +373,14 @@ void main(void) {
         anim_frame_counter = 0;
         background_animation_counter ^= 1;
 
-        if (background_animation_counter) {
-          SWITCH_ROM(BANK(birabuto_torch));
+        /*if (background_animation_counter) {
+          SWITCH_ROM(BANK(birabutoTileset_torch));
           set_bkg_data(TILE_TORCH, 1, birabuto_torch_tiles);
         } else {
-          SWITCH_ROM(BANK(birabuto));
+          SWITCH_ROM(BANK(birabutoTileset));
           set_bkg_data(TILE_TORCH, 1,
-                       birabuto_tiles + 288);
-        }
+                       birabutoTileset_tiles + 288);
+        }*/
       }
 
       SWITCH_ROM(_saved_bank);

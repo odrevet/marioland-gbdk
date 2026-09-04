@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include "global.h"
 
-#include "graphics/sprite_common.h"
+#include "commonSprites.h"
 
 typedef struct coin_animated {
   uint8_t draw_x;

@@ -31,7 +31,7 @@ void coin_animated_update(void) {
 
 uint8_t coin_animated_draw(uint8_t base_sprite) {
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(sprite_common));
+  SWITCH_ROM(BANK(commonSprites));
 
   uint8_t i;
 
@@ -39,11 +39,11 @@ uint8_t coin_animated_draw(uint8_t base_sprite) {
     if (coin_animated_array[i].ttl > 0) {
       uint8_t draw_index = 3 + ((20 - coin_animated_array[i].ttl) % 3) * 5;
 
-      metasprite_t *sprite_common_metasprite =
-          sprite_common_metasprites[draw_index];
+      metasprite_t *commonSprites_metasprite =
+          commonSprites_metasprites[draw_index];
 
       base_sprite += move_metasprite_ex(
-          sprite_common_metasprite, sprite_common_TILE_ORIGIN, 0, coin_animated_array[i].hw_sprite_index,
+          commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, coin_animated_array[i].hw_sprite_index,
           coin_animated_array[i].draw_x + 12 - camera_x,
           coin_animated_array[i].draw_y + 32);
     }

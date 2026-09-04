@@ -1,0 +1,996 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000000  .__.ABS.  |    00000000  _rMBC7_SR |    00000000  _rRAMG   
+     00000000  b_block_b |    00000000  b_block_b |    00000000  b_on_bloc
+     00000000  l__BASE   |    00000000  l__BSS    |    00000000  l__CABS  
+     00000000  l__CODE_0 |    00000000  l__DABS   |    00000000  l__EMU_HE
+     00000000  l__HEADER |    00000000  l__HEADER |    00000000  l__HEADER
+     00000000  l__HEAP   |    00000000  l__HEAP_E |    00000000  l__LIT   
+     00000000  s__CABS   |    00000000  s__DABS   |    00000000  s__EMU_HE
+     00000000  s__EMU_HE |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000000  s__HEADER |    00000000  s__HEADER |    00000000  s__HEADER
+     00000001  ___bank_l |    00000001  ___bank_m |    00000001  ___bank_m
+     00000001  ___bank_m |    00000001  ___bank_m |    00000001  ___bank_s
+     00000001  l__GSFINA |    00000001  l__HEADER |    00000001  l__HEADER
+     00000001  l__HEADER |    00000001  l__HEADER |    00000001  l__HEADER
+     00000001  l__HEADER |    00000001  l__HEADER |    00000002  ___bank_T
+     00000002  ___bank_c |    00000002  ___bank_c |    00000002  ___bank_e
+     00000002  ___bank_e |    00000002  ___bank_l |    00000002  ___bank_m
+     00000002  ___bank_m |    00000002  ___bank_p |    00000002  ___bank_s
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  ___mute_m |    00000002  ___mute_m |    00000002  ___mute_m
+     00000002  b_enemy_a |    00000002  b_enemy_a |    00000002  b_enemy_h
+     00000002  b_enemy_h |    00000002  b_enemy_m |    00000002  b_enemy_m
+     00000002  b_enemy_m |    00000002  b_enemy_r |    00000002  b_enemy_s
+     00000002  b_enemy_u |    00000002  b_player_ |    00000002  b_player_
+     00000002  b_player_ |    00000002  l__HEADER |    00000002  l__HEADER
+     00000002  l__HEADER |    00000003  ___bank_b |    00000003  ___bank_e
+     00000003  ___bank_e |    00000003  ___bank_e |    00000003  ___bank_e
+     00000003  ___bank_e |    00000003  ___bank_l |    00000003  ___bank_l
+     00000003  ___bank_l |    00000003  ___bank_l |    00000003  ___bank_m
+     00000003  ___bank_m |    00000003  ___bank_m |    00000003  ___bank_s
+     00000003  ___bank_s |    00000003  ___bank_s |    00000003  ___bank_s
+     00000003  ___bank_s |    00000003  ___bank_s |    00000003  ___bank_s
+     00000003  ___bank_s |    00000003  ___bank_s |    00000003  ___bank_s
+     00000003  ___bank_t |    00000003  l__EMU_HE |    00000003  l__HEADER
+     00000003  l__HEADER |    00000004  ___bank_c |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_l |    00000004  ___bank_l |    00000004  ___bank_l
+     00000004  ___bank_s |    00000004  ___mute_m |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_l
+     00000005  ___bank_l |    00000005  ___bank_l |    00000005  ___bank_u
+     00000005  l__HEADER |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_l |    00000006  ___bank_l
+     00000006  ___bank_l |    00000006  ___bank_s |    00000006  ___bank_s
+     00000006  ___bank_s |    00000006  ___bank_s |    00000006  ___bank_s
+     00000006  ___bank_s |    00000006  ___bank_s |    00000006  ___bank_s
+     00000006  ___bank_s |    00000006  ___bank_u |    00000006  ___bank_u
+     00000006  ___bank_u |    00000006  ___bank_u |    00000006  ___bank_u
+     00000006  ___bank_u |    00000006  ___bank_u |    00000006  ___bank_u
+     00000006  ___bank_u |    00000006  ___bank_u |    00000006  l__HEADER
+     00000006  l__HEADER |    00000007  l__HEADER |    00000008  ___mute_m
+     00000008  ___mute_m |    00000008  l__HEADER |    0000000C  l__GSINIT
+     00000013  l__HRAM   |    00000030  l__HEADER |    00000060  l__HEADER
+     000000AB  l__HEADER |    0000016E  l__DATA   |    00000200  s__CODE  
+     00000220  l__INITIA |    00000220  l__INITIA |    00001281  l__HOME  
+     00002000  _rROMB0   |    0000270B  l__CODE_6 |    0000285A  l__CODE  
+     00002A5A  s__HOME   |    00003000  _rROMB1   |    00003CDB  s__BASE  
+     00003CDB  s__CODE_0 |    00003CDB  s__INITIA |    00003CDB  s__LIT   
+     00003EFB  s__GSINIT |    00003F07  s__GSFINA |    00003FCB  l__CODE_5
+     00003FF6  l__CODE_4 |    00003FFD  l__CODE_2 |    00003FFE  l__CODE_3
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+.  .ABS.               00000000    00000000 =           0. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00004000  _rMBC7_SR |    00004000  _rRAMB    |    00004000  l__CODE_1
+     00008000  __VRAM    |    00008000  __VRAM800 |    00008800  __VRAM880
+     00009000  __VRAM900 |    00009800  __SCRN0   |    00009C00  __SCRN1  
+     0000A000  __SRAM    |    0000A000  _rMBC7_LA |    0000A010  _rMBC7_LA
+     0000A020  _rMBC7_AC |    0000A030  _rMBC7_AC |    0000A040  _rMBC7_AC
+     0000A050  _rMBC7_AC |    0000C000  __RAM     |    0000C000  _shadow_O
+     0000C0A0  s__DATA   |    0000C20E  s__BSS    |    0000C20E  s__INITIA
+     0000C42E  s__HEAP   |    0000C42E  s__HEAP_E |    0000D000  __RAMBANK
+     0000E000  .STACK    |    0000FE00  __OAMRAM  |    0000FF00  _P1_REG  
+     0000FF00  __IO      |    0000FF01  _SB_REG   |    0000FF02  _SC_REG  
+     0000FF04  _DIV_REG  |    0000FF05  _TIMA_REG |    0000FF06  _TMA_REG 
+     0000FF07  _TAC_REG  |    0000FF0F  _IF_REG   |    0000FF10  _NR10_REG
+     0000FF11  _NR11_REG |    0000FF12  _NR12_REG |    0000FF13  _NR13_REG
+     0000FF14  _NR14_REG |    0000FF16  _NR21_REG |    0000FF17  _NR22_REG
+     0000FF18  _NR23_REG |    0000FF19  _NR24_REG |    0000FF1A  _NR30_REG
+     0000FF1B  _NR31_REG |    0000FF1C  _NR32_REG |    0000FF1D  _NR33_REG
+     0000FF1E  _NR34_REG |    0000FF20  _NR41_REG |    0000FF21  _NR42_REG
+     0000FF22  _NR43_REG |    0000FF23  _NR44_REG |    0000FF24  _NR50_REG
+     0000FF25  _NR51_REG |    0000FF26  _NR52_REG |    0000FF30  _AUD3WAVE
+     0000FF30  _PCM_SAMP |    0000FF30  __AUD3WAV |    0000FF40  _LCDC_REG
+     0000FF41  _STAT_REG |    0000FF42  _SCY_REG  |    0000FF43  _SCX_REG 
+     0000FF44  _LY_REG   |    0000FF45  _LYC_REG  |    0000FF46  _DMA_REG 
+     0000FF47  _BGP_REG  |    0000FF48  _OBP0_REG |    0000FF49  _OBP1_REG
+     0000FF4A  _WY_REG   |    0000FF4B  _WX_REG   |    0000FF4D  _KEY1_REG
+     0000FF4F  _VBK_REG  |    0000FF51  _HDMA1_RE |    0000FF52  _HDMA2_RE
+     0000FF53  _HDMA3_RE |    0000FF54  _HDMA4_RE |    0000FF55  _HDMA5_RE
+     0000FF56  _RP_REG   |    0000FF68  _BCPS_REG |    0000FF69  _BCPD_REG
+     0000FF6A  _OCPS_REG |    0000FF6B  _OCPD_REG |    0000FF70  _SVBK_REG
+     0000FF76  _PCM12_RE |    0000FF77  _PCM34_RE |    0000FF80  __HRAM   
+     0000FF80  s__HRAM   |    0000FFFF  _IE_REG   |    00014000  s__CODE_1
+     00024000  s__CODE_2 |    00034000  s__CODE_3 |    00044000  s__CODE_4
+     00054000  s__CODE_5 |    00064000  s__CODE_6
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE                  00000200    0000285A =       10330. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000200  _coin_ani |    00000263  _coin_ani |    000002A1  _coin_ani
+     0000038B  _init     |    0000041A  _state_ti |    00000433  _state_pa
+     000004B1  _die      |    0000058F  _hud_set_ |    000005B8  _hud_upda
+     000005FE  _hud_upda |    0000062E  _hud_upda |    0000067F  _hud_upda
+     000006A5  _get_tile |    000006E6  _levels   |    000007FA  _undergro
+     00000811  _is_tile_ |    000009C0  _is_tile_ |    00000A07  _is_coin 
+     00000A0E  _on_get_c |    00000A4D  _on_break |    00000AE8  _on_block
+     00000BF4  _block_bu |    00000C3F  _block_bu |    00000C97  _on_get_c
+     00000D80  _on_inter |    00000EC9  _level_1_ |    00000EF6  _level_1_
+     00000F20  _level_1_ |    00000F53  _level_2_ |    00000F83  _level_2_
+     00000FA7  _level_2_ |    00000FE0  _level_3_ |    00001025  _level_3_
+     00001055  _level_3_ |    00001085  _level_4_ |    000010CA  _level_4_
+     00001106  _level_4_ |    0000114E  _undergro |    00001151  _undergro
+     00001154  _undergro |    00001157  _undergro |    0000115A  _undergro
+     0000115D  _undergro |    00001160  _undergro |    00001163  _undergro
+     00001166  _undergro |    00001169  _undergro |    0000116C  _interrup
+     00001179  _window_l |    0000117A  _interrup |    00001181  _powerups
+     000012A7  _enemy_co |    000014D0  _main     |    00001A16  _pipe_new
+     00001A3B  _pipe_cle |    00001A40  _platform |    00001B0B  _platform
+     00001D41  _platform |    00001D43  _platform |    00001D44  _powerup_
+     00001D79  _powerup_ |    00001DC6  _powerup_ |    00001E14  _text_pri
+     00001FAE  _text_pri |    00001FEF  _music_pa |    00002011  _hUGE_ini
+     00002013  hUGE_init |    00002069  _hUGE_mut |    0000206B  hUGE_mute
+     000022B9  _hUGE_set |    000022BA  hUGE_set_ |    0000247F  _hUGE_dos
+     0000247F  hUGE_doso |    000027AB  _hide_spr |    000027DA  __divsuch
+     000027E0  __modsuch |    000027E9  __divusch |    000027F2  __modusch
+     000027FE  __divscha |    00002803  __modscha |    0000280A  __divsint
+     00002813  __modsint |    0000281F  __divucha |    00002824  __moducha
+     0000282B  __divuint |    00002834  __moduint |    00002840  .div8    
+     00002840  .mod8     |    00002848  .div16    |    00002848  .mod16   
+     0000287E  .divu8    |    0000287E  .modu8    |    00002881  .divu16  
+     00002881  .modu16   |    000028C1  ___hide_m |    000028E5  _set_vram
+     000028EE  _set_win_ |    000028F7  _set_bkg_ |    00002926  ___move_m
+     00002963  ___memcpy |    00002963  _memcpy   |    00002995  ___move_m
+     00002995  ___move_m |    000029D6  ___move_m |    000029D6  ___move_m
+     00002A17  ___move_m |    00002A17  ___move_m
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER0               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000020  .call_hl 
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER1               00000000    00000005 =           5. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000028  .MemsetSm
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER2               00000000    00000007 =           7. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000030  .MemcpySm
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER3               00000000    00000008 =           8. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER4               00000000    00000060 =          96. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000080  .int      |    0000008F  _wait_int |    0000009C  __standar
+     000000AB  _refresh_ |    000000CC  _set_inte
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER5               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER6               00000000    00000002 =           2. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER7               00000000    00000030 =          48. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER8               00000000    00000006 =           6. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER9               00000000    00000003 =           3. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERa               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERb               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERc               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERd               00000000    00000002 =           2. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERe               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADERf               00000000    00000001 =           1. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER10              00000000    00000002 =           2. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 22.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER11              00000000    000000AB =         171. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00000150  .reset    |    00000150  _reset    |    00000157  .code_sta
+     000001B9  _exit     |    000001BD  .wait_vbl |    000001BD  _vsync   
+     000001BD  _wait_vbl |    000001CD  .remove_V |    000001CD  _remove_V
+     000001D0  .remove_i |    000001ED  .add_VBL  |    000001ED  _add_VBL 
+     000001F0  .add_int 
+ASxxxx Linker V03.00/V05.40 + sdld,  page 23.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HOME                  00002A5A    00001281 =        4737. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00002A5A  .memset_s |    00002A63  .memcpy_s |    00002A80  .display_
+     00002A80  _display_ |    00002A98  _level_lo |    00002CBC  _level_lo
+     00002DED  _level_se |    00002E11  _load_cur |    00002E57  _set_leve
+     00002F35  _music_pl |    00002FBC  _sfx_play |    00003095  _update_f
+     000030AF  _player_d |    00003130  _player_c |    000031B0  _player_e
+     000034C2  _player_c |    00003579  _player_w |    000036B7  _player_o
+     000036CA  _enemy_ne |    000038AD  _enemy_re |    000038D0  _enemy_dr
+     000039FE  _EMU_prof |    00003A46  _uitoa    |    00003A55  _itoa    
+     00003A64  .itoa     |    00003A78  .utoa     |    00003AEC  _set_win_
+     00003B00  _set_tile |    00003B05  _set_bkg_ |    00003B05  _set_win_
+     00003B0D  _set_spri |    00003B43  _add_low_ |    00003B46  .add_TIM 
+     00003B4C  .remove_T |    00003B4C  _remove_T |    00003B52  .padup   
+     00003B52  _waitpadu |    00003B62  .jpad     |    00003B62  _joypad  
+     00003B8A  _waitpad  |    00003B8B  .wait_pad |    00003B92  _memset  
+     00003BC5  .delay    |    00003BC5  _delay    |    00003BF1  ___sdcc_b
+     00003C05  _strlen   |    00003C0A  .strlen   |    00003C13  _EMU_prin
+     00003C24  _EMU_fmtb |    00003C5F  .add_LCD  |    00003C5F  _add_LCD 
+     00003C65  .remove_L |    00003C65  _remove_L |    00003C6B  _set_bkg_
+     00003C7F  .set_xy_w |    00003C88  .set_xy_b |    00003C97  .set_xy_t
+ASxxxx Linker V03.00/V05.40 + sdld,  page 24.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_INITIALIZER           00003CDB    00000220 =         544. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 25.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_GSINIT                00003EFB    0000000C =          12. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00003EFB  gsinit   
+ASxxxx Linker V03.00/V05.40 + sdld,  page 26.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_GSFINAL               00003F07    00000001 =           1. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 27.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_DATA                  0000C0A0    0000016E =         366. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000C0A0  __cpu     |    0000C0A1  __is_GBA  |    0000C0A2  .mode    
+     0000C0A3  .sys_time |    0000C0A3  _sys_time |    0000C0A5  .int_0x40
+     0000C0B1  _coin_ani |    0000C0BD  _camera_x |    0000C0BF  _camera_x
+     0000C0C1  _load_col |    0000C0C3  _current_ |    0000C0C5  _coldata 
+     0000C0D5  _level_en |    0000C0D6  _current_ |    0000C0D7  _current_
+     0000C0D9  _current_ |    0000C0DB  _current_ |    0000C0DD  _current_
+     0000C0DF  _current_ |    0000C0E1  _level_ba |    0000C0E2  _level_lo
+     0000C0E3  _level_lo |    0000C0E5  _level_lo |    0000C0EE  _active_p
+     0000C0F5  _active_p |    0000C0F6  _active_p |    0000C0F7  _active_p
+     0000C0F8  _platform |    0000C122  _powerup  |    0000C12C  _music_ne
+     0000C12E  _sfx_fram |    0000C14B  _hUGE_cur |    0000C14B  hUGE_curr
+     0000C14C  _hUGE_mut |    0000C193  _coins    |    0000C194  _score   
+     0000C196  _time     |    0000C198  _lives    |    0000C199  _joypad_p
+     0000C19A  _joypad_c |    0000C19B  _player_x |    0000C19D  _player_y
+     0000C19F  _player_x |    0000C1A1  _player_y |    0000C1A3  _player_x
+     0000C1A5  _player_y |    0000C1A7  _player_x |    0000C1A9  _player_y
+     0000C1AB  _player_d |    0000C1AC  _player_d |    0000C1AD  _vel_x   
+     0000C1AE  _vel_y    |    0000C1AF  _display_ |    0000C1B0  _display_
+     0000C1B1  _display_ |    0000C1B2  _marioSpr |    0000C1B3  _scroll_l
+     0000C1B5  _tile_nex |    0000C1B6  _tile_nex |    0000C1B7  _plane_mo
+     0000C1B8  _enemies  |    0000C1F8  .int_0x50 |    0000C202  ___curren
+     0000C204  ___curren |    0000C205  ___curren |    0000C206  .int_0x48
+ASxxxx Linker V03.00/V05.40 + sdld,  page 28.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_INITIALIZED           0000C20E    00000220 =         544. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000C20E  _coin_ind |    0000C20F  _map_buff |    0000C40F  _map_colu
+     0000C410  _current_ |    0000C411  _level_pa |    0000C413  _current_
+     0000C414  _col_from |    0000C416  _pipe_act |    0000C417  _platform
+     0000C418  _powerup_ |    0000C419  _music_cu |    0000C41A  _music_mu
+     0000C41B  _music_pl |    0000C41C  _music_pl |    0000C41D  _music_sf
+     0000C41E  _music_ti |    0000C41F  _sfx_play |    0000C420  _sfx_play
+     0000C424  _is_jumpi |    0000C425  _touch_gr |    0000C426  _current_
+     0000C428  _player_f |    0000C429  _frame_co |    0000C42A  _player_i
+     0000C42B  _enemy_co |    0000C42C  ___render |    0000C42D  __map_til
+ASxxxx Linker V03.00/V05.40 + sdld,  page 29.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HRAM                  0000FF80    00000013 =          19. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     0000FF80  .refresh_ |    0000FF90  __current |    0000FF91  __vbl_don
+     0000FF92  __shadow_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 30.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_1                00014000    00004000 =       16384. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00015C51  _music_ov |    00016F35  _music_un |    000178A5  _music_un
+     00017F01  _music_de |    00017F16  ___func_s |    00017F16  _sound_pa
+     00017FF5  ___func_l |    00017FF5  _level_2_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 31.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_2                00024000    00003FFD =       16381. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00024000  ___func_p |    000240B8  _player_m |    00024AB1  _player_m
+     000251BE  _player_i |    00025297  ___func_e |    00025297  _enemy_ha
+     00025300  _enemy_ha |    0002536F  _enemy_ap |    00025523  _enemy_ap
+     000256B7  _enemy_mo |    00025700  _enemy_mo |    0002574A  _enemy_mo
+     00025852  _enemy_st |    000258A2  _enemy_re |    000258F6  _enemy_up
+     0002633D  _music_ca |    00026352  _TitleScr |    00026352  ___func_T
+     0002635A  _TitleScr |    0002699A  _TitleScr |    0002713D  _music_st
+     00027152  ___func_c |    00027152  _chaiTile |    0002715A  _chaiTile
+     000276FA  _chaiTile |    00027754  ___func_e |    00027754  _eastonTi
+     0002775C  _eastonTi |    00027BBC  _eastonTi |    00027C02  ___func_c
+     00027C02  _commonTi |    00027C0A  _commonTi |    00027F8A  _commonTi
+     00027FC2  ___func_s |    00027FC2  _sound_be |    00027FF2  ___func_l
+     00027FF2  _level_4_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 32.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_3                00034000    00003FFE =       16382. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00034000  ___func_m |    00034000  _marioSpr |    00034008  _marioSpr
+     00034358  _marioSpr |    0003436C  _marioSpr |    00034380  _marioSpr
+     00034394  _marioSpr |    000343A8  _marioSpr |    000343BC  _marioSpr
+     000343D0  _marioSpr |    000343E4  _marioSpr |    000343F8  _marioSpr
+     0003440C  _marioSpr |    00034420  _marioSpr |    00034434  _marioSpr
+     00034448  _marioSpr |    0003445C  _marioSpr |    00034470  _marioSpr
+     00034484  _marioSpr |    000344A2  ___func_s |    000344A2  _sound_fl
+     00034927  ___func_s |    00034927  _sound_bo |    00034D2E  ___func_b
+     00034D2E  _birabuto |    00034D36  _birabuto |    000350F6  _birabuto
+     00035132  ___func_m |    00035132  _mudaTile |    0003513A  _mudaTile
+     000354FA  _mudaTile |    00035536  ___func_e |    00035536  _enemiesC
+     0003553E  _enemiesC |    000357BE  _enemiesC |    000357D2  _enemiesC
+     000357E6  _enemiesC |    000357F2  _enemiesC |    00035806  _enemiesC
+     0003581A  _enemiesC |    0003582E  _enemiesC |    00035842  _enemiesC
+     0003584E  _enemiesC |    00035862  _enemiesC |    00035876  _enemiesC
+     0003588A  _enemiesC |    0003589E  _enemiesC |    00035BE7  _music_st
+     00035BFC  ___func_s |    00035BFC  _sound_po |    00035F16  ___func_s
+     00035F16  _sound_bo |    000361FA  ___func_t |    000361FA  _textTile
+     00036202  _textTile |    00036482  _textTile |    000364AA  ___func_e
+     000364AA  _enemiesB |    000364B2  _enemiesB |    00036672  _enemiesB
+     00036686  _enemiesB |    0003669A  _enemiesB |    000366A6  _enemiesB
+     000366BA  _enemiesB |    000366CE  _enemiesB |    000366DA  _enemiesB
+     000366EE  _enemiesB |    00036702  _enemiesB |    0003670E  _enemiesB
+     00036720  ___func_l |    00036720  _level_4_ |    00036993  ___func_e
+     00036993  _enemiesE |    0003699B  _enemiesE |    00036B4B  _enemiesE
+     00036B5F  _enemiesE |    00036B73  _enemiesE |    00036B7F  _enemiesE
+     00036B93  _enemiesE |    00036BA7  _enemiesE |    00036BBB  _enemiesE
+     00036BCF  _enemiesE |    00036BE3  _enemiesE |    00036BEF  _enemiesE
+     00036C01  ___func_s |    00036C01  _sound_pi |    00036E62  ___func_s
+     00036E62  _sound_de |    00037077  ___func_e |    00037077  _enemiesM
+     0003707F  _enemiesM |    000371DF  _enemiesM |    000371F3  _enemiesM
+     00037207  _enemiesM |    0003721B  _enemiesM |    00037227  _enemiesM
+     0003723B  _enemiesM |    0003724F  _enemiesM |    00037263  _enemiesM
+     00037277  _enemiesM |    00037287  ___func_s |    00037287  _sound_ju
+     00037490  ___func_s |    00037490  _sound_ju |    00037699  ___func_l
+     00037699  _level_3_ |    0003787D  ___func_l |    0003787D  _level_3_
+     00037A56  ___func_l |    00037A56  _level_4_ |    00037C0E  ___func_s
+     00037C0E  _sound_vi |    00037DC4  ___func_s |    00037DC4  _sound_bu
+     00037F4C  ___func_e |    00037F4C  _enemiesS |    00037F54  _enemiesS
+     00037FC4  _enemiesS |    00037FCC  _enemiesS |    00037FD4  _enemiesS
+     00037FE0  _enemiesS |    00037FEC  _enemiesS |    00037FF4  _enemiesS
+ASxxxx Linker V03.00/V05.40 + sdld,  page 33.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_4                00044000    00003FF6 =       16374. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00044000  ___func_l |    00044000  _level_2_ |    00044181  ___func_c
+     00044181  _commonSp |    00044189  _commonSp |    00044259  _commonSp
+     00044261  _commonSp |    00044269  _commonSp |    00044271  _commonSp
+     00044279  _commonSp |    00044281  _commonSp |    00044289  _commonSp
+     00044291  _commonSp |    00044299  _commonSp |    000442A1  _commonSp
+     000442A9  _commonSp |    000442B1  _commonSp |    000442B9  _commonSp
+     000442BD  _commonSp |    000442C5  _commonSp |    000442C9  _commonSp
+     000442E7  ___func_l |    000442E7  _level_1_ |    00044427  ___func_l
+     00044427  _level_1_ |    00044567  ___func_l |    00044567  _level_1_
+     000446A7  ___func_l |    000446A7  _level_1_ |    000447E7  ___func_l
+     000447E7  _level_1_ |    00044927  ___func_l |    00044927  _level_1_
+     00044A67  ___func_l |    00044A67  _level_1_ |    00044BA7  ___func_l
+     00044BA7  _level_1_ |    00044CE7  ___func_l |    00044CE7  _level_1_
+     00044E27  ___func_l |    00044E27  _level_1_ |    00044F67  ___func_l
+     00044F67  _level_1_ |    000450A7  ___func_l |    000450A7  _level_1_
+     000451E7  ___func_l |    000451E7  _level_1_ |    00045327  ___func_l
+     00045327  _level_1_ |    00045467  ___func_l |    00045467  _level_1_
+     000455A7  ___func_l |    000455A7  _level_1_ |    000456E7  ___func_l
+     000456E7  _level_1_ |    00045827  ___func_l |    00045827  _level_1_
+     00045967  ___func_l |    00045967  _level_1_ |    00045AA7  ___func_l
+     00045AA7  _level_1_ |    00045BE7  ___func_l |    00045BE7  _level_1_
+     00045D27  ___func_l |    00045D27  _level_1_ |    00045E67  ___func_l
+     00045E67  _level_1_ |    00045FA7  ___func_l |    00045FA7  _level_1_
+     000460E7  ___func_l |    000460E7  _level_1_ |    00046227  ___func_l
+     00046227  _level_2_ |    00046367  ___func_l |    00046367  _level_2_
+     000464A7  ___func_l |    000464A7  _level_2_ |    000465E7  ___func_l
+     000465E7  _level_2_ |    00046727  ___func_l |    00046727  _level_2_
+     00046867  ___func_l |    00046867  _level_2_ |    000469A7  ___func_l
+     000469A7  _level_2_ |    00046AE7  ___func_l |    00046AE7  _level_2_
+     00046C27  ___func_l |    00046C27  _level_2_ |    00046D67  ___func_l
+     00046D67  _level_2_ |    00046EA7  ___func_l |    00046EA7  _level_2_
+     00046FE7  ___func_l |    00046FE7  _level_2_ |    00047127  ___func_l
+     00047127  _level_2_ |    00047267  ___func_l |    00047267  _level_2_
+     000473A7  ___func_l |    000473A7  _level_2_ |    000474E7  ___func_l
+     000474E7  _level_2_ |    00047627  ___func_l |    00047627  _level_2_
+     00047767  ___func_l |    00047767  _level_2_ |    000478A7  ___func_l
+     000478A7  _level_2_ |    000479E7  ___func_l |    000479E7  _level_2_
+     00047B27  ___func_l |    00047B27  _level_2_ |    00047C67  ___func_l
+     00047C67  _level_2_ |    00047DA7  ___func_l |    00047DA7  _level_3_
+     00047EE7  ___func_s |    00047EE7  _sound_on
+ASxxxx Linker V03.00/V05.40 + sdld,  page 34.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_5                00054000    00003FCB =       16331. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00054000  ___func_l |    00054000  _level_3_ |    00054140  ___func_l
+     00054140  _level_3_ |    00054280  ___func_l |    00054280  _level_3_
+     000543C0  ___func_l |    000543C0  _level_3_ |    00054500  ___func_l
+     00054500  _level_3_ |    00054640  ___func_l |    00054640  _level_3_
+     00054780  ___func_l |    00054780  _level_3_ |    000548C0  ___func_l
+     000548C0  _level_3_ |    00054A00  ___func_l |    00054A00  _level_3_
+     00054B40  ___func_l |    00054B40  _level_3_ |    00054C80  ___func_l
+     00054C80  _level_3_ |    00054DC0  ___func_l |    00054DC0  _level_3_
+     00054F00  ___func_l |    00054F00  _level_3_ |    00055040  ___func_l
+     00055040  _level_3_ |    00055180  ___func_l |    00055180  _level_3_
+     000552C0  ___func_l |    000552C0  _level_3_ |    00055400  ___func_l
+     00055400  _level_3_ |    00055540  ___func_l |    00055540  _level_3_
+     00055680  ___func_l |    00055680  _level_3_ |    000557C0  ___func_l
+     000557C0  _level_3_ |    00055900  ___func_l |    00055900  _level_3_
+     00055A40  ___func_l |    00055A40  _level_3_ |    00055B80  ___func_l
+     00055B80  _level_3_ |    00055CC0  ___func_l |    00055CC0  _level_3_
+     00055E00  ___func_l |    00055E00  _level_3_ |    00055F40  ___func_l
+     00055F40  _level_3_ |    00056080  ___func_l |    00056080  _level_3_
+     000561C0  ___func_l |    000561C0  _level_3_ |    00056300  ___func_l
+     00056300  _level_3_ |    00056440  ___func_l |    00056440  _level_3_
+     00056580  ___func_l |    00056580  _level_3_ |    000566C0  ___func_l
+     000566C0  _level_4_ |    00056800  ___func_l |    00056800  _level_4_
+     00056940  ___func_l |    00056940  _level_4_ |    00056A80  ___func_l
+     00056A80  _level_4_ |    00056BC0  ___func_l |    00056BC0  _level_4_
+     00056D00  ___func_l |    00056D00  _level_4_ |    00056E40  ___func_l
+     00056E40  _level_4_ |    00056F80  ___func_l |    00056F80  _level_4_
+     000570C0  ___func_l |    000570C0  _level_4_ |    00057200  ___func_l
+     00057200  _level_4_ |    00057340  ___func_l |    00057340  _level_4_
+     00057480  ___func_l |    00057480  _level_4_ |    000575C0  ___func_l
+     000575C0  _level_4_ |    00057700  ___func_l |    00057700  _level_4_
+     00057840  ___func_l |    00057840  _level_4_ |    00057980  ___func_l
+     00057980  _level_4_ |    00057AC0  ___func_l |    00057AC0  _level_4_
+     00057C00  ___func_l |    00057C00  _level_4_ |    00057D40  ___func_l
+     00057D40  _level_4_ |    00057E80  ___func_l |    00057E80  _level_4_
+     00057FC0  ___func_u |    00057FC0  _undergro
+ASxxxx Linker V03.00/V05.40 + sdld,  page 35.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_CODE_6                00064000    0000270B =        9995. bytes (REL,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+     00064000  ___func_l |    00064000  _level_4_ |    00064140  ___func_l
+     00064140  _level_4_ |    00064280  ___func_l |    00064280  _level_4_
+     000643C0  ___func_l |    000643C0  _level_4_ |    00064500  ___func_l
+     00064500  _level_4_ |    00064640  ___func_l |    00064640  _level_4_
+     00064780  ___func_l |    00064780  _level_4_ |    000648C0  ___func_l
+     000648C0  _level_4_ |    00064A00  ___func_l |    00064A00  _level_4_
+     00064B40  ___func_l |    00064B40  _level_4_ |    00064C80  ___func_l
+     00064C80  _level_4_ |    00064DC0  ___func_l |    00064DC0  _level_4_
+     00064F00  ___func_l |    00064F00  _level_ga |    00065040  ___func_s
+     00065040  _stage_en |    00065180  ___func_u |    00065180  _undergro
+     000652C0  ___func_u |    000652C0  _undergro |    00065400  ___func_u
+     00065400  _undergro |    00065540  ___func_u |    00065540  _undergro
+     00065680  ___func_u |    00065680  _undergro |    000657C0  ___func_u
+     000657C0  _undergro |    00065900  ___func_u |    00065900  _undergro
+     00065A40  ___func_u |    00065A40  _undergro |    00065B80  ___func_u
+     00065B80  _undergro |    00065CC0  ___func_u |    00065CC0  _undergro
+     00065E00  ___func_l |    00065E00  _level_2_ |    00065F3F  ___func_s
+     00065F3F  _sound_sq |    00066074  ___func_l |    00066074  _level_1_
+     00066166  ___func_s |    00066166  _sound_it |    00066255  ___func_l
+     00066255  _level_1_ |    00066331  ___func_l |    00066331  _level_3_
+     00066402  ___func_s |    00066402  _sound_sk |    000664A3  ___func_s
+     000664A3  _sound_co |    00066540  ___func_s |    00066540  _sound_sk
+     000665D0  ___func_s |    000665D0  _sound_bu |    00066627  ___func_s
+     00066627  _sound_fi |    00066678  ___func_s |    00066678  _sound_ki
+     000666C9  ___func_l |    000666C9  _level_1_
+ASxxxx Linker V03.00/V05.40 + sdld,  page 36.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_EMU_HEADER0           00000000    00000003 =           3. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 37.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER_NESTED_TIM0    00000000    00000006 =           6. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 38.
+Hexadecimal  [32-Bits]
+
+Area                       Addr        Size        Decimal Bytes (Attributes)
+--------------------       ----        ----        ------- ----- ------------
+_HEADER_LCD0           00000000    00000003 =           3. bytes (ABS,CON)
+
+        Value  Global            Value  Global            Value  Global    
+        -----  ------            -----  ------            -----  ------    
+ASxxxx Linker V03.00/V05.40 + sdld,  page 39.
+
+Files Linked                              [ module(s) ]
+
+/home/odrevet/projects/gbdk/lib/gb/crt0.o
+                                          [ Runtime ]
+obj/gb/coin_animated.rel                  [ coin_animated ]
+obj/gb/game.rel                           [ game ]
+obj/gb/hud.rel                            [ hud ]
+obj/gb/level.rel                          [ level ]
+obj/gb/level_tables.rel                   [ level_tables ]
+obj/gb/main.rel                           [ main ]
+obj/gb/pipe.rel                           [ pipe ]
+obj/gb/platforms.rel                      [ platforms ]
+obj/gb/powerup.rel                        [ powerup ]
+obj/gb/text.rel                           [ text ]
+obj/gb/musicmanager.rel                   [ musicmanager ]
+obj/gb/sfxplayer.rel                      [ sfxplayer ]
+hUGEDriver.rel                            [ hUGEDriver_obj ]
+/tmp/lcc173043126.rel                     [ music_overworld ]
+/tmp/lcc173043130.rel                     [ music_underwater ]
+obj/gb/player.rel                         [ player ]
+/tmp/lcc173043129.rel                     [ music_underground ]
+obj/gb/enemy.rel                          [ enemy ]
+/tmp/lcc173043124.rel                     [ music_castle ]
+/tmp/lcc173043154.rel                     [ TitleScreen ]
+/tmp/lcc173043125.rel                     [ music_defeat ]
+/tmp/lcc173043127.rel                     [ music_stage_clear ]
+/tmp/lcc1730431.rel                       [ chaiTileset ]
+/tmp/lcc1730434.rel                       [ eastonTileset ]
+/tmp/lcc173043122.rel                     [ marioSprites ]
+/tmp/lcc173043139.rel                     [ sound_flag_pole ]
+/tmp/lcc173043133.rel                     [ sound_bowser_fire ]
+/tmp/lcc1730430.rel                       [ birabutoTileset ]
+/tmp/lcc173043123.rel                     [ mudaTileset ]
+/tmp/lcc1730433.rel                       [ commonTileset ]
+/tmp/lcc1730436.rel                       [ enemiesChaiSprites ]
+/tmp/lcc173043128.rel                     [ music_star ]
+/tmp/lcc173043147.rel                     [ sound_powerup ]
+/tmp/lcc173043132.rel                     [ sound_bowser_defeated ]
+/tmp/lcc173043153.rel                     [ textTileset ]
+/tmp/lcc1730435.rel                       [ enemiesBirabutoSprites ]
+obj/gb/lookup_table_4_1.rel               [ lookup_table_4_1 ]
+/tmp/lcc1730437.rel                       [ enemiesEastonSprites ]
+/tmp/lcc173043146.rel                     [ sound_pipe ]
+/tmp/lcc173043137.rel                     [ sound_destroyed ]
+/tmp/lcc1730438.rel                       [ enemiesMudaSprites ]
+/tmp/lcc173043141.rel                     [ sound_jump_big ]
+/tmp/lcc173043142.rel                     [ sound_jump_small ]
+obj/gb/lookup_table_3_2.rel               [ lookup_table_3_2 ]
+obj/gb/lookup_table_3_1.rel               [ lookup_table_3_1 ]
+obj/gb/lookup_table_4_2.rel               [ lookup_table_4_2 ]
+/tmp/lcc173043151.rel                     [ sound_vine ]
+/tmp/lcc173043134.rel                     [ sound_bullet_bill ]
+obj/gb/lookup_table_2_1.rel               [ lookup_table_2_1 ]
+/tmp/lcc1730432.rel                       [ commonSprites ]
+/tmp/lcc17304310.rel                      [ level_1_1_00 ]
+/tmp/lcc17304311.rel                      [ level_1_1_01 ]
+/tmp/lcc17304312.rel                      [ level_1_1_02 ]
+/tmp/lcc17304313.rel                      [ level_1_1_03 ]
+/tmp/lcc17304314.rel                      [ level_1_1_04 ]
+/tmp/lcc17304315.rel                      [ level_1_1_05 ]
+/tmp/lcc17304316.rel                      [ level_1_1_06 ]
+/tmp/lcc17304317.rel                      [ level_1_2_00 ]
+/tmp/lcc17304318.rel                      [ level_1_2_01 ]
+/tmp/lcc17304319.rel                      [ level_1_2_02 ]
+/tmp/lcc17304320.rel                      [ level_1_2_03 ]
+/tmp/lcc17304321.rel                      [ level_1_2_04 ]
+/tmp/lcc17304322.rel                      [ level_1_2_05 ]
+/tmp/lcc17304323.rel                      [ level_1_2_06 ]
+/tmp/lcc17304324.rel                      [ level_1_3_00 ]
+/tmp/lcc17304325.rel                      [ level_1_3_01 ]
+/tmp/lcc17304326.rel                      [ level_1_3_02 ]
+/tmp/lcc17304327.rel                      [ level_1_3_03 ]
+/tmp/lcc17304328.rel                      [ level_1_3_04 ]
+/tmp/lcc17304329.rel                      [ level_1_3_05 ]
+/tmp/lcc17304330.rel                      [ level_1_3_06 ]
+/tmp/lcc17304331.rel                      [ level_1_3_07 ]
+/tmp/lcc17304332.rel                      [ level_1_3_08 ]
+/tmp/lcc17304333.rel                      [ level_1_3_09 ]
+/tmp/lcc17304334.rel                      [ level_1_3_10 ]
+/tmp/lcc17304335.rel                      [ level_2_1_00 ]
+/tmp/lcc17304336.rel                      [ level_2_1_01 ]
+/tmp/lcc17304337.rel                      [ level_2_1_02 ]
+/tmp/lcc17304338.rel                      [ level_2_1_03 ]
+/tmp/lcc17304339.rel                      [ level_2_1_04 ]
+/tmp/lcc17304340.rel                      [ level_2_1_05 ]
+/tmp/lcc17304341.rel                      [ level_2_1_06 ]
+/tmp/lcc17304342.rel                      [ level_2_1_07 ]
+/tmp/lcc17304343.rel                      [ level_2_2_00 ]
+/tmp/lcc17304344.rel                      [ level_2_2_01 ]
+/tmp/lcc17304345.rel                      [ level_2_2_02 ]
+/tmp/lcc17304346.rel                      [ level_2_2_03 ]
+/tmp/lcc17304347.rel                      [ level_2_2_04 ]
+/tmp/lcc17304348.rel                      [ level_2_2_05 ]
+/tmp/lcc17304349.rel                      [ level_2_2_06 ]
+/tmp/lcc17304350.rel                      [ level_2_2_07 ]
+/tmp/lcc17304351.rel                      [ level_2_3_00 ]
+/tmp/lcc17304352.rel                      [ level_2_3_01 ]
+/tmp/lcc17304353.rel                      [ level_2_3_02 ]
+/tmp/lcc17304354.rel                      [ level_2_3_03 ]
+/tmp/lcc17304355.rel                      [ level_2_3_04 ]
+/tmp/lcc17304356.rel                      [ level_2_3_05 ]
+/tmp/lcc17304357.rel                      [ level_3_1_00 ]
+/tmp/lcc17304358.rel                      [ level_3_1_01 ]
+/tmp/lcc17304359.rel                      [ level_3_1_02 ]
+/tmp/lcc17304360.rel                      [ level_3_1_03 ]
+/tmp/lcc17304361.rel                      [ level_3_1_04 ]
+/tmp/lcc17304362.rel                      [ level_3_1_05 ]
+/tmp/lcc17304363.rel                      [ level_3_1_06 ]
+/tmp/lcc17304364.rel                      [ level_3_1_07 ]
+/tmp/lcc17304365.rel                      [ level_3_1_08 ]
+/tmp/lcc17304366.rel                      [ level_3_1_09 ]
+/tmp/lcc17304367.rel                      [ level_3_1_10 ]
+/tmp/lcc17304368.rel                      [ level_3_1_11 ]
+/tmp/lcc17304369.rel                      [ level_3_2_00 ]
+/tmp/lcc17304370.rel                      [ level_3_2_01 ]
+/tmp/lcc17304371.rel                      [ level_3_2_02 ]
+/tmp/lcc17304372.rel                      [ level_3_2_03 ]
+/tmp/lcc17304373.rel                      [ level_3_2_04 ]
+/tmp/lcc17304374.rel                      [ level_3_2_05 ]
+/tmp/lcc17304375.rel                      [ level_3_2_06 ]
+/tmp/lcc17304376.rel                      [ level_3_2_07 ]
+/tmp/lcc17304377.rel                      [ level_3_2_08 ]
+/tmp/lcc17304378.rel                      [ level_3_2_09 ]
+/tmp/lcc17304379.rel                      [ level_3_2_10 ]
+/tmp/lcc17304380.rel                      [ level_3_3_00 ]
+/tmp/lcc17304381.rel                      [ level_3_3_01 ]
+/tmp/lcc17304382.rel                      [ level_3_3_02 ]
+/tmp/lcc17304383.rel                      [ level_3_3_03 ]
+/tmp/lcc17304384.rel                      [ level_3_3_04 ]
+/tmp/lcc17304385.rel                      [ level_3_3_05 ]
+/tmp/lcc17304386.rel                      [ level_3_3_06 ]
+/tmp/lcc17304387.rel                      [ level_3_3_07 ]
+/tmp/lcc17304388.rel                      [ level_3_3_08 ]
+/tmp/lcc17304389.rel                      [ level_4_1_00 ]
+/tmp/lcc17304390.rel                      [ level_4_1_01 ]
+/tmp/lcc17304391.rel                      [ level_4_1_02 ]
+/tmp/lcc17304392.rel                      [ level_4_1_03 ]
+/tmp/lcc17304393.rel                      [ level_4_1_04 ]
+/tmp/lcc17304394.rel                      [ level_4_1_05 ]
+/tmp/lcc17304395.rel                      [ level_4_1_06 ]
+/tmp/lcc17304396.rel                      [ level_4_1_07 ]
+/tmp/lcc17304397.rel                      [ level_4_1_08 ]
+/tmp/lcc17304398.rel                      [ level_4_1_09 ]
+/tmp/lcc17304399.rel                      [ level_4_2_00 ]
+/tmp/lcc173043100.rel                     [ level_4_2_01 ]
+/tmp/lcc173043101.rel                     [ level_4_2_02 ]
+/tmp/lcc173043102.rel                     [ level_4_2_03 ]
+/tmp/lcc173043103.rel                     [ level_4_2_04 ]
+/tmp/lcc173043104.rel                     [ level_4_2_05 ]
+/tmp/lcc173043105.rel                     [ level_4_2_06 ]
+/tmp/lcc173043106.rel                     [ level_4_2_07 ]
+/tmp/lcc173043107.rel                     [ level_4_2_08 ]
+/tmp/lcc173043108.rel                     [ level_4_2_09 ]
+/tmp/lcc173043109.rel                     [ level_4_2_10 ]
+/tmp/lcc173043110.rel                     [ level_4_2_11 ]
+/tmp/lcc173043111.rel                     [ level_4_3_00 ]
+/tmp/lcc173043112.rel                     [ level_4_3_01 ]
+/tmp/lcc173043113.rel                     [ level_4_3_02 ]
+/tmp/lcc173043114.rel                     [ level_4_3_03 ]
+/tmp/lcc173043115.rel                     [ level_4_3_04 ]
+/tmp/lcc173043116.rel                     [ level_4_3_05 ]
+/tmp/lcc173043117.rel                     [ level_4_3_06 ]
+/tmp/lcc173043118.rel                     [ level_4_3_07 ]
+/tmp/lcc173043119.rel                     [ level_4_3_08 ]
+/tmp/lcc173043120.rel                     [ level_4_3_09 ]
+/tmp/lcc173043121.rel                     [ level_gates ]
+/tmp/lcc173043152.rel                     [ stage_end ]
+/tmp/lcc173043155.rel                     [ underground_0 ]
+/tmp/lcc173043156.rel                     [ underground_1 ]
+/tmp/lcc173043157.rel                     [ underground_2 ]
+/tmp/lcc173043158.rel                     [ underground_3 ]
+/tmp/lcc173043159.rel                     [ underground_4 ]
+/tmp/lcc173043160.rel                     [ underground_5 ]
+/tmp/lcc173043161.rel                     [ underground_6 ]
+/tmp/lcc173043162.rel                     [ underground_7 ]
+/tmp/lcc173043163.rel                     [ underground_8 ]
+/tmp/lcc173043164.rel                     [ underground_9 ]
+obj/gb/lookup_table_2_2.rel               [ lookup_table_2_2 ]
+/tmp/lcc173043150.rel                     [ sound_squish ]
+/tmp/lcc173043144.rel                     [ sound_oneup ]
+obj/gb/lookup_table_1_2.rel               [ lookup_table_1_2 ]
+/tmp/lcc173043140.rel                     [ sound_item ]
+/tmp/lcc173043145.rel                     [ sound_pause ]
+obj/gb/lookup_table_1_1.rel               [ lookup_table_1_1 ]
+obj/gb/lookup_table_3_3.rel               [ lookup_table_3_3 ]
+/tmp/lcc1730439.rel                       [ enemiesSprites ]
+/tmp/lcc173043149.rel                     [ sound_skid ]
+/tmp/lcc173043136.rel                     [ sound_coin ]
+/tmp/lcc173043148.rel                     [ sound_skid_alt ]
+/tmp/lcc173043135.rel                     [ sound_bump ]
+/tmp/lcc173043138.rel                     [ sound_fireball ]
+/tmp/lcc173043143.rel                     [ sound_kick ]
+obj/gb/lookup_table_1_3.rel               [ lookup_table_1_3 ]
+/tmp/lcc173043131.rel                     [ sound_beep ]
+obj/gb/lookup_table_2_3.rel               [ lookup_table_2_3 ]
+obj/gb/lookup_table_4_3.rel               [ lookup_table_4_3 ]
+obj/gb/lookup_table_underground.rel       [ lookup_table_underground ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ sfr.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ emu_debug.o ]
+/home/odrevet/projects/gbdk/lib/sm83/sm83.lib
+                                          [ itoa.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ metasprites_hide_spr.o ]
+/home/odrevet/projects/gbdk/lib/sm83/sm83.lib
+                                          [ div.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ metasprites_hide.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ set_wi_t.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ set_data.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ set_tile.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ tim_nested.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ tim_common.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ pad.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ metasprites.o ]
+/home/odrevet/projects/gbdk/lib/sm83/sm83.lib
+                                          [ memcpy.o ]
+/home/odrevet/projects/gbdk/lib/sm83/sm83.lib
+                                          [ _memset.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ delay.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ ___sdcc_bcall_ehl.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ metasprites_flip.o ]
+/home/odrevet/projects/gbdk/lib/sm83/sm83.lib
+                                          [ strlen.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ emu_debug_printf.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ lcd.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ set_bk_t.o ]
+/home/odrevet/projects/gbdk/lib/gb/gb.lib
+                                          [ set_xy_t.o ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 40.
+
+User Base Address Definitions
+
+_DATA=0xC0A0
+_CODE=0x0200
+_HRAM=0xFF80
+ASxxxx Linker V03.00/V05.40 + sdld,  page 41.
+
+User Global Definitions
+
+_shadow_OAM=0xC000
+.STACK=0xE000
+
+

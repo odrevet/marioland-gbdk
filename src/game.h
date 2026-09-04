@@ -11,17 +11,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "graphics/text.h"
-#include "graphics/mario.h"
+#include "textTileset.h"
+#include "marioSprites.h"
 
 #include "enemy.h"
 #include "global.h"
-#include "musics/hUGEDriver.h"
 #include "text.h"
 #include "player.h"
 #include "pipe.h"
 
-#include "musics/musics.h"
+#ifdef NINTENDO
+#include "musicmanager.h"
+#include "musics.h"
+#endif
 
 void init(void);
 void state_title(void); 

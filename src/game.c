@@ -2,6 +2,11 @@
 #include "global.h"
 #include "level.h"
 
+#ifdef NINTENDO
+#include "musicmanager.h"
+#include "musics.h"
+#endif
+
 void init(void) {
   time = TIME_INITIAL_VALUE;
 
@@ -32,7 +37,7 @@ void init(void) {
   display_walk_animation = FALSE;
 
   frame_counter = 0;
-  mario_flip = FALSE;
+  marioSpritesflip = FALSE;
   touch_ground = FALSE;
 
   current_column_in_page = 0;
@@ -94,7 +99,7 @@ void die(void) {
   hUGE_mute_channel(2, HT_CH_PLAY);
   hUGE_mute_channel(3, HT_CH_PLAY);
 
-  music_load(BANK(music_defeat), &music_defeat);
+  //music_load(BANK(music_defeat), &music_defeat);
   #endif
 
   player_frame = DEATH_ANIMATION_FRAME;  // Death pose

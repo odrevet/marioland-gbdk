@@ -1,0 +1,25 @@
+XL4
+H B areas 5 global symbols
+M lookup_table_underground
+S .__.ABS. Def00000000
+S _levels Ref00000000
+S ___bank_underground_lookup Def000000FF
+A _CODE size 0 flags 0 addr 0
+A _HRAM size 0 flags 0 addr 0
+A _DATA size 0 flags 0 addr 0
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _CODE_255 size B flags 0 addr 0
+S ___func_underground_lookup Def00000000
+S _underground_0_lookup Def00000000
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00 00 00
+R 00 00 08 00
+T 00 00 00 00
+R 00 00 08 00
+T 00 00 00 00 10 00 0D 05 02 00 0A 00 00 02 00
+R 00 00 08 00 02 0B 01 00

@@ -5,7 +5,7 @@
 #include "sfxplayer.h"
 
 #if defined(NINTENDO)
-#include "musics/hUGEDriver.h"
+#include "hUGEDriver.h"
 #endif
 
 volatile uint8_t music_current_track_bank = MUSIC_STOP_BANK;

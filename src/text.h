@@ -2,7 +2,7 @@
 #define TEXT_H
 
 #include <gbdk/platform.h>
-#include "graphics/text.h"
+#include "textTileset.h"
 
 #define LETTERS_STARTS_AT 10
 

@@ -407,18 +407,18 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     const metasprite_t * const *metasprites;
     
     if (enemies[index_enemy].type == ENEMY_FLY) {
-      SWITCH_ROM(BANK(enemies_large_birabuto));
-      metasprites = enemies_large_birabuto_metasprites;
-      tile_origin = enemies_large_birabuto_TILE_ORIGIN;
+      SWITCH_ROM(BANK(enemiesBirabutoSprites));
+      metasprites = enemiesBirabutoSprites_metasprites;
+      tile_origin = enemiesBirabutoSprites_TILE_ORIGIN;
     } else {
-      SWITCH_ROM(BANK(enemies));
-      metasprites = enemies_metasprites;
-      tile_origin = enemies_TILE_ORIGIN;
+      SWITCH_ROM(BANK(enemiesBirabutoSprites));
+      metasprites = enemiesSprites_metasprites;
+      tile_origin = enemiesSprites_TILE_ORIGIN;
     }
 
     const metasprite_t *enemy_metasprite = metasprites[draw_index];
     uint8_t draw_x = enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4;
-    uint8_t draw_y = enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + enemies_HEIGHT + 8;
+    uint8_t draw_y = enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + enemiesSprites_HEIGHT + 8;
 
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);

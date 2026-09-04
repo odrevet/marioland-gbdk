@@ -1,0 +1,204 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _NR12_REG                                                       ******** GX
+    _NR14_REG                                                       ******** GX
+    _NR22_REG                                                       ******** GX
+    _NR24_REG                                                       ******** GX
+    _NR32_REG                                                       ******** GX
+    _NR42_REG                                                       ******** GX
+    _NR44_REG                                                       ******** GX
+    _NR51_REG                                                       ******** GX
+    _SCX_REG                                                        ******** GX
+    _SCY_REG                                                        ******** GX
+    ___bank_birabutoTileset                                         ******** GX
+    ___bank_chaiTileset                                             ******** GX
+    ___bank_commonTileset                                           ******** GX
+    ___bank_eastonTileset                                           ******** GX
+    ___bank_level_1_1_lookup                                        ******** GX
+    ___bank_level_1_2_lookup                                        ******** GX
+    ___bank_level_1_3_lookup                                        ******** GX
+    ___bank_level_2_1_lookup                                        ******** GX
+    ___bank_level_2_2_lookup                                        ******** GX
+    ___bank_level_2_3_lookup                                        ******** GX
+    ___bank_level_3_1_lookup                                        ******** GX
+    ___bank_level_3_2_lookup                                        ******** GX
+    ___bank_level_3_3_lookup                                        ******** GX
+    ___bank_level_4_1_lookup                                        ******** GX
+    ___bank_level_4_2_lookup                                        ******** GX
+    ___bank_level_4_3_lookup                                        ******** GX
+    ___bank_mudaTileset                                             ******** GX
+    ___bank_music_castle                                            ******** GX
+    ___bank_music_overworld                                         ******** GX
+    ___bank_music_underground                                       ******** GX
+    ___bank_music_underwater                                        ******** GX
+    ___bank_sound_bump                                              ******** GX
+    ___bank_sound_coin                                              ******** GX
+    ___bank_sound_destroyed                                         ******** GX
+    ___bank_sound_oneup                                             ******** GX
+    ___bank_underground_lookup                                      ******** GX
+    ___mute_mask_sound_bump                                         ******** GX
+    ___mute_mask_sound_coin                                         ******** GX
+    ___mute_mask_sound_destroyed                                    ******** GX
+    ___mute_mask_sound_oneup                                        ******** GX
+    __current_bank                                                  ******** GX
+    __modsint                                                       ******** GX
+  8 __xinit__col_from                                               00000205 R
+  8 __xinit__current_column_in_page                                 00000201 R
+  8 __xinit__current_page                                           00000204 R
+  8 __xinit__level_page_x_offset                                    00000202 R
+  8 __xinit__map_buffer                                             00000000 R
+  8 __xinit__map_column                                             00000200 R
+    _birabutoTileset_tiles                                          ******** GX
+  0 _block_bump_draw                                                0000059A GR
+  2 _block_bump_state                                               0000002A R
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  0 _block_bump_update                                              0000054F GR
+  2 _camera_x                                                       00000000 GR
+  2 _camera_x_upscaled                                              00000002 GR
+    _chaiTileset_tiles                                              ******** GX
+    _coin_animated_new                                              ******** GX
+    _coins                                                          ******** GX
+  3 _col_from                                                       00000205 GR
+  2 _coldata                                                        00000008 GR
+    _commonTileset_tiles                                            ******** GX
+  3 _current_column_in_page                                         00000201 GR
+  2 _current_level                                                  00000019 GR
+  2 _current_map                                                    00000006 GR
+  2 _current_map_tile_count                                         0000001E GR
+  2 _current_map_tile_origin                                        0000001A GR
+  2 _current_map_tiles                                              0000001C GR
+  2 _current_map_width                                              00000020 GR
+  2 _current_map_width_in_tiles                                     00000022 GR
+  3 _current_page                                                   00000204 GR
+    _eastonTileset_tiles                                            ******** GX
+    _enemy_count                                                    ******** GX
+    _enemy_new                                                      ******** GX
+  0 _get_tile                                                       00000000 GR
+    _hide_sprites_range                                             ******** GX
+    _hud_set_level                                                  ******** GX
+    _hud_update_coins                                               ******** GX
+    _hud_update_lives                                               ******** GX
+    _hud_update_score                                               ******** GX
+  0 _is_coin                                                        00000362 GR
+  0 _is_tile_passthought                                            0000031B GR
+  0 _is_tile_solid                                                  0000016C GR
+    _level_1_1_lookup                                               ******** GX
+    _level_1_1_map                                                  ******** GX
+    _level_1_2_lookup                                               ******** GX
+    _level_1_2_map                                                  ******** GX
+    _level_1_3_lookup                                               ******** GX
+    _level_1_3_map                                                  ******** GX
+    _level_2_1_lookup                                               ******** GX
+    _level_2_1_map                                                  ******** GX
+    _level_2_2_lookup                                               ******** GX
+    _level_2_2_map                                                  ******** GX
+    _level_2_3_lookup                                               ******** GX
+    _level_2_3_map                                                  ******** GX
+    _level_3_1_lookup                                               ******** GX
+    _level_3_1_map                                                  ******** GX
+    _level_3_2_lookup                                               ******** GX
+    _level_3_2_map                                                  ******** GX
+    _level_3_3_lookup                                               ******** GX
+    _level_3_3_map                                                  ******** GX
+    _level_4_1_lookup                                               ******** GX
+    _level_4_1_map                                                  ******** GX
+    _level_4_2_lookup                                               ******** GX
+    _level_4_2_map                                                  ******** GX
+    _level_4_3_lookup                                               ******** GX
+    _level_4_3_map                                                  ******** GX
+  2 _level_bank                                                     00000024 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 3
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  2 _level_end_reached                                              00000018 GR
+  5 _level_load_column                                              00000224 GR
+  5 _level_load_objects                                             00000000 GR
+  2 _level_lookup                                                   00000026 GR
+  2 _level_lookup_bank                                              00000025 GR
+  2 _level_lookup_size                                              00000028 GR
+  3 _level_page_x_offset                                            00000202 GR
+  5 _level_set_current                                              00000355 GR
+  0 _levels                                                         00000041 GR
+    _lives                                                          ******** GX
+  2 _load_col_at                                                    00000004 GR
+  5 _load_current_level                                             00000379 GR
+  3 _map_buffer                                                     00000000 GR
+  3 _map_column                                                     00000200 GR
+    _mudaTileset_tiles                                              ******** GX
+    _music_castle                                                   ******** GX
+    _music_current_track_bank                                       ******** GX
+    _music_mute_mask                                                ******** GX
+    _music_next_track                                               ******** GX
+    _music_overworld                                                ******** GX
+    _music_sfx_priority                                             ******** GX
+    _music_underground                                              ******** GX
+    _music_underwater                                               ******** GX
+  0 _on_block_bump                                                  00000443 GR
+  0 _on_break_tile                                                  000003A8 GR
+  0 _on_get_coin                                                    000005F2 GR
+  0 _on_get_coin_background                                         00000369 GR
+  0 _on_interogation_block_hit                                      000006DB GR
+    _pipe_clear                                                     ******** GX
+    _pipe_new                                                       ******** GX
+    _platform_falling_new                                           ******** GX
+    _platform_moving_count                                          ******** GX
+    _platform_moving_new                                            ******** GX
+    _powerup_new                                                    ******** GX
+    _rROMB0                                                         ******** GX
+    _score                                                          ******** GX
+    _scroll_limit                                                   ******** GX
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_tile_xy                                                ******** GX
+    _set_bkg_tiles                                                  ******** GX
+  5 _set_level                                                      000003BF GR
+    _set_sprite_data                                                ******** GX
+    _sfx_frame_skip                                                 ******** GX
+    _sfx_play_bank                                                  ******** GX
+    _sfx_play_sample                                                ******** GX
+    _shadow_OAM                                                     ******** GX
+    _sound_bump                                                     ******** GX
+    _sound_coin                                                     ******** GX
+    _sound_destroyed                                                ******** GX
+    _sound_oneup                                                    ******** GX
+    _underground_0_lookup                                           ******** GX
+    _underground_0_map_pages                                        ******** GX
+  0 _undergrounds                                                   00000155 GR
+    b_block_bump_draw                                           =   00000000 G
+    b_block_bump_update                                         =   00000000 G
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 4
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    b_on_block_bump                                             =   00000000 G
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 5
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      824   flags    0
+   1 _HRAM                                      size        0   flags    0
+   2 _DATA                                      size       31   flags    0
+   3 _INITIALIZED                               size      207   flags    0
+   4 _DABS                                      size        0   flags    8
+   5 _HOME                                      size      49D   flags    0
+   6 _GSINIT                                    size        0   flags    0
+   7 _GSFINAL                                   size        0   flags    0
+   8 _INITIALIZER                               size      207   flags    0
+   9 _CABS                                      size        0   flags    8
+

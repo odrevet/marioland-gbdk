@@ -1,0 +1,101 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.1 #15267 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module pipe
+                                      6 	
+                                      7 ;--------------------------------------------------------
+                                      8 ; Public variables in this module
+                                      9 ;--------------------------------------------------------
+                                     10 	.globl _pipe_active
+                                     11 	.globl _active_pipe_direction
+                                     12 	.globl _active_pipe_tile_y
+                                     13 	.globl _active_pipe_tile_x
+                                     14 	.globl _active_pipe
+                                     15 	.globl _pipe_new
+                                     16 	.globl _pipe_clear
+                                     17 ;--------------------------------------------------------
+                                     18 ; special function registers
+                                     19 ;--------------------------------------------------------
+                                     20 	.area _HRAM
+                                     21 ;--------------------------------------------------------
+                                     22 ; ram data
+                                     23 ;--------------------------------------------------------
+                                     24 	.area _DATA
+    00000000                         25 _active_pipe::
+    00000000                         26 	.ds 7
+    00000007                         27 _active_pipe_tile_x::
+    00000007                         28 	.ds 1
+    00000008                         29 _active_pipe_tile_y::
+    00000008                         30 	.ds 1
+    00000009                         31 _active_pipe_direction::
+    00000009                         32 	.ds 1
+                                     33 ;--------------------------------------------------------
+                                     34 ; ram data
+                                     35 ;--------------------------------------------------------
+                                     36 	.area _INITIALIZED
+    00000000                         37 _pipe_active::
+    00000000                         38 	.ds 1
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area _DABS (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; global & static initialisations
+                                     45 ;--------------------------------------------------------
+                                     46 	.area _HOME
+                                     47 	.area _GSINIT
+                                     48 	.area _GSFINAL
+                                     49 	.area _GSINIT
+                                     50 ;--------------------------------------------------------
+                                     51 ; Home
+                                     52 ;--------------------------------------------------------
+                                     53 	.area _HOME
+                                     54 	.area _HOME
+                                     55 ;--------------------------------------------------------
+                                     56 ; code
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _CODE
+                                     59 ;src/pipe.c:9: void pipe_new(uint8_t tile_x, uint8_t tile_y, uint8_t direction, pipe_params *params) {
+                                     60 ;	---------------------------------
+                                     61 ; Function pipe_new
+                                     62 ; ---------------------------------
+    00000000                         63 _pipe_new::
+    00000000 EAr07r00         [16]   64 	ld	(#_active_pipe_tile_x),a
+    00000003 21r08r00         [12]   65 	ld	hl, #_active_pipe_tile_y
+    00000006 73               [ 8]   66 	ld	(hl), e
+                                     67 ;src/pipe.c:12: active_pipe_direction = direction;
+    00000007 F8 02            [12]   68 	ldhl	sp,	#2
+    00000009 7E               [ 8]   69 	ld	a, (hl)
+    0000000A EAr09r00         [16]   70 	ld	(#_active_pipe_direction),a
+                                     71 ;src/pipe.c:13: active_pipe = *params;
+    0000000D F8 03            [12]   72 	ldhl	sp,	#3
+    0000000F 2A               [ 8]   73 	ld	a, (hl+)
+    00000010 4F               [ 4]   74 	ld	c, a
+    00000011 46               [ 8]   75 	ld	b, (hl)
+    00000012 11 07 00         [12]   76 	ld	de, #0x0007
+    00000015 D5               [16]   77 	push	de
+    00000016 11r00r00         [12]   78 	ld	de, #_active_pipe
+    00000019 CDr00r00         [24]   79 	call	___memcpy
+                                     80 ;src/pipe.c:14: pipe_active = TRUE;
+    0000001C 21r00r00         [12]   81 	ld	hl, #_pipe_active
+    0000001F 36 01            [12]   82 	ld	(hl), #0x01
+                                     83 ;src/pipe.c:15: }
+    00000021 E1               [12]   84 	pop	hl
+    00000022 E8 03            [16]   85 	add	sp, #3
+    00000024 E9               [ 4]   86 	jp	(hl)
+                                     87 ;src/pipe.c:17: void pipe_clear(void) {
+                                     88 ;	---------------------------------
+                                     89 ; Function pipe_clear
+                                     90 ; ---------------------------------
+    00000025                         91 _pipe_clear::
+                                     92 ;src/pipe.c:18: pipe_active = FALSE;
+    00000025 AF               [ 4]   93 	xor	a, a
+    00000026 EAr00r00         [16]   94 	ld	(#_pipe_active),a
+                                     95 ;src/pipe.c:19: }
+    00000029 C9               [16]   96 	ret
+                                     97 	.area _CODE
+                                     98 	.area _INITIALIZER
+    00000000                         99 __xinit__pipe_active:
+    00000000 00                     100 	.db #0x00	;  0
+                                    101 	.area _CABS (ABS)

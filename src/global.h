@@ -23,7 +23,7 @@
 #define PLAYER_SPEED_WALK 16
 #define PLAYER_SPEED_RUN 20
 #define PLAYER_DRAW_OFFSET_X 4
-#define PLAYER_DRAW_OFFSET_Y mario_HEIGHT / 2
+#define PLAYER_DRAW_OFFSET_Y marioSprites_HEIGHT / 2
 
 #define ACCELERATION 2      // How quickly player speeds up
 #define DECELERATION 3      // How quickly player slows down (friction)

@@ -3,10 +3,13 @@
 void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
   uint8_t tile;
 
-  if (chr >= '0' && chr <= '9') {
+  if (chr >= '1' && chr <= '9') {
     tile = chr - '0';
   } else {
     switch (chr) {
+    case '0':
+      tile = LETTERS_STARTS_AT + 13;
+      break;
     case 'A':
       tile = LETTERS_STARTS_AT + 0;
       break;
@@ -47,63 +50,65 @@ void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
       tile = LETTERS_STARTS_AT + 12;
       break;
     case 'O':
-      tile = 0; // 0 and O are the same character
-      break;
-    case 'P':
       tile = LETTERS_STARTS_AT + 13;
       break;
-    case 'Q':
+    case 'P':
       tile = LETTERS_STARTS_AT + 14;
       break;
-    case 'R':
+    case 'Q':
       tile = LETTERS_STARTS_AT + 15;
       break;
-    case 'S':
+    case 'R':
       tile = LETTERS_STARTS_AT + 16;
       break;
-    case 'T':
+    case 'S':
       tile = LETTERS_STARTS_AT + 17;
       break;
-    case 'U':
+    case 'T':
       tile = LETTERS_STARTS_AT + 18;
       break;
-    case 'V':
+    case 'U':
       tile = LETTERS_STARTS_AT + 19;
       break;
-    case 'W':
+    case 'V':
       tile = LETTERS_STARTS_AT + 20;
       break;
-    case 'Y':
+    case 'W':
       tile = LETTERS_STARTS_AT + 21;
       break;
-    case 'Z':
+    case 'Y':
       tile = LETTERS_STARTS_AT + 22;
       break;
-    case 'x':
+    case 'Z':
       tile = LETTERS_STARTS_AT + 23;
       break;
-    case '-':
+    case 'x':
       tile = LETTERS_STARTS_AT + 24;
       break;
-    case '.':
+    case '-':
       tile = LETTERS_STARTS_AT + 25;
       break;
-    case ',':
+    case '.':
       tile = LETTERS_STARTS_AT + 26;
       break;
-    case '!':
+    case ',':
       tile = LETTERS_STARTS_AT + 27;
       break;
-    case '?':
+    case '!':
       tile = LETTERS_STARTS_AT + 28;
       break;
+    case '?':
+      tile = LETTERS_STARTS_AT + 29;
+      break;
     case ' ':
+      tile = 0;
+      break;
     default:
       tile = LETTERS_STARTS_AT + 29;
     }
   }
   #ifdef GAMEBOY
-  set_win_tile_xy(x, y, tile + text_TILE_ORIGIN);
+  set_win_tile_xy(x, y, tile + textTileset_TILE_ORIGIN);
   #endif
 }
 

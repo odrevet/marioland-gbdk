@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "global.h"
-#include "graphics/enemies.h"
-#include "graphics/enemies_large_birabuto.h"
+#include "enemiesSprites.h"
+#include "enemiesBirabutoSprites.h"
 
 BANKREF_EXTERN(enemy)
 

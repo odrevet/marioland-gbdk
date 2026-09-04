@@ -3,13 +3,14 @@
 #include <gbdk/platform.h>
 
 #include "global.h"
-#include "graphics/enemies.h"
+#include "enemiesSprites.h"
 #include "level_object.h"
 #include "level_tables.h"
-#include "lookup_tables/lookup_table_underground.h"
+#include "lookup_table_underground.h"
 
-#ifdef GAMEBOY
-#include "musics/musics.h"
+#ifdef NINTENDO
+#include "musicmanager.h"
+#include "musics.h"
 #endif
 
 #include "platforms.h"
@@ -70,10 +71,10 @@ const level levels[NB_LEVELS] = {
     #endif
     .map_pages = level_1_1_map,
     .page_count = level_table_1_1_ENTRY_COUNT,
-    .map_tiles_bank = BANK(birabuto),
-    .map_tile_origin = birabuto_TILE_ORIGIN,
-    .map_tiles = birabuto_tiles,
-    .map_tiles_count = birabuto_TILE_COUNT,
+    .map_tiles_bank = BANK(birabutoTileset),
+    .map_tile_origin = birabutoTileset_TILE_ORIGIN,
+    .map_tiles = birabutoTileset_tiles,
+    .map_tiles_count = birabutoTileset_TILE_COUNT,
     .map_width = level_table_1_1_ENTRY_COUNT * PAGE_SIZE * 8,
     .map_width_in_tiles = level_table_1_1_ENTRY_COUNT * PAGE_SIZE,
     .lookup_bank = BANK(level_1_1_lookup),
@@ -89,10 +90,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_1_2_map,
   .page_count = level_table_1_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(birabuto),
-  .map_tile_origin = birabuto_TILE_ORIGIN,
-  .map_tiles = birabuto_tiles,
-  .map_tiles_count = birabuto_TILE_COUNT,
+  .map_tiles_bank = BANK(birabutoTileset),
+  .map_tile_origin = birabutoTileset_TILE_ORIGIN,
+  .map_tiles = birabutoTileset_tiles,
+  .map_tiles_count = birabutoTileset_TILE_COUNT,
   .map_width = level_table_1_2_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_1_2_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_1_2_lookup),
@@ -108,10 +109,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_1_3_map,
   .page_count = level_table_1_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(birabuto),
-  .map_tile_origin = birabuto_TILE_ORIGIN,
-  .map_tiles = birabuto_tiles,
-  .map_tiles_count = birabuto_TILE_COUNT,
+  .map_tiles_bank = BANK(birabutoTileset),
+  .map_tile_origin = birabutoTileset_TILE_ORIGIN,
+  .map_tiles = birabutoTileset_tiles,
+  .map_tiles_count = birabutoTileset_TILE_COUNT,
   .map_width = level_table_1_3_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_1_3_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_1_3_lookup),
@@ -127,10 +128,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_1_map,
   .page_count = level_table_2_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(muda),
-  .map_tile_origin = muda_TILE_ORIGIN,
-  .map_tiles = muda_tiles,
-  .map_tiles_count = muda_TILE_COUNT,
+  .map_tiles_bank = BANK(mudaTileset),
+  .map_tile_origin = mudaTileset_TILE_ORIGIN,
+  .map_tiles = mudaTileset_tiles,
+  .map_tiles_count = mudaTileset_TILE_COUNT,
   .map_width = level_table_2_1_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_2_1_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_2_1_lookup),
@@ -146,10 +147,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_2_map,
   .page_count = level_table_2_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(muda),
-  .map_tile_origin = muda_TILE_ORIGIN,
-  .map_tiles = muda_tiles,
-  .map_tiles_count = muda_TILE_COUNT,
+  .map_tiles_bank = BANK(mudaTileset),
+  .map_tile_origin = mudaTileset_TILE_ORIGIN,
+  .map_tiles = mudaTileset_tiles,
+  .map_tiles_count = mudaTileset_TILE_COUNT,
   .map_width = level_table_2_2_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_2_2_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_2_2_lookup),
@@ -165,10 +166,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_3_map,
   .page_count = level_table_2_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(muda),
-  .map_tile_origin = muda_TILE_ORIGIN,
-  .map_tiles = muda_tiles,
-  .map_tiles_count = muda_TILE_COUNT,
+  .map_tiles_bank = BANK(mudaTileset),
+  .map_tile_origin = mudaTileset_TILE_ORIGIN,
+  .map_tiles = mudaTileset_tiles,
+  .map_tiles_count = mudaTileset_TILE_COUNT,
   .map_width = level_table_2_3_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_2_3_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_2_3_lookup),
@@ -184,10 +185,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_1_map,
   .page_count = level_table_3_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(easton),
-  .map_tile_origin = easton_TILE_ORIGIN,
-  .map_tiles = easton_tiles,
-  .map_tiles_count = easton_TILE_COUNT,
+  .map_tiles_bank = BANK(eastonTileset),
+  .map_tile_origin = eastonTileset_TILE_ORIGIN,
+  .map_tiles = eastonTileset_tiles,
+  .map_tiles_count = eastonTileset_TILE_COUNT,
   .map_width = level_table_3_1_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_3_1_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_3_1_lookup),
@@ -203,10 +204,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_2_map,
   .page_count = level_table_3_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(easton),
-  .map_tile_origin = easton_TILE_ORIGIN,
-  .map_tiles = easton_tiles,
-  .map_tiles_count = easton_TILE_COUNT,
+  .map_tiles_bank = BANK(eastonTileset),
+  .map_tile_origin = eastonTileset_TILE_ORIGIN,
+  .map_tiles = eastonTileset_tiles,
+  .map_tiles_count = eastonTileset_TILE_COUNT,
   .map_width = level_table_3_2_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_3_2_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_3_2_lookup),
@@ -222,10 +223,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_3_map,
   .page_count = level_table_3_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(easton),
-  .map_tile_origin = easton_TILE_ORIGIN,
-  .map_tiles = easton_tiles,
-  .map_tiles_count = easton_TILE_COUNT,
+  .map_tiles_bank = BANK(eastonTileset),
+  .map_tile_origin = eastonTileset_TILE_ORIGIN,
+  .map_tiles = eastonTileset_tiles,
+  .map_tiles_count = eastonTileset_TILE_COUNT,
   .map_width = level_table_3_3_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_3_3_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_3_3_lookup),
@@ -241,10 +242,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_1_map,
   .page_count = level_table_4_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chai),
-  .map_tile_origin = chai_TILE_ORIGIN,
-  .map_tiles = chai_tiles,
-  .map_tiles_count = chai_TILE_COUNT,
+  .map_tiles_bank = BANK(chaiTileset),
+  .map_tile_origin = chaiTileset_TILE_ORIGIN,
+  .map_tiles = chaiTileset_tiles,
+  .map_tiles_count = chaiTileset_TILE_COUNT,
   .map_width = level_table_4_1_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_4_1_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_4_1_lookup),
@@ -260,10 +261,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_2_map,
   .page_count = level_table_4_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chai),
-  .map_tile_origin = chai_TILE_ORIGIN,
-  .map_tiles = chai_tiles,
-  .map_tiles_count = chai_TILE_COUNT,
+  .map_tiles_bank = BANK(chaiTileset),
+  .map_tile_origin = chaiTileset_TILE_ORIGIN,
+  .map_tiles = chaiTileset_tiles,
+  .map_tiles_count = chaiTileset_TILE_COUNT,
   .map_width = level_table_4_2_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_4_2_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_4_2_lookup),
@@ -279,10 +280,10 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_3_map,
   .page_count = level_table_4_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chai),
-  .map_tile_origin = chai_TILE_ORIGIN,
-  .map_tiles = chai_tiles,
-  .map_tiles_count = chai_TILE_COUNT,
+  .map_tiles_bank = BANK(chaiTileset),
+  .map_tile_origin = chaiTileset_TILE_ORIGIN,
+  .map_tiles = chaiTileset_tiles,
+  .map_tiles_count = chaiTileset_TILE_COUNT,
   .map_width = level_table_4_3_ENTRY_COUNT * PAGE_SIZE * 8,
   .map_width_in_tiles = level_table_4_3_ENTRY_COUNT * PAGE_SIZE,
   .lookup_bank = BANK(level_4_3_lookup),
@@ -473,8 +474,8 @@ void on_block_bump(uint8_t x, uint8_t y) BANKED {
                  MUSIC_SFX_PRIORITY_NORMAL);
 
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(common));
-  set_sprite_data(90, 1, common_tiles + ((BREAKABLE_BLOCK - common_TILE_ORIGIN) * 16));
+  SWITCH_ROM(BANK(commonTileset));
+  set_sprite_data(90, 1, commonTileset_tiles + ((BREAKABLE_BLOCK - commonTileset_TILE_ORIGIN) * 16));
   SWITCH_ROM(_saved_bank);
 
   block_bump_state.active = true;
@@ -603,7 +604,7 @@ void level_load_objects(uint16_t col) NONBANKED {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         uint16_t relative_x = obj->x - level_page_x_offset;
         enemy_new(relative_x * TILE_SIZE,
-                  (obj->y + MARGIN_TOP) * TILE_SIZE - enemies_HEIGHT,
+                  (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         //EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {

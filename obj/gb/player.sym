@@ -1,0 +1,174 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _EMU_printf                                                     ******** GX
+    _EMU_profiler_message                                           ******** GX
+    _NR12_REG                                                       ******** GX
+    _NR14_REG                                                       ******** GX
+    _NR22_REG                                                       ******** GX
+    _NR24_REG                                                       ******** GX
+    _NR32_REG                                                       ******** GX
+    _NR42_REG                                                       ******** GX
+    _NR44_REG                                                       ******** GX
+    _NR51_REG                                                       ******** GX
+    _SCX_REG                                                        ******** GX
+    _SCY_REG                                                        ******** GX
+  3 ___EMU_PROFILER_INIT                                            00000000 R
+    ___bank_marioSprites                                            ******** GX
+    ___bank_player                                              =   000000FF G
+    ___bank_sound_jump_small                                        ******** GX
+    ___bank_sound_pipe                                              ******** GX
+    ___current_base_prop                                            ******** GX
+    ___current_base_tile                                            ******** GX
+    ___current_metasprite                                           ******** GX
+  8 ___func_player                                                  00000000 GR
+    ___move_metasprite                                              ******** GX
+    ___move_metasprite_flipx                                        ******** GX
+    ___mute_mask_sound_jump_small                                   ******** GX
+    ___mute_mask_sound_pipe                                         ******** GX
+    ___sdcc_bcall_ehl                                               ******** GX
+  8 ___str_0                                                        00000A7D R
+    __current_bank                                                  ******** GX
+    __moduchar                                                      ******** GX
+  9 __xinit____EMU_PROFILER_INIT                                    00000000 R
+  9 __xinit__current_jump                                           00000004 R
+  9 __xinit__frame_counter                                          00000007 R
+  9 __xinit__is_jumping                                             00000002 R
+  9 __xinit__player_frame                                           00000006 R
+  9 __xinit__player_is_big                                          00000008 R
+  9 __xinit__touch_ground                                           00000003 R
+    _active_pipe                                                    ******** GX
+    _active_pipe_direction                                          ******** GX
+    _active_pipe_tile_x                                             ******** GX
+    _active_pipe_tile_y                                             ******** GX
+  8 _apply_velocity                                                 00000000 R
+    _camera_x                                                       ******** GX
+    _camera_x_upscaled                                              ******** GX
+  2 _coins                                                          00000000 GR
+    _col_from                                                       ******** GX
+    _current_column_in_page                                         ******** GX
+  3 _current_jump                                                   00000004 GR
+    _current_level                                                  ******** GX
+    _current_map_width                                              ******** GX
+    _current_map_width_in_tiles                                     ******** GX
+    _current_page                                                   ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _delay                                                          ******** GX
+  2 _display_jump_frame                                             0000001C GR
+  2 _display_slide_frame                                            0000001D GR
+  2 _display_walk_animation                                         0000001E GR
+    _enemy_reset_all                                                ******** GX
+  3 _frame_counter                                                  00000007 GR
+    _get_tile                                                       ******** GX
+    _hide_sprites_range                                             ******** GX
+    _init                                                           ******** GX
+    _is_coin                                                        ******** GX
+  3 _is_jumping                                                     00000002 GR
+    _is_tile_passthought                                            ******** GX
+    _is_tile_solid                                                  ******** GX
+  2 _joypad_current                                                 00000007 GR
+  2 _joypad_previous                                                00000006 GR
+    _level_end_reached                                              ******** GX
+    _level_load_column                                              ******** GX
+    _level_load_objects                                             ******** GX
+    _level_lookup                                                   ******** GX
+    _level_lookup_bank                                              ******** GX
+    _level_lookup_size                                              ******** GX
+    _level_page_x_offset                                            ******** GX
+    _level_set_current                                              ******** GX
+    _levels                                                         ******** GX
+  2 _lives                                                          00000005 GR
+    _load_col_at                                                    ******** GX
+    _map_column                                                     ******** GX
+    _marioSprites_metasprites                                       ******** GX
+  2 _marioSpritesflip                                               0000001F GR
+    _music_current_track_bank                                       ******** GX
+    _music_mute_mask                                                ******** GX
+    _music_next_track                                               ******** GX
+    _music_sfx_priority                                             ******** GX
+    _on_block_bump                                                  ******** GX
+    _on_break_tile                                                  ******** GX
+    _on_get_coin_background                                         ******** GX
+    _on_interogation_block_hit                                      ******** GX
+    _pipe_active                                                    ******** GX
+    _pipe_clear                                                     ******** GX
+  2 _plane_mode                                                     00000024 GR
+    _platform_moving_count                                          ******** GX
+    _platforms_moving                                               ******** GX
+  5 _player_check_horizontal_pipe_entry                             0000042D GR
+  5 _player_check_pipe_entry                                        0000009B GR
+  5 _player_draw                                                    0000001A GR
+  2 _player_draw_x                                                  00000018 GR
+  2 _player_draw_y                                                  00000019 GR
+  5 _player_enter_pipe                                              0000011B GR
+  3 _player_frame                                                   00000006 GR
+  3 _player_is_big                                                  00000008 GR
+  8 _player_is_on_platform                                          000011BE GR
+  8 _player_move                                                    000000B8 GR
+  8 _player_move_vehicle                                            00000AB1 GR
+  5 _player_on_touch_ground                                         00000622 GR
+  5 _player_warp_to                                                 000004E4 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 3
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  2 _player_x                                                       00000010 GR
+  2 _player_x_next                                                  00000014 GR
+  2 _player_x_next_upscaled                                         0000000C GR
+  2 _player_x_upscaled                                              00000008 GR
+  2 _player_y                                                       00000012 GR
+  2 _player_y_next                                                  00000016 GR
+  2 _player_y_next_upscaled                                         0000000E GR
+  2 _player_y_upscaled                                              0000000A GR
+    _rROMB0                                                         ******** GX
+  2 _score                                                          00000001 GR
+  2 _scroll_limit                                                   00000020 GR
+    _sfx_frame_skip                                                 ******** GX
+    _sfx_play_bank                                                  ******** GX
+    _sfx_play_sample                                                ******** GX
+    _sound_jump_small                                               ******** GX
+    _sound_pipe                                                     ******** GX
+  2 _tile_next_1                                                    00000022 GR
+  2 _tile_next_2                                                    00000023 GR
+  2 _time                                                           00000003 GR
+  3 _touch_ground                                                   00000003 GR
+  5 _update_frame_counter                                           00000000 GR
+  2 _vel_x                                                          0000001A GR
+  2 _vel_y                                                          0000001B GR
+    _vsync                                                          ******** GX
+    b___func_player                                             =   000000FF L
+    b_enemy_reset_all                                               ******** GX
+    b_on_block_bump                                                 ******** GX
+    b_player_is_on_platform                                     =   000000FF G
+    b_player_move                                               =   000000FF G
+    b_player_move_vehicle                                       =   000000FF G
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 4
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _HRAM                                      size        0   flags    0
+   2 _DATA                                      size       25   flags    0
+   3 _INITIALIZED                               size        9   flags    0
+   4 _DABS                                      size        0   flags    8
+   5 _HOME                                      size      635   flags    0
+   6 _GSINIT                                    size        0   flags    0
+   7 _GSFINAL                                   size        0   flags    0
+   8 _CODE_255                                  size     1297   flags    0
+   9 _INITIALIZER                               size        9   flags    0
+   A _CABS                                      size        0   flags    8
+
