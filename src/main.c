@@ -38,6 +38,29 @@
 #include "powerup.h"
 #include "text.h"
 
+#ifndef GAMEBOY
+void SetSpritePalettes(palette_color_t* palette, uint8_t bank) NONBANKED{
+    uint8_t _previous_bank = CURRENT_BANK;
+    const uint8_t baseProp=0;
+
+    SWITCH_ROM(bank);
+    
+    // Set up color palettes
+    #if defined(SEGA)
+            set_sprite_palette(baseProp, 1, palette);
+    #elif defined(GAMEBOY)
+        if (_cpu == CGB_TYPE) {
+            set_sprite_palette(OAMF_CGB_PAL0, 1, palette);
+        }
+    #elif defined(NINTENDO_NES)
+        set_sprite_palette(baseProp, 4, palette);
+    #endif
+
+
+    SWITCH_ROM(_previous_bank);
+}
+#endif
+
 void setBKGPalettes(uint8_t count, const palette_color_t *palettes) NONBANKED{
     // Set up color palettes
     #if defined(SEGA)
@@ -256,7 +279,9 @@ void main(void) {
 
   SWITCH_ROM(BANK(marioSprites));
   set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
-  setBKGPalettes(marioSprites_PALETTE_COUNT, marioSprites_palettes);
+#ifndef GAMEBOY
+  SetSpritePalettes(marioSprites_palettes, BANK(marioSprites));
+#endif
 
   SWITCH_ROM(BANK(enemiesSprites));
   set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
