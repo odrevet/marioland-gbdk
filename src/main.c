@@ -183,8 +183,6 @@ void main(void) {
   }
 #endif
 
-
-  DISPLAY_ON;
   SHOW_BKG;
 #ifdef GAMEBOY
   SHOW_WIN;
@@ -204,19 +202,36 @@ void main(void) {
   uint8_t _saved_bank = _current_bank;
 
   SWITCH_ROM(BANK(textTileset));
-  set_bkg_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);  
+  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);  
 
   SWITCH_ROM(BANK(TitleScreen));
-  set_bkg_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
-  set_bkg_tiles(0, 0, 20, 18, TitleScreen_map);
+#ifdef NINTENDO_NES
+  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 2);
+#endif
 
+  set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
+
+#ifdef NINTENDO_NES
+  uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
+  uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(18))/2;
+  set_bkg_tiles(titleColumn,titleRow, 20, 18, TitleScreen_map);
+#else
+  set_bkg_tiles(0,0, 20, 18, TitleScreen_map);
+#endif
+
+  DISPLAY_ON;
   state_title();
+  DISPLAY_OFF;
+
+#ifdef NINTENDO_NES
+  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, TILE_EMPTY);
+#endif
 
   SWITCH_ROM(BANK(textTileset));
-  set_bkg_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles); 
+  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles); 
 
   SWITCH_ROM(BANK(commonTileset));
-  set_bkg_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
+  set_bkg_native_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
 
   SWITCH_ROM(BANK(marioSprites));
   set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
@@ -260,6 +275,8 @@ void main(void) {
   hud_update_time();
   hud_update_lives();
 #endif
+
+  DISPLAY_ON;
 
   while (1) {
     joypad_previous = joypad_current;
@@ -379,10 +396,10 @@ void main(void) {
 
         /*if (background_animation_counter) {
           SWITCH_ROM(BANK(birabutoTileset_torch));
-          set_bkg_data(TILE_TORCH, 1, birabuto_torch_tiles);
+          set_bkg_native_data(TILE_TORCH, 1, birabuto_torch_tiles);
         } else {
           SWITCH_ROM(BANK(birabutoTileset));
-          set_bkg_data(TILE_TORCH, 1,
+          set_bkg_native_data(TILE_TORCH, 1,
                        birabutoTileset_tiles + 288);
         }*/
       }

@@ -755,7 +755,7 @@ void set_level(uint8_t level_index) NONBANKED {
   current_map_tiles = levels[level_index].map_tiles;
   current_map_tile_origin = levels[level_index].map_tile_origin;
   current_map_tile_count = levels[level_index].map_tiles_count;
-  set_bkg_data(current_map_tile_origin, current_map_tile_count,
+  set_bkg_native_data(current_map_tile_origin, current_map_tile_count,
                current_map_tiles);
 
   // Set level dimensions
