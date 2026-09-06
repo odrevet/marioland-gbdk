@@ -242,8 +242,12 @@ void main(void) {
   fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, TILE_EMPTY);
 #endif
 
+#if defined(SEGA)
+#define set_sprite_data set_sprite_native_data
+#endif
+
   SWITCH_ROM(BANK(textTileset));
-  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
+  set_sprite_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
   setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
 
   SWITCH_ROM(BANK(commonTileset));
@@ -251,19 +255,19 @@ void main(void) {
   setBKGPalettes(commonTileset_PALETTE_COUNT, commonTileset_palettes);
 
   SWITCH_ROM(BANK(marioSprites));
-  set_sprite_native_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
+  set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
   setBKGPalettes(marioSprites_PALETTE_COUNT, marioSprites_palettes);
 
   SWITCH_ROM(BANK(enemiesSprites));
-  set_sprite_native_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
+  set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
   setBKGPalettes(enemiesSprites_PALETTE_COUNT, enemiesSprites_palettes);
 
   SWITCH_ROM(BANK(enemiesBirabutoSprites));
-  set_sprite_native_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
+  set_sprite_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
   setBKGPalettes(enemiesBirabutoSprites_PALETTE_COUNT, enemiesBirabutoSprites_palettes);
 
   SWITCH_ROM(BANK(commonSprites));
-  set_sprite_native_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT, commonSprites_tiles);
+  set_sprite_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT, commonSprites_tiles);
   setBKGPalettes(commonSprites_PALETTE_COUNT, commonSprites_palettes);
 
   SWITCH_ROM(_saved_bank);
@@ -275,7 +279,7 @@ void main(void) {
 #endif
 
   move_camera(0);
-  
+
   current_level = 0;
   map_column = 0;
   level_set_current();
