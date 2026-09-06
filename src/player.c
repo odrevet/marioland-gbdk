@@ -13,7 +13,7 @@
 #endif
 
 BANKREF(player)
-#include <gbdk/emu_debug.h>
+//#include <gbdk/emu_debug.h>
 
 uint8_t coins;
 uint16_t score;
@@ -376,9 +376,9 @@ void player_move(void) BANKED {
 
 uint8_t tx1 = TILE_INDEX_X(player_x_next + MARIO_WIDTH - PLAYER_HORIZONTAL_MARGIN - camera_x, camera_x);
 uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
-EMU_printf("H px=%d py=%d tx=%d ty=%d t1=%02x t2=%02x solid=%d\n",
-           player_x_next, player_y_next, tx1, ty1, tile_next_1, tile_next_2,
-           is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2));
+//EMU_printf("H px=%d py=%d tx=%d ty=%d t1=%02x t2=%02x solid=%d\n",
+//           player_x_next, player_y_next, tx1, ty1, tile_next_1, tile_next_2,
+//           is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2));
 
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       player_x = TILE_ALIGN(player_x_next) - 7;
