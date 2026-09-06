@@ -389,23 +389,16 @@ void enemy_update(void) BANKED {
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
 
-
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
-    // Skip inactive enemies
     if (!enemies[index_enemy].active) {
       continue;
     }
 
     uint8_t draw_index = enemies[index_enemy].current_frame;
 
-
-    //EMU_printf("ENEMY %d %d\n", enemies[index_enemy].x,
-    //           enemies[index_enemy].y);
-
     uint8_t _saved_bank = _current_bank;
     uint8_t tile_origin;
     const metasprite_t * const *metasprites;
-    
     if (enemies[index_enemy].type == ENEMY_FLY) {
       SWITCH_ROM(BANK(enemiesBirabutoSprites));
       metasprites = enemiesBirabutoSprites_metasprites;
@@ -420,15 +413,16 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     uint8_t draw_x = enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4;
     uint8_t draw_y = enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + enemiesSprites_HEIGHT + 8;
 
+#ifdef SEGA
+    base_sprite += move_metasprite_ex(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
+#else
     if (enemies[index_enemy].flip) {
       base_sprite += move_metasprite_flipx(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
     } else {
       base_sprite += move_metasprite_ex(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
     }
+#endif
 
     SWITCH_ROM(_saved_bank);
   }
-
-
-  return base_sprite;
 }

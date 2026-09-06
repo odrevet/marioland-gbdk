@@ -90,6 +90,11 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
   const metasprite_t *const marioSprites_metasprite =
       marioSprites_metasprites[frame_index];
+
+#ifdef SEGA
+  base_sprite += move_metasprite_ex(marioSprites_metasprite, 0, 0, 0,
+                                     player_draw_x, player_draw_y);
+#else
   if (marioSpritesflip) {
     base_sprite += move_metasprite_flipx(marioSprites_metasprite, 0, 0, 0,
                                          player_draw_x, player_draw_y);
@@ -97,6 +102,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
     base_sprite += move_metasprite_ex(marioSprites_metasprite, 0, 0, 0,
                                       player_draw_x, player_draw_y);
   }
+#endif
 
   SWITCH_ROM(_saved_bank);
 
