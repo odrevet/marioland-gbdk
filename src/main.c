@@ -38,6 +38,21 @@
 #include "powerup.h"
 #include "text.h"
 
+void setBKGPalettes(uint8_t count, const palette_color_t *palettes) NONBANKED{
+    // Set up color palettes
+    #if defined(SEGA)
+        //__WRITE_VDP_REG(VDP_R2, R2_MAP_0x3800);
+        //__WRITE_VDP_REG(VDP_R5, R5_SAT_0x3F00);
+        set_bkg_palette(0, count, palettes);
+    #elif defined(NINTENDO) // With NINTENDO meaning GAMEBOY, ANALOGUEPOCKET, MEGADUCK
+        if (_cpu == CGB_TYPE) {
+            set_bkg_palette(OAMF_CGB_PAL0, count, palettes);
+        }
+    #elif defined(NINTENDO_NES)
+        set_bkg_palette(0, count, palettes);
+    #endif
+}
+
 #ifdef GAMEBOY
 const uint8_t window_location = WINDOW_Y + WINDOW_HEIGHT_TILE * TILE_SIZE;
 #endif
@@ -228,23 +243,28 @@ void main(void) {
 #endif
 
   SWITCH_ROM(BANK(textTileset));
-  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles); 
+  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
+  setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
 
   SWITCH_ROM(BANK(commonTileset));
   set_bkg_native_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
+  setBKGPalettes(commonTileset_PALETTE_COUNT, commonTileset_palettes);
 
   SWITCH_ROM(BANK(marioSprites));
-  set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
+  set_sprite_native_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
+  setBKGPalettes(marioSprites_PALETTE_COUNT, marioSprites_palettes);
 
   SWITCH_ROM(BANK(enemiesSprites));
-  set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
+  set_sprite_native_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
+  setBKGPalettes(enemiesSprites_PALETTE_COUNT, enemiesSprites_palettes);
 
   SWITCH_ROM(BANK(enemiesBirabutoSprites));
-  set_sprite_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
+  set_sprite_native_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
+  setBKGPalettes(enemiesBirabutoSprites_PALETTE_COUNT, enemiesBirabutoSprites_palettes);
 
   SWITCH_ROM(BANK(commonSprites));
-  set_sprite_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT,
-                  commonSprites_tiles);
+  set_sprite_native_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT, commonSprites_tiles);
+  setBKGPalettes(commonSprites_PALETTE_COUNT, commonSprites_palettes);
 
   SWITCH_ROM(_saved_bank);
 
@@ -268,8 +288,8 @@ void main(void) {
 #ifdef GAMEBOY
   set_win_tiles(0, 0, WINDOW_WIDTH_TILE, WINDOW_HEIGHT_TILE, windata);
   move_win(WINDOW_X, WINDOW_Y);
-  text_print_string(0, 0, "MARIOx00  WORLD TIME");
-  text_print_string(0, 1, "     0  x00 1-1  000");
+  text_print_string(0, 0, "MARIOX00  WORLD TIME");
+  text_print_string(0, 1, "     0  X00 1-1  000");
 
   set_win_tile_xy(7, 1, TILE_COIN);
   hud_update_time();

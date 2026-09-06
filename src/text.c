@@ -76,13 +76,13 @@ void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
     case 'W':
       tile = LETTERS_STARTS_AT + 21;
       break;
-    case 'Y':
+    case 'X':
       tile = LETTERS_STARTS_AT + 22;
       break;
-    case 'Z':
+    case 'Y':
       tile = LETTERS_STARTS_AT + 23;
       break;
-    case 'x':
+    case 'Z':
       tile = LETTERS_STARTS_AT + 24;
       break;
     case '-':
