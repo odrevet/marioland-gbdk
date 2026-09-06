@@ -65,7 +65,7 @@ void platform_moving_update() {
 }
 
 uint8_t platform_moving_draw(uint8_t base_sprite) {
-  /*uint8_t _saved_bank = _current_bank;
+  uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(commonSprites));
 
   uint8_t draw_index = 4;
@@ -77,7 +77,7 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
     for (uint8_t i = 0; i < PLATFORMS_MOVING_SIZE; i++) {
       base_sprite += move_metasprite_ex(
           commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, base_sprite,
-          platforms_moving[index_platform_moving].draw_x + i * commonSprite_TILE_W +
+          platforms_moving[index_platform_moving].draw_x + i * commonSprites_TILE_W +
               DEVICE_SPRITE_PX_OFFSET_X + TILE_SIZE,
           platforms_moving[index_platform_moving].draw_y +
               +DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX + TILE_SIZE);
@@ -85,8 +85,7 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
   }
   SWITCH_ROM(_saved_bank);
 
-  return base_sprite;*/
-  return 0;
+  return base_sprite;
 }
 
 void platform_falling_new(uint16_t x, uint16_t y) {}
