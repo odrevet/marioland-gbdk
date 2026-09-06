@@ -411,7 +411,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
       metasprites = enemiesBirabutoSprites_metasprites;
       tile_origin = enemiesBirabutoSprites_TILE_ORIGIN;
     } else {
-      SWITCH_ROM(BANK(enemiesBirabutoSprites));
+      SWITCH_ROM(BANK(enemiesSprites));
       metasprites = enemiesSprites_metasprites;
       tile_origin = enemiesSprites_TILE_ORIGIN;
     }
