@@ -271,10 +271,11 @@ void main(void) {
 #ifdef GAMEBOY
   disable_interrupts();
   add_VBL(interruptVBL);
-  move_bkg(0, -MARGIN_TOP_PX);
   enable_interrupts();
 #endif
 
+  move_camera(0);
+  
   current_level = 0;
   map_column = 0;
   level_set_current();

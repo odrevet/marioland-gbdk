@@ -231,7 +231,7 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   delay(500);
 
   camera_x = 0;
-  move_bkg(0, SCROLL_TOP_OFFSET);
+  move_camera(camera_x);
   camera_x_upscaled = 0;
 
   current_page = destination_page;
@@ -407,14 +407,14 @@ uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
       if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        move_bkg(camera_x, SCROLL_TOP_OFFSET);
+        move_camera(camera_x);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
-        move_bkg(camera_x, SCROLL_TOP_OFFSET);
+        move_camera(camera_x);
         scroll_limit = player_x;
         level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
                            7);
@@ -627,14 +627,14 @@ void player_move_vehicle(void) BANKED {
       if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        move_bkg(camera_x, SCROLL_TOP_OFFSET);
+        move_camera(camera_x);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
-        move_bkg(camera_x, SCROLL_TOP_OFFSET);
+        move_camera(camera_x);
         scroll_limit = player_x;
         level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
                            7);

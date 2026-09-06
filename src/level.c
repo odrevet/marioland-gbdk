@@ -722,7 +722,7 @@ void level_set_current(void) NONBANKED {
  */
 void load_current_level(void) NONBANKED {
   camera_x = 0;
-  move_bkg(0, SCROLL_TOP_OFFSET);
+  move_camera(camera_x);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;
@@ -769,4 +769,12 @@ void set_level(uint8_t level_index) NONBANKED {
   level_lookup_size = levels[level_index].lookup_size;
 
   SWITCH_ROM(_saved_bank);
+}
+
+void move_camera(uint16_t x) NONBANKED {
+#ifdef SEGA
+  move_bkg(x, 224 + SCROLL_TOP_OFFSET);
+#else
+  move_bkg(x, SCROLL_TOP_OFFSET);
+#endif
 }
