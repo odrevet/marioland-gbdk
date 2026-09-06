@@ -190,6 +190,10 @@ void main(void) {
   SHOW_WIN;
 #endif
 
+#if DEVICE_SCREEN_BUFFER_WIDTH == DEVICE_SCREEN_WIDTH
+      HIDE_LEFT_COLUMN;
+#endif
+
   SHOW_SPRITES;
   SPRITES_8x8;
 
