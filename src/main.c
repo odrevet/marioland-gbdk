@@ -242,28 +242,28 @@ void main(void) {
   SWITCH_ROM(BANK(textTileset));
   set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);  
 
-  SWITCH_ROM(BANK(TitleScreen));
-#ifdef NINTENDO_NES
-  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 2);
-#endif
-
-  set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
-
-#ifdef NINTENDO_NES
-  uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
-  uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(18))/2;
-  set_bkg_tiles(titleColumn,titleRow, 20, 18, TitleScreen_map);
-#else
-  set_bkg_tiles(0,0, 20, 18, TitleScreen_map);
-#endif
-
-  DISPLAY_ON;
-  state_title();
-  DISPLAY_OFF;
-
-#ifdef NINTENDO_NES
-  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, TILE_EMPTY);
-#endif
+//  SWITCH_ROM(BANK(TitleScreen));
+//#ifdef NINTENDO_NES
+//  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 2);
+//#endif
+//
+//  set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
+//
+//#ifdef NINTENDO_NES
+//  uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
+//  uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(18))/2;
+//  set_bkg_tiles(titleColumn,titleRow, 20, 18, TitleScreen_map);
+//#else
+//  set_bkg_tiles(0,0, 20, 18, TitleScreen_map);
+//#endif
+//
+//  DISPLAY_ON;
+//  state_title();
+//  DISPLAY_OFF;
+//
+//#ifdef NINTENDO_NES
+//  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, TILE_EMPTY);
+//#endif
 
 #if defined(SEGA)
 #define set_sprite_data set_sprite_native_data
