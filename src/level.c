@@ -602,13 +602,11 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        #ifdef GAMEBOY
         uint16_t relative_x = obj->x - level_page_x_offset;
         enemy_new(relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         //EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
-        #endif
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         // Powerups handled by interrogation blocks
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
