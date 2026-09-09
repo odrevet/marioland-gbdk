@@ -35,8 +35,8 @@ OBJS        = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
 # Add port source to path
 vpath %.c $(SRCDIR):$(SRCDIR)/$(PORT)
 
-# sm83-specific
 EXTRA_OBJDIR = obj_extra/$(PORT)
+EXTRA_OBJ := $(wildcard $(EXTRA_OBJDIR)/*.o)
 
 ifeq ($(PORT),sm83)
 EXTRA_OBJ := $(EXTRA_OBJDIR)/hUGEDriver.o
