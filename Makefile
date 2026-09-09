@@ -75,11 +75,6 @@ endif
 
 compile-target: $(BINS)
 
-compile.bat: Makefile
-	@echo "REM Automatically generated from Makefile" > compile.bat
-	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
-
-
 # png2asset settings for backgrounds
 PNG2ASSET_BKG_SETTINGS_gg=-pack_mode sms -bpp 4
 PNG2ASSET_BKG_SETTINGS_sms=-pack_mode sms -bpp 4
@@ -131,9 +126,6 @@ png2asset:
 	$(PNG2ASSET) res/graphics/sprites/enemies_muda-$(SPRITES).png -o $(GENDIR)/enemiesMudaSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
 	$(PNG2ASSET) res/graphics/sprites/enemies_easton-$(SPRITES).png -o $(GENDIR)/enemiesEastonSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
 	$(PNG2ASSET) res/graphics/sprites/enemies_chai-$(SPRITES).png -o $(GENDIR)/enemiesChaiSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-
-
-
 
 # tilesets
 	$(PNG2ASSET) res/graphics/tilesets/text.png -o $(GENDIR)/textTileset.c -keep_palette_order -keep_duplicate_tiles -noflip -map $(PNG2ASSET_BKG_SETTINGS_$(EXT)) -b 255
