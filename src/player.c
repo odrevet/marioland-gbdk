@@ -88,6 +88,13 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   SWITCH_ROM(BANK(marioSprites));
 
   uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
+
+#ifdef SEGA
+  if (marioSpritesflip) {
+    frame_index += 15;
+  }
+#endif
+
   const metasprite_t *const marioSprites_metasprite =
       marioSprites_metasprites[frame_index];
 
@@ -417,6 +424,8 @@ uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
+        //EMU_printf("SCROLL camera_x=%d player_x=%d scroll_limit=%d\n", camera_x, player_x, scroll_limit);
+
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
@@ -427,11 +436,7 @@ uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
       }
 
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {
-#if defined(GAMEBOY)
         level_load_column(1, levels + current_level);
-#elif defined(NINTENDO_NES)
-        level_load_column(1, levels + current_level);
-#endif
         load_col_at++;
       }
     }

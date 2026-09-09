@@ -65,7 +65,7 @@ void state_pause(void) {
     joypad_previous = joypad_current;
     joypad_current = joypad();
 
-    if (joypad_current & J_SELECT && !(joypad_previous & J_SELECT)) {
+    if (joypad_current & J_A && !(joypad_previous & J_A)) {
       map_column = 0;
       current_level = (++current_level) % NB_LEVELS;
       init();

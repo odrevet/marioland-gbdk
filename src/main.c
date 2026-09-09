@@ -246,8 +246,8 @@ void main(void) {
   fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 2);
 #endif
 
-  // FIXME clash with HUD
-  //set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
+  set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
+  setBKGPalettes(TitleScreen_PALETTE_COUNT, TitleScreen_palettes);
 
 #ifdef NINTENDO_NES
   uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
@@ -273,7 +273,7 @@ void main(void) {
   SetSpritePalettes(marioSprites_palettes, BANK(marioSprites));
 
   SWITCH_ROM(BANK(textTileset));
-  set_sprite_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
+  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
   setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
 
   SWITCH_ROM(BANK(commonTileset));
@@ -285,15 +285,12 @@ void main(void) {
 
   SWITCH_ROM(BANK(enemiesSprites));
   set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
-  setBKGPalettes(enemiesSprites_PALETTE_COUNT, enemiesSprites_palettes);
 
   SWITCH_ROM(BANK(enemiesBirabutoSprites));
   set_sprite_data(enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_TILE_COUNT, enemiesBirabutoSprites_tiles);
-  setBKGPalettes(enemiesBirabutoSprites_PALETTE_COUNT, enemiesBirabutoSprites_palettes);
 
   SWITCH_ROM(BANK(commonSprites));
   set_sprite_data(commonSprites_TILE_ORIGIN, commonSprites_TILE_COUNT, commonSprites_tiles);
-  setBKGPalettes(commonSprites_PALETTE_COUNT, commonSprites_palettes);
 
   SWITCH_ROM(_saved_bank);
 
@@ -337,7 +334,9 @@ void main(void) {
       music_pause(TRUE);
       music_play_sfx(BANK(sound_pause), sound_pause, SFX_MUTE_MASK(sound_pause),
                      MUSIC_SFX_PRIORITY_NORMAL);
+#endif
       state_pause();
+#ifdef GAMEBOY
       music_pause(FALSE);
 #endif
     }

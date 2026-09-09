@@ -657,6 +657,11 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     }
 
     const banked_map_t *page_entry = level_to_load->map_pages + current_page;
+
+    //EMU_printf("page=%d bank=%d col_in_page=%d\n", current_page, page_entry->bank, current_column_in_page);
+    SWITCH_ROM(page_entry->bank);
+    //EMU_printf("after switch: current_bank=%d\n", _current_bank);
+
     SWITCH_ROM(page_entry->bank);
     const unsigned char *current_page_data;
 

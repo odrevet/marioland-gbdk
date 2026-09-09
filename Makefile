@@ -105,18 +105,33 @@ define BUILD_LEVEL_ASSETS
 for f in res/graphics/levels/$(1)/*.png; do n=$$(basename $$f .png); $(PNG2ASSET) $$f -c $(GENDIR)/level_$$n.c -noflip -map -maps_only -tile_origin 40 -source_tileset res/graphics/tilesets/common.png -source_tileset res/graphics/tilesets/$(LEVEL_TILESET_$(1)).png $(PNG2ASSET_BKG_SETTINGS_$(EXT)) -keep_duplicate_tiles -b 255; done
 endef
 
+ifneq ($(filter sm83 mod6502,$(PORT)),)
+	TILE_ORIGIN := 0
+	ENEMIES_TILE_ORIGIN := 53
+	COMMON_TILE_ORIGIN := 60
+	WORLD_ENEMIES_TILE_ORIGIN := 73
+else
+	TILE_ORIGIN := 0
+	ENEMIES_TILE_ORIGIN := 102
+	COMMON_TILE_ORIGIN := 109
+	WORLD_ENEMIES_TILE_ORIGIN := 122
+endif
+
 png2asset:
 # title
 	$(PNG2ASSET) res/graphics/title-screen.png -c $(GENDIR)/TitleScreen.c -noflip -map $(PNG2ASSET_BKG_SETTINGS_$(EXT))  -b 255
-	
+
 # sprites
-	$(PNG2ASSET) res/graphics/sprites/mario-$(SPRITES).png -o $(GENDIR)/marioSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin 0 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/enemies_common-$(SPRITES).png -o $(GENDIR)/enemiesSprites.c -sw 8 -sh 16 -spr8x8 -keep_palette_order -tile_origin 53 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/common-$(SPRITES).png -o $(GENDIR)/commonSprites.c -sw 8 -sh 8 -spr8x8 -keep_palette_order -tile_origin 60 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/enemies_birabuto-$(SPRITES).png -o $(GENDIR)/enemiesBirabutoSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin 73 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/enemies_muda-$(SPRITES).png -o $(GENDIR)/enemiesMudaSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin 73 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/enemies_easton-$(SPRITES).png -o $(GENDIR)/enemiesEastonSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin 73 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
-	$(PNG2ASSET) res/graphics/sprites/enemies_chai-$(SPRITES).png -o $(GENDIR)/enemiesChaiSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin 73 $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/mario-$(SPRITES).png -o $(GENDIR)/marioSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/enemies_common-$(SPRITES).png -o $(GENDIR)/enemiesSprites.c -sw 8 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/common-$(SPRITES).png -o $(GENDIR)/commonSprites.c -sw 8 -sh 8 -spr8x8 -keep_palette_order -tile_origin $(COMMON_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/enemies_birabuto-$(SPRITES).png -o $(GENDIR)/enemiesBirabutoSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/enemies_muda-$(SPRITES).png -o $(GENDIR)/enemiesMudaSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/enemies_easton-$(SPRITES).png -o $(GENDIR)/enemiesEastonSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(PNG2ASSET) res/graphics/sprites/enemies_chai-$(SPRITES).png -o $(GENDIR)/enemiesChaiSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+
+
+
 
 # tilesets
 	$(PNG2ASSET) res/graphics/tilesets/text.png -o $(GENDIR)/textTileset.c -keep_palette_order -keep_duplicate_tiles -noflip -map $(PNG2ASSET_BKG_SETTINGS_$(EXT)) -b 255
