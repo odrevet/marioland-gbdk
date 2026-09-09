@@ -1,14 +1,6 @@
-#
-# A Makefile that compiles all .c and .s files in "src" and "res" 
-# subdirectories and places the output in a "obj" subdirectory
-#
-
-# If you move this project you can change the directory 
-# to match your GBDK root directory (ex: GBDK_HOME = "C:/GBDK/"
 ifndef GBDK_HOME
-	GBDK_HOME = ../../../
+    $(error GBDK_HOME is not defined. Please set it before running make)
 endif
-	
 
 PNG2ASSET = $(GBDK_HOME)/bin/png2asset 
 LCC = $(GBDK_HOME)/bin/lcc 
