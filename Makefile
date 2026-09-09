@@ -25,7 +25,7 @@ OBJDIR      = obj/$(EXT)
 RESDIR      = res
 GENDIR      = gen/$(EXT)/src
 BINDIR      = build/$(EXT)
-MKDIRS      = $(GENDIR) $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
+MKDIRS      = $(GENDIR) $(OBJDIR) $(BINDIR) $(EXTRA_OBJDIR)
 BINS	    = $(OBJDIR)/$(PROJECTNAME).$(EXT)
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) 
 GENSOURCES  = $(foreach dir,$(GENDIR), $(wildcard $(dir)/*.c))
@@ -36,9 +36,12 @@ OBJS        = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
 vpath %.c $(SRCDIR):$(SRCDIR)/$(PORT)
 
 # sm83-specific
+EXTRA_OBJDIR = obj_extra/$(PORT)
+
 ifeq ($(PORT),sm83)
-EXTRA_OBJ := hUGEDriver.o
+EXTRA_OBJ := $(EXTRA_OBJDIR)/hUGEDriver.o
 endif
+
 
 # PORT specific
 PORTSOURCES := $(notdir $(wildcard $(SRCDIR)/$(PORT)/*.c))
