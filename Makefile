@@ -20,7 +20,7 @@ TARGETS=gb pocket megaduck sms gg nes
 PROJECTNAME    = marioland
 
 SRCDIR      = src
-DISTDIR      = dist
+DISTDIR     = dist
 OBJDIR      = obj/$(EXT)
 RESDIR      = res
 GENDIR      = gen/$(EXT)/src
@@ -28,9 +28,12 @@ BINDIR      = build/$(EXT)
 MKDIRS      = $(GENDIR) $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
 BINS	    = $(OBJDIR)/$(PROJECTNAME).$(EXT)
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) 
-GENSOURCES    = $(foreach dir,$(GENDIR), $(wildcard $(dir)/*.c))
+GENSOURCES  = $(foreach dir,$(GENDIR), $(wildcard $(dir)/*.c))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
-OBJS       = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
+OBJS        = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
+
+# Add port source to path
+vpath %.c $(SRCDIR):$(SRCDIR)/$(PORT)
 
 # sm83-specific
 ifeq ($(PORT),sm83)
@@ -38,10 +41,10 @@ EXTRA_OBJ := hUGEDriver.o
 endif
 
 # PORT specific
-PORTSOURCES := $(notdir $(wildcard $(PORT)/*.c))
+PORTSOURCES := $(notdir $(wildcard $(SRCDIR)/$(PORT)/*.c))
 PORTOBJS := $(PORTSOURCES:%.c=$(OBJDIR)/%.o)
 OBJS += $(PORTOBJS)
-CFLAGS += -Wf-I$(PORT)
+CFLAGS += -Wf-I$(SRCDIR)/$(PORT)
 
 LCCFLAGS += -Wl-j -Wm-yoA -Wm-ya4 -Wb-ext=.rel $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Flags
 
