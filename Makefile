@@ -40,14 +40,16 @@ GENSOURCES    = $(foreach dir,$(GENDIR), $(wildcard $(dir)/*.c))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 OBJS       = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
 
-# sm83-specific: link hUGEDriver and compile/include sources from the sm83 dir
+# sm83-specific
 ifeq ($(PORT),sm83)
 EXTRA_OBJ := hUGEDriver.o
-SM83SOURCES := $(notdir $(wildcard sm83/*.c))
-SM83OBJS := $(SM83SOURCES:%.c=$(OBJDIR)/%.o)
-OBJS += $(SM83OBJS)
-CFLAGS += -Wf-I$(PORT)
 endif
+
+# PORT specific
+PORTSOURCES := $(notdir $(wildcard $(PORT)/*.c))
+PORTOBJS := $(PORTSOURCES:%.c=$(OBJDIR)/%.o)
+OBJS += $(PORTOBJS)
+CFLAGS += -Wf-I$(PORT)
 
 LCCFLAGS += -Wl-j -Wm-yoA -Wm-ya4 -Wb-ext=.rel $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Flags
 
