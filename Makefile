@@ -38,11 +38,6 @@ vpath %.c $(SRCDIR):$(SRCDIR)/$(PORT)
 EXTRA_OBJDIR = obj_extra/$(PORT)
 EXTRA_OBJ := $(wildcard $(EXTRA_OBJDIR)/*.o)
 
-ifeq ($(PORT),sm83)
-EXTRA_OBJ := $(EXTRA_OBJDIR)/hUGEDriver.o
-endif
-
-
 # PORT specific
 PORTSOURCES := $(notdir $(wildcard $(SRCDIR)/$(PORT)/*.c))
 PORTOBJS := $(PORTSOURCES:%.c=$(OBJDIR)/%.o)
