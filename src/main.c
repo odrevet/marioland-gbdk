@@ -232,6 +232,33 @@ void main(void) {
   SHOW_SPRITES;
   SPRITES_8x8;
 
+
+#if defined(SEGA)
+const palette_color_t commonTileset_palettes[4] = {
+    RGB8(255,255,255),
+    RGB8(88,208,88),
+    RGB8(24,120,40),
+    RGB8(0,0,0)
+};
+#elif defined(NINTENDO_NES)
+const palette_color_t commonTileset_palettes[4] = {
+    0x30,
+    0x2A,
+    0x1A,
+    0x0F
+};
+#else
+const palette_color_t commonTileset_palettes[4] = {
+    RGB8(255,255,255),
+    RGB8(170,170,170),
+    RGB8(85,85,85),
+    RGB8(0,0,0)
+};
+#endif
+
+  setBKGPalettes(1, commonTileset_palettes);
+
+
   uint8_t base_sprite = 0;
   uint8_t background_animation_counter = 0;
   uint8_t anim_frame_counter = 0;
@@ -247,7 +274,7 @@ void main(void) {
 #endif
 
   set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
-  setBKGPalettes(TitleScreen_PALETTE_COUNT, TitleScreen_palettes);
+
 
 #ifdef NINTENDO_NES
   uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
@@ -274,11 +301,11 @@ void main(void) {
 
   SWITCH_ROM(BANK(textTileset));
   set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
-  setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
+  //setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
 
   SWITCH_ROM(BANK(commonTileset));
   set_bkg_native_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
-  setBKGPalettes(commonTileset_PALETTE_COUNT, commonTileset_palettes);
+  //setBKGPalettes(commonTileset_PALETTE_COUNT, commonTileset_palettes);
 
   SWITCH_ROM(BANK(marioSprites));
   set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
