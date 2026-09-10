@@ -425,4 +425,5 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
 
     SWITCH_ROM(_saved_bank);
   }
+  return base_sprite;
 }

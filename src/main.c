@@ -372,8 +372,8 @@ void main(void) {
     SWITCH_ROM(_saved_bank);
 
     platform_moving_update();
-    player_draw(0);
-    base_sprite = enemy_draw(MARIO_SPRITE_COUNT);
+    base_sprite = player_draw(0);
+    base_sprite = enemy_draw(base_sprite);
     base_sprite = platform_moving_draw(base_sprite);
     if (powerup_active) {
       powerup_update();
