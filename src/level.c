@@ -33,6 +33,13 @@ uint8_t current_column_in_page = 0;
 
 uint16_t level_page_x_offset = 0;
 
+const world_tileset world_tilesets[4] = {
+  { BANK(birabutoTileset), birabutoTileset_TILE_ORIGIN, birabutoTileset_tiles, birabutoTileset_TILE_COUNT },
+  { BANK(mudaTileset),     mudaTileset_TILE_ORIGIN,     mudaTileset_tiles,     mudaTileset_TILE_COUNT },
+  { BANK(eastonTileset),   eastonTileset_TILE_ORIGIN,   eastonTileset_tiles,   eastonTileset_TILE_COUNT },
+  { BANK(chaiTileset),     chaiTileset_TILE_ORIGIN,     chaiTileset_tiles,     chaiTileset_TILE_COUNT }
+};
+
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
 // Decompression buffer - sized for a single page
@@ -69,10 +76,6 @@ const level levels[NB_LEVELS] = {
     #endif
     .map_pages = level_1_1_map,
     .page_count = level_table_1_1_ENTRY_COUNT,
-    .map_tiles_bank = BANK(birabutoTileset),
-    .map_tile_origin = birabutoTileset_TILE_ORIGIN,
-    .map_tiles = birabutoTileset_tiles,
-    .map_tiles_count = birabutoTileset_TILE_COUNT,
     .lookup_bank = BANK(level_1_1_lookup),
     .lookup = level_1_1_lookup,
     .lookup_size = level_1_1_lookup_ENTRY_COUNT
@@ -84,10 +87,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_1_2_map,
   .page_count = level_table_1_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(birabutoTileset),
-  .map_tile_origin = birabutoTileset_TILE_ORIGIN,
-  .map_tiles = birabutoTileset_tiles,
-  .map_tiles_count = birabutoTileset_TILE_COUNT,
   .lookup_bank = BANK(level_1_2_lookup),
   .lookup = level_1_2_lookup,
   .lookup_size = level_1_2_lookup_ENTRY_COUNT
@@ -99,10 +98,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_1_3_map,
   .page_count = level_table_1_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(birabutoTileset),
-  .map_tile_origin = birabutoTileset_TILE_ORIGIN,
-  .map_tiles = birabutoTileset_tiles,
-  .map_tiles_count = birabutoTileset_TILE_COUNT,
   .lookup_bank = BANK(level_1_3_lookup),
   .lookup = level_1_3_lookup,
   .lookup_size = level_1_3_lookup_ENTRY_COUNT
@@ -114,10 +109,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_1_map,
   .page_count = level_table_2_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(mudaTileset),
-  .map_tile_origin = mudaTileset_TILE_ORIGIN,
-  .map_tiles = mudaTileset_tiles,
-  .map_tiles_count = mudaTileset_TILE_COUNT,
   .lookup_bank = BANK(level_2_1_lookup),
   .lookup = level_2_1_lookup,
   .lookup_size = level_2_1_lookup_ENTRY_COUNT
@@ -129,10 +120,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_2_map,
   .page_count = level_table_2_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(mudaTileset),
-  .map_tile_origin = mudaTileset_TILE_ORIGIN,
-  .map_tiles = mudaTileset_tiles,
-  .map_tiles_count = mudaTileset_TILE_COUNT,
   .lookup_bank = BANK(level_2_2_lookup),
   .lookup = level_2_2_lookup,
   .lookup_size = level_2_2_lookup_ENTRY_COUNT
@@ -144,10 +131,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_2_3_map,
   .page_count = level_table_2_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(mudaTileset),
-  .map_tile_origin = mudaTileset_TILE_ORIGIN,
-  .map_tiles = mudaTileset_tiles,
-  .map_tiles_count = mudaTileset_TILE_COUNT,
   .lookup_bank = BANK(level_2_3_lookup),
   .lookup = level_2_3_lookup,
   .lookup_size = level_2_3_lookup_ENTRY_COUNT
@@ -159,10 +142,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_1_map,
   .page_count = level_table_3_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(eastonTileset),
-  .map_tile_origin = eastonTileset_TILE_ORIGIN,
-  .map_tiles = eastonTileset_tiles,
-  .map_tiles_count = eastonTileset_TILE_COUNT,
   .lookup_bank = BANK(level_3_1_lookup),
   .lookup = level_3_1_lookup,
   .lookup_size = level_3_1_lookup_ENTRY_COUNT
@@ -174,10 +153,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_2_map,
   .page_count = level_table_3_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(eastonTileset),
-  .map_tile_origin = eastonTileset_TILE_ORIGIN,
-  .map_tiles = eastonTileset_tiles,
-  .map_tiles_count = eastonTileset_TILE_COUNT,
   .lookup_bank = BANK(level_3_2_lookup),
   .lookup = level_3_2_lookup,
   .lookup_size = level_3_2_lookup_ENTRY_COUNT
@@ -189,10 +164,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_3_3_map,
   .page_count = level_table_3_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(eastonTileset),
-  .map_tile_origin = eastonTileset_TILE_ORIGIN,
-  .map_tiles = eastonTileset_tiles,
-  .map_tiles_count = eastonTileset_TILE_COUNT,
   .lookup_bank = BANK(level_3_3_lookup),
   .lookup = level_3_3_lookup,
   .lookup_size = level_3_3_lookup_ENTRY_COUNT
@@ -204,10 +175,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_1_map,
   .page_count = level_table_4_1_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chaiTileset),
-  .map_tile_origin = chaiTileset_TILE_ORIGIN,
-  .map_tiles = chaiTileset_tiles,
-  .map_tiles_count = chaiTileset_TILE_COUNT,
   .lookup_bank = BANK(level_4_1_lookup),
   .lookup = level_4_1_lookup,
   .lookup_size = level_4_1_lookup_ENTRY_COUNT
@@ -219,10 +186,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_2_map,
   .page_count = level_table_4_2_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chaiTileset),
-  .map_tile_origin = chaiTileset_TILE_ORIGIN,
-  .map_tiles = chaiTileset_tiles,
-  .map_tiles_count = chaiTileset_TILE_COUNT,
   .lookup_bank = BANK(level_4_2_lookup),
   .lookup = level_4_2_lookup,
   .lookup_size = level_4_2_lookup_ENTRY_COUNT
@@ -234,10 +197,6 @@ const level levels[NB_LEVELS] = {
   #endif
   .map_pages = level_4_3_map,
   .page_count = level_table_4_3_ENTRY_COUNT,
-  .map_tiles_bank = BANK(chaiTileset),
-  .map_tile_origin = chaiTileset_TILE_ORIGIN,
-  .map_tiles = chaiTileset_tiles,
-  .map_tiles_count = chaiTileset_TILE_COUNT,
   .lookup_bank = BANK(level_4_3_lookup),
   .lookup = level_4_3_lookup,
   .lookup_size = level_4_3_lookup_ENTRY_COUNT
@@ -252,10 +211,6 @@ const level undergrounds[1] = {
     #endif
     .map_pages = underground_0_map_pages,
     .page_count = 1,
-    .map_tiles_bank = NULL,
-    .map_tile_origin = NULL,
-    .map_tiles = NULL,
-    .map_tiles_count = 0,
     .lookup_bank = BANK(underground_lookup),
     .lookup = underground_0_lookup,
     .lookup_size = underground_lookup_ENTRY_COUNT
@@ -693,24 +648,27 @@ void load_current_level(void) NONBANKED {
  * Set up a specific level (tiles, music, lookup tables, etc.)
  */
 void set_level(uint8_t level_index) NONBANKED {
-  char major = '1' + level_index / 3;
+  uint8_t world = level_index / 3;
+  char major = '1' + world;
   char minor = '1' + level_index % 3;
 
   hud_set_level(major, minor);
 
+  
   #ifdef GAMEBOY
   music_load(levels[level_index].music_bank, levels[level_index].music);
   #endif
 
   uint8_t _saved_bank = _current_bank;
 
-  // Load level tiles
-  SWITCH_ROM(levels[level_index].map_tiles_bank);
-  current_map_tiles = levels[level_index].map_tiles;
-  current_map_tile_origin = levels[level_index].map_tile_origin;
-  current_map_tile_count = levels[level_index].map_tiles_count;
-  set_bkg_native_data(current_map_tile_origin, current_map_tile_count,
-               current_map_tiles);
+  // Load level tiles  
+  const world_tileset *ts = &world_tilesets[world];
+
+  SWITCH_ROM(ts->bank);
+  current_map_tiles = ts->tiles;
+  current_map_tile_origin = ts->tile_origin;
+  current_map_tile_count = ts->tile_count;
+  set_bkg_native_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
 
   // Set level dimensions
   current_map_width = levels[level_index].page_count * PAGE_SIZE * 8;

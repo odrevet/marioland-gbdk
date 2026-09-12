@@ -113,11 +113,6 @@ typedef struct level_t {
   const banked_map_t *map_pages;
   uint8_t page_count;
 
-  uint8_t map_tiles_bank;
-  unsigned char *map_tiles;
-  uint8_t map_tile_origin;
-  size_t map_tiles_count;
-
   uint8_t lookup_bank;
   level_object *lookup;
   const size_t lookup_size;
@@ -126,6 +121,13 @@ typedef struct level_t {
   hUGESong_t *music;
 #endif
 } level;
+
+typedef struct {
+  uint8_t bank;
+  uint8_t tile_origin;
+  unsigned char *tiles;
+  size_t tile_count;
+} world_tileset;
 
 extern const level levels[NB_LEVELS];
 extern const level undergrounds[1];
