@@ -108,7 +108,6 @@ void die(void) {
   int16_t death_vel_y = DEATH_BOUNCE_VELOCITY;
   uint16_t death_y = player_y_upscaled;
   
-#if defined(GAMEBOY)
   // Freeze game and perform death animation
   while (player_draw_y < DEVICE_SCREEN_PX_HEIGHT ) {
       // Apply gravity
@@ -129,7 +128,6 @@ void die(void) {
     
   // Wait after Mario falls off screen
   delay(2000);
-#endif
 
   //init();
 
