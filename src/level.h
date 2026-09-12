@@ -113,9 +113,6 @@ typedef struct level_t {
   const banked_map_t *map_pages;
   uint8_t page_count;
 
-  size_t map_width;
-  size_t map_width_in_tiles;
-
   uint8_t map_tiles_bank;
   unsigned char *map_tiles;
   uint8_t map_tile_origin;
