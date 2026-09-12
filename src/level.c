@@ -63,8 +63,6 @@ uint8_t cached_page_index = 0xFF;  // Invalid page initially
 // Level definitions
 const level levels[NB_LEVELS] = {
   {
-    .major = '1',
-    .minor = '1',
     #ifdef GAMEBOY
     .music_bank = BANK(music_overworld),
     .music = &music_overworld,
@@ -82,8 +80,6 @@ const level levels[NB_LEVELS] = {
     .lookup_size = level_1_1_lookup_ENTRY_COUNT
   },
   {
-  .major = '1',
-  .minor = '2',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -101,8 +97,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_1_2_lookup_ENTRY_COUNT
   },
   {
-  .major = '1',
-  .minor = '3',
   #ifdef GAMEBOY
   .music_bank = BANK(music_castle),
   .music = &music_castle,
@@ -120,8 +114,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_1_3_lookup_ENTRY_COUNT
   },
   {
-  .major = '2',
-  .minor = '1',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -139,8 +131,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_2_1_lookup_ENTRY_COUNT
   },
   {
-  .major = '2',
-  .minor = '2',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -158,8 +148,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_2_2_lookup_ENTRY_COUNT
   },
   {
-  .major = '2',
-  .minor = '3',
   #ifdef GAMEBOY
   .music_bank = BANK(music_underwater),
   .music = &music_underwater,
@@ -177,8 +165,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_2_3_lookup_ENTRY_COUNT
   },
   {
-  .major = '3',
-  .minor = '1',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -196,8 +182,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_3_1_lookup_ENTRY_COUNT
   },
   {
-  .major = '3',
-  .minor = '2',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -215,8 +199,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_3_2_lookup_ENTRY_COUNT
   },
   {
-  .major = '3',
-  .minor = '3',
   #ifdef GAMEBOY
   .music_bank = BANK(music_castle),
   .music = &music_castle,
@@ -234,8 +216,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_3_3_lookup_ENTRY_COUNT
   },
   {
-  .major = '4',
-  .minor = '1',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -253,8 +233,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_4_1_lookup_ENTRY_COUNT
   },
   {
-  .major = '4',
-  .minor = '2',
   #ifdef GAMEBOY
   .music_bank = BANK(music_overworld),
   .music = &music_overworld,
@@ -272,8 +250,6 @@ const level levels[NB_LEVELS] = {
   .lookup_size = level_4_2_lookup_ENTRY_COUNT
   },
   {
-  .major = '4',
-  .minor = '3',
   #ifdef GAMEBOY
   .music_bank = BANK(music_underwater),
   .music = &music_underwater,
@@ -294,8 +270,6 @@ const level levels[NB_LEVELS] = {
 
 const level undergrounds[1] = {
   {
-    .major = '1',
-    .minor = '1',
     #ifdef GAMEBOY
     .music_bank = BANK(music_underground),
     .music = &music_underground,
@@ -745,7 +719,10 @@ void load_current_level(void) NONBANKED {
  * Set up a specific level (tiles, music, lookup tables, etc.)
  */
 void set_level(uint8_t level_index) NONBANKED {
-  hud_set_level(levels[level_index].major, levels[level_index].minor);
+  char major = '1' + level_index / 3;
+  char minor = '1' + level_index % 3;
+
+  hud_set_level(major, minor);
 
   #ifdef GAMEBOY
   music_load(levels[level_index].music_bank, levels[level_index].music);

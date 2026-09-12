@@ -110,9 +110,6 @@ extern uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
 #endif 
 
 typedef struct level_t {
-  char major;
-  char minor;
-
   const banked_map_t *map_pages;
   uint8_t page_count;
 
