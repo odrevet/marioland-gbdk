@@ -667,6 +667,10 @@ void load_current_level(void) NONBANKED {
   load_col_at = COLUMN_SIZE;
 }
 
+#if defined(SEGA)
+#define set_sprite_data set_sprite_native_data
+#endif
+
 /**
  * Set up a specific level (tiles, music, lookup tables, etc.)
  */
