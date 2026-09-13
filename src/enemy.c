@@ -178,6 +178,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
       enemies[i].vel_y = 0;
       enemies[i].type = type;
       enemies[i].frame_counter = 0;
+      enemies[i].anim_counter = 0;
       enemies[i].current_frame = current_frame;
       enemies[i].flip = FALSE;
       enemies[i].stomped = FALSE;
@@ -312,6 +313,10 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
     enemy->current_frame = 2;
     enemy->flip = FALSE;
     break;
+  case ENEMY_BUNBUN:
+    enemy->current_frame = 5;
+    enemy->flip = FALSE;
+    break;
   default:
     enemy->current_frame++;
     break;
@@ -388,11 +393,12 @@ void enemy_update(void) BANKED {
       if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].anim_counter = 0;
         enemies[index_enemy].current_frame =
-            (enemies[index_enemy].current_frame + 1) % 2 + 3;
+            (enemies[index_enemy].current_frame - 3 + 1) % 2 + 3;
       }
       break;
     case ENEMY_GAO:
-    break;
+      enemy_move_stub(index_enemy);
+      break;
     case ENEMY_HONEN:
       enemy_move_stub(index_enemy);
       enemies[index_enemy].anim_counter++;
