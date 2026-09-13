@@ -40,26 +40,27 @@ ENEMY_NYOLOLIN
 };
 
 typedef struct {
-uint16_t x;
-uint16_t y;
-uint8_t draw_x;
-uint8_t draw_y;
-int8_t vel_x;
-int8_t vel_y;
-uint8_t type;
-uint8_t frame_counter;
-uint8_t current_frame;
-uint8_t hp;
-bool flip;
-bool stomped;
-uint8_t stomped_timer;
-bool active;
+  uint16_t x;
+  uint16_t y;
+  uint8_t draw_x;
+  uint8_t draw_y;
+  int8_t vel_x;
+  int8_t vel_y;
+  uint8_t type;
+  uint8_t frame_counter;
+  uint8_t anim_counter;
+  uint8_t current_frame;
+  uint8_t hp;
+  bool flip;
+  bool stomped;
+  uint8_t stomped_timer;
+  bool active;
 } enemy_t;
 
 extern uint8_t enemy_count;
 extern enemy_t enemies[ENEMY_MAX];
 
-void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED;
+void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED;
 void enemy_remove(uint8_t index_enemy) NONBANKED;
 void enemy_reset_all(void) BANKED;
 void enemy_stomp(uint8_t index_enemy) BANKED;

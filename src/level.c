@@ -527,9 +527,11 @@ void level_load_objects(uint16_t col) NONBANKED {
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         uint16_t relative_x = obj->x - level_page_x_offset;
+        SWITCH_ROM(level_lookup_bank);
         enemy_new(relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
+        SWITCH_ROM(level_lookup_bank);
         //EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
         // Powerups handled by interrogation blocks

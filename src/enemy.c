@@ -24,7 +24,7 @@ BANKREF(enemy)
 #define ENEMY_KOOPA_SPEED 4
 #define ENEMY_FLY_WAIT_FRAMES 60
 #define ENEMY_FLY_JUMP_VELOCITY -48
-#define ENEMY_FLY_JUMP_SPEED 8
+#define ENEMY_FLY_JUMP_SPEED 14
 
 uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
   uint16_t ground_check_x = enemy->x >> 4;
@@ -133,7 +133,7 @@ void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor) BANKE
   }
 }
 
-void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
+void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
     if (!enemies[i].active) {
       uint8_t current_frame;
@@ -152,6 +152,16 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) NONBANKED {
         break;
       case ENEMY_FLY:
         current_frame = 0;
+        vel_x = 0;
+        y -= 8;
+        break;
+      case ENEMY_BUNBUN:
+        current_frame = 3;
+        vel_x = 0;
+        y -= 8;
+        break;
+      case ENEMY_GAO:
+        current_frame = 6;
         vel_x = 0;
         y -= 8;
         break;
@@ -298,6 +308,10 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
   case ENEMY_KOOPA:
     enemy->current_frame = 4;
     break;
+  case ENEMY_FLY:
+    enemy->current_frame = 2;
+    enemy->flip = FALSE;
+    break;
   default:
     enemy->current_frame++;
     break;
@@ -370,9 +384,24 @@ void enemy_update(void) BANKED {
       break;
     case ENEMY_BUNBUN:
       enemy_move_bunbun(index_enemy);
+      enemies[index_enemy].anim_counter++;
+      if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        enemies[index_enemy].anim_counter = 0;
+        enemies[index_enemy].current_frame =
+            (enemies[index_enemy].current_frame + 1) % 2 + 3;
+      }
       break;
     case ENEMY_GAO:
+    break;
     case ENEMY_HONEN:
+      enemy_move_stub(index_enemy);
+      enemies[index_enemy].anim_counter++;
+      if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        enemies[index_enemy].anim_counter = 0;
+        enemies[index_enemy].current_frame =
+            (enemies[index_enemy].current_frame + 1) % 2 + 8;
+      }
+      break;
     case ENEMY_MEKABON:
     case ENEMY_YURARIN:
     case ENEMY_BATADON:
