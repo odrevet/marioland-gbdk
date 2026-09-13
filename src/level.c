@@ -92,8 +92,8 @@ uint8_t cached_page_index = 0xFF;  // Invalid page initially
 const level levels[NB_LEVELS] = {
   {
     #ifdef GAMEBOY
-    .music_bank = BANK(music_overworld),
-    .music = &music_overworld,
+    .music_bank = BANK(music_world_1),
+    .music = &music_world_1,
     #endif
     .map_pages = level_1_1_map,
     .page_count = level_table_1_1_ENTRY_COUNT,
@@ -103,8 +103,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_1),
+  .music = &music_world_1,
   #endif
   .map_pages = level_1_2_map,
   .page_count = level_table_1_2_ENTRY_COUNT,
@@ -125,8 +125,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_2),
+  .music = &music_world_2,
   #endif
   .map_pages = level_2_1_map,
   .page_count = level_table_2_1_ENTRY_COUNT,
@@ -136,8 +136,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_2),
+  .music = &music_world_2,
   #endif
   .map_pages = level_2_2_map,
   .page_count = level_table_2_2_ENTRY_COUNT,
@@ -158,8 +158,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_3),
+  .music = &music_world_3,
   #endif
   .map_pages = level_3_1_map,
   .page_count = level_table_3_1_ENTRY_COUNT,
@@ -169,8 +169,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_castle),
+  .music = &music_castle,
   #endif
   .map_pages = level_3_2_map,
   .page_count = level_table_3_2_ENTRY_COUNT,
@@ -191,8 +191,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_4),
+  .music = &music_world_4,
   #endif
   .map_pages = level_4_1_map,
   .page_count = level_table_4_1_ENTRY_COUNT,
@@ -202,8 +202,8 @@ const level levels[NB_LEVELS] = {
   },
   {
   #ifdef GAMEBOY
-  .music_bank = BANK(music_overworld),
-  .music = &music_overworld,
+  .music_bank = BANK(music_world_4),
+  .music = &music_world_4,
   #endif
   .map_pages = level_4_2_map,
   .page_count = level_table_4_2_ENTRY_COUNT,
