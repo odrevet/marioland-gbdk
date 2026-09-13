@@ -17,6 +17,11 @@
 #include "player.h"
 #include <stdint.h>
 
+#include "enemiesBirabutoSprites.h"
+#include "enemiesMudaSprites.h"
+#include "enemiesEastonSprites.h"
+#include "enemiesChaiSprites.h"
+
 // Camera and scrolling
 uint16_t camera_x;
 uint16_t camera_x_upscaled;
@@ -33,11 +38,27 @@ uint8_t current_column_in_page = 0;
 
 uint16_t level_page_x_offset = 0;
 
-const world_tileset world_tilesets[4] = {
-  { BANK(birabutoTileset), birabutoTileset_TILE_ORIGIN, birabutoTileset_tiles, birabutoTileset_TILE_COUNT },
-  { BANK(mudaTileset),     mudaTileset_TILE_ORIGIN,     mudaTileset_tiles,     mudaTileset_TILE_COUNT },
-  { BANK(eastonTileset),   eastonTileset_TILE_ORIGIN,   eastonTileset_tiles,   eastonTileset_TILE_COUNT },
-  { BANK(chaiTileset),     chaiTileset_TILE_ORIGIN,     chaiTileset_tiles,     chaiTileset_TILE_COUNT }
+typedef struct {
+  uint8_t bg_bank;
+  uint8_t bg_tile_origin;
+  unsigned char *bg_tiles;
+  size_t bg_tile_count;
+
+  uint8_t enemy_bank;
+  uint8_t enemy_tile_origin;
+  const uint8_t *enemy_tiles;
+  size_t enemy_tile_count;
+} world_assets;
+
+const world_assets world_assets_table[4] = {
+  { BANK(birabutoTileset), birabutoTileset_TILE_ORIGIN, birabutoTileset_tiles, birabutoTileset_TILE_COUNT,
+    BANK(enemiesBirabutoSprites), enemiesBirabutoSprites_TILE_ORIGIN, enemiesBirabutoSprites_tiles, enemiesBirabutoSprites_TILE_COUNT },
+  { BANK(mudaTileset), mudaTileset_TILE_ORIGIN, mudaTileset_tiles, mudaTileset_TILE_COUNT,
+    BANK(enemiesMudaSprites), enemiesMudaSprites_TILE_ORIGIN, enemiesMudaSprites_tiles, enemiesMudaSprites_TILE_COUNT },
+  { BANK(eastonTileset), eastonTileset_TILE_ORIGIN, eastonTileset_tiles, eastonTileset_TILE_COUNT,
+    BANK(enemiesEastonSprites), enemiesEastonSprites_TILE_ORIGIN, enemiesEastonSprites_tiles, enemiesEastonSprites_TILE_COUNT },
+  { BANK(chaiTileset), chaiTileset_TILE_ORIGIN, chaiTileset_tiles, chaiTileset_TILE_COUNT,
+    BANK(enemiesChaiSprites), enemiesChaiSprites_TILE_ORIGIN, enemiesChaiSprites_tiles, enemiesChaiSprites_TILE_COUNT }
 };
 
 #ifdef USE_COMPRESSED_LEVELS
@@ -661,15 +682,6 @@ void set_level(uint8_t level_index) NONBANKED {
 
   uint8_t _saved_bank = _current_bank;
 
-  // Load level tiles  
-  const world_tileset *ts = &world_tilesets[world];
-
-  SWITCH_ROM(ts->bank);
-  current_map_tiles = ts->tiles;
-  current_map_tile_origin = ts->tile_origin;
-  current_map_tile_count = ts->tile_count;
-  set_bkg_native_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
-
   // Set level dimensions
   current_map_width = levels[level_index].page_count * PAGE_SIZE * 8;
   current_map_width_in_tiles = levels[level_index].page_count * PAGE_SIZE;
@@ -679,6 +691,17 @@ void set_level(uint8_t level_index) NONBANKED {
   level_lookup_bank = levels[level_index].lookup_bank;
   level_lookup = levels[level_index].lookup;
   level_lookup_size = levels[level_index].lookup_size;
+
+  const world_assets *assets = &world_assets_table[world];
+
+  SWITCH_ROM(assets->bg_bank);
+  current_map_tiles = assets->bg_tiles;
+  current_map_tile_origin = assets->bg_tile_origin;
+  current_map_tile_count = assets->bg_tile_count;
+  set_bkg_native_data(current_map_tile_origin, current_map_tile_count, current_map_tiles);
+
+  SWITCH_ROM(assets->enemy_bank);
+  set_sprite_data(assets->enemy_tile_origin, assets->enemy_tile_count, assets->enemy_tiles);
 
   SWITCH_ROM(_saved_bank);
 }
