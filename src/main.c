@@ -84,103 +84,6 @@ void interruptLCD(void) {
 void interruptVBL(void) { SHOW_WIN; }
 #endif
 
-bool powerups_collide() {
-  if (!powerup_active) {
-    return false;
-  }
-
-  uint16_t powerup_left = (powerup.x >> 4);
-  uint16_t powerup_right = (powerup.x >> 4) + TILE_SIZE;
-  uint16_t powerup_top = (powerup.y >> 4);
-  uint16_t powerup_bottom = (powerup.y >> 4) + TILE_SIZE;
-
-  uint16_t player_right = player_x + TILE_SIZE;
-  uint16_t player_top = player_y + 8;
-  uint16_t player_bottom = player_y + marioSprites_HEIGHT;
-
-  if (player_x < powerup_right && player_right > powerup_left &&
-      player_top < powerup_bottom && player_bottom > powerup_top) {
-
-    if (powerup.type == POWERUP_MUSHROOM) {
-      player_is_big = TRUE;
-    } else {
-      on_get_coin();
-    }
-
-#ifdef GAMEBOY
-    music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
-                   MUSIC_SFX_PRIORITY_NORMAL);
-#endif
-
-    return true;
-  }
-
-  return false;
-}
-
-#define ENEMY_TOP_MARGIN 8
-
-bool enemy_collide() {
-  for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
-    if (!enemies[enemy_index].active || enemies[enemy_index].stomped) {
-      continue;
-    }
-
-    uint16_t enemy_left = (enemies[enemy_index].x >> 4);
-    uint16_t enemy_right = (enemies[enemy_index].x >> 4) + TILE_SIZE;
-    uint16_t enemy_top = (enemies[enemy_index].y >> 4);
-    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemiesSprites_HEIGHT;
-
-    if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
-        player_y < enemy_bottom &&
-        player_y + marioSprites_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
-
-      if (player_y + marioSprites_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + 4) {
-        uint8_t _saved_bank = _current_bank;
-        SWITCH_ROM(BANK(enemy));
-        enemy_stomp(enemy_index);
-        SWITCH_ROM(_saved_bank);
-
-        current_jump = 0;
-        is_jumping = TRUE;
-        display_jump_frame = TRUE;
-        vel_y = -16;
-        touch_ground = FALSE;
-#ifdef GAMEBOY
-        music_play_sfx(BANK(sound_squish), sound_squish,
-                       SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
-#endif
-        continue;
-      } else {
-        if(player_is_big){
-          player_is_big = FALSE;
-#ifdef GAMEBOY
-        music_play_sfx(BANK(sound_pipe), sound_pipe,
-                       SFX_MUTE_MASK(sound_pipe), MUSIC_SFX_PRIORITY_NORMAL);
-#endif     
-
-        // collid with enemy when big remove the enemy
-        // TODO: invincibility frames !  
-        uint8_t _saved_bank = _current_bank;
-        SWITCH_ROM(BANK(enemy));
-        enemy_stomp(enemy_index);
-        SWITCH_ROM(_saved_bank);
-
-        }
-        else{
-          die();
-          uint8_t _saved_bank = _current_bank;
-          SWITCH_ROM(BANK(enemy));
-          enemy_reset_all();
-          SWITCH_ROM(_saved_bank);
-        }
-      }
-      return true;
-    }
-  }
-  return false;
-}
-
 void main(void) {
 #ifdef GAMEBOY
   STAT_REG = 0x40;
@@ -352,9 +255,8 @@ const palette_color_t commonTileset_palettes[4] = {
 #endif
     }
 
-    enemy_collide();
-
-    SWITCH_ROM(BANK(marioSprites));
+    SWITCH_ROM(BANK(player));
+    player_check_enemy_collision();
     if(IS_VEHICLE_LEVEL(current_level)){
       player_move_vehicle();
     }
@@ -396,7 +298,11 @@ const palette_color_t commonTileset_palettes[4] = {
     block_bump_update();
     base_sprite = block_bump_draw(base_sprite);
 
-    if (powerup_active && powerups_collide()) {
+    SWITCH_ROM(BANK(player));
+    bool powerup_collided = powerup_active && player_check_powerup();
+    SWITCH_ROM(_saved_bank);
+
+    if (powerup_collided) {
       powerup_active = FALSE;
       hide_metasprite(commonSprites_metasprites[0], base_sprite - 1);
       powerup.x = 0;

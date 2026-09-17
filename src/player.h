@@ -14,6 +14,8 @@
 #include "sound_jump_small.h"
 #include "sound_pause.h"
 #include "sound_pipe.h"
+#include "sound_coin.h"
+#include "sound_squish.h"
 #endif
 
 #ifdef NINTENDO
@@ -25,7 +27,7 @@
 #include "textTileset.h"
 #include "level_object.h"
 
-//BANKREF_EXTERN(player)
+BANKREF_EXTERN(player)
 
 #define MARIO_HEIGHT_SMALL 8
 #define MARIO_HEIGHT_BIG 16
@@ -68,6 +70,7 @@ extern uint8_t tile_next_1;
 extern uint8_t tile_next_2;
 extern bool plane_mode;
 extern bool player_is_big;
+extern uint8_t player_invincible_timer;
 
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;
@@ -79,5 +82,9 @@ bool player_check_pipe_entry(void) NONBANKED;
 bool player_check_horizontal_pipe_entry(void) NONBANKED;
 void player_enter_pipe(pipe_params *pipe_params) NONBANKED;
 void player_warp_to(level *destination_level, uint8_t destination_page, uint8_t destination_x, uint8_t destination_y) NONBANKED;
+void player_grow(void) BANKED;
+void player_shrink(void) BANKED;
+bool player_check_powerup(void) BANKED;
+bool player_check_enemy_collision(void) BANKED;
 
 #endif

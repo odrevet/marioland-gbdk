@@ -7,6 +7,8 @@
 #include <stdint.h>
 
 #include "player.h"
+#include "enemy.h"
+#include "powerup.h"
 
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
@@ -45,11 +47,19 @@ uint8_t frame_counter = 0;
 bool marioSpritesflip;
 uint16_t scroll_limit;
 bool player_is_big = FALSE;
+uint8_t player_invincible_timer = 0;
 
 uint8_t tile_next_1;
 uint8_t tile_next_2;
 
 bool plane_mode;
+
+#define PLAYER_GROW_SHRINK_DELTA ((MARIO_HEIGHT_BIG - MARIO_HEIGHT_SMALL) << 4)
+#define PLAYER_INVINCIBLE_FRAMES 60
+
+#define ENEMY_TOP_MARGIN 8
+#define ENEMY_STOMP_TOLERANCE 4
+#define ENEMY_STOMP_BOUNCE_VELOCITY -16
 
 static int8_t apply_velocity(int8_t vel, int8_t target, int8_t accel,
                              int8_t decel) {
@@ -87,7 +97,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(marioSprites));
 
-  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
+  uint8_t frame_index = player_is_big ? player_frame + 6 : player_frame;
 
 #ifdef SEGA
   if (marioSpritesflip) {
@@ -148,7 +158,7 @@ void player_enter_pipe(pipe_params *pipe) NONBANKED {
   SWITCH_ROM(_saved_bank);
 
 #ifdef GAMEBOY
-  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
+  uint8_t frame_index = player_is_big ? player_frame + 6 : player_frame;
   SWITCH_ROM(BANK(marioSprites));
 
   if (active_pipe_direction == PIPE_DIRECTION_VERTICAL) {
@@ -279,6 +289,114 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   for (uint8_t c = 0; c <= DEVICE_SCREEN_WIDTH + 1; c++) {
     level_load_objects(c);
   }
+}
+
+void player_grow(void) BANKED {
+  if (player_is_big) {
+    return;
+  }
+
+  player_is_big = TRUE;
+  player_y_upscaled -= PLAYER_GROW_SHRINK_DELTA;
+  player_y = player_y_upscaled >> 4;
+}
+
+void player_shrink(void) BANKED {
+  player_is_big = FALSE;
+  player_y_upscaled += PLAYER_GROW_SHRINK_DELTA;
+  player_y = player_y_upscaled >> 4;
+  player_invincible_timer = PLAYER_INVINCIBLE_FRAMES;
+}
+
+bool player_check_powerup(void) BANKED {
+  if (!powerup_active) {
+    return FALSE;
+  }
+
+  uint16_t powerup_left = (powerup.x >> 4);
+  uint16_t powerup_right = (powerup.x >> 4) + TILE_SIZE;
+  uint16_t powerup_top = (powerup.y >> 4);
+  uint16_t powerup_bottom = (powerup.y >> 4) + TILE_SIZE;
+
+  uint16_t player_right = player_x + TILE_SIZE;
+  uint16_t player_top = player_y + 8;
+  uint16_t player_bottom = player_y + marioSprites_HEIGHT;
+
+  if (player_x < powerup_right && player_right > powerup_left &&
+      player_top < powerup_bottom && player_bottom > powerup_top) {
+
+    if (powerup.type == POWERUP_MUSHROOM) {
+      player_grow();
+    } else {
+      on_get_coin();
+    }
+
+#ifdef GAMEBOY
+    music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
+                   MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+bool player_check_enemy_collision(void) BANKED {
+
+  if (player_invincible_timer > 0) {
+    player_invincible_timer--;
+  }
+
+  for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
+    if (!enemies[enemy_index].active || enemies[enemy_index].stomped) {
+      continue;
+    }
+
+    uint16_t enemy_left = (enemies[enemy_index].x >> 4);
+    uint16_t enemy_right = (enemies[enemy_index].x >> 4) + TILE_SIZE;
+    uint16_t enemy_top = (enemies[enemy_index].y >> 4);
+    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemiesSprites_HEIGHT;
+
+    if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
+        player_y < enemy_bottom &&
+        player_y + marioSprites_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
+
+      if (player_y + marioSprites_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + ENEMY_STOMP_TOLERANCE) {
+        enemy_stomp(enemy_index);
+
+        current_jump = 0;
+        is_jumping = TRUE;
+        display_jump_frame = TRUE;
+        vel_y = ENEMY_STOMP_BOUNCE_VELOCITY;
+        touch_ground = FALSE;
+#ifdef GAMEBOY
+        music_play_sfx(BANK(sound_squish), sound_squish,
+                       SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+        continue;
+      }
+
+      if (player_invincible_timer > 0) {
+        continue;
+      }
+
+      if (player_is_big) {
+        player_shrink();
+        enemy_stomp(enemy_index);
+#ifdef GAMEBOY
+        music_play_sfx(BANK(sound_pipe), sound_pipe,
+                       SFX_MUTE_MASK(sound_pipe), MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+      } else {
+        die();
+        enemy_reset_all();
+      }
+
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 void player_move(void) BANKED {
