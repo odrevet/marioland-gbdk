@@ -4,6 +4,7 @@
 #include "global.h"
 #include "level.h"
 #include <stdint.h>
+#include <stdlib.h>
 
 uint8_t enemy_count = 0;
 enemy_t enemies[ENEMY_MAX];
@@ -25,6 +26,77 @@ BANKREF(enemy)
 #define ENEMY_FLY_WAIT_FRAMES 60
 #define ENEMY_FLY_JUMP_VELOCITY -48
 #define ENEMY_FLY_JUMP_SPEED 14
+
+#define ENEMY_BUNBUN_SPEED 3
+#define ENEMY_BUNBUN_MOVE_FRAMES 60
+#define ENEMY_BUNBUN_STOP_FRAMES 40
+
+#define ENEMY_GAO_ATTACK_WAIT_FRAMES 240
+#define ENEMY_GAO_ATTACK_DURATION_FRAMES 20
+
+#define ENEMY_HONEN_REST_FRAMES 90
+#define ENEMY_HONEN_SPEED 8
+#define ENEMY_HONEN_RISE_TARGET_Y 24
+#define ENEMY_HONEN_BASE_Y 128
+
+#define HONEN_STATE_RESTING 0
+#define HONEN_STATE_RISING 1
+#define HONEN_STATE_FALLING 2
+
+#define ENEMY_MEKABON_SPEED 3
+#define ENEMY_MEKABON_DETECT_RANGE 40
+#define ENEMY_MEKABON_HEAD_SPEED 6
+
+#define MEKABON_STATE_WALK 0
+#define MEKABON_STATE_HEAD_OUT 1
+#define MEKABON_STATE_HEAD_BACK 2
+
+#define ENEMY_YURARIN_SPEED 2
+#define ENEMY_YURARIN_WAVE_FRAMES 30
+#define ENEMY_YURARIN_VERTICAL_SPEED 1
+
+#define ENEMY_BATADON_SPEED 3
+#define ENEMY_BATADON_BOUNCE_VELOCITY -40
+#define ENEMY_BATADON_GRAVITY_DIVISOR 10
+#define ENEMY_BATADON_BOUNCE_FRAMES 50
+
+#define ENEMY_BULLET_SPEED 6
+
+#define ENEMY_TOKOTOKO_SPEED 6
+
+#define ENEMY_SUU_DETECT_RANGE_X 32
+#define ENEMY_SUU_DROP_SPEED 4
+#define ENEMY_SUU_RISE_SPEED 2
+#define ENEMY_SUU_MAX_DROP 64
+
+#define SUU_STATE_WAIT 0
+#define SUU_STATE_DROP 1
+#define SUU_STATE_RISE 2
+
+#define ENEMY_KUMO_SPEED 4
+#define ENEMY_KUMO_JUMP_VELOCITY -40
+#define ENEMY_KUMO_WAIT_FRAMES 30
+
+#define ENEMY_HIYOIHOI_SPEED 3
+#define ENEMY_HIYOIHOI_BACK_DETECT_RANGE 24
+
+#define ENEMY_PIONPI_SPEED 2
+#define ENEMY_PIONPI_JUMP_VELOCITY -24
+#define ENEMY_PIONPI_JUMP_INTERVAL_FRAMES 20
+#define ENEMY_PIONPI_STUN_FRAMES 60
+
+#define ENEMY_PONPON_SPEED 2
+#define ENEMY_PONPON_SHOOT_INTERVAL_FRAMES 90
+
+#define ENEMY_PLANT_SPEED 2
+#define ENEMY_PLANT_RISE_HEIGHT 24
+#define ENEMY_PLANT_WAIT_FRAMES 60
+#define ENEMY_PLANT_SAFE_RANGE_X 16
+
+#define PLANT_STATE_HIDDEN 0
+#define PLANT_STATE_RISING 1
+#define PLANT_STATE_UP 2
+#define PLANT_STATE_FALLING 3
 
 uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
   uint16_t ground_check_x = enemy->x >> 4;
@@ -50,7 +122,6 @@ uint8_t enemy_has_ground_ahead(enemy_t *enemy, int8_t vel_x) BANKED {
   }
   return FALSE;
 }
-
 
 void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKED {
   if (enemy->vel_x == 0) return;
@@ -184,6 +255,12 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
       enemies[i].stomped = FALSE;
       enemies[i].stomped_timer = 0;
       enemies[i].active = TRUE;
+      enemies[i].move_state = 0;
+      enemies[i].hp = 0;
+
+      if (type == ENEMY_SUU || type == ENEMY_PLANT) {
+        enemies[i].y_origin = enemies[i].y;
+      }
 
       enemy_count++;
       return;
@@ -252,10 +329,6 @@ void enemy_move_fly(uint8_t index) BANKED {
   enemy_apply_vertical_movement(fly, 8);
 }
 
-#define ENEMY_BUNBUN_SPEED 3
-#define ENEMY_BUNBUN_MOVE_FRAMES 60
-#define ENEMY_BUNBUN_STOP_FRAMES 40
-
 void enemy_move_bunbun(uint8_t index) BANKED {
   enemy_t *bunbun = &enemies[index];
 
@@ -278,6 +351,370 @@ void enemy_move_bunbun(uint8_t index) BANKED {
   bunbun->x += bunbun->vel_x;
 }
 
+void enemy_move_gao(uint8_t index) BANKED {
+  enemy_t *gao = &enemies[index];
+
+  if (gao->stomped || !gao->active) {
+    return;
+  }
+
+  if (gao->anim_counter > 0) {
+    gao->anim_counter++;
+    if (gao->anim_counter >= ENEMY_GAO_ATTACK_DURATION_FRAMES) {
+      gao->anim_counter = 0;
+      gao->current_frame = 6;
+    }
+  } else if (gao->frame_counter >= ENEMY_GAO_ATTACK_WAIT_FRAMES) {
+    gao->frame_counter = 0;
+    gao->anim_counter = 1;
+    gao->current_frame = 7;
+  }
+
+  enemy_apply_vertical_movement(gao, 1);
+}
+
+void enemy_move_honen(uint8_t index) BANKED {
+  enemy_t *honen = &enemies[index];
+
+  if (honen->stomped || !honen->active) {
+    return;
+  }
+
+  switch (honen->move_state) {
+  case HONEN_STATE_RESTING:
+    if (honen->frame_counter >= ENEMY_HONEN_REST_FRAMES) {
+      honen->frame_counter = 0;
+      honen->move_state = HONEN_STATE_RISING;
+    }
+    break;
+  case HONEN_STATE_RISING:
+    if ((honen->y >> 4) <= ENEMY_HONEN_RISE_TARGET_Y) {
+      honen->move_state = HONEN_STATE_FALLING;
+    } else {
+      honen->y -= ENEMY_HONEN_SPEED;
+    }
+    break;
+  case HONEN_STATE_FALLING:
+    if ((honen->y >> 4) >= ENEMY_HONEN_BASE_Y) {
+      honen->y = ENEMY_HONEN_BASE_Y << 4;
+      honen->move_state = HONEN_STATE_RESTING;
+    } else {
+      honen->y += ENEMY_HONEN_SPEED;
+    }
+    break;
+  }
+}
+
+void enemy_move_mekabon(uint8_t index) BANKED {
+  enemy_t *mekabon = &enemies[index];
+
+  if (mekabon->stomped || !mekabon->active) {
+    return;
+  }
+
+  switch (mekabon->move_state) {
+  case MEKABON_STATE_WALK:
+    if (mekabon->vel_x == 0) {
+      mekabon->vel_x = -ENEMY_MEKABON_SPEED;
+    }
+
+    if (abs((int16_t)player_draw_x - (int16_t)mekabon->draw_x) < ENEMY_MEKABON_DETECT_RANGE) {
+      mekabon->x_origin = mekabon->x;
+      mekabon->move_state = MEKABON_STATE_HEAD_OUT;
+      break;
+    }
+
+    enemy_apply_horizontal_movement(mekabon, TRUE);
+    enemy_apply_vertical_movement(mekabon, 1);
+    break;
+
+  case MEKABON_STATE_HEAD_OUT: {
+    uint16_t diff;
+
+    if (player_draw_x < mekabon->draw_x) {
+      mekabon->x -= ENEMY_MEKABON_HEAD_SPEED;
+    } else {
+      mekabon->x += ENEMY_MEKABON_HEAD_SPEED;
+    }
+
+    diff = mekabon->x > mekabon->x_origin ? mekabon->x - mekabon->x_origin : mekabon->x_origin - mekabon->x;
+    if (diff >= (ENEMY_MEKABON_DETECT_RANGE << 4)) {
+      mekabon->move_state = MEKABON_STATE_HEAD_BACK;
+    }
+    break;
+  }
+
+  case MEKABON_STATE_HEAD_BACK:
+    if (mekabon->x < mekabon->x_origin) {
+      mekabon->x += ENEMY_MEKABON_HEAD_SPEED;
+      if (mekabon->x >= mekabon->x_origin) mekabon->x = mekabon->x_origin;
+    } else {
+      mekabon->x -= ENEMY_MEKABON_HEAD_SPEED;
+      if (mekabon->x <= mekabon->x_origin) mekabon->x = mekabon->x_origin;
+    }
+
+    if (mekabon->x == mekabon->x_origin) {
+      mekabon->vel_x = -mekabon->vel_x;
+      mekabon->move_state = MEKABON_STATE_WALK;
+    }
+    break;
+  }
+}
+
+void enemy_move_yurarin(uint8_t index) BANKED {
+  enemy_t *yurarin = &enemies[index];
+
+  if (yurarin->stomped || !yurarin->active) {
+    return;
+  }
+
+  if (yurarin->vel_x == 0) {
+    yurarin->vel_x = -ENEMY_YURARIN_SPEED;
+  }
+
+  if (yurarin->frame_counter >= ENEMY_YURARIN_WAVE_FRAMES) {
+    yurarin->frame_counter = 0;
+    yurarin->vel_y = -yurarin->vel_y;
+    if (yurarin->vel_y == 0) {
+      yurarin->vel_y = ENEMY_YURARIN_VERTICAL_SPEED;
+    }
+  }
+
+  enemy_apply_horizontal_movement(yurarin, FALSE);
+  yurarin->y += yurarin->vel_y;
+}
+
+void enemy_move_batadon(uint8_t index) BANKED {
+  enemy_t *batadon = &enemies[index];
+
+  if (batadon->stomped || !batadon->active) {
+    return;
+  }
+
+  if (batadon->frame_counter >= ENEMY_BATADON_BOUNCE_FRAMES) {
+    batadon->frame_counter = 0;
+    batadon->vel_y = ENEMY_BATADON_BOUNCE_VELOCITY;
+  }
+
+  if (player_draw_x < batadon->draw_x) {
+    batadon->vel_x = -ENEMY_BATADON_SPEED;
+    batadon->flip = TRUE;
+  } else {
+    batadon->vel_x = ENEMY_BATADON_SPEED;
+    batadon->flip = FALSE;
+  }
+
+  batadon->x += batadon->vel_x;
+  batadon->vel_y += ENEMY_GRAVITY / ENEMY_BATADON_GRAVITY_DIVISOR;
+  batadon->y += batadon->vel_y;
+}
+
+void enemy_move_bullet(uint8_t index) BANKED {
+  enemy_t *bullet = &enemies[index];
+
+  if (!bullet->active) {
+    return;
+  }
+
+  bullet->x += bullet->vel_x;
+}
+
+void enemy_move_tokotoko(uint8_t index) BANKED {
+  enemy_t *tokotoko = &enemies[index];
+
+  if (tokotoko->stomped || !tokotoko->active) {
+    return;
+  }
+
+  if (tokotoko->vel_x == 0) {
+    tokotoko->vel_x = -ENEMY_TOKOTOKO_SPEED;
+  }
+
+  enemy_apply_horizontal_movement(tokotoko, FALSE);
+  enemy_apply_vertical_movement(tokotoko, 1);
+}
+
+void enemy_move_suu(uint8_t index) BANKED {
+  enemy_t *suu = &enemies[index];
+
+  if (suu->stomped || !suu->active) {
+    return;
+  }
+
+  switch (suu->move_state) {
+  case SUU_STATE_WAIT:
+    if (abs((int16_t)player_draw_x - (int16_t)suu->draw_x) < ENEMY_SUU_DETECT_RANGE_X) {
+      suu->move_state = SUU_STATE_DROP;
+    }
+    break;
+  case SUU_STATE_DROP:
+    suu->y += ENEMY_SUU_DROP_SPEED;
+    if ((suu->y >> 4) - (suu->y_origin >> 4) >= ENEMY_SUU_MAX_DROP) {
+      suu->move_state = SUU_STATE_RISE;
+    }
+    break;
+  case SUU_STATE_RISE:
+    suu->y -= ENEMY_SUU_RISE_SPEED;
+    if (suu->y <= suu->y_origin) {
+      suu->y = suu->y_origin;
+      suu->move_state = SUU_STATE_WAIT;
+    }
+    break;
+  }
+}
+
+void enemy_move_kumo(uint8_t index) BANKED {
+  enemy_t *kumo = &enemies[index];
+
+  if (kumo->stomped || !kumo->active) {
+    return;
+  }
+
+  uint8_t on_ground = enemy_has_ground(kumo);
+
+  if (on_ground && kumo->vel_y == 0 && kumo->frame_counter >= ENEMY_KUMO_WAIT_FRAMES) {
+    kumo->vel_y = ENEMY_KUMO_JUMP_VELOCITY;
+
+    if (player_draw_x < kumo->draw_x) {
+      kumo->vel_x = -ENEMY_KUMO_SPEED;
+      kumo->flip = TRUE;
+    } else {
+      kumo->vel_x = ENEMY_KUMO_SPEED;
+      kumo->flip = FALSE;
+    }
+
+    kumo->frame_counter = 0;
+  }
+
+  if (on_ground && kumo->vel_y == 0) {
+    kumo->vel_x = 0;
+  }
+
+  enemy_apply_horizontal_movement(kumo, FALSE);
+  enemy_apply_vertical_movement(kumo, 4);
+}
+
+void enemy_move_hiyoihoi(uint8_t index) BANKED {
+  enemy_t *hiyoihoi = &enemies[index];
+  int8_t facing_forward;
+  int16_t rel_x;
+  uint8_t player_behind;
+
+  if (hiyoihoi->stomped || !hiyoihoi->active) {
+    return;
+  }
+
+  if (hiyoihoi->vel_x == 0) {
+    hiyoihoi->vel_x = -ENEMY_HIYOIHOI_SPEED;
+  }
+
+  facing_forward = hiyoihoi->flip ? -1 : 1;
+  rel_x = (int16_t)player_draw_x - (int16_t)hiyoihoi->draw_x;
+  player_behind = (facing_forward > 0 && rel_x < 0 && -rel_x < ENEMY_HIYOIHOI_BACK_DETECT_RANGE) ||
+                  (facing_forward < 0 && rel_x > 0 && rel_x < ENEMY_HIYOIHOI_BACK_DETECT_RANGE);
+
+  if (player_behind) {
+    hiyoihoi->vel_x = -hiyoihoi->vel_x;
+    hiyoihoi->flip = !hiyoihoi->flip;
+  }
+
+  enemy_apply_horizontal_movement(hiyoihoi, TRUE);
+  enemy_apply_vertical_movement(hiyoihoi, 1);
+}
+
+void enemy_move_pionpi(uint8_t index) BANKED {
+  enemy_t *pionpi = &enemies[index];
+  uint8_t on_ground;
+
+  if (!pionpi->active) {
+    return;
+  }
+
+  if (pionpi->hp > 0) {
+    pionpi->hp--;
+    return;
+  }
+
+  on_ground = enemy_has_ground(pionpi);
+
+  if (on_ground && pionpi->frame_counter >= ENEMY_PIONPI_JUMP_INTERVAL_FRAMES) {
+    pionpi->vel_y = ENEMY_PIONPI_JUMP_VELOCITY;
+
+    if (player_draw_x < pionpi->draw_x) {
+      pionpi->vel_x = -ENEMY_PIONPI_SPEED;
+      pionpi->flip = TRUE;
+    } else {
+      pionpi->vel_x = ENEMY_PIONPI_SPEED;
+      pionpi->flip = FALSE;
+    }
+
+    pionpi->frame_counter = 0;
+  }
+
+  enemy_apply_horizontal_movement(pionpi, FALSE);
+  enemy_apply_vertical_movement(pionpi, 2);
+}
+
+void enemy_move_ponpon(uint8_t index) BANKED {
+  enemy_t *ponpon = &enemies[index];
+
+  if (ponpon->stomped || !ponpon->active) {
+    return;
+  }
+
+  if (ponpon->vel_x == 0) {
+    ponpon->vel_x = -ENEMY_PONPON_SPEED;
+  }
+
+  if (ponpon->frame_counter >= ENEMY_PONPON_SHOOT_INTERVAL_FRAMES) {
+    ponpon->frame_counter = 0;
+  }
+
+  enemy_apply_horizontal_movement(ponpon, TRUE);
+  enemy_apply_vertical_movement(ponpon, 1);
+}
+
+void enemy_move_plant(uint8_t index) BANKED {
+  enemy_t *plant = &enemies[index];
+  uint8_t player_near;
+
+  if (plant->stomped || !plant->active) {
+    return;
+  }
+
+  player_near = abs((int16_t)player_draw_x - (int16_t)plant->draw_x) < ENEMY_PLANT_SAFE_RANGE_X;
+
+  switch (plant->move_state) {
+  case PLANT_STATE_HIDDEN:
+    if (plant->frame_counter >= ENEMY_PLANT_WAIT_FRAMES && !player_near) {
+      plant->frame_counter = 0;
+      plant->move_state = PLANT_STATE_RISING;
+    }
+    break;
+  case PLANT_STATE_RISING:
+    plant->y -= ENEMY_PLANT_SPEED;
+    if ((plant->y_origin >> 4) - (plant->y >> 4) >= ENEMY_PLANT_RISE_HEIGHT) {
+      plant->frame_counter = 0;
+      plant->move_state = PLANT_STATE_UP;
+    }
+    break;
+  case PLANT_STATE_UP:
+    if (plant->frame_counter >= ENEMY_PLANT_WAIT_FRAMES) {
+      plant->frame_counter = 0;
+      plant->move_state = PLANT_STATE_FALLING;
+    }
+    break;
+  case PLANT_STATE_FALLING:
+    plant->y += ENEMY_PLANT_SPEED;
+    if (plant->y >= plant->y_origin) {
+      plant->y = plant->y_origin;
+      plant->frame_counter = 0;
+      plant->move_state = PLANT_STATE_HIDDEN;
+    }
+    break;
+  }
+}
+
 void enemy_move_stub(uint8_t index) BANKED {
   enemy_t *enemy = &enemies[index];
 
@@ -292,6 +729,15 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
   enemy_t *enemy = &enemies[index_enemy];
 
   if (!enemy->active) {
+    return;
+  }
+
+  if (enemy->type == ENEMY_PIONPI) {
+    enemy->hp = ENEMY_PIONPI_STUN_FRAMES;
+    enemy->vel_x = 0;
+    enemy->vel_y = 0;
+    enemy->current_frame = 9;
+    hide_sprites_range(0, MAX_HARDWARE_SPRITES);
     return;
   }
 
@@ -316,6 +762,9 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
   case ENEMY_BUNBUN:
     enemy->current_frame = 5;
     enemy->flip = FALSE;
+    break;
+  case ENEMY_GAO:
+    enemy->current_frame = 8;
     break;
   default:
     enemy->current_frame++;
@@ -343,6 +792,8 @@ void enemy_reset_all(void) BANKED {
     enemies[i].vel_y = 0;
     enemies[i].draw_x = 0;
     enemies[i].draw_y = 0;
+    enemies[i].move_state = 0;
+    enemies[i].hp = 0;
   }
 
   enemy_count = 0;
@@ -397,10 +848,10 @@ void enemy_update(void) BANKED {
       }
       break;
     case ENEMY_GAO:
-      enemy_move_stub(index_enemy);
+      enemy_move_gao(index_enemy);
       break;
     case ENEMY_HONEN:
-      enemy_move_stub(index_enemy);
+      enemy_move_honen(index_enemy);
       enemies[index_enemy].anim_counter++;
       if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
         enemies[index_enemy].anim_counter = 0;
@@ -409,18 +860,40 @@ void enemy_update(void) BANKED {
       }
       break;
     case ENEMY_MEKABON:
+      enemy_move_mekabon(index_enemy);
+      break;
     case ENEMY_YURARIN:
+      enemy_move_yurarin(index_enemy);
+      break;
     case ENEMY_BATADON:
+      enemy_move_batadon(index_enemy);
+      break;
     case ENEMY_BULLET:
+      enemy_move_bullet(index_enemy);
+      break;
     case ENEMY_TOKOTOKO:
+      enemy_move_tokotoko(index_enemy);
+      break;
     case ENEMY_SUU:
+      enemy_move_suu(index_enemy);
+      break;
     case ENEMY_KUMO:
+      enemy_move_kumo(index_enemy);
+      break;
     case ENEMY_HIYOIHOI:
+      enemy_move_hiyoihoi(index_enemy);
+      break;
     case ENEMY_PIONPI:
+      enemy_move_pionpi(index_enemy);
+      break;
     case ENEMY_PONPON:
+      enemy_move_ponpon(index_enemy);
+      break;
     case ENEMY_NYOLOLIN:
-    case ENEMY_PLANT:
       enemy_move_stub(index_enemy);
+      break;
+    case ENEMY_PLANT:
+      enemy_move_plant(index_enemy);
       break;
     }
 
