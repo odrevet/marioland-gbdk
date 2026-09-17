@@ -97,7 +97,7 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(marioSprites));
 
-  uint8_t frame_index = player_is_big ? player_frame + 6 : player_frame;
+  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
 
 #ifdef SEGA
   if (marioSpritesflip) {
@@ -158,7 +158,7 @@ void player_enter_pipe(pipe_params *pipe) NONBANKED {
   SWITCH_ROM(_saved_bank);
 
 #ifdef GAMEBOY
-  uint8_t frame_index = player_is_big ? player_frame + 6 : player_frame;
+  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
   SWITCH_ROM(BANK(marioSprites));
 
   if (active_pipe_direction == PIPE_DIRECTION_VERTICAL) {
