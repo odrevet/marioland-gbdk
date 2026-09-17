@@ -157,6 +157,7 @@ uge2source:
 		n=$$(basename $$f .uge); \
 		$(UGE2SOURCE) $$f -b 255 $$n $(GENDIR)/$$n.c; \
 		sed -i ':a;N;$$!ba;s/= {\n};/= {{\n}};/g' $(GENDIR)/$$n.c; \
+		sed -i ':a;N;$$!ba;s/= {};/= {{}};/g' $(GENDIR)/$$n.c; \
 	done
 
 vgm2data:
