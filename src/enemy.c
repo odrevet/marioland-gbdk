@@ -162,11 +162,9 @@ void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKE
   }
 }
 
-void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor) BANKED {
+void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor, uint8_t on_ground) BANKED {
   uint16_t ground_check_x = enemy->x >> 4;
   uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
-
-  uint8_t on_ground = enemy_has_ground(enemy);
 
   if (!on_ground) {
     if (gravity_divisor == 1) {
@@ -280,7 +278,7 @@ void enemy_move_goomba(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(goomba, FALSE);
-  enemy_apply_vertical_movement(goomba, 1);
+  enemy_apply_vertical_movement(goomba, 1, enemy_has_ground(goomba));
 }
 
 void enemy_move_koopa(uint8_t index) BANKED {
@@ -295,7 +293,7 @@ void enemy_move_koopa(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(koopa, TRUE);
-  enemy_apply_vertical_movement(koopa, 1);
+  enemy_apply_vertical_movement(koopa, 1, enemy_has_ground(koopa));
 }
 
 void enemy_move_fly(uint8_t index) BANKED {
@@ -326,7 +324,7 @@ void enemy_move_fly(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(fly, FALSE);
-  enemy_apply_vertical_movement(fly, 8);
+  enemy_apply_vertical_movement(fly, 8, on_ground);
 }
 
 void enemy_move_bunbun(uint8_t index) BANKED {
@@ -370,7 +368,7 @@ void enemy_move_gao(uint8_t index) BANKED {
     gao->current_frame = 7;
   }
 
-  enemy_apply_vertical_movement(gao, 1);
+  enemy_apply_vertical_movement(gao, 1, enemy_has_ground(gao));
 }
 
 void enemy_move_honen(uint8_t index) BANKED {
@@ -425,7 +423,7 @@ void enemy_move_mekabon(uint8_t index) BANKED {
     }
 
     enemy_apply_horizontal_movement(mekabon, TRUE);
-    enemy_apply_vertical_movement(mekabon, 1);
+    enemy_apply_vertical_movement(mekabon, 1, enemy_has_ground(mekabon));
     break;
 
   case MEKABON_STATE_HEAD_OUT: {
@@ -531,7 +529,7 @@ void enemy_move_tokotoko(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(tokotoko, FALSE);
-  enemy_apply_vertical_movement(tokotoko, 1);
+  enemy_apply_vertical_movement(tokotoko, 1, enemy_has_ground(tokotoko));
 }
 
 void enemy_move_suu(uint8_t index) BANKED {
@@ -591,7 +589,7 @@ void enemy_move_kumo(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(kumo, FALSE);
-  enemy_apply_vertical_movement(kumo, 4);
+  enemy_apply_vertical_movement(kumo, 4, on_ground);
 }
 
 void enemy_move_hiyoihoi(uint8_t index) BANKED {
@@ -619,7 +617,7 @@ void enemy_move_hiyoihoi(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(hiyoihoi, TRUE);
-  enemy_apply_vertical_movement(hiyoihoi, 1);
+  enemy_apply_vertical_movement(hiyoihoi, 1, enemy_has_ground(hiyoihoi));
 }
 
 void enemy_move_pionpi(uint8_t index) BANKED {
@@ -652,7 +650,7 @@ void enemy_move_pionpi(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(pionpi, FALSE);
-  enemy_apply_vertical_movement(pionpi, 2);
+  enemy_apply_vertical_movement(pionpi, 2, on_ground);
 }
 
 void enemy_move_ponpon(uint8_t index) BANKED {
@@ -671,7 +669,7 @@ void enemy_move_ponpon(uint8_t index) BANKED {
   }
 
   enemy_apply_horizontal_movement(ponpon, TRUE);
-  enemy_apply_vertical_movement(ponpon, 1);
+  enemy_apply_vertical_movement(ponpon, 1, enemy_has_ground(ponpon));
 }
 
 void enemy_move_plant(uint8_t index) BANKED {
@@ -722,7 +720,7 @@ void enemy_move_stub(uint8_t index) BANKED {
     return;
   }
 
-  enemy_apply_vertical_movement(enemy, 1);
+  enemy_apply_vertical_movement(enemy, 1, enemy_has_ground(enemy));
 }
 
 void enemy_stomp(uint8_t index_enemy) BANKED {
@@ -917,6 +915,8 @@ void enemy_update(void) BANKED {
 }
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
+  uint8_t _saved_bank = _current_bank;
+  uint8_t current_bank = _current_bank;
 
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     if (!enemies[index_enemy].active) {
@@ -925,7 +925,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
 
     uint8_t draw_index = enemies[index_enemy].current_frame;
 
-    uint8_t _saved_bank = _current_bank;
+    uint8_t enemy_bank;
     uint8_t tile_origin;
     const metasprite_t * const *metasprites;
 
@@ -933,21 +933,21 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     case ENEMY_BUNBUN:
     case ENEMY_GAO:
     case ENEMY_FLY:
-      SWITCH_ROM(BANK(enemiesBirabutoSprites));
+      enemy_bank = BANK(enemiesBirabutoSprites);
       metasprites = enemiesBirabutoSprites_metasprites;
       tile_origin = enemiesBirabutoSprites_TILE_ORIGIN;
       break;
     case ENEMY_HONEN:
     case ENEMY_MEKABON:
     case ENEMY_YURARIN:
-      SWITCH_ROM(BANK(enemiesMudaSprites));
+      enemy_bank = BANK(enemiesMudaSprites);
       metasprites = enemiesMudaSprites_metasprites;
       tile_origin = enemiesMudaSprites_TILE_ORIGIN;
       break;
     case ENEMY_TOKOTOKO:
     case ENEMY_SUU:
     case ENEMY_KUMO:
-      SWITCH_ROM(BANK(enemiesEastonSprites));
+      enemy_bank = BANK(enemiesEastonSprites);
       metasprites = enemiesEastonSprites_metasprites;
       tile_origin = enemiesEastonSprites_TILE_ORIGIN;
       break;
@@ -955,7 +955,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     case ENEMY_PIONPI:
     case ENEMY_PONPON:
     case ENEMY_NYOLOLIN:
-      SWITCH_ROM(BANK(enemiesChaiSprites));
+      enemy_bank = BANK(enemiesChaiSprites);
       metasprites = enemiesChaiSprites_metasprites;
       tile_origin = enemiesChaiSprites_TILE_ORIGIN;
       break;
@@ -965,10 +965,15 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     case ENEMY_BATADON:
     case ENEMY_BULLET:
     default:
-      SWITCH_ROM(BANK(enemiesSprites));
+      enemy_bank = BANK(enemiesSprites);
       metasprites = enemiesSprites_metasprites;
       tile_origin = enemiesSprites_TILE_ORIGIN;
       break;
+    }
+
+    if (enemy_bank != current_bank) {
+      SWITCH_ROM(enemy_bank);
+      current_bank = enemy_bank;
     }
 
     const metasprite_t *enemy_metasprite = metasprites[draw_index];
@@ -984,8 +989,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
       base_sprite += move_metasprite_ex(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
     }
 #endif
-
-    SWITCH_ROM(_saved_bank);
   }
+  SWITCH_ROM(_saved_bank);
   return base_sprite;
 }
