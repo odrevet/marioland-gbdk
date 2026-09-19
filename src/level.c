@@ -22,13 +22,15 @@
 #include "enemiesEastonSprites.h"
 #include "enemiesChaiSprites.h"
 
-// Camera and scrolling
+#if defined(SEGA) || defined(NINTENDO_NES)
+#define STREAM_FULL_WIDTH
+#endif
+
 uint16_t camera_x;
 uint16_t camera_x_upscaled;
 uint16_t load_col_at;
 const unsigned char *current_map;
 
-// Map buffer for rendering
 uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 bool level_end_reached;
@@ -37,6 +39,7 @@ uint8_t map_column = 0;
 uint8_t current_column_in_page = 0;
 
 uint16_t level_page_x_offset = 0;
+uint16_t world_col_loaded = 0;
 
 typedef struct {
   uint8_t bg_bank;
@@ -63,11 +66,9 @@ const world_assets world_assets_table[4] = {
 
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
-// Decompression buffer - sized for a single page
 uint8_t decompression_buffer[DECOMPRESSED_PAGE_SIZE];
 #endif
 
-// Current level tile data
 int current_map_tile_origin;
 const unsigned char *current_map_tiles;
 size_t current_map_tile_count;
@@ -75,20 +76,16 @@ size_t current_map_width;
 size_t current_map_width_in_tiles;
 uint8_t level_bank;
 
-// Level object lookup data
 uint8_t level_lookup_bank;
 const level_object *level_lookup;
 size_t level_lookup_size;
 
-// Map page tracking
 uint8_t current_page = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
-// Cache for currently decompressed page to avoid repeated decompression
-uint8_t cached_page_index = 0xFF;  // Invalid page initially
-#endif 
+uint8_t cached_page_index = 0xFF;
+#endif
 
-// Level definitions
 const level levels[NB_LEVELS] = {
   {
     #ifdef GAMEBOY
@@ -238,9 +235,6 @@ const level undergrounds[1] = {
   }
 };
 
-/**
- * Get tile at world coordinates
- */
 uint8_t get_tile(uint8_t x, uint8_t y) {
   if (y >> 3 < 2 || y >> 3 > MAP_BUFFER_HEIGHT + 1) {
     return TILE_EMPTY;
@@ -251,11 +245,7 @@ uint8_t get_tile(uint8_t x, uint8_t y) {
   return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
 }
 
-/**
- * Check if a tile is solid (blocks player movement)
- */
 bool is_tile_solid(uint8_t tile) {
-  // Check common solid tiles
   switch (tile) {
     case TILE_INTEROGATION_BLOCK:
     case BREAKABLE_BLOCK:
@@ -279,7 +269,6 @@ bool is_tile_solid(uint8_t tile) {
       return true;
   }
 
-  // Check world-specific tiles
   if (current_level <= LEVEL_WORLD1_END) {
     return ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
             (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
@@ -320,9 +309,6 @@ bool is_tile_solid(uint8_t tile) {
   return false;
 }
 
-/**
- * Check if tiles can be passed through from below (semi-solid platforms)
- */
 bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom) {
   return (current_level == LEVEL_1_2 && ((tile_left_bottom == PALM_TREE_LEFT) ||
                                  (tile_left_bottom == PALM_TREE_CENTER) ||
@@ -338,16 +324,10 @@ bool is_tile_passthought(uint8_t tile_left_bottom, uint8_t tile_right_bottom) {
                                  (tile_right_bottom == MUDA_PLATEFORM_RIGHT)));
 }
 
-/**
- * Check if tile is a coin
- */
 bool is_coin(uint8_t tile) { 
   return tile == TILE_COIN; 
 }
 
-/**
- * Handle coin collection from background tile
- */
 void on_get_coin_background(uint8_t x, uint8_t y) {
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
@@ -364,8 +344,6 @@ void on_break_tile(uint8_t x, uint8_t y) {
 
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
-
-  // TODO break animation (4 sprites of tile shards)
 
   #ifdef GAMEBOY
   music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
@@ -441,9 +419,6 @@ uint8_t block_bump_draw(uint8_t base_sprite) BANKED {
   return base_sprite + 1;
 }
 
-/**
- * Handle coin collection logic
- */
 void on_get_coin() {
   #ifdef GAMEBOY
   music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
@@ -467,18 +442,12 @@ void on_get_coin() {
   hud_update_score();
 }
 
-/**
- * Handle interrogation block being hit
- */
 void on_interogation_block_hit(uint8_t x, uint8_t y) {
-  // Get buffer indices for rendering
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
 
-  // Get actual world tile coordinates for lookup
   uint8_t world_tile_x = (x + camera_x) >> 3;
 
-  // Update map buffer and VRAM with an emptied block
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
 
   #if defined(GAMEBOY)
@@ -487,11 +456,9 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   set_bkg_tile_xy(index_x, index_y + 2, TILE_EMPTIED);
   #endif
 
-  // Switch to lookup table bank to check block contents
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
 
-  // Check block content in lookup table using WORLD coordinates
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
     level_object *obj = &level_lookup[i];
@@ -504,7 +471,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   SWITCH_ROM(_saved_bank);
 
-  // Coin by default, if block coord not found in lookup table
   if (lookup_found == FALSE) {
     on_get_coin();
     coin_animated_new(index_x, index_y);
@@ -513,11 +479,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 
-#include <gbdk/emu_debug.h>
-
-/**
- * Load level objects (enemies, platforms, etc.) at a specific column
- */
 void level_load_objects(uint16_t col) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
@@ -527,14 +488,11 @@ void level_load_objects(uint16_t col) NONBANKED {
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         uint16_t relative_x = obj->x - level_page_x_offset;
-        SWITCH_ROM(level_lookup_bank);  
         enemy_new(relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         SWITCH_ROM(level_lookup_bank);
-        EMU_printf("********************\nENEMY NEW X=%d Y=%d\n", relative_x, obj->y);
       } else if (obj->type == OBJECT_TYPE_POWERUP) {
-        // Powerups handled by interrogation blocks
       } else if (obj->type == OBJECT_TYPE_PLATFORM_MOVING) {
         platform_moving_new(
             obj->x * TILE_SIZE, (obj->y + MARGIN_TOP) * TILE_SIZE,
@@ -563,37 +521,27 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   uint8_t col = 0;
 
-  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
-
   while (col < nb) {
-    // Page boundary: advance page when column_in_page wraps
     if (current_column_in_page == PAGE_SIZE) {
       current_column_in_page = 0;
       current_page++;
       #ifdef USE_COMPRESSED_LEVELS
       cached_page_index = 0xFF;
       #endif
-      EMU_printf("--- page boundary! current_page now %d\n", current_page);
     }
 
     if (current_page >= level_to_load->page_count) {
-      EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
       SWITCH_ROM(_saved_bank);
       return col;
     }
 
     const banked_map_t *page_entry = level_to_load->map_pages + current_page;
 
-    EMU_printf("page=%d bank=%d col_in_page=%d\n", current_page, page_entry->bank, current_column_in_page);
-    SWITCH_ROM(page_entry->bank);
-    EMU_printf("after switch: current_bank=%d\n", _current_bank);
-
     SWITCH_ROM(page_entry->bank);
     const unsigned char *current_page_data;
 
     #ifdef USE_COMPRESSED_LEVELS
     if (cached_page_index != current_page) {
-      EMU_printf("    decompress page %d\n", current_page);
       gb_decompress(page_entry->map, decompression_buffer);
       current_page_data = decompression_buffer;
       cached_page_index = current_page;
@@ -603,9 +551,6 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     #else
     current_page_data = page_entry->map;
     #endif
-
-    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
-               col, current_column_in_page, current_page, map_column, camera_x);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
@@ -627,15 +572,28 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     map_column = (map_column + 1) % 32;
   }
 
-  EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
-
   SWITCH_ROM(_saved_bank);
   return col;
 }
 
-/**
- * Set up the current level and initialize player position
- */
+#ifdef STREAM_FULL_WIDTH
+static bool level_load_next_column(void) NONBANKED {
+  if (level_load_column(1, levels + current_level) == 0) {
+    return false;
+  }
+  level_load_objects(world_col_loaded);
+  world_col_loaded++;
+  return true;
+}
+
+void level_stream_columns(void) NONBANKED {
+  uint16_t target = ((camera_x + 7) >> 3) + DEVICE_SCREEN_BUFFER_WIDTH;
+  while (world_col_loaded < target) {
+    if (!level_load_next_column()) break;
+  }
+}
+#endif
+
 void level_set_current(void) NONBANKED {
   set_level(current_level);
   scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
@@ -646,18 +604,17 @@ void level_set_current(void) NONBANKED {
   load_current_level();
 }
 
-/**
- * Load the current level's initial state
- */
-uint16_t loaded_cols;
-
 void load_current_level(void) NONBANKED {
   camera_x = 0;
   move_camera(camera_x);
   camera_x_upscaled = 0;
   level_end_reached = false;
   current_page = 0;
+  current_column_in_page = 0;
+  map_column = 0;
   level_page_x_offset = 0;
+  world_col_loaded = 0;
+  col_from = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
@@ -665,23 +622,14 @@ void load_current_level(void) NONBANKED {
 
   pipe_clear();
 
+#ifdef STREAM_FULL_WIDTH
 #ifdef SEGA
   HIDE_LEFT_COLUMN;
-  level_load_column(DEVICE_SCREEN_BUFFER_WIDTH, levels + current_level);
-  loaded_cols = DEVICE_SCREEN_BUFFER_WIDTH;
+#endif
+  level_stream_columns();
 #else
   level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;
-#endif
-}
-
-void level_stream_columns(void) NONBANKED {
-#ifdef SEGA
-  uint16_t target = ((camera_x + 7) >> 3) + DEVICE_SCREEN_BUFFER_WIDTH;
-  while (loaded_cols < target) {
-    if (level_load_column(1, levels + current_level) == 0) break;
-    loaded_cols++;
-  }
 #endif
 }
 
@@ -689,9 +637,6 @@ void level_stream_columns(void) NONBANKED {
 #define set_sprite_data set_sprite_native_data
 #endif
 
-/**
- * Set up a specific level (tiles, music, lookup tables, etc.)
- */
 void set_level(uint8_t level_index) NONBANKED {
   uint8_t world = level_index / 3;
   char major = '1' + world;
@@ -699,18 +644,15 @@ void set_level(uint8_t level_index) NONBANKED {
 
   hud_set_level(major, minor);
 
-  
   #ifdef GAMEBOY
   music_load(levels[level_index].music_bank, levels[level_index].music);
   #endif
 
   uint8_t _saved_bank = _current_bank;
 
-  // Set level dimensions
   current_map_width = levels[level_index].page_count * PAGE_SIZE * 8;
   current_map_width_in_tiles = levels[level_index].page_count * PAGE_SIZE;
 
-  // Set up lookup table for level objects
   SWITCH_ROM(levels[level_index].lookup_bank);
   level_lookup_bank = levels[level_index].lookup_bank;
   level_lookup = levels[level_index].lookup;
