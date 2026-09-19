@@ -563,7 +563,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   uint8_t col = 0;
 
-  //EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
+  EMU_printf("=== level_load_column nb=%d current_page=%d current_column_in_page=%d cam %d\n", nb, current_page, current_column_in_page, camera_x);
 
   while (col < nb) {
     // Page boundary: advance page when column_in_page wraps
@@ -573,27 +573,27 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
       #ifdef USE_COMPRESSED_LEVELS
       cached_page_index = 0xFF;
       #endif
-      //EMU_printf("--- page boundary! current_page now %d\n", current_page);
+      EMU_printf("--- page boundary! current_page now %d\n", current_page);
     }
 
     if (current_page >= level_to_load->page_count) {
-      //EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
+      EMU_printf("!!! exceeded page_count=%d\n", level_to_load->page_count);
       SWITCH_ROM(_saved_bank);
       return col;
     }
 
     const banked_map_t *page_entry = level_to_load->map_pages + current_page;
 
-    //EMU_printf("page=%d bank=%d col_in_page=%d\n", current_page, page_entry->bank, current_column_in_page);
+    EMU_printf("page=%d bank=%d col_in_page=%d\n", current_page, page_entry->bank, current_column_in_page);
     SWITCH_ROM(page_entry->bank);
-    //EMU_printf("after switch: current_bank=%d\n", _current_bank);
+    EMU_printf("after switch: current_bank=%d\n", _current_bank);
 
     SWITCH_ROM(page_entry->bank);
     const unsigned char *current_page_data;
 
     #ifdef USE_COMPRESSED_LEVELS
     if (cached_page_index != current_page) {
-      //EMU_printf("    decompress page %d\n", current_page);
+      EMU_printf("    decompress page %d\n", current_page);
       gb_decompress(page_entry->map, decompression_buffer);
       current_page_data = decompression_buffer;
       cached_page_index = current_page;
@@ -604,8 +604,8 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     current_page_data = page_entry->map;
     #endif
 
-    //EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
-    //           col, current_column_in_page, current_page, map_column, camera_x);
+    EMU_printf("    col=%d current_column_in_page=%d current_page=%d map_column=%d camera_x=%d\n", 
+               col, current_column_in_page, current_page, map_column, camera_x);
 
     for (int row = 0; row < LEVEL_HEIGHT; row++) {
       uint8_t tile = current_page_data[(row * PAGE_SIZE) + current_column_in_page];
@@ -627,7 +627,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
     map_column = (map_column + 1) % 32;
   }
 
-  //EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
+  EMU_printf("=== done current_page=%d current_column_in_page=%d\n", current_page, current_column_in_page);
 
   SWITCH_ROM(_saved_bank);
   return col;
@@ -649,6 +649,8 @@ void level_set_current(void) NONBANKED {
 /**
  * Load the current level's initial state
  */
+uint16_t loaded_cols;
+
 void load_current_level(void) NONBANKED {
   camera_x = 0;
   move_camera(camera_x);
@@ -663,8 +665,24 @@ void load_current_level(void) NONBANKED {
 
   pipe_clear();
 
+#ifdef SEGA
+  HIDE_LEFT_COLUMN;
+  level_load_column(DEVICE_SCREEN_BUFFER_WIDTH, levels + current_level);
+  loaded_cols = DEVICE_SCREEN_BUFFER_WIDTH;
+#else
   level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;
+#endif
+}
+
+void level_stream_columns(void) NONBANKED {
+#ifdef SEGA
+  uint16_t target = ((camera_x + 7) >> 3) + DEVICE_SCREEN_BUFFER_WIDTH;
+  while (loaded_cols < target) {
+    if (level_load_column(1, levels + current_level) == 0) break;
+    loaded_cols++;
+  }
+#endif
 }
 
 #if defined(SEGA)
