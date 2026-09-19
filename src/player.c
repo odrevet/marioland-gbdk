@@ -54,7 +54,6 @@ uint8_t tile_next_2;
 
 bool plane_mode;
 
-#define PLAYER_GROW_SHRINK_DELTA ((MARIO_HEIGHT_BIG - MARIO_HEIGHT_SMALL) << 4)
 #define PLAYER_INVINCIBLE_FRAMES 60
 
 #define ENEMY_TOP_MARGIN 8
@@ -297,14 +296,10 @@ void player_grow(void) BANKED {
   }
 
   player_is_big = TRUE;
-  player_y_upscaled -= PLAYER_GROW_SHRINK_DELTA;
-  player_y = player_y_upscaled >> 4;
 }
 
 void player_shrink(void) BANKED {
   player_is_big = FALSE;
-  player_y_upscaled += PLAYER_GROW_SHRINK_DELTA;
-  player_y = player_y_upscaled >> 4;
   player_invincible_timer = PLAYER_INVINCIBLE_FRAMES;
 }
 
