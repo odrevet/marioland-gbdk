@@ -153,14 +153,18 @@ void main(void) {
   SWITCH_ROM(BANK(textTileset));
   set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
 
+
   SWITCH_ROM(BANK(TitleScreen));
-#ifdef NINTENDO_NES
-  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 2);
+
+// clear the screen
+#if defined(NINTENDO_NES) || defined(MASTERSYSTEM)
+  fill_bkg_rect(0, 0, DEVICE_SCREEN_WIDTH, DEVICE_SCREEN_HEIGHT, 2);
 #endif
 
   set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
 
-#ifdef NINTENDO_NES
+// center the title screen on nes and master system
+#if defined(NINTENDO_NES) || defined(MASTERSYSTEM)
   uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
   uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(18))/2;
   set_bkg_tiles(titleColumn,titleRow, 20, 18, TitleScreen_map);
@@ -172,8 +176,8 @@ void main(void) {
   state_title();
   DISPLAY_OFF;
 
-#ifdef NINTENDO_NES
-  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, TILE_EMPTY);
+#if defined NINTENDO_NES || defined(MASTERSYSTEM)
+  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 0);
 #endif
 
 #if defined(SEGA)
