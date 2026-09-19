@@ -113,47 +113,45 @@ void main(void) {
 #endif
 
 #if DEVICE_SCREEN_BUFFER_WIDTH == DEVICE_SCREEN_WIDTH
-      HIDE_LEFT_COLUMN;
+  HIDE_LEFT_COLUMN;
 #endif
 
   SHOW_SPRITES;
   SPRITES_8x8;
 
-
 #if defined(SEGA)
-const palette_color_t commonTileset_palettes[4] = {
-    RGB8(255,255,255),
-    RGB8(88,208,88),
-    RGB8(24,120,40),
-    RGB8(0,0,0)
-};
+  const palette_color_t commonTileset_palettes[4] = {
+      RGB8(255,255,255),
+      RGB8(88,208,88),
+      RGB8(24,120,40),
+      RGB8(0,0,0)
+  };
 #elif defined(NINTENDO_NES)
-const palette_color_t commonTileset_palettes[4] = {
-    0x30,
-    0x2A,
-    0x1A,
-    0x0F
-};
+  const palette_color_t commonTileset_palettes[4] = {
+      0x30,
+      0x2A,
+      0x1A,
+      0x0F
+  };
 #else
-const palette_color_t commonTileset_palettes[4] = {
-    RGB8(255,255,255),
-    RGB8(170,170,170),
-    RGB8(85,85,85),
-    RGB8(0,0,0)
-};
+  const palette_color_t commonTileset_palettes[4] = {
+      RGB8(255,255,255),
+      RGB8(170,170,170),
+      RGB8(85,85,85),
+      RGB8(0,0,0)
+  };
 #endif
 
   setBKGPalettes(1, commonTileset_palettes);
 
-
   uint8_t base_sprite = 0;
   uint8_t background_animation_counter = 0;
   uint8_t anim_frame_counter = 0;
-  
+
   uint8_t _saved_bank = _current_bank;
 
   SWITCH_ROM(BANK(textTileset));
-  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);  
+  set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
 
   SWITCH_ROM(BANK(TitleScreen));
 #ifdef NINTENDO_NES
@@ -161,7 +159,6 @@ const palette_color_t commonTileset_palettes[4] = {
 #endif
 
   set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
-
 
 #ifdef NINTENDO_NES
   uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
@@ -183,16 +180,13 @@ const palette_color_t commonTileset_palettes[4] = {
 #define set_sprite_data set_sprite_native_data
 #endif
 
-  // set palette once
   SetSpritePalettes(marioSprites_palettes, BANK(marioSprites));
 
   SWITCH_ROM(BANK(textTileset));
   set_bkg_native_data(textTileset_TILE_ORIGIN, textTileset_TILE_COUNT, textTileset_tiles);
-  //setBKGPalettes(textTileset_PALETTE_COUNT, textTileset_palettes);
 
   SWITCH_ROM(BANK(commonTileset));
   set_bkg_native_data(commonTileset_TILE_ORIGIN, commonTileset_TILE_COUNT, commonTileset_tiles);
-  //setBKGPalettes(commonTileset_PALETTE_COUNT, commonTileset_palettes);
 
   SWITCH_ROM(BANK(marioSprites));
   set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
@@ -257,14 +251,12 @@ const palette_color_t commonTileset_palettes[4] = {
 
     SWITCH_ROM(BANK(player));
     player_check_enemy_collision();
-    if(IS_VEHICLE_LEVEL(current_level)){
+    if (IS_VEHICLE_LEVEL(current_level)) {
       player_move_vehicle();
-    }
-    else{
+    } else {
       player_move();
     }
     SWITCH_ROM(_saved_bank);
-
 
     if (display_jump_frame) {
       player_frame = 4;
@@ -354,25 +346,14 @@ const palette_color_t commonTileset_palettes[4] = {
     }
 
     if (current_level == LEVEL_WORLD1_END) {
-      uint8_t _saved_bank = _current_bank;
       anim_frame_counter++;
       if (anim_frame_counter >= 12) {
         anim_frame_counter = 0;
         background_animation_counter ^= 1;
-
-        /*if (background_animation_counter) {
-          SWITCH_ROM(BANK(birabutoTileset_torch));
-          set_bkg_native_data(TILE_TORCH, 1, birabuto_torch_tiles);
-        } else {
-          SWITCH_ROM(BANK(birabutoTileset));
-          set_bkg_native_data(TILE_TORCH, 1,
-                       birabutoTileset_tiles + 288);
-        }*/
       }
-
-      SWITCH_ROM(_saved_bank);
     }
 
     vsync();
+    move_camera(camera_x);
   }
 }

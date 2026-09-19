@@ -500,12 +500,6 @@ void player_move(void) BANKED {
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + marioSprites_HEIGHT - 1);
 
-uint8_t tx1 = TILE_INDEX_X(player_x_next + MARIO_WIDTH - PLAYER_HORIZONTAL_MARGIN - camera_x, camera_x);
-uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
-//EMU_printf("H px=%d py=%d tx=%d ty=%d t1=%02x t2=%02x solid=%d\n",
-//           player_x_next, player_y_next, tx1, ty1, tile_next_1, tile_next_2,
-//           is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2));
-
     if (is_tile_solid(tile_next_1) || is_tile_solid(tile_next_2)) {
       player_x = TILE_ALIGN(player_x_next) - 7;
       player_x_upscaled = player_x << 4;
@@ -533,16 +527,12 @@ uint8_t ty1 = TILE_INDEX_Y(player_y_next + PLAYER_TOP_MARGIN);
       if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        move_camera(camera_x);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
-        //EMU_printf("SCROLL camera_x=%d player_x=%d scroll_limit=%d\n", camera_x, player_x, scroll_limit);
-
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
-        move_camera(camera_x);
         scroll_limit = player_x;
         level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
                            7);
@@ -709,7 +699,6 @@ void player_move_vehicle(void) BANKED {
   if (vel_y < -MAX_FALL_SPEED)
     vel_y = -MAX_FALL_SPEED;
 
-  // Horizontal movement
   player_x_next_upscaled = player_x_upscaled + vel_x;
   player_y_next_upscaled = player_y_upscaled;
 
@@ -751,25 +740,19 @@ void player_move_vehicle(void) BANKED {
       if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        move_camera(camera_x);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
         int16_t player_movement = player_x - scroll_limit;
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
-        move_camera(camera_x);
         scroll_limit = player_x;
         level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
                            7);
       }
 
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {
-#if defined(GAMEBOY)
         level_load_column(1, levels + current_level);
-#elif defined(NINTENDO_NES)
-        level_load_column(1, levels + current_level);
-#endif
         load_col_at++;
       }
     }
@@ -796,7 +779,6 @@ void player_move_vehicle(void) BANKED {
     }
   }
 
-  // Vertical movement
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled + vel_y;
 
@@ -804,7 +786,6 @@ void player_move_vehicle(void) BANKED {
   player_y_next = player_y_next_upscaled >> 4;
 
   if (vel_y > 0) {
-    // Moving downward
     tile_next_1 = get_tile(player_x_next + MARIO_WIDTH -
                                PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + marioSprites_HEIGHT - 1);
@@ -830,7 +811,6 @@ void player_move_vehicle(void) BANKED {
       player_y = player_y_upscaled >> 4;
     }
   } else if (vel_y < 0) {
-    // Moving upward
     tile_next_1 = get_tile(player_x_next + PLAYER_HORIZONTAL_MARGIN - camera_x,
                            player_y_next + PLAYER_TOP_MARGIN);
     tile_next_2 = get_tile(player_x_next + MARIO_WIDTH -
