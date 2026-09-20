@@ -217,6 +217,7 @@ void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor, uint8
 }
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
+#ifndef NINTENDO_NES
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
     if (!enemies[i].active) {
       uint8_t current_frame;
@@ -278,6 +279,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
       return;
     }
   }
+#endif
 }
 
 void enemy_move_goomba(uint8_t index) BANKED {
