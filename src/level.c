@@ -438,8 +438,10 @@ void on_get_coin() {
     #endif
   }
 
+  #ifdef GAMEBOY
   hud_update_coins();
   hud_update_score();
+  #endif
 }
 
 void on_interogation_block_hit(uint8_t x, uint8_t y) {
@@ -450,7 +452,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
 
-  #if defined(GAMEBOY)
+  #if defined(GAMEBOY) || defined(SEGA)
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
   #elif defined(NINTENDO_NES)
   set_bkg_tile_xy(index_x, index_y + 2, TILE_EMPTIED);
@@ -479,6 +481,8 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 
+#include <gbdk/emu_debug.h>
+
 void level_load_objects(uint16_t col) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
@@ -489,6 +493,9 @@ void level_load_objects(uint16_t col) NONBANKED {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         uint16_t relative_x = obj->x - level_page_x_offset;
         enemy_new(relative_x * TILE_SIZE,
+                  (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
+                  obj->data.enemy.type);
+        EMU_printf("%d %d %d", relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         SWITCH_ROM(level_lookup_bank);
