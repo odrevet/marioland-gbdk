@@ -242,7 +242,13 @@ uint8_t get_tile(uint8_t x, uint8_t y) {
 
   uint8_t tile_x = TILE_INDEX_X(x, camera_x);
   uint8_t tile_y = TILE_INDEX_Y(y);
-  return map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
+  uint8_t tile = map_buffer[tile_y * DEVICE_SCREEN_BUFFER_WIDTH + tile_x];
+
+  if (current_level == 0 && tile_y == 0 && tile == GREY_BLOCK) {
+    return TILE_EMPTY;
+  }
+
+  return tile;
 }
 
 bool is_tile_solid(uint8_t tile) {
