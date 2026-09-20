@@ -99,6 +99,7 @@ BANKREF(enemy)
 #define PLANT_STATE_FALLING 3
 
 uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
+#ifndef NINTENDO_NES
   uint16_t ground_check_x = enemy->x >> 4;
   uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
 
@@ -107,9 +108,13 @@ uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
 
   return is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right) ||
          is_tile_passthought(tile_ground_left, tile_ground_right);
+#else
+  return 0;
+#endif
 }
 
 uint8_t enemy_has_ground_ahead(enemy_t *enemy, int8_t vel_x) BANKED {
+#ifndef NINTENDO_NES
   uint16_t current_x = enemy->x >> 4;
   uint16_t current_y = enemy->y >> 4;
 
@@ -121,9 +126,13 @@ uint8_t enemy_has_ground_ahead(enemy_t *enemy, int8_t vel_x) BANKED {
     return is_tile_solid(tile) || is_tile_passthought(tile, tile);
   }
   return FALSE;
+#else
+  return 0;
+#endif
 }
 
 void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKED {
+#ifndef NINTENDO_NES
   if (enemy->vel_x == 0) return;
 
   uint16_t next_x_upscaled = enemy->x + enemy->vel_x;
@@ -160,9 +169,12 @@ void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKE
   } else {
     enemy->x = next_x_upscaled;
   }
+#else
+#endif
 }
 
 void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor, uint8_t on_ground) BANKED {
+#ifndef NINTENDO_NES
   uint16_t ground_check_x = enemy->x >> 4;
   uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
 
@@ -200,6 +212,8 @@ void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor, uint8
       }
     }
   }
+#else
+#endif
 }
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
@@ -267,6 +281,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
 }
 
 void enemy_move_goomba(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *goomba = &enemies[index];
 
   if (goomba->stomped || !goomba->active) {
@@ -279,9 +294,12 @@ void enemy_move_goomba(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(goomba, FALSE);
   enemy_apply_vertical_movement(goomba, 1, enemy_has_ground(goomba));
+#else
+#endif
 }
 
 void enemy_move_koopa(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *koopa = &enemies[index];
 
   if (koopa->stomped || !koopa->active) {
@@ -294,9 +312,12 @@ void enemy_move_koopa(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(koopa, TRUE);
   enemy_apply_vertical_movement(koopa, 1, enemy_has_ground(koopa));
+#else
+#endif
 }
 
 void enemy_move_fly(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *fly = &enemies[index];
 
   if (fly->stomped || !fly->active) {
@@ -325,9 +346,12 @@ void enemy_move_fly(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(fly, FALSE);
   enemy_apply_vertical_movement(fly, 8, on_ground);
+#else
+#endif
 }
 
 void enemy_move_bunbun(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *bunbun = &enemies[index];
 
   if (bunbun->stomped || !bunbun->active) {
@@ -347,9 +371,12 @@ void enemy_move_bunbun(uint8_t index) BANKED {
   }
 
   bunbun->x += bunbun->vel_x;
+#else
+#endif
 }
 
 void enemy_move_gao(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *gao = &enemies[index];
 
   if (gao->stomped || !gao->active) {
@@ -369,9 +396,12 @@ void enemy_move_gao(uint8_t index) BANKED {
   }
 
   enemy_apply_vertical_movement(gao, 1, enemy_has_ground(gao));
+#else
+#endif
 }
 
 void enemy_move_honen(uint8_t index) BANKED {
+#ifndef NINTENDO_NES
   enemy_t *honen = &enemies[index];
 
   if (honen->stomped || !honen->active) {
@@ -401,6 +431,8 @@ void enemy_move_honen(uint8_t index) BANKED {
     }
     break;
   }
+#else
+#endif
 }
 
 void enemy_move_mekabon(uint8_t index) BANKED {
@@ -800,6 +832,7 @@ void enemy_reset_all(void) BANKED {
 }
 
 void enemy_update(void) BANKED {
+#ifndef NINTENDO_NES
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     if (!enemies[index_enemy].active) {
       continue;
@@ -912,9 +945,12 @@ void enemy_update(void) BANKED {
 
     enemies[index_enemy].frame_counter++;
   }
+#else
+#endif
 }
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
+#ifndef NINTENDO_NES
   uint8_t _saved_bank = _current_bank;
   uint8_t current_bank = _current_bank;
 
@@ -992,4 +1028,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
   }
   SWITCH_ROM(_saved_bank);
   return base_sprite;
+#else
+  return base_sprite;
+#endif
 }

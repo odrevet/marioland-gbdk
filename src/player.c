@@ -15,7 +15,6 @@
 #endif
 
 BANKREF(player)
-//#include <gbdk/emu_debug.h>
 
 uint8_t coins;
 uint16_t score;
@@ -59,6 +58,12 @@ bool plane_mode;
 #define ENEMY_TOP_MARGIN 8
 #define ENEMY_STOMP_TOLERANCE 4
 #define ENEMY_STOMP_BOUNCE_VELOCITY -16
+
+#if defined(SEGA) || defined(NINTENDO_NES)
+#define OBJECT_SPAWN_COL() ((camera_x >> 3) + DEVICE_SCREEN_WIDTH - 1)
+#else
+#define OBJECT_SPAWN_COL() (current_page * PAGE_SIZE + current_column_in_page - 7)
+#endif
 
 static int8_t apply_velocity(int8_t vel, int8_t target, int8_t accel,
                              int8_t decel) {
@@ -124,8 +129,6 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
 
   return base_sprite;
 }
-
-// #include <gbdk/emu_debug.h>
 
 bool player_check_pipe_entry(void) NONBANKED {
   if (!touch_ground || !(joypad_current & J_DOWN) ||
@@ -534,8 +537,7 @@ void player_move(void) BANKED {
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
         scroll_limit = player_x;
-        level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
-                           7);
+        level_load_objects(OBJECT_SPAWN_COL());
       }
 
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {
@@ -747,8 +749,7 @@ void player_move_vehicle(void) BANKED {
         camera_x_upscaled += (player_movement << 4);
         camera_x = camera_x_upscaled >> 4;
         scroll_limit = player_x;
-        level_load_objects(current_page * PAGE_SIZE + current_column_in_page -
-                           7);
+        level_load_objects(OBJECT_SPAWN_COL());
       }
 
       if (camera_x >> 3 >= load_col_at && !level_end_reached) {

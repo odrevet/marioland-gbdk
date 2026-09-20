@@ -487,8 +487,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
 uint16_t col_from = 0;
 
-#include <gbdk/emu_debug.h>
-
 void level_load_objects(uint16_t col) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
@@ -499,9 +497,6 @@ void level_load_objects(uint16_t col) NONBANKED {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         uint16_t relative_x = obj->x - level_page_x_offset;
         enemy_new(relative_x * TILE_SIZE,
-                  (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
-                  obj->data.enemy.type);
-        EMU_printf("%d %d %d", relative_x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         SWITCH_ROM(level_lookup_bank);
@@ -602,7 +597,9 @@ static bool level_load_next_column(void) NONBANKED {
 void level_stream_columns(void) NONBANKED {
   uint16_t target = ((camera_x + 7) >> 3) + DEVICE_SCREEN_BUFFER_WIDTH;
   while (world_col_loaded < target) {
-    if (!level_load_next_column()) break;
+    if (!level_load_next_column()) {
+      break;
+    }
   }
 }
 #endif
