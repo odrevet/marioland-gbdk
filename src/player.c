@@ -5,6 +5,7 @@
 #include "level.h"
 #include "marioSprites.h"
 #include <stdint.h>
+#include <gbdk/emu_debug.h>
 
 #include "player.h"
 #include "enemy.h"
@@ -47,6 +48,7 @@ bool marioSpritesflip;
 uint16_t scroll_limit;
 bool player_is_big = FALSE;
 uint8_t player_invincible_timer = 0;
+uint8_t player_star_timer = 0;
 
 uint8_t tile_next_1;
 uint8_t tile_next_2;
@@ -54,6 +56,7 @@ uint8_t tile_next_2;
 bool plane_mode;
 
 #define PLAYER_INVINCIBLE_FRAMES 60
+#define PLAYER_STAR_FRAMES 120
 
 #define ENEMY_TOP_MARGIN 8
 #define ENEMY_STOMP_TOLERANCE 4
@@ -98,6 +101,10 @@ void update_frame_counter(void) NONBANKED {
 }
 
 uint8_t player_draw(uint8_t base_sprite) NONBANKED {
+  if (player_star_timer > 0 && (player_star_timer & 1)) {
+    return base_sprite;
+  }
+
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(marioSprites));
 
@@ -201,6 +208,8 @@ void player_enter_pipe(pipe_params *pipe) NONBANKED {
                  pipe->destination_x, pipe->destination_y);
 
 #ifdef GAMEBOY
+  //EMU_printf("PIPE music_load dest_level=%p bank=%d\n",
+  //           (void *)pipe->destination_level, pipe->destination_level->music_bank);
   music_load(pipe->destination_level->music_bank,
              pipe->destination_level->music);
 #endif
@@ -244,10 +253,13 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
 
   level_page_x_offset = destination_page * PAGE_SIZE;
 
+  uint16_t page_start_col = destination_page * PAGE_SIZE;
+  uint16_t page_start_px = page_start_col * TILE_SIZE;
+
   if (destination_page == destination_level->page_count - 1) {
     level_end_reached = true;
   } else {
-    scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
+    scroll_limit = page_start_px + DEVICE_SCREEN_PX_WIDTH_HALF;
     level_end_reached = false;
   }
 
@@ -255,17 +267,17 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
   delay(500);
 
-  camera_x = 0;
+  camera_x = page_start_px;
   move_camera(camera_x);
-  camera_x_upscaled = 0;
+  camera_x_upscaled = camera_x << 4;
 
   current_page = destination_page;
   current_column_in_page = 0;
-  map_column = 0;
+  map_column = page_start_col % DEVICE_SCREEN_BUFFER_WIDTH;
 
-  player_x_upscaled = (destination_x * TILE_SIZE) << 4;
+  player_x_upscaled = ((page_start_col + destination_x) * TILE_SIZE) << 4;
   player_y_upscaled = (destination_y * TILE_SIZE) << 4;
-  player_draw_x = player_x_upscaled >> 4;
+  player_draw_x = (player_x_upscaled >> 4) - camera_x;
   player_draw_y = player_y_upscaled >> 4;
   player_x_next_upscaled = player_x_upscaled;
   player_y_next_upscaled = player_y_upscaled;
@@ -279,7 +291,11 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   marioSpritesflip = FALSE;
   touch_ground = FALSE;
 
-  load_col_at = COLUMN_SIZE;
+  load_col_at = page_start_col + COLUMN_SIZE;
+
+  //EMU_printf("WARP dest_page=%d page_count=%d load_col_at=%d map_w_tiles=%d end=%d cam=%d\n",
+  //           destination_page, destination_level->page_count, load_col_at,
+  //           current_map_width_in_tiles, level_end_reached, camera_x);
 
 #ifdef USE_COMPRESSED_LEVELS
   cached_page_index = 0xFF;
@@ -288,7 +304,8 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   level_load_column(MAP_BUFFER_WIDTH, destination_level);
 
   col_from = 0;
-  for (uint8_t c = 0; c <= DEVICE_SCREEN_WIDTH + 1; c++) {
+  for (uint16_t c = page_start_col;
+       c <= page_start_col + DEVICE_SCREEN_WIDTH + 1; c++) {
     level_load_objects(c);
   }
 }
@@ -323,8 +340,14 @@ bool player_check_powerup(void) BANKED {
   if (player_x < powerup_right && player_right > powerup_left &&
       player_top < powerup_bottom && player_bottom > powerup_top) {
 
+    //EMU_printf("POWERUP HIT: p=%d,%d pw=%d,%d | m=%d,%d mw=%d,%d\n",
+    //           powerup_left, powerup_top, powerup_right, powerup_bottom,
+    //           player_x, player_top, player_right, player_bottom);
+
     if (powerup.type == POWERUP_MUSHROOM) {
       player_grow();
+    } else if (powerup.type == POWERUP_STAR) {
+      player_star_timer = PLAYER_STAR_FRAMES;
     } else {
       on_get_coin();
     }
@@ -344,6 +367,10 @@ bool player_check_enemy_collision(void) BANKED {
 
   if (player_invincible_timer > 0) {
     player_invincible_timer--;
+  }
+
+  if (player_star_timer > 0) {
+    player_star_timer--;
   }
 
   for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
@@ -381,7 +408,6 @@ bool player_check_enemy_collision(void) BANKED {
 
       if (player_is_big) {
         player_shrink();
-        enemy_stomp(enemy_index);
 #ifdef GAMEBOY
         music_play_sfx(BANK(sound_pipe), sound_pipe,
                        SFX_MUTE_MASK(sound_pipe), MUSIC_SFX_PRIORITY_NORMAL);
@@ -526,24 +552,6 @@ void player_move(void) BANKED {
 
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
-
-      if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
-        level_end_reached = true;
-        camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-      }
-
-      if (!level_end_reached && player_x > scroll_limit) {
-        int16_t player_movement = player_x - scroll_limit;
-        camera_x_upscaled += (player_movement << 4);
-        camera_x = camera_x_upscaled >> 4;
-        scroll_limit = player_x;
-        level_load_objects(OBJECT_SPAWN_COL());
-      }
-
-      if (camera_x >> 3 >= load_col_at && !level_end_reached) {
-        level_load_column(1, levels + current_level);
-        load_col_at++;
-      }
     }
   } else if (vel_x < 0 && player_draw_x > PLAYER_SCREEN_LEFT_MARGIN) {
     tile_next_1 =
@@ -565,6 +573,26 @@ void player_move(void) BANKED {
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
     }
+  }
+
+  if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
+    level_end_reached = true;
+    camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
+    //EMU_printf("LEVEL END load_col_at=%d map_w_tiles=%d cam=%d\n",
+    //           load_col_at, current_map_width_in_tiles, camera_x);
+  }
+
+  if (!level_end_reached && player_x > scroll_limit) {
+    int16_t player_movement = player_x - scroll_limit;
+    camera_x_upscaled += (player_movement << 4);
+    camera_x = camera_x_upscaled >> 4;
+    scroll_limit = player_x;
+    level_load_objects(OBJECT_SPAWN_COL());
+  }
+
+  if (camera_x >> 3 >= load_col_at && !level_end_reached) {
+    level_load_column(1, levels + current_level);
+    load_col_at++;
   }
 
   player_x_next_upscaled = player_x_upscaled;
@@ -742,6 +770,8 @@ void player_move_vehicle(void) BANKED {
       if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
         level_end_reached = true;
         camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
+        //EMU_printf("LEVEL END load_col_at=%d map_w_tiles=%d cam=%d\n",
+        //           load_col_at, current_map_width_in_tiles, camera_x);
       }
 
       if (!level_end_reached && player_x > scroll_limit) {
@@ -857,16 +887,22 @@ void player_on_touch_ground(void) NONBANKED {
 bool player_is_on_platform(void) BANKED {
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
-    if (player_y_upscaled + 128 > platforms_moving[index_platform].y &&
-        player_y_upscaled + 128 <=
+    if (player_y_upscaled + 256 >= platforms_moving[index_platform].y &&
+        player_y_upscaled + 256 <=
             platforms_moving[index_platform].y + (8 * 16) &&
         player_x_upscaled <=
             platforms_moving[index_platform].x + (3 * 8 * 16) &&
         player_x_upscaled > platforms_moving[index_platform].x) {
 
+      EMU_printf("ON PLATFORM: plat=%d,%d player=%d,%d\n",
+                 platforms_moving[index_platform].x >> 4,
+                 platforms_moving[index_platform].y >> 4, player_x, player_y);
+
       player_x_upscaled += platforms_moving[index_platform].vel_x;
       player_x = player_x_upscaled >> 4;
       vel_y = platforms_moving[index_platform].vel_y;
+      player_y_upscaled = platforms_moving[index_platform].y - 256;
+      player_y = player_y_upscaled >> 4;
       player_on_touch_ground();
       return TRUE;
     }

@@ -71,6 +71,7 @@ extern uint8_t tile_next_2;
 extern bool plane_mode;
 extern bool player_is_big;
 extern uint8_t player_invincible_timer;
+extern uint8_t player_star_timer;
 
 void update_frame_counter(void) NONBANKED;
 uint8_t player_draw(uint8_t base_sprite) NONBANKED;

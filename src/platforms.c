@@ -1,6 +1,7 @@
 #include "platforms.h"
 #include "global.h"
 #include "commonSprites.h"
+#include <gbdk/emu_debug.h>
 
 uint8_t platform_moving_count = 0;
 platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
@@ -36,6 +37,12 @@ void platform_moving_update() {
         (platforms_moving[index_platform_moving].x - camera_x_upscaled) >> 4;
     platforms_moving[index_platform_moving].draw_y =
         platforms_moving[index_platform_moving].y >> 4;
+
+    EMU_printf("PLATFORM: x=%d y=%d vel=%d,%d\n",
+               platforms_moving[index_platform_moving].x >> 4,
+               platforms_moving[index_platform_moving].y >> 4,
+               platforms_moving[index_platform_moving].vel_x,
+               platforms_moving[index_platform_moving].vel_y);
 
     platforms_moving[index_platform_moving].range_current++;
     if (platforms_moving[index_platform_moving].range_current >=

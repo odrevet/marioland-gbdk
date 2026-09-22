@@ -1,6 +1,7 @@
 #include "level.h"
 #include "coin_animated.h"
 #include <gbdk/platform.h>
+#include <gbdk/emu_debug.h>
 
 #include "global.h"
 #include "enemiesSprites.h"
@@ -495,8 +496,7 @@ void level_load_objects(uint16_t col) NONBANKED {
     level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
-        uint16_t relative_x = obj->x - level_page_x_offset;
-        enemy_new(relative_x * TILE_SIZE,
+        enemy_new(obj->x * TILE_SIZE,
                   (obj->y + MARGIN_TOP) * TILE_SIZE - enemiesSprites_HEIGHT,
                   obj->data.enemy.type);
         SWITCH_ROM(level_lookup_bank);
@@ -655,6 +655,8 @@ void set_level(uint8_t level_index) NONBANKED {
   hud_set_level(major, minor);
 
   #ifdef GAMEBOY
+  //EMU_printf("SET_LEVEL idx=%d music_bank=%d\n", level_index,
+  //           levels[level_index].music_bank);
   music_load(levels[level_index].music_bank, levels[level_index].music);
   #endif
 
