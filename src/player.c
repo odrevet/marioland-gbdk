@@ -249,6 +249,10 @@ bool player_check_horizontal_pipe_entry(void) NONBANKED {
 
 void player_warp_to(level *destination_level, uint8_t destination_page,
                     uint8_t destination_x, uint8_t destination_y) NONBANKED {
+  EMU_printf("[WARP] dest_page=%d page_count=%d dest_x=%d dest_y=%d\n",
+             destination_page, destination_level->page_count, destination_x,
+             destination_y);
+  debug_print_scroll_state("WARP_BEFORE");
   pipe_clear();
 
   level_page_x_offset = destination_page * PAGE_SIZE;
@@ -277,6 +281,8 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
 
   player_x_upscaled = ((page_start_col + destination_x) * TILE_SIZE) << 4;
   player_y_upscaled = (destination_y * TILE_SIZE) << 4;
+  player_x = player_x_upscaled >> 4;
+  player_y = player_y_upscaled >> 4;
   player_draw_x = (player_x_upscaled >> 4) - camera_x;
   player_draw_y = player_y_upscaled >> 4;
   player_x_next_upscaled = player_x_upscaled;
@@ -308,6 +314,8 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
        c <= page_start_col + DEVICE_SCREEN_WIDTH + 1; c++) {
     level_load_objects(c);
   }
+
+  debug_print_scroll_state("WARP_AFTER");
 }
 
 void player_grow(void) BANKED {
@@ -593,6 +601,7 @@ void player_move(void) BANKED {
   if (camera_x >> 3 >= load_col_at && !level_end_reached) {
     level_load_column(1, levels + current_level);
     load_col_at++;
+    debug_print_scroll_state("STREAM_LOAD");
   }
 
   player_x_next_upscaled = player_x_upscaled;

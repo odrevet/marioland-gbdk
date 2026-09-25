@@ -41,6 +41,18 @@ uint8_t current_column_in_page = 0;
 
 uint16_t level_page_x_offset = 0;
 uint16_t world_col_loaded = 0;
+uint16_t col_from = 0;
+uint8_t current_page = 0;
+
+void debug_print_scroll_state(const char *tag) {
+  EMU_printf("[SCROLL] %s: level=%d page=%d col_in_page=%d map_col=%d "
+             "load_col_at=%d world_col=%d page_x_off=%d col_from=%d "
+             "cam=%d cam_up=%d scroll_limit=%d end=%d\n",
+             tag, current_level, current_page, current_column_in_page,
+             map_column, load_col_at, world_col_loaded, level_page_x_offset,
+             col_from, camera_x, camera_x_upscaled, scroll_limit,
+             level_end_reached);
+}
 
 typedef struct {
   uint8_t bg_bank;
@@ -80,8 +92,6 @@ uint8_t level_bank;
 uint8_t level_lookup_bank;
 const level_object *level_lookup;
 size_t level_lookup_size;
-
-uint8_t current_page = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
 uint8_t cached_page_index = 0xFF;
@@ -486,8 +496,6 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   }
 }
 
-uint16_t col_from = 0;
-
 void level_load_objects(uint16_t col) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
@@ -536,6 +544,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
       #ifdef USE_COMPRESSED_LEVELS
       cached_page_index = 0xFF;
       #endif
+      debug_print_scroll_state("PAGE_INC");
     }
 
     if (current_page >= level_to_load->page_count) {
@@ -581,6 +590,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   }
 
   SWITCH_ROM(_saved_bank);
+  debug_print_scroll_state("LOAD_COL_END");
   return col;
 }
 
@@ -641,6 +651,8 @@ void load_current_level(void) NONBANKED {
   level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;
 #endif
+
+  debug_print_scroll_state("LOAD_CURRENT_LEVEL");
 }
 
 #if defined(SEGA)

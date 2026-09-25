@@ -1,5 +1,6 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
+#include <gbdk/emu_debug.h>
 #include <stdint.h>
 
 #include "coin_animated.h"
@@ -341,9 +342,12 @@ void main(void) {
       HIDE_SPRITES;
       HIDE_BKG;
 
+      EMU_printf("[LEVEL_CLEAR] old_level=%d\n", current_level);
+      debug_print_scroll_state("CLEAR_BEFORE");
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
+      debug_print_scroll_state("CLEAR_AFTER");
 
       SHOW_SPRITES;
       SHOW_BKG;

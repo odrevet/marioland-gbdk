@@ -1,6 +1,7 @@
 #include "game.h"
 #include "global.h"
 #include "level.h"
+#include <gbdk/emu_debug.h>
 
 #ifdef NINTENDO
 #include "musicmanager.h"
@@ -24,6 +25,8 @@ void init(void) {
 
 
 
+  player_x = player_x_upscaled >> 4;
+  player_y = player_y_upscaled >> 4;
   player_draw_x = player_x_upscaled >> 4;
   player_draw_y = player_y_upscaled >> 4;
   player_x_next_upscaled = player_x_upscaled;
@@ -140,7 +143,10 @@ void die(void) {
     set_level(current_level);
   }
 
+  EMU_printf("[DIE] lives=%d level=%d\n", lives, current_level);
+  debug_print_scroll_state("DIE_BEFORE");
   player_warp_to(levels + current_level, 0, 5, 12);
+  debug_print_scroll_state("DIE_AFTER");
 
 #ifdef GAMEBOY
   music_load(levels[current_level].music_bank, levels[current_level].music);
