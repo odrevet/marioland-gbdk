@@ -143,10 +143,7 @@ void die(void) {
     set_level(current_level);
   }
 
-  EMU_printf("[DIE] lives=%d level=%d\n", lives, current_level);
-  debug_print_scroll_state("DIE_BEFORE");
   player_warp_to(levels + current_level, 0, 5, 12);
-  debug_print_scroll_state("DIE_AFTER");
 
 #ifdef GAMEBOY
   music_load(levels[current_level].music_bank, levels[current_level].music);

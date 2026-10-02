@@ -252,7 +252,6 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   EMU_printf("[WARP] dest_page=%d page_count=%d dest_x=%d dest_y=%d\n",
              destination_page, destination_level->page_count, destination_x,
              destination_y);
-  debug_print_scroll_state("WARP_BEFORE");
   pipe_clear();
 
   level_page_x_offset = destination_page * PAGE_SIZE;
@@ -315,7 +314,6 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
     level_load_objects(c);
   }
 
-  debug_print_scroll_state("WARP_AFTER");
 }
 
 void player_grow(void) BANKED {
@@ -348,9 +346,9 @@ bool player_check_powerup(void) BANKED {
   if (player_x < powerup_right && player_right > powerup_left &&
       player_top < powerup_bottom && player_bottom > powerup_top) {
 
-    //EMU_printf("POWERUP HIT: p=%d,%d pw=%d,%d | m=%d,%d mw=%d,%d\n",
-    //           powerup_left, powerup_top, powerup_right, powerup_bottom,
-    //           player_x, player_top, player_right, player_bottom);
+    EMU_printf("POWERUP HIT: p=%d,%d pw=%d,%d | m=%d,%d mw=%d,%d\n",
+               powerup_left, powerup_top, powerup_right, powerup_bottom,
+               player_x, player_top, player_right, player_bottom);
 
     if (powerup.type == POWERUP_MUSHROOM) {
       player_grow();
@@ -601,7 +599,6 @@ void player_move(void) BANKED {
   if (camera_x >> 3 >= load_col_at && !level_end_reached) {
     level_load_column(1, levels + current_level);
     load_col_at++;
-    debug_print_scroll_state("STREAM_LOAD");
   }
 
   player_x_next_upscaled = player_x_upscaled;

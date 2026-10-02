@@ -171,5 +171,4 @@ void set_level(uint8_t level_index) NONBANKED;
 
 void move_camera(uint16_t x) NONBANKED;
 
-void debug_print_scroll_state(const char *tag);
 #endif

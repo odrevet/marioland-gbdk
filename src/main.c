@@ -286,7 +286,9 @@ void main(void) {
     base_sprite = enemy_draw(base_sprite);
     base_sprite = platform_moving_draw(base_sprite);
     if (powerup_active) {
+      SWITCH_ROM(BANK(powerup));
       powerup_update();
+      SWITCH_ROM(_saved_bank);
       base_sprite = powerup_draw(base_sprite);
     }
 
@@ -343,11 +345,10 @@ void main(void) {
       HIDE_BKG;
 
       EMU_printf("[LEVEL_CLEAR] old_level=%d\n", current_level);
-      debug_print_scroll_state("CLEAR_BEFORE");
+ 
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
-      debug_print_scroll_state("CLEAR_AFTER");
 
       SHOW_SPRITES;
       SHOW_BKG;
