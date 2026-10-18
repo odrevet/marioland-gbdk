@@ -62,7 +62,7 @@ bool plane_mode;
 #define ENEMY_STOMP_TOLERANCE 4
 #define ENEMY_STOMP_BOUNCE_VELOCITY -16
 
-#if defined(SEGA) || defined(NINTENDO_NES)
+#if defined(SEGA)
 #define OBJECT_SPAWN_COL() ((camera_x >> 3) + DEVICE_SCREEN_WIDTH - 1)
 #else
 #define OBJECT_SPAWN_COL() (current_page * PAGE_SIZE + current_column_in_page - 7)

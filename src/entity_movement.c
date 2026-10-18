@@ -7,7 +7,6 @@
 
 uint8_t entity_has_ground(uint16_t x, uint16_t y, uint8_t width,
                           uint8_t height) BANKED {
-#ifndef NINTENDO_NES
   uint16_t ground_check_x = x >> 4;
   uint16_t ground_check_y = (y >> 4) + height;
 
@@ -17,14 +16,10 @@ uint8_t entity_has_ground(uint16_t x, uint16_t y, uint8_t width,
 
   return is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right) ||
          is_tile_passthought(tile_ground_left, tile_ground_right);
-#else
-  return 0;
-#endif
 }
 
 uint8_t entity_has_ground_ahead(uint16_t x, uint16_t y, int8_t vel_x,
                                 uint8_t width, uint8_t height) BANKED {
-#ifndef NINTENDO_NES
   uint16_t current_x = x >> 4;
   uint16_t current_y = y >> 4;
 
@@ -36,16 +31,12 @@ uint8_t entity_has_ground_ahead(uint16_t x, uint16_t y, int8_t vel_x,
     return is_tile_solid(tile) || is_tile_passthought(tile, tile);
   }
   return FALSE;
-#else
-  return 0;
-#endif
 }
 
 void entity_apply_horizontal_movement(uint16_t *x, uint16_t y, int8_t *vel_x,
                                       bool *flip, uint8_t width, uint8_t height,
                                       uint8_t top_margin,
                                       uint8_t check_cliffs) BANKED {
-#ifndef NINTENDO_NES
   if (*vel_x == 0) {
     return;
   }
@@ -87,14 +78,12 @@ void entity_apply_horizontal_movement(uint16_t *x, uint16_t y, int8_t *vel_x,
   } else {
     *x = next_x_upscaled;
   }
-#endif
 }
 
 void entity_apply_vertical_movement(uint16_t x, uint16_t *y, int8_t *vel_y,
                                     uint8_t width, uint8_t height,
                                     uint8_t top_margin, int8_t gravity_divisor,
                                     uint8_t on_ground) BANKED {
-#ifndef NINTENDO_NES
   uint16_t ground_check_x = x >> 4;
 
   if (!on_ground) {
@@ -135,5 +124,4 @@ void entity_apply_vertical_movement(uint16_t x, uint16_t *y, int8_t *vel_y,
       }
     }
   }
-#endif
 }

@@ -63,8 +63,6 @@ extern uint8_t coldata[LEVEL_HEIGHT];
 // map buffer in RAM to check collision without access VRAM
 #ifdef GAMEBOY
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 7)
-#elif defined(NINTENDO_NES)
-#define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 1)
 #elif defined(SEGA)
 #define MAP_BUFFER_WIDTH (DEVICE_SCREEN_WIDTH + 8)
 #else

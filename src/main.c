@@ -52,8 +52,6 @@ void SetSpritePalettes(palette_color_t* palette, uint8_t bank) NONBANKED{
         if (_cpu == CGB_TYPE) {
             set_sprite_palette(OAMF_CGB_PAL0, 1, palette);
         }
-    #elif defined(NINTENDO_NES)
-        set_sprite_palette(baseProp, 4, palette);
     #endif
 
 
@@ -62,7 +60,7 @@ void SetSpritePalettes(palette_color_t* palette, uint8_t bank) NONBANKED{
 
 
 void setBKGPalettes(uint8_t count, const palette_color_t *palettes) NONBANKED {
-#if defined(SEGA) || defined(NINTENDO_NES)
+#if defined(SEGA)
     set_bkg_palette(0, count, palettes);
 #elif defined(NINTENDO)
     if (_cpu == CGB_TYPE) {
@@ -113,10 +111,6 @@ void main(void) {
   SHOW_WIN;
 #endif
 
-#if DEVICE_SCREEN_BUFFER_WIDTH == DEVICE_SCREEN_WIDTH
-  HIDE_LEFT_COLUMN;
-#endif
-
   SHOW_SPRITES;
   SPRITES_8x8;
 
@@ -126,13 +120,6 @@ void main(void) {
       RGB8(88,208,88),
       RGB8(24,120,40),
       RGB8(0,0,0)
-  };
-#elif defined(NINTENDO_NES)
-  const palette_color_t commonTileset_palettes[4] = {
-      0x30,
-      0x2A,
-      0x1A,
-      0x0F
   };
 #else
   const palette_color_t commonTileset_palettes[4] = {
@@ -157,29 +144,13 @@ void main(void) {
 
   SWITCH_ROM(BANK(TitleScreen));
 
-// clear the screen
-#if defined(NINTENDO_NES) || defined(MASTERSYSTEM)
-  fill_bkg_rect(0, 0, DEVICE_SCREEN_WIDTH, DEVICE_SCREEN_HEIGHT, 2);
-#endif
-
   set_bkg_native_data(TitleScreen_TILE_ORIGIN, TitleScreen_TILE_COUNT, TitleScreen_tiles);
 
-// center the title screen on nes and master system
-#if defined(NINTENDO_NES) || defined(MASTERSYSTEM)
-  uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(20))/2;
-  uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(18))/2;
-  set_bkg_tiles(titleColumn,titleRow, 20, 18, TitleScreen_map);
-#else
   set_bkg_tiles(0,0, 20, 18, TitleScreen_map);
-#endif
 
   DISPLAY_ON;
   state_title();
   DISPLAY_OFF;
-
-#if defined NINTENDO_NES || defined(MASTERSYSTEM)
-  fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT, 0);
-#endif
 
 #if defined(SEGA)
 #define set_sprite_data set_sprite_native_data

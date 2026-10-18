@@ -117,7 +117,6 @@ void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor,
 }
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
-#ifndef NINTENDO_NES
   for (uint8_t i = 0; i < ENEMY_MAX; i++) {
     if (!enemies[i].active) {
       uint8_t current_frame;
@@ -179,11 +178,9 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
       return;
     }
   }
-#endif
 }
 
 void enemy_move_goomba(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *goomba = &enemies[index];
 
   if (goomba->stomped || !goomba->active) {
@@ -196,12 +193,9 @@ void enemy_move_goomba(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(goomba, FALSE);
   enemy_apply_vertical_movement(goomba, 1, enemy_has_ground(goomba));
-#else
-#endif
 }
 
 void enemy_move_koopa(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *koopa = &enemies[index];
 
   if (koopa->stomped || !koopa->active) {
@@ -214,12 +208,9 @@ void enemy_move_koopa(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(koopa, TRUE);
   enemy_apply_vertical_movement(koopa, 1, enemy_has_ground(koopa));
-#else
-#endif
 }
 
 void enemy_move_fly(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *fly = &enemies[index];
 
   if (fly->stomped || !fly->active) {
@@ -248,12 +239,9 @@ void enemy_move_fly(uint8_t index) BANKED {
 
   enemy_apply_horizontal_movement(fly, FALSE);
   enemy_apply_vertical_movement(fly, 8, on_ground);
-#else
-#endif
 }
 
 void enemy_move_bunbun(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *bunbun = &enemies[index];
 
   if (bunbun->stomped || !bunbun->active) {
@@ -273,12 +261,9 @@ void enemy_move_bunbun(uint8_t index) BANKED {
   }
 
   bunbun->x += bunbun->vel_x;
-#else
-#endif
 }
 
 void enemy_move_gao(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *gao = &enemies[index];
 
   if (gao->stomped || !gao->active) {
@@ -298,12 +283,9 @@ void enemy_move_gao(uint8_t index) BANKED {
   }
 
   enemy_apply_vertical_movement(gao, 1, enemy_has_ground(gao));
-#else
-#endif
 }
 
 void enemy_move_honen(uint8_t index) BANKED {
-#ifndef NINTENDO_NES
   enemy_t *honen = &enemies[index];
 
   if (honen->stomped || !honen->active) {
@@ -333,8 +315,6 @@ void enemy_move_honen(uint8_t index) BANKED {
     }
     break;
   }
-#else
-#endif
 }
 
 void enemy_move_mekabon(uint8_t index) BANKED {
@@ -734,7 +714,6 @@ void enemy_reset_all(void) BANKED {
 }
 
 void enemy_update(void) BANKED {
-#ifndef NINTENDO_NES
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
     if (!enemies[index_enemy].active) {
       continue;
@@ -847,12 +826,9 @@ void enemy_update(void) BANKED {
 
     enemies[index_enemy].frame_counter++;
   }
-#else
-#endif
 }
 
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
-#ifndef NINTENDO_NES
   uint8_t _saved_bank = _current_bank;
   uint8_t current_bank = _current_bank;
 
@@ -930,7 +906,4 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
   }
   SWITCH_ROM(_saved_bank);
   return base_sprite;
-#else
-  return base_sprite;
-#endif
 }

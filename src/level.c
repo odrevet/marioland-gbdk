@@ -23,10 +23,6 @@
 #include "enemiesEastonSprites.h"
 #include "enemiesChaiSprites.h"
 
-#if defined(SEGA) || defined(NINTENDO_NES)
-#define STREAM_FULL_WIDTH
-#endif
-
 uint16_t camera_x;
 uint16_t camera_x_upscaled;
 uint16_t load_col_at;
@@ -40,7 +36,6 @@ uint8_t map_column = 0;
 uint8_t current_column_in_page = 0;
 
 uint16_t level_page_x_offset = 0;
-uint16_t world_col_loaded = 0;
 uint16_t col_from = 0;
 uint8_t current_page = 0;
 
@@ -459,11 +454,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
 
-  #if defined(GAMEBOY) || defined(SEGA)
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTIED);
-  #elif defined(NINTENDO_NES)
-  set_bkg_tile_xy(index_x, index_y + 2, TILE_EMPTIED);
-  #endif
 
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(level_lookup_bank);
@@ -566,14 +557,7 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
       coldata[row] = tile;
     }
 
-    #if defined(GAMEBOY)
-      #define TILE_Y 0
-    #elif defined(NINTENDO_NES)
-      #define TILE_Y 2
-    #else
-      #define TILE_Y 0
-    #endif
-    set_bkg_tiles(map_column, TILE_Y, 1, LEVEL_HEIGHT, coldata);
+    set_bkg_tiles(map_column, 0, 1, LEVEL_HEIGHT, coldata);
 
     current_column_in_page++;
     col++;
@@ -583,26 +567,6 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   SWITCH_ROM(_saved_bank);
   return col;
 }
-
-#ifdef STREAM_FULL_WIDTH
-static bool level_load_next_column(void) NONBANKED {
-  if (level_load_column(1, levels + current_level) == 0) {
-    return false;
-  }
-  level_load_objects(world_col_loaded);
-  world_col_loaded++;
-  return true;
-}
-
-void level_stream_columns(void) NONBANKED {
-  uint16_t target = ((camera_x + 7) >> 3) + DEVICE_SCREEN_BUFFER_WIDTH;
-  while (world_col_loaded < target) {
-    if (!level_load_next_column()) {
-      break;
-    }
-  }
-}
-#endif
 
 void level_set_current(void) NONBANKED {
   set_level(current_level);
@@ -623,7 +587,6 @@ void load_current_level(void) NONBANKED {
   current_column_in_page = 0;
   map_column = 0;
   level_page_x_offset = 0;
-  world_col_loaded = 0;
   col_from = 0;
 
 #ifdef USE_COMPRESSED_LEVELS
@@ -632,16 +595,8 @@ void load_current_level(void) NONBANKED {
 
   pipe_clear();
 
-#ifdef STREAM_FULL_WIDTH
-#ifdef SEGA
-  HIDE_LEFT_COLUMN;
-#endif
-  level_stream_columns();
-#else
   level_load_column(MAP_BUFFER_WIDTH, levels + current_level);
   load_col_at = COLUMN_SIZE;
-#endif
-
 }
 
 #if defined(SEGA)
