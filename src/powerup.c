@@ -25,7 +25,6 @@ void powerup_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
     powerup.current_frame = 0;
     powerup.vel_x = POWERUP_MUSHROOM_SPEED;
     powerup.vel_y = 0;
-    EMU_printf("SPAWN MUSH x=%d y=%d\n", powerup.x, powerup.y);
     break;
   case POWERUP_STAR:
     powerup.current_frame = 5;
@@ -49,7 +48,7 @@ void powerup_update(void) BANKED {
         &powerup.x, powerup.y, &powerup.vel_x, &powerup.flip, TILE_SIZE,
         TILE_SIZE, 0, FALSE);
     entity_apply_vertical_movement(
-        powerup.x, &powerup.y, &powerup.vel_y, TILE_SIZE, TILE_SIZE, 0, 1,
+        powerup.x, &powerup.y, &powerup.vel_y, TILE_SIZE, TILE_SIZE, 0, 0,
         entity_has_ground(powerup.x, powerup.y, TILE_SIZE, TILE_SIZE));
   }
 

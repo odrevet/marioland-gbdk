@@ -578,7 +578,9 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
 
     current_column_in_page++;
     col++;
-    map_column = (map_column + 1) % 32;
+    // DEVICE_SCREEN_BUFFER_WIDTH is a power of two, so wrap with a mask
+    // instead of a (16-bit) modulo.
+    map_column = (map_column + 1) & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
   }
 
   SWITCH_ROM(_saved_bank);

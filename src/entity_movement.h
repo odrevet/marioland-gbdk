@@ -43,10 +43,15 @@ void entity_apply_horizontal_movement(uint16_t *x, uint16_t y, int8_t *vel_x,
 /**
  * Apply gravity and vertical velocity, landing on solid ground and stopping
  * when hitting a ceiling. Updates *y and *vel_y in place.
+ *
+ * gravity_shift selects the gravity strength as a power-of-two division of
+ * ENTITY_GRAVITY (ENTITY_GRAVITY >> gravity_shift): 0 is full gravity, 3 is
+ * an eighth. A shift is used instead of a divisor to avoid a 16-bit division
+ * on every airborne frame.
  */
 void entity_apply_vertical_movement(uint16_t x, uint16_t *y, int8_t *vel_y,
                                     uint8_t width, uint8_t height,
-                                    uint8_t top_margin, int8_t gravity_divisor,
+                                    uint8_t top_margin, uint8_t gravity_shift,
                                     uint8_t on_ground) BANKED;
 
 #endif

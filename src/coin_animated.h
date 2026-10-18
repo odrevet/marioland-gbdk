@@ -14,6 +14,7 @@ typedef struct coin_animated {
   uint8_t draw_y;
   uint8_t ttl;
   uint8_t hw_sprite_index;
+  uint8_t anim_frame;
 } coin_animated_t;
 
 #define NB_COIN_ANIMATED 3

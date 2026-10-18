@@ -96,7 +96,12 @@ void update_frame_counter(void) NONBANKED {
   frame_counter++;
   if (frame_counter == LOOP_PER_ANIMATION_FRAME) {
     frame_counter = 0;
-    player_frame = (player_frame % 3) + 1;
+    // player_frame cycles 1..3; avoid a modulo (values are always small)
+    uint8_t f = player_frame;
+    if (f >= 3) {
+      f -= 3;
+    }
+    player_frame = f + 1;
   }
 }
 
@@ -249,9 +254,6 @@ bool player_check_horizontal_pipe_entry(void) NONBANKED {
 
 void player_warp_to(level *destination_level, uint8_t destination_page,
                     uint8_t destination_x, uint8_t destination_y) NONBANKED {
-  EMU_printf("[WARP] dest_page=%d page_count=%d dest_x=%d dest_y=%d\n",
-             destination_page, destination_level->page_count, destination_x,
-             destination_y);
   pipe_clear();
 
   level_page_x_offset = destination_page * PAGE_SIZE;
@@ -276,7 +278,7 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
 
   current_page = destination_page;
   current_column_in_page = 0;
-  map_column = page_start_col % DEVICE_SCREEN_BUFFER_WIDTH;
+  map_column = page_start_col & (DEVICE_SCREEN_BUFFER_WIDTH - 1);
 
   player_x_upscaled = ((page_start_col + destination_x) * TILE_SIZE) << 4;
   player_y_upscaled = (destination_y * TILE_SIZE) << 4;
@@ -345,10 +347,6 @@ bool player_check_powerup(void) BANKED {
 
   if (player_x < powerup_right && player_right > powerup_left &&
       player_top < powerup_bottom && player_bottom > powerup_top) {
-
-    EMU_printf("POWERUP HIT: p=%d,%d pw=%d,%d | m=%d,%d mw=%d,%d\n",
-               powerup_left, powerup_top, powerup_right, powerup_bottom,
-               player_x, player_top, player_right, player_bottom);
 
     if (powerup.type == POWERUP_MUSHROOM) {
       player_grow();
@@ -895,21 +893,17 @@ void player_on_touch_ground(void) NONBANKED {
 bool player_is_on_platform(void) BANKED {
   for (uint8_t index_platform = 0; index_platform < platform_moving_count;
        index_platform++) {
-    if (player_y_upscaled + 256 >= platforms_moving[index_platform].y &&
-        player_y_upscaled + 256 <=
-            platforms_moving[index_platform].y + (8 * 16) &&
-        player_x_upscaled <=
-            platforms_moving[index_platform].x + (3 * 8 * 16) &&
-        player_x_upscaled > platforms_moving[index_platform].x) {
+    platform_moving_t *platform = &platforms_moving[index_platform];
 
-      EMU_printf("ON PLATFORM: plat=%d,%d player=%d,%d\n",
-                 platforms_moving[index_platform].x >> 4,
-                 platforms_moving[index_platform].y >> 4, player_x, player_y);
+    if (player_y_upscaled + 256 >= platform->y &&
+        player_y_upscaled + 256 <= platform->y + (8 * 16) &&
+        player_x_upscaled <= platform->x + (3 * 8 * 16) &&
+        player_x_upscaled > platform->x) {
 
-      player_x_upscaled += platforms_moving[index_platform].vel_x;
+      player_x_upscaled += platform->vel_x;
       player_x = player_x_upscaled >> 4;
-      vel_y = platforms_moving[index_platform].vel_y;
-      player_y_upscaled = platforms_moving[index_platform].y - 256;
+      vel_y = platform->vel_y;
+      player_y_upscaled = platform->y - 256;
       player_y = player_y_upscaled >> 4;
       player_on_touch_ground();
       return TRUE;

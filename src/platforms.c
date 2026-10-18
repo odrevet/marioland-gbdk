@@ -28,36 +28,22 @@ void platform_moving_new(uint16_t x, uint16_t y,
 void platform_moving_update() {
   uint8_t index_platform_moving = 0;
   while (index_platform_moving < platform_moving_count) {
-    platforms_moving[index_platform_moving].x +=
-        platforms_moving[index_platform_moving].vel_x;
-    platforms_moving[index_platform_moving].y +=
-        platforms_moving[index_platform_moving].vel_y;
+    platform_moving_t *platform = &platforms_moving[index_platform_moving];
 
-    platforms_moving[index_platform_moving].draw_x =
-        (platforms_moving[index_platform_moving].x - camera_x_upscaled) >> 4;
-    platforms_moving[index_platform_moving].draw_y =
-        platforms_moving[index_platform_moving].y >> 4;
+    platform->x += platform->vel_x;
+    platform->y += platform->vel_y;
 
-    EMU_printf("PLATFORM: x=%d y=%d vel=%d,%d\n",
-               platforms_moving[index_platform_moving].x >> 4,
-               platforms_moving[index_platform_moving].y >> 4,
-               platforms_moving[index_platform_moving].vel_x,
-               platforms_moving[index_platform_moving].vel_y);
+    platform->draw_x = (platform->x - camera_x_upscaled) >> 4;
+    platform->draw_y = platform->y >> 4;
 
-    platforms_moving[index_platform_moving].range_current++;
-    if (platforms_moving[index_platform_moving].range_current >=
-        14 * TILE_SIZE /*platforms_moving[index_platform_moving].range_max*/) {
-      platforms_moving[index_platform_moving].vel_x =
-          -platforms_moving[index_platform_moving].vel_x;
-      platforms_moving[index_platform_moving].vel_y =
-          -platforms_moving[index_platform_moving].vel_y;
-
-      platforms_moving[index_platform_moving].range_current = 0;
+    platform->range_current++;
+    if (platform->range_current >= 14 * TILE_SIZE) {
+      platform->vel_x = -platform->vel_x;
+      platform->vel_y = -platform->vel_y;
+      platform->range_current = 0;
     }
 
-    if (platforms_moving[index_platform_moving].x <=
-        camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
-      // EMU_printf("REMOVE PLATFORM\n");
+    if (platform->x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
       for (uint8_t j = index_platform_moving; j < platform_moving_count - 1;
            j++) {
         platforms_moving[j] = platforms_moving[j + 1];
@@ -81,13 +67,16 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
 
   for (uint8_t index_platform_moving = 0;
        index_platform_moving < platform_moving_count; index_platform_moving++) {
+    platform_moving_t *platform = &platforms_moving[index_platform_moving];
+    uint8_t draw_y = platform->draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                     MARGIN_TOP_PX + TILE_SIZE;
+
     for (uint8_t i = 0; i < PLATFORMS_MOVING_SIZE; i++) {
       base_sprite += move_metasprite_ex(
           commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, base_sprite,
-          platforms_moving[index_platform_moving].draw_x + i * commonSprites_TILE_W +
+          platform->draw_x + i * commonSprites_TILE_W +
               DEVICE_SPRITE_PX_OFFSET_X + TILE_SIZE,
-          platforms_moving[index_platform_moving].draw_y +
-              +DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX + TILE_SIZE);
+          draw_y);
     }
   }
   SWITCH_ROM(_saved_bank);

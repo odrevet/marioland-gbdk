@@ -109,10 +109,10 @@ static void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs
                                    ENEMY_TOP_MARGIN, check_cliffs);
 }
 
-static void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor,
+static void enemy_apply_vertical_movement(enemy_t *enemy, uint8_t gravity_shift,
                                           uint8_t on_ground) {
   entity_apply_vertical_movement(enemy->x, &enemy->y, &enemy->vel_y, ENEMY_WIDTH,
-                                 ENEMY_HEIGHT, ENEMY_TOP_MARGIN, gravity_divisor,
+                                 ENEMY_HEIGHT, ENEMY_TOP_MARGIN, gravity_shift,
                                  on_ground);
 }
 
@@ -192,7 +192,7 @@ static void enemy_move_goomba(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(goomba, FALSE);
-  enemy_apply_vertical_movement(goomba, 1, enemy_has_ground(goomba));
+  enemy_apply_vertical_movement(goomba, 0, enemy_has_ground(goomba));
 }
 
 static void enemy_move_koopa(uint8_t index) {
@@ -207,7 +207,7 @@ static void enemy_move_koopa(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(koopa, TRUE);
-  enemy_apply_vertical_movement(koopa, 1, enemy_has_ground(koopa));
+  enemy_apply_vertical_movement(koopa, 0, enemy_has_ground(koopa));
 }
 
 static void enemy_move_fly(uint8_t index) {
@@ -238,7 +238,7 @@ static void enemy_move_fly(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(fly, FALSE);
-  enemy_apply_vertical_movement(fly, 8, on_ground);
+  enemy_apply_vertical_movement(fly, 3, on_ground);
 }
 
 static void enemy_move_bunbun(uint8_t index) {
@@ -282,7 +282,7 @@ static void enemy_move_gao(uint8_t index) {
     gao->current_frame = 7;
   }
 
-  enemy_apply_vertical_movement(gao, 1, enemy_has_ground(gao));
+  enemy_apply_vertical_movement(gao, 0, enemy_has_ground(gao));
 }
 
 static void enemy_move_honen(uint8_t index) {
@@ -337,7 +337,7 @@ static void enemy_move_mekabon(uint8_t index) {
     }
 
     enemy_apply_horizontal_movement(mekabon, TRUE);
-    enemy_apply_vertical_movement(mekabon, 1, enemy_has_ground(mekabon));
+    enemy_apply_vertical_movement(mekabon, 0, enemy_has_ground(mekabon));
     break;
 
   case MEKABON_STATE_HEAD_OUT: {
@@ -443,7 +443,7 @@ static void enemy_move_tokotoko(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(tokotoko, FALSE);
-  enemy_apply_vertical_movement(tokotoko, 1, enemy_has_ground(tokotoko));
+  enemy_apply_vertical_movement(tokotoko, 0, enemy_has_ground(tokotoko));
 }
 
 static void enemy_move_suu(uint8_t index) {
@@ -503,7 +503,7 @@ static void enemy_move_kumo(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(kumo, FALSE);
-  enemy_apply_vertical_movement(kumo, 4, on_ground);
+  enemy_apply_vertical_movement(kumo, 2, on_ground);
 }
 
 static void enemy_move_hiyoihoi(uint8_t index) {
@@ -531,7 +531,7 @@ static void enemy_move_hiyoihoi(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(hiyoihoi, TRUE);
-  enemy_apply_vertical_movement(hiyoihoi, 1, enemy_has_ground(hiyoihoi));
+  enemy_apply_vertical_movement(hiyoihoi, 0, enemy_has_ground(hiyoihoi));
 }
 
 static void enemy_move_pionpi(uint8_t index) {
@@ -564,7 +564,7 @@ static void enemy_move_pionpi(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(pionpi, FALSE);
-  enemy_apply_vertical_movement(pionpi, 2, on_ground);
+  enemy_apply_vertical_movement(pionpi, 1, on_ground);
 }
 
 static void enemy_move_ponpon(uint8_t index) {
@@ -583,7 +583,7 @@ static void enemy_move_ponpon(uint8_t index) {
   }
 
   enemy_apply_horizontal_movement(ponpon, TRUE);
-  enemy_apply_vertical_movement(ponpon, 1, enemy_has_ground(ponpon));
+  enemy_apply_vertical_movement(ponpon, 0, enemy_has_ground(ponpon));
 }
 
 static void enemy_move_plant(uint8_t index) {
@@ -634,7 +634,7 @@ static void enemy_move_stub(uint8_t index) {
     return;
   }
 
-  enemy_apply_vertical_movement(enemy, 1, enemy_has_ground(enemy));
+  enemy_apply_vertical_movement(enemy, 0, enemy_has_ground(enemy));
 }
 
 void enemy_stomp(uint8_t index_enemy) BANKED {

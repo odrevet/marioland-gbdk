@@ -135,6 +135,7 @@ void main(void) {
   uint8_t base_sprite = 0;
   uint8_t background_animation_counter = 0;
   uint8_t anim_frame_counter = 0;
+  uint16_t last_time_displayed = 0xFFFF;
 
   uint8_t _saved_bank = _current_bank;
 
@@ -282,7 +283,13 @@ void main(void) {
     }
 
     time--;
-    hud_update_time();
+    // The displayed value only changes every 2^TIME_SHIFT frames; skip the
+    // expensive itoa + tile writes while it stays the same.
+    uint16_t time_displayed = time >> TIME_SHIFT;
+    if (time_displayed != last_time_displayed) {
+      last_time_displayed = time_displayed;
+      hud_update_time();
+    }
     if (time == 0) {
       time = TIME_INITIAL_VALUE;
       lives--;
@@ -315,11 +322,10 @@ void main(void) {
       HIDE_SPRITES;
       HIDE_BKG;
 
-      EMU_printf("[LEVEL_CLEAR] old_level=%d\n", current_level);
- 
       init();
       current_level = (++current_level) % NB_LEVELS;
       level_set_current();
+      last_time_displayed = 0xFFFF;
 
       SHOW_SPRITES;
       SHOW_BKG;

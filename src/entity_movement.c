@@ -82,15 +82,15 @@ void entity_apply_horizontal_movement(uint16_t *x, uint16_t y, int8_t *vel_x,
 
 void entity_apply_vertical_movement(uint16_t x, uint16_t *y, int8_t *vel_y,
                                     uint8_t width, uint8_t height,
-                                    uint8_t top_margin, int8_t gravity_divisor,
+                                    uint8_t top_margin, uint8_t gravity_shift,
                                     uint8_t on_ground) BANKED {
   uint16_t ground_check_x = x >> 4;
 
   if (!on_ground) {
-    if (gravity_divisor == 1) {
+    if (gravity_shift == 0) {
       *vel_y = ENTITY_GRAVITY;
     } else {
-      *vel_y += ENTITY_GRAVITY / gravity_divisor;
+      *vel_y += ENTITY_GRAVITY >> gravity_shift;
     }
   }
 
