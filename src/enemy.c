@@ -1,6 +1,7 @@
 #pragma bank 255
 
 #include "enemy.h"
+#include "entity_movement.h"
 #include "global.h"
 #include "level.h"
 #include <stdint.h>
@@ -99,121 +100,20 @@ BANKREF(enemy)
 #define PLANT_STATE_FALLING 3
 
 uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
-#ifndef NINTENDO_NES
-  uint16_t ground_check_x = enemy->x >> 4;
-  uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
-
-  uint8_t tile_ground_left = get_tile(ground_check_x - camera_x, ground_check_y);
-  uint8_t tile_ground_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, ground_check_y);
-
-  return is_tile_solid(tile_ground_left) || is_tile_solid(tile_ground_right) ||
-         is_tile_passthought(tile_ground_left, tile_ground_right);
-#else
-  return 0;
-#endif
-}
-
-uint8_t enemy_has_ground_ahead(enemy_t *enemy, int8_t vel_x) BANKED {
-#ifndef NINTENDO_NES
-  uint16_t current_x = enemy->x >> 4;
-  uint16_t current_y = enemy->y >> 4;
-
-  if (vel_x > 0) {
-    uint8_t tile = get_tile(current_x + ENEMY_WIDTH - camera_x, current_y + ENEMY_HEIGHT);
-    return is_tile_solid(tile) || is_tile_passthought(tile, tile);
-  } else if (vel_x < 0) {
-    uint8_t tile = get_tile(current_x - 1 - camera_x, current_y + ENEMY_HEIGHT);
-    return is_tile_solid(tile) || is_tile_passthought(tile, tile);
-  }
-  return FALSE;
-#else
-  return 0;
-#endif
+  return entity_has_ground(enemy->x, enemy->y, ENEMY_WIDTH, ENEMY_HEIGHT);
 }
 
 void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKED {
-#ifndef NINTENDO_NES
-  if (enemy->vel_x == 0) return;
-
-  uint16_t next_x_upscaled = enemy->x + enemy->vel_x;
-  uint16_t next_x = next_x_upscaled >> 4;
-  uint16_t current_x = enemy->x >> 4;
-  uint16_t current_y = enemy->y >> 4;
-
-  uint8_t hit_wall = FALSE;
-  uint8_t hit_cliff = FALSE;
-
-  if (enemy->vel_x > 0) {
-    uint8_t tile_right_top = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x, current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_right_bottom = get_tile(next_x + ENEMY_WIDTH - 1 - camera_x, current_y + ENEMY_HEIGHT - 1);
-
-    hit_wall = is_tile_solid(tile_right_top) || is_tile_solid(tile_right_bottom);
-
-    if (check_cliffs && !hit_wall) {
-      hit_cliff = !enemy_has_ground_ahead(enemy, enemy->vel_x);
-    }
-  } else if (enemy->vel_x < 0) {
-    uint8_t tile_left_top = get_tile(next_x - camera_x, current_y + ENEMY_TOP_MARGIN);
-    uint8_t tile_left_bottom = get_tile(next_x - camera_x, current_y + ENEMY_HEIGHT - 1);
-
-    hit_wall = is_tile_solid(tile_left_top) || is_tile_solid(tile_left_bottom);
-
-    if (check_cliffs && !hit_wall) {
-      hit_cliff = !enemy_has_ground_ahead(enemy, enemy->vel_x);
-    }
-  }
-
-  if (hit_wall || hit_cliff) {
-    enemy->vel_x = -enemy->vel_x;
-    enemy->flip = !enemy->flip;
-  } else {
-    enemy->x = next_x_upscaled;
-  }
-#else
-#endif
+  entity_apply_horizontal_movement(&enemy->x, enemy->y, &enemy->vel_x,
+                                   &enemy->flip, ENEMY_WIDTH, ENEMY_HEIGHT,
+                                   ENEMY_TOP_MARGIN, check_cliffs);
 }
 
-void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor, uint8_t on_ground) BANKED {
-#ifndef NINTENDO_NES
-  uint16_t ground_check_x = enemy->x >> 4;
-  uint16_t ground_check_y = (enemy->y >> 4) + ENEMY_HEIGHT;
-
-  if (!on_ground) {
-    if (gravity_divisor == 1) {
-      enemy->vel_y = ENEMY_GRAVITY;
-    } else {
-      enemy->vel_y += ENEMY_GRAVITY / gravity_divisor;
-    }
-  }
-
-  if (enemy->vel_y != 0) {
-    uint16_t next_y_upscaled = enemy->y + enemy->vel_y;
-    uint16_t next_y = next_y_upscaled >> 4;
-
-    if (enemy->vel_y > 0) {
-      uint8_t tile_bottom_left = get_tile(ground_check_x - camera_x, next_y + ENEMY_HEIGHT);
-      uint8_t tile_bottom_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_HEIGHT);
-
-      if (is_tile_solid(tile_bottom_left) || is_tile_solid(tile_bottom_right) ||
-          is_tile_passthought(tile_bottom_left, tile_bottom_right)) {
-        enemy->vel_y = 0;
-        enemy->y = (TILE_ALIGN(next_y + ENEMY_HEIGHT) - ENEMY_HEIGHT) << 4;
-      } else {
-        enemy->y = next_y_upscaled;
-      }
-    } else if (enemy->vel_y < 0) {
-      uint8_t tile_top_left = get_tile(ground_check_x - camera_x, next_y + ENEMY_TOP_MARGIN);
-      uint8_t tile_top_right = get_tile(ground_check_x + ENEMY_WIDTH - 1 - camera_x, next_y + ENEMY_TOP_MARGIN);
-
-      if (is_tile_solid(tile_top_left) || is_tile_solid(tile_top_right)) {
-        enemy->vel_y = 0;
-      } else {
-        enemy->y = next_y_upscaled;
-      }
-    }
-  }
-#else
-#endif
+void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor,
+                                   uint8_t on_ground) BANKED {
+  entity_apply_vertical_movement(enemy->x, &enemy->y, &enemy->vel_y, ENEMY_WIDTH,
+                                 ENEMY_HEIGHT, ENEMY_TOP_MARGIN, gravity_divisor,
+                                 on_ground);
 }
 
 void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
