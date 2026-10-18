@@ -376,8 +376,6 @@ void on_break_tile(uint8_t x, uint8_t y) {
 static struct {
   bool active;
   uint8_t timer;
-  uint8_t screen_x;
-  uint8_t screen_y_base;
   uint8_t index_x;
   uint8_t index_y;
   uint8_t hw_sprite;
@@ -401,8 +399,6 @@ void on_block_bump(uint8_t x, uint8_t y) BANKED {
 
   block_bump_state.active = true;
   block_bump_state.timer = 0;
-  block_bump_state.screen_x = (index_x << 3) + DEVICE_SPRITE_PX_OFFSET_X - (uint8_t)camera_x;
-  block_bump_state.screen_y_base = (index_y << 3) + 5 * TILE_SIZE;
   block_bump_state.index_x = index_x;
   block_bump_state.index_y = index_y;
 #endif
@@ -432,7 +428,18 @@ uint8_t block_bump_draw(uint8_t base_sprite) BANKED {
     y_offset = -((BLOCK_BUMP_FRAMES - 1) - block_bump_state.timer) * 2;
   }
 
-  move_sprite(base_sprite, block_bump_state.screen_x, block_bump_state.screen_y_base + y_offset);
+  // The block is a background tile: its sprite must sit exactly over the tile
+  // and follow the camera while the bump plays. Recompute the screen position
+  // from the tile coordinates every frame so a scrolling camera is honoured.
+  // The background is scrolled up by MARGIN_TOP_PX, so a tile at row index_y
+  // is drawn at screen y = index_y * 8 + MARGIN_TOP_PX; the sprite adds
+  // DEVICE_SPRITE_PX_OFFSET_Y on top of that.
+  uint8_t draw_x = (uint8_t)((block_bump_state.index_x << 3) +
+                             DEVICE_SPRITE_PX_OFFSET_X - (uint8_t)camera_x);
+  uint8_t draw_y = (uint8_t)((block_bump_state.index_y << 3) +
+                             DEVICE_SPRITE_PX_OFFSET_Y + MARGIN_TOP_PX);
+
+  move_sprite(base_sprite, draw_x, draw_y + y_offset);
   set_sprite_tile(base_sprite, 90);
 
   return base_sprite + 1;
