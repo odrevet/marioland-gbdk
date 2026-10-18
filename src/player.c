@@ -380,14 +380,16 @@ bool player_check_enemy_collision(void) BANKED {
   }
 
   for (uint8_t enemy_index = 0; enemy_index < ENEMY_MAX; enemy_index++) {
-    if (!enemies[enemy_index].active || enemies[enemy_index].stomped) {
+    enemy_t *e = &enemies[enemy_index];
+
+    if (!e->active || e->stomped) {
       continue;
     }
 
-    uint16_t enemy_left = (enemies[enemy_index].x >> 4);
-    uint16_t enemy_right = (enemies[enemy_index].x >> 4) + TILE_SIZE;
-    uint16_t enemy_top = (enemies[enemy_index].y >> 4);
-    uint16_t enemy_bottom = (enemies[enemy_index].y >> 4) + enemiesSprites_HEIGHT;
+    uint16_t enemy_left = (e->x >> 4);
+    uint16_t enemy_right = (e->x >> 4) + TILE_SIZE;
+    uint16_t enemy_top = (e->y >> 4);
+    uint16_t enemy_bottom = (e->y >> 4) + enemiesSprites_HEIGHT;
 
     if (player_x < enemy_right && player_x + TILE_SIZE > enemy_left &&
         player_y < enemy_bottom &&

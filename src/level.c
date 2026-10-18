@@ -248,6 +248,60 @@ uint8_t get_tile(uint8_t x, uint8_t y) {
 }
 
 bool is_tile_solid(uint8_t tile) {
+  // Fast path: empty tiles are the most common lookup and are never solid.
+  if (tile == TILE_EMPTY) {
+    return false;
+  }
+
+  // Check the current world's tiles first: ground and wall collision checks
+  // overwhelmingly test world tiles, so this avoids walking the shared list
+  // below for the hot path.
+  if (current_level <= LEVEL_WORLD1_END) {
+    if ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
+        (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
+        (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
+        (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) ||
+        (tile == GREY_BLOCK)) {
+      return true;
+    }
+  } else if (current_level <= LEVEL_WORLD2_END) {
+    if ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
+        (tile == BIG_BLOCK_BOTTOM_LEFT) ||
+        (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
+        (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
+        (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
+        (tile == HALF_BIG_BLOCK_TOP_RIGHT)) {
+      return true;
+    }
+  } else if (current_level <= LEVEL_WORLD3_END) {
+    if ((tile == EASTON_FLOOR_1) || (tile == EASTON_FLOOR_2) ||
+        (tile == EASTON_STONE_PLATEFORM_1) ||
+        (tile == EASTON_STONE_PLATEFORM_2) ||
+        (tile == EASTON_STONE_PLATEFORM_3) ||
+        (tile == EASTON_STONE_PLATEFORM_4) ||
+        (tile == EASTON_STONE_PLATEFORM_BOTTOM) ||
+        (tile == EASTON_LARGE_BLACK_BLOCK_TOP_LEFT) ||
+        (tile == EASTON_LARGE_BLACK_BLOCK_TOP_RIGHT) ||
+        (tile == EASTON_LARGE_BLACK_BLOCK_BOTOM_LEFT) ||
+        (tile == EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT) ||
+        (tile == EASTON_BLOCK) || (tile == EASTON_STONE_PLATEFORM_LEFT) ||
+        (tile == EASTON_STONE_PLATEFORM_RIGHT)) {
+      return true;
+    }
+  } else {
+    if ((tile == CHAI_FLOOR_LEFT) || (tile == CHAI_FLOOR_MIDDLE_1) ||
+        (tile == CHAI_FLOOR_MIDDLE_2) ||
+        (tile == CHAI_FLOOR_MIDDLE_RIGHT) || (tile == CHAI_GREY_BLOCK) ||
+        (tile == CHAI_PIPE) || (tile == CHAI_PIPE_LEFT) ||
+        (tile == CHAI_PIPE_RIGHT) || (tile == CHAI_PIPE_BOTTOM_LEFT) ||
+        (tile == CHAI_PIPE_BOTTOM_RIGHT) || (tile == CHAI_BLOCK) ||
+        (tile == CHAI_BRICK_BLOCK) || (tile == CHAI_BLACK_BLOCK_LEFT) ||
+        (tile == CHAI_BLACK_BLOCK_RIGHT) || (tile == CHAI_FIRE_BLOCK)) {
+      return true;
+    }
+  }
+
+  // Tiles that are solid on every world.
   switch (tile) {
     case TILE_INTEROGATION_BLOCK:
     case BREAKABLE_BLOCK:
@@ -269,43 +323,6 @@ bool is_tile_solid(uint8_t tile) {
     case METAL_BLOCK_LEFT:
     case METAL_BLOCK_RIGHT:
       return true;
-  }
-
-  if (current_level <= LEVEL_WORLD1_END) {
-    return ((tile == TILE_FLOOR) || (tile == TILE_FLOOR_BIS) ||
-            (tile == STONE_LEFT) || (tile == STONE_RIGHT) ||
-            (tile == TILED_FLOOR) || (tile == STONE_BIS_LEFT) ||
-            (tile == STONE_BIS_RIGHT) || (tile == BRICK_BLOCK) || 
-            (tile == GREY_BLOCK));
-  } else if (current_level <= LEVEL_WORLD2_END) {
-    return ((tile == BIG_BLOCK_TOP_LEFT) || (tile == BIG_BLOCK_TOP_RIGHT) ||
-            (tile == BIG_BLOCK_BOTTOM_LEFT) ||
-            (tile == BIG_BLOCK_BOTTOM_RIGHT) || (tile == OCEAN_FLOOR_LEFT) ||
-            (tile == OCEAN_FLOOR_RIGHT) || (tile == MUDA_BRIDGE) ||
-            (tile == HALF_BIG_BLOCK_TOP_LEFT) ||
-            (tile == HALF_BIG_BLOCK_TOP_RIGHT));
-  } else if (current_level <= LEVEL_WORLD3_END) {
-    return ((tile == EASTON_FLOOR_1) || (tile == EASTON_FLOOR_2) ||
-            (tile == EASTON_STONE_PLATEFORM_1) ||
-            (tile == EASTON_STONE_PLATEFORM_2) ||
-            (tile == EASTON_STONE_PLATEFORM_3) ||
-            (tile == EASTON_STONE_PLATEFORM_4) ||
-            (tile == EASTON_STONE_PLATEFORM_BOTTOM) ||
-            (tile == EASTON_LARGE_BLACK_BLOCK_TOP_LEFT) ||
-            (tile == EASTON_LARGE_BLACK_BLOCK_TOP_RIGHT) ||
-            (tile == EASTON_LARGE_BLACK_BLOCK_BOTOM_LEFT) ||
-            (tile == EASTON_LARGE_BLACK_BLOCK_BOTTOM_RIGHT) ||
-            (tile == EASTON_BLOCK) || (tile == EASTON_STONE_PLATEFORM_LEFT) ||
-            (tile == EASTON_STONE_PLATEFORM_RIGHT));
-  } else {
-    return ((tile == CHAI_FLOOR_LEFT) || (tile == CHAI_FLOOR_MIDDLE_1) ||
-            (tile == CHAI_FLOOR_MIDDLE_2) ||
-            (tile == CHAI_FLOOR_MIDDLE_RIGHT) || (tile == CHAI_GREY_BLOCK) ||
-            (tile == CHAI_PIPE) || (tile == CHAI_PIPE_LEFT) ||
-            (tile == CHAI_PIPE_RIGHT) || (tile == CHAI_PIPE_BOTTOM_LEFT) ||
-            (tile == CHAI_PIPE_BOTTOM_RIGHT) || (tile == CHAI_BLOCK) ||
-            (tile == CHAI_BRICK_BLOCK) || (tile == CHAI_BLACK_BLOCK_LEFT) ||
-            (tile == CHAI_BLACK_BLOCK_RIGHT) || (tile == CHAI_FIRE_BLOCK));
   }
 
   return false;

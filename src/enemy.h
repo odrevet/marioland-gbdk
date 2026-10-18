@@ -70,23 +70,4 @@ void enemy_stomp(uint8_t index_enemy) BANKED;
 void enemy_update(void) BANKED;
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED;
 
-void enemy_move_goomba(uint8_t index) BANKED;
-void enemy_move_koopa(uint8_t index) BANKED;
-void enemy_move_fly(uint8_t index) BANKED;
-void enemy_move_bunbun(uint8_t index) BANKED;
-void enemy_move_gao(uint8_t index) BANKED;
-void enemy_move_honen(uint8_t index) BANKED;
-void enemy_move_mekabon(uint8_t index) BANKED;
-void enemy_move_yurarin(uint8_t index) BANKED;
-void enemy_move_batadon(uint8_t index) BANKED;
-void enemy_move_bullet(uint8_t index) BANKED;
-void enemy_move_tokotoko(uint8_t index) BANKED;
-void enemy_move_suu(uint8_t index) BANKED;
-void enemy_move_kumo(uint8_t index) BANKED;
-void enemy_move_hiyoihoi(uint8_t index) BANKED;
-void enemy_move_pionpi(uint8_t index) BANKED;
-void enemy_move_ponpon(uint8_t index) BANKED;
-void enemy_move_plant(uint8_t index) BANKED;
-void enemy_move_stub(uint8_t index) BANKED;
-
 #endif

@@ -99,18 +99,18 @@ BANKREF(enemy)
 #define PLANT_STATE_UP 2
 #define PLANT_STATE_FALLING 3
 
-uint8_t enemy_has_ground(enemy_t *enemy) BANKED {
+static uint8_t enemy_has_ground(enemy_t *enemy) {
   return entity_has_ground(enemy->x, enemy->y, ENEMY_WIDTH, ENEMY_HEIGHT);
 }
 
-void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) BANKED {
+static void enemy_apply_horizontal_movement(enemy_t *enemy, uint8_t check_cliffs) {
   entity_apply_horizontal_movement(&enemy->x, enemy->y, &enemy->vel_x,
                                    &enemy->flip, ENEMY_WIDTH, ENEMY_HEIGHT,
                                    ENEMY_TOP_MARGIN, check_cliffs);
 }
 
-void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor,
-                                   uint8_t on_ground) BANKED {
+static void enemy_apply_vertical_movement(enemy_t *enemy, int8_t gravity_divisor,
+                                          uint8_t on_ground) {
   entity_apply_vertical_movement(enemy->x, &enemy->y, &enemy->vel_y, ENEMY_WIDTH,
                                  ENEMY_HEIGHT, ENEMY_TOP_MARGIN, gravity_divisor,
                                  on_ground);
@@ -180,7 +180,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
   }
 }
 
-void enemy_move_goomba(uint8_t index) BANKED {
+static void enemy_move_goomba(uint8_t index) {
   enemy_t *goomba = &enemies[index];
 
   if (goomba->stomped || !goomba->active) {
@@ -195,7 +195,7 @@ void enemy_move_goomba(uint8_t index) BANKED {
   enemy_apply_vertical_movement(goomba, 1, enemy_has_ground(goomba));
 }
 
-void enemy_move_koopa(uint8_t index) BANKED {
+static void enemy_move_koopa(uint8_t index) {
   enemy_t *koopa = &enemies[index];
 
   if (koopa->stomped || !koopa->active) {
@@ -210,7 +210,7 @@ void enemy_move_koopa(uint8_t index) BANKED {
   enemy_apply_vertical_movement(koopa, 1, enemy_has_ground(koopa));
 }
 
-void enemy_move_fly(uint8_t index) BANKED {
+static void enemy_move_fly(uint8_t index) {
   enemy_t *fly = &enemies[index];
 
   if (fly->stomped || !fly->active) {
@@ -241,7 +241,7 @@ void enemy_move_fly(uint8_t index) BANKED {
   enemy_apply_vertical_movement(fly, 8, on_ground);
 }
 
-void enemy_move_bunbun(uint8_t index) BANKED {
+static void enemy_move_bunbun(uint8_t index) {
   enemy_t *bunbun = &enemies[index];
 
   if (bunbun->stomped || !bunbun->active) {
@@ -263,7 +263,7 @@ void enemy_move_bunbun(uint8_t index) BANKED {
   bunbun->x += bunbun->vel_x;
 }
 
-void enemy_move_gao(uint8_t index) BANKED {
+static void enemy_move_gao(uint8_t index) {
   enemy_t *gao = &enemies[index];
 
   if (gao->stomped || !gao->active) {
@@ -285,7 +285,7 @@ void enemy_move_gao(uint8_t index) BANKED {
   enemy_apply_vertical_movement(gao, 1, enemy_has_ground(gao));
 }
 
-void enemy_move_honen(uint8_t index) BANKED {
+static void enemy_move_honen(uint8_t index) {
   enemy_t *honen = &enemies[index];
 
   if (honen->stomped || !honen->active) {
@@ -317,7 +317,7 @@ void enemy_move_honen(uint8_t index) BANKED {
   }
 }
 
-void enemy_move_mekabon(uint8_t index) BANKED {
+static void enemy_move_mekabon(uint8_t index) {
   enemy_t *mekabon = &enemies[index];
 
   if (mekabon->stomped || !mekabon->active) {
@@ -373,7 +373,7 @@ void enemy_move_mekabon(uint8_t index) BANKED {
   }
 }
 
-void enemy_move_yurarin(uint8_t index) BANKED {
+static void enemy_move_yurarin(uint8_t index) {
   enemy_t *yurarin = &enemies[index];
 
   if (yurarin->stomped || !yurarin->active) {
@@ -396,7 +396,7 @@ void enemy_move_yurarin(uint8_t index) BANKED {
   yurarin->y += yurarin->vel_y;
 }
 
-void enemy_move_batadon(uint8_t index) BANKED {
+static void enemy_move_batadon(uint8_t index) {
   enemy_t *batadon = &enemies[index];
 
   if (batadon->stomped || !batadon->active) {
@@ -421,7 +421,7 @@ void enemy_move_batadon(uint8_t index) BANKED {
   batadon->y += batadon->vel_y;
 }
 
-void enemy_move_bullet(uint8_t index) BANKED {
+static void enemy_move_bullet(uint8_t index) {
   enemy_t *bullet = &enemies[index];
 
   if (!bullet->active) {
@@ -431,7 +431,7 @@ void enemy_move_bullet(uint8_t index) BANKED {
   bullet->x += bullet->vel_x;
 }
 
-void enemy_move_tokotoko(uint8_t index) BANKED {
+static void enemy_move_tokotoko(uint8_t index) {
   enemy_t *tokotoko = &enemies[index];
 
   if (tokotoko->stomped || !tokotoko->active) {
@@ -446,7 +446,7 @@ void enemy_move_tokotoko(uint8_t index) BANKED {
   enemy_apply_vertical_movement(tokotoko, 1, enemy_has_ground(tokotoko));
 }
 
-void enemy_move_suu(uint8_t index) BANKED {
+static void enemy_move_suu(uint8_t index) {
   enemy_t *suu = &enemies[index];
 
   if (suu->stomped || !suu->active) {
@@ -475,7 +475,7 @@ void enemy_move_suu(uint8_t index) BANKED {
   }
 }
 
-void enemy_move_kumo(uint8_t index) BANKED {
+static void enemy_move_kumo(uint8_t index) {
   enemy_t *kumo = &enemies[index];
 
   if (kumo->stomped || !kumo->active) {
@@ -506,7 +506,7 @@ void enemy_move_kumo(uint8_t index) BANKED {
   enemy_apply_vertical_movement(kumo, 4, on_ground);
 }
 
-void enemy_move_hiyoihoi(uint8_t index) BANKED {
+static void enemy_move_hiyoihoi(uint8_t index) {
   enemy_t *hiyoihoi = &enemies[index];
   int8_t facing_forward;
   int16_t rel_x;
@@ -534,7 +534,7 @@ void enemy_move_hiyoihoi(uint8_t index) BANKED {
   enemy_apply_vertical_movement(hiyoihoi, 1, enemy_has_ground(hiyoihoi));
 }
 
-void enemy_move_pionpi(uint8_t index) BANKED {
+static void enemy_move_pionpi(uint8_t index) {
   enemy_t *pionpi = &enemies[index];
   uint8_t on_ground;
 
@@ -567,7 +567,7 @@ void enemy_move_pionpi(uint8_t index) BANKED {
   enemy_apply_vertical_movement(pionpi, 2, on_ground);
 }
 
-void enemy_move_ponpon(uint8_t index) BANKED {
+static void enemy_move_ponpon(uint8_t index) {
   enemy_t *ponpon = &enemies[index];
 
   if (ponpon->stomped || !ponpon->active) {
@@ -586,7 +586,7 @@ void enemy_move_ponpon(uint8_t index) BANKED {
   enemy_apply_vertical_movement(ponpon, 1, enemy_has_ground(ponpon));
 }
 
-void enemy_move_plant(uint8_t index) BANKED {
+static void enemy_move_plant(uint8_t index) {
   enemy_t *plant = &enemies[index];
   uint8_t player_near;
 
@@ -627,7 +627,7 @@ void enemy_move_plant(uint8_t index) BANKED {
   }
 }
 
-void enemy_move_stub(uint8_t index) BANKED {
+static void enemy_move_stub(uint8_t index) {
   enemy_t *enemy = &enemies[index];
 
   if (enemy->stomped || !enemy->active) {
@@ -715,36 +715,36 @@ void enemy_reset_all(void) BANKED {
 
 void enemy_update(void) BANKED {
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
-    if (!enemies[index_enemy].active) {
+    enemy_t *e = &enemies[index_enemy];
+
+    if (!e->active) {
       continue;
     }
 
-    if (enemies[index_enemy].stomped) {
-      enemies[index_enemy].stomped_timer--;
-      if (enemies[index_enemy].stomped_timer == 0) {
+    if (e->stomped) {
+      e->stomped_timer--;
+      if (e->stomped_timer == 0) {
         enemy_remove(index_enemy);
         continue;
       }
-      enemies[index_enemy].draw_x =
-          (enemies[index_enemy].x - camera_x_upscaled) >> 4;
-      enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
+      e->draw_x = (e->x - camera_x_upscaled) >> 4;
+      e->draw_y = e->y >> 4;
       continue;
     }
 
-    switch (enemies[index_enemy].type) {
+    switch (e->type) {
     case ENEMY_GOOMBO:
       enemy_move_goomba(index_enemy);
-      if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].frame_counter = 0;
-        enemies[index_enemy].flip = !enemies[index_enemy].flip;
+      if (e->frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        e->frame_counter = 0;
+        e->flip = !e->flip;
       }
       break;
     case ENEMY_KOOPA:
       enemy_move_koopa(index_enemy);
-      if (enemies[index_enemy].frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].frame_counter = 0;
-        enemies[index_enemy].current_frame =
-            (enemies[index_enemy].current_frame + 1) % 2 + 2;
+      if (e->frame_counter == ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        e->frame_counter = 0;
+        e->current_frame = ((e->current_frame + 1) & 1) + 2;
       }
       break;
     case ENEMY_FLY:
@@ -752,11 +752,10 @@ void enemy_update(void) BANKED {
       break;
     case ENEMY_BUNBUN:
       enemy_move_bunbun(index_enemy);
-      enemies[index_enemy].anim_counter++;
-      if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].anim_counter = 0;
-        enemies[index_enemy].current_frame =
-            (enemies[index_enemy].current_frame - 3 + 1) % 2 + 3;
+      e->anim_counter++;
+      if (e->anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        e->anim_counter = 0;
+        e->current_frame = ((e->current_frame - 3 + 1) & 1) + 3;
       }
       break;
     case ENEMY_GAO:
@@ -764,11 +763,10 @@ void enemy_update(void) BANKED {
       break;
     case ENEMY_HONEN:
       enemy_move_honen(index_enemy);
-      enemies[index_enemy].anim_counter++;
-      if (enemies[index_enemy].anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
-        enemies[index_enemy].anim_counter = 0;
-        enemies[index_enemy].current_frame =
-            (enemies[index_enemy].current_frame + 1) % 2 + 8;
+      e->anim_counter++;
+      if (e->anim_counter >= ENEMY_LOOP_PER_ANIMATION_FRAME) {
+        e->anim_counter = 0;
+        e->current_frame = ((e->current_frame + 1) & 1) + 8;
       }
       break;
     case ENEMY_MEKABON:
@@ -809,22 +807,21 @@ void enemy_update(void) BANKED {
       break;
     }
 
-    enemies[index_enemy].draw_x =
-        (enemies[index_enemy].x - camera_x_upscaled) >> 4;
-    enemies[index_enemy].draw_y = enemies[index_enemy].y >> 4;
+    e->draw_x = (e->x - camera_x_upscaled) >> 4;
+    e->draw_y = e->y >> 4;
 
     if (camera_x_upscaled > DEVICE_SCREEN_PX_WIDTH &&
-        enemies[index_enemy].x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
+        e->x <= camera_x_upscaled - DEVICE_SCREEN_PX_WIDTH) {
       enemy_remove(index_enemy);
       continue;
     }
 
-    if (enemies[index_enemy].draw_y > DEVICE_SCREEN_PX_HEIGHT) {
+    if (e->draw_y > DEVICE_SCREEN_PX_HEIGHT) {
       enemy_remove(index_enemy);
       continue;
     }
 
-    enemies[index_enemy].frame_counter++;
+    e->frame_counter++;
   }
 }
 
@@ -833,17 +830,19 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
   uint8_t current_bank = _current_bank;
 
   for (uint8_t index_enemy = 0; index_enemy < ENEMY_MAX; index_enemy++) {
-    if (!enemies[index_enemy].active) {
+    enemy_t *e = &enemies[index_enemy];
+
+    if (!e->active) {
       continue;
     }
 
-    uint8_t draw_index = enemies[index_enemy].current_frame;
+    uint8_t draw_index = e->current_frame;
 
     uint8_t enemy_bank;
     uint8_t tile_origin;
     const metasprite_t * const *metasprites;
 
-    switch (enemies[index_enemy].type) {
+    switch (e->type) {
     case ENEMY_BUNBUN:
     case ENEMY_GAO:
     case ENEMY_FLY:
@@ -891,13 +890,13 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     }
 
     const metasprite_t *enemy_metasprite = metasprites[draw_index];
-    uint8_t draw_x = enemies[index_enemy].draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4;
-    uint8_t draw_y = enemies[index_enemy].draw_y + DEVICE_SPRITE_PX_OFFSET_Y + enemiesSprites_HEIGHT + 8;
+    uint8_t draw_x = e->draw_x + DEVICE_SPRITE_PX_OFFSET_X + 4;
+    uint8_t draw_y = e->draw_y + DEVICE_SPRITE_PX_OFFSET_Y + enemiesSprites_HEIGHT + 8;
 
 #ifdef SEGA
     base_sprite += move_metasprite_ex(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
 #else
-    if (enemies[index_enemy].flip) {
+    if (e->flip) {
       base_sprite += move_metasprite_flipx(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
     } else {
       base_sprite += move_metasprite_ex(enemy_metasprite, tile_origin, 0, base_sprite, draw_x, draw_y);
