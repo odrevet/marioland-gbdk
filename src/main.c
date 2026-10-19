@@ -1,6 +1,5 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
-#include <gbdk/emu_debug.h>
 #include <stdint.h>
 
 #include "coin_animated.h"

@@ -1,7 +1,6 @@
 #include "platforms.h"
 #include "global.h"
 #include "commonSprites.h"
-#include <gbdk/emu_debug.h>
 
 uint8_t platform_moving_count = 0;
 platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];

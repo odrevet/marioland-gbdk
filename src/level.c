@@ -1,7 +1,6 @@
 #include "level.h"
 #include "coin_animated.h"
 #include <gbdk/platform.h>
-#include <gbdk/emu_debug.h>
 
 #include "global.h"
 #include "enemiesSprites.h"

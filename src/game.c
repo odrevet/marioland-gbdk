@@ -1,7 +1,6 @@
 #include "game.h"
 #include "global.h"
 #include "level.h"
-#include <gbdk/emu_debug.h>
 
 #ifdef NINTENDO
 #include "musicmanager.h"

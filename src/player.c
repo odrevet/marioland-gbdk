@@ -5,7 +5,6 @@
 #include "level.h"
 #include "marioSprites.h"
 #include <stdint.h>
-#include <gbdk/emu_debug.h>
 
 #include "player.h"
 #include "enemy.h"

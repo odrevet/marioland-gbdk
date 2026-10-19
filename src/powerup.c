@@ -4,8 +4,6 @@
 #include "entity_movement.h"
 #include "level.h"
 
-#include <gbdk/emu_debug.h>
-
 #define POWERUP_MUSHROOM_SPEED 4
 
 BANKREF(powerup)
