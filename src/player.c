@@ -7,8 +7,15 @@
 #include <stdint.h>
 
 #include "player.h"
+#include "block_chunk.h"
 #include "enemy.h"
+#include "game.h"
+#include "missile.h"
 #include "powerup.h"
+
+#ifdef GAMEBOY
+#include "sound_fireball.h"
+#endif
 
 #ifdef USE_COMPRESSED_LEVELS
 #include <gbdk/gbdecompress.h>
@@ -46,8 +53,11 @@ uint8_t frame_counter = 0;
 bool marioSpritesflip;
 uint16_t scroll_limit;
 bool player_is_big = FALSE;
+bool player_super_ball = FALSE;
 uint8_t player_invincible_timer = 0;
 uint8_t player_star_timer = 0;
+bool player_ducking = FALSE;
+uint8_t player_super_ball_timer = 0;
 
 uint8_t tile_next_1;
 uint8_t tile_next_2;
@@ -56,6 +66,19 @@ bool plane_mode;
 
 #define PLAYER_INVINCIBLE_FRAMES 60
 #define PLAYER_STAR_FRAMES 120
+
+// Sprite frame indices inside marioSprites for big Mario.
+#define PLAYER_FRAME_DUCK 13
+#define PLAYER_FRAME_SUPER_BALL 14
+// How long the super ball throwing pose is shown after pressing B.
+#define PLAYER_SUPER_BALL_THROW_FRAMES 10
+// Mario dies once he has fallen more than one screen below the level.
+#define PLAYER_FALL_DEATH_Y DEVICE_SCREEN_PX_HEIGHT
+// How far Mario may rise above the top of the playfield. The level is exactly
+// one screen tall, so this is only enough for the sprite to leave the screen.
+// It must stay below 5 tiles: past that the 8-bit sprite Y would wrap around and
+// Mario would be drawn at the bottom of the screen.
+#define PLAYER_MAX_RISE_ABOVE_TOP (4 * TILE_SIZE)
 
 #define ENEMY_TOP_MARGIN 8
 #define ENEMY_STOMP_TOLERANCE 4
@@ -105,6 +128,11 @@ void update_frame_counter(void) NONBANKED {
 }
 
 uint8_t player_draw(uint8_t base_sprite) NONBANKED {
+  // Big Mario ducks while holding down on the ground (not in a vehicle level).
+  player_ducking = player_is_big && touch_ground && !is_jumping &&
+                   !IS_VEHICLE_LEVEL(current_level) &&
+                   (joypad_current & J_DOWN);
+
   if (player_star_timer > 0 && (player_star_timer & 1)) {
     return base_sprite;
   }
@@ -112,7 +140,15 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(marioSprites));
 
-  uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
+  uint8_t frame_index;
+  if (player_super_ball_timer > 0) {
+    // Brief throwing pose right after pressing B as super ball Mario.
+    frame_index = PLAYER_FRAME_SUPER_BALL;
+  } else if (player_ducking) {
+    frame_index = PLAYER_FRAME_DUCK;
+  } else {
+    frame_index = player_is_big ? player_frame + 7 : player_frame;
+  }
 
 #ifdef SEGA
   if (marioSpritesflip) {
@@ -268,8 +304,16 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   }
 
   enemy_reset_all();
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(block_chunk));
+  block_chunk_reset();
+  SWITCH_ROM(_saved_bank);
+  SWITCH_ROM(BANK(missile));
+  missile_reset();
+  SWITCH_ROM(_saved_bank);
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
-  delay(500);
+  // ~0.5 s pause while idling the CPU.
+  WAIT_FRAMES(30);
 
   camera_x = page_start_px;
   move_camera(camera_x);
@@ -327,6 +371,9 @@ void player_grow(void) BANKED {
 
 void player_shrink(void) BANKED {
   player_is_big = FALSE;
+  player_super_ball = FALSE;
+  player_ducking = FALSE;
+  player_super_ball_timer = 0;
   player_invincible_timer = PLAYER_INVINCIBLE_FRAMES;
 }
 
@@ -351,6 +398,10 @@ bool player_check_powerup(void) BANKED {
       player_grow();
     } else if (powerup.type == POWERUP_STAR) {
       player_star_timer = PLAYER_STAR_FRAMES;
+    } else if (powerup.type == POWERUP_FLOWER) {
+      // taking the flower keeps Mario big and enables the super ball mode
+      player_grow();
+      player_super_ball = TRUE;
     } else {
       on_get_coin();
     }
@@ -434,6 +485,14 @@ void player_move(void) BANKED {
   int8_t accel;
   int8_t decel;
   bool on_ground = touch_ground || player_is_on_platform();
+
+  // Super ball throw: show the throwing pose briefly when B is pressed.
+  if (player_super_ball_timer > 0) {
+    player_super_ball_timer--;
+  }
+  if (player_super_ball && (joypad_current & J_B) && !(joypad_previous & J_B)) {
+    player_super_ball_timer = PLAYER_SUPER_BALL_THROW_FRAMES;
+  }
 
   if (player_check_pipe_entry()) {
     return;
@@ -549,9 +608,11 @@ void player_move(void) BANKED {
       }
 
       if (tile_next_1 == SWITCH) {
-        init();
-        map_column = 0;
+        // Advance the level before init() so the new level's spawn
+        // coordinates are used (init() reads current_level).
         current_level = (++current_level) % NB_LEVELS;
+        map_column = 0;
+        init();
         level_set_current();
       }
 
@@ -686,6 +747,14 @@ void player_move(void) BANKED {
       vel_y = 0;
       is_jumping = FALSE;
       current_jump = 0;
+    } else if ((int16_t)player_y_next_upscaled <
+               -(PLAYER_MAX_RISE_ABOVE_TOP << 4)) {
+      // Mario may rise above the top of the screen, but only as far as his
+      // sprite can still be drawn. Hold him at that height rather than letting
+      // the unsigned position underflow (which would read as "fell out of the
+      // level" and trigger the death check below).
+      player_y_upscaled = (uint16_t)(-(PLAYER_MAX_RISE_ABOVE_TOP << 4));
+      player_y = player_y_upscaled >> 4;
     } else {
       player_y_upscaled = player_y_next_upscaled;
       player_y = player_y_upscaled >> 4;
@@ -694,6 +763,16 @@ void player_move(void) BANKED {
 
   player_x = player_x_upscaled >> 4;
   player_y = player_y_upscaled >> 4;
+
+  // Falling off the bottom of the screen is fatal. Without this check the
+  // 8-bit sprite Y wraps around and Mario reappears at the top of the screen.
+  // The vertical position is unsigned and a position above the top of the level
+  // wraps around to a large value, so compare it as signed to tell a real fall
+  // apart from a high jump.
+  if ((int16_t)player_y_upscaled > (int16_t)(PLAYER_FALL_DEATH_Y << 4)) {
+    die();
+    return;
+  }
 
   player_draw_x =
       player_x + DEVICE_SPRITE_PX_OFFSET_X + PLAYER_DRAW_OFFSET_X - camera_x;
@@ -707,6 +786,18 @@ void player_move_vehicle(void) BANKED {
   int8_t max_speed;
   int8_t accel = ACCELERATION;
   int8_t decel = DECELERATION;
+
+  // The submarine (2-3) launches a missile from its nose when B is pressed.
+  // missile_fire lives in another bank, the compiler emits the banked call so
+  // no manual bank switch (which is fatal while running from a banked area).
+  if (current_level == LEVEL_2_3 && (joypad_current & J_B) &&
+      !(joypad_previous & J_B)) {
+    missile_fire(player_x + MARIO_WIDTH + 4, player_y + 4);
+#ifdef GAMEBOY
+    music_play_sfx(BANK(sound_fireball), sound_fireball,
+                   SFX_MUTE_MASK(sound_fireball), MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+  }
 
   if (joypad_current & J_RIGHT) {
     max_speed = (joypad_current & J_B) ? MAX_RUN_SPEED : MAX_WALK_SPEED;
@@ -763,9 +854,11 @@ void player_move_vehicle(void) BANKED {
       }
 
       if (tile_next_1 == SWITCH) {
-        init();
-        map_column = 0;
+        // Advance the level before init() so the new level's spawn
+        // coordinates are used (init() reads current_level).
         current_level = (++current_level) % NB_LEVELS;
+        map_column = 0;
+        init();
         level_set_current();
       }
 
@@ -857,6 +950,13 @@ void player_move_vehicle(void) BANKED {
       player_y_upscaled = ((player_y_next_upscaled >> 3) << 3) + 32;
       player_y = player_y_upscaled >> 4;
       vel_y = 0;
+    } else if ((int16_t)player_y_next_upscaled <
+               -(PLAYER_MAX_RISE_ABOVE_TOP << 4)) {
+      // Rising above the top of the screen: clamp at the highest drawable
+      // position instead of letting the unsigned Y underflow (same guard as
+      // player_move).
+      player_y_upscaled = (uint16_t)(-(PLAYER_MAX_RISE_ABOVE_TOP << 4));
+      player_y = player_y_upscaled >> 4;
     } else {
       if (is_coin(tile_next_1)) {
         on_get_coin_background(player_x_next + PLAYER_HORIZONTAL_MARGIN -
@@ -894,7 +994,13 @@ bool player_is_on_platform(void) BANKED {
        index_platform++) {
     platform_moving_t *platform = &platforms_moving[index_platform];
 
-    if (player_y_upscaled + 256 >= platform->y &&
+    // Platforms are one-way: only land on them while not rising. Without the
+    // !is_jumping guard a jump from below the platform would be snapped onto
+    // its top the moment Mario's feet reach it instead of passing through.
+    // The signed check skips the wrapped (above the screen) positions, for
+    // which the `+ 256` below would otherwise wrap around into the level.
+    if (!is_jumping && (int16_t)player_y_upscaled >= 0 &&
+        player_y_upscaled + 256 >= platform->y &&
         player_y_upscaled + 256 <= platform->y + (8 * 16) &&
         player_x_upscaled <= platform->x + (3 * 8 * 16) &&
         player_x_upscaled > platform->x) {

@@ -3,11 +3,9 @@
 
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
-#include <gbdk/platform.h>
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

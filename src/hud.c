@@ -1,6 +1,6 @@
 #include "hud.h"
 
-void hud_set_level(char major, char minor) {
+void hud_set_level(uint8_t major, uint8_t minor) {
     char major_str[2] = {major, '\0'};
     char minor_str[2] = {minor, '\0'};
     

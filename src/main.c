@@ -3,6 +3,8 @@
 #include <stdint.h>
 
 #include "coin_animated.h"
+#include "block_chunk.h"
+#include "missile.h"
 #include "gb/hardware.h"
 #include "gb/metasprites.h"
 
@@ -252,6 +254,14 @@ void main(void) {
     enemy_update();
     SWITCH_ROM(_saved_bank);
 
+    // Missiles must be updated before anything is drawn: killing an enemy
+    // hides every hardware sprite for the frame.
+    if (current_level == LEVEL_2_3) {
+      SWITCH_ROM(BANK(missile));
+      missile_update();
+      SWITCH_ROM(_saved_bank);
+    }
+
     platform_moving_update();
     base_sprite = player_draw(0);
     base_sprite = enemy_draw(base_sprite);
@@ -267,6 +277,16 @@ void main(void) {
     base_sprite = coin_animated_draw(base_sprite);
     block_bump_update();
     base_sprite = block_bump_draw(base_sprite);
+    SWITCH_ROM(BANK(block_chunk));
+    block_chunk_update();
+    base_sprite = block_chunk_draw(base_sprite);
+    SWITCH_ROM(_saved_bank);
+
+    if (current_level == LEVEL_2_3) {
+      SWITCH_ROM(BANK(missile));
+      base_sprite = missile_draw(base_sprite);
+      SWITCH_ROM(_saved_bank);
+    }
 
     SWITCH_ROM(BANK(player));
     bool powerup_collided = powerup_active && player_check_powerup();
@@ -295,16 +315,13 @@ void main(void) {
       hud_update_lives();
     }
 
-    if (player_draw_y > DEVICE_SCREEN_PX_HEIGHT) {
-      player_y = 0;
-    }
-
     if (level_end_reached && player_draw_x >= DEVICE_SCREEN_WIDTH << 3) {
 #ifdef GAMEBOY
       music_load(BANK(music_stage_clear), &music_stage_clear);
 #endif
 
-      delay(4500);
+      // ~4.5 s of level-end music while idling the CPU.
+      WAIT_FRAMES(269);
 
       while (time >> TIME_SHIFT > 0) {
         time -= 32;
@@ -315,14 +332,17 @@ void main(void) {
         music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                        MUSIC_SFX_PRIORITY_NORMAL);
 #endif
-        delay(10);
+        vsync();  // one tally step per frame
       }
 
       HIDE_SPRITES;
       HIDE_BKG;
 
-      init();
+      // Advance the level before init(): init() picks the spawn coordinates
+      // from current_level, so doing it after would spawn Mario using the
+      // level we just finished (e.g. 1-3's ground row on 2-1).
       current_level = (++current_level) % NB_LEVELS;
+      init();
       level_set_current();
       last_time_displayed = 0xFFFF;
 

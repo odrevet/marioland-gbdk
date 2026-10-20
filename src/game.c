@@ -41,6 +41,8 @@ void init(void) {
   frame_counter = 0;
   marioSpritesflip = FALSE;
   touch_ground = FALSE;
+  player_ducking = FALSE;
+  player_super_ball_timer = 0;
 
   current_column_in_page = 0;
   map_column = 0;
@@ -128,8 +130,8 @@ void die(void) {
       vsync();
   }
     
-  // Wait after Mario falls off screen
-  delay(2000);
+  // Wait after Mario falls off screen (~2 seconds) while idling the CPU.
+  WAIT_FRAMES(120);
 
   //init();
 

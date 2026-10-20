@@ -17,7 +17,7 @@ typedef enum {
   PIPE_DIRECTION_HORIZONTAL,
 } pipe_direction_t;
 
-void pipe_new(uint8_t tile_x, uint8_t tile_y, uint8_t direction, pipe_params *params);
+void pipe_new(uint8_t tile_x, uint8_t tile_y, uint8_t direction, const pipe_params *params);
 void pipe_clear(void);
 
 #endif

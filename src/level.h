@@ -4,12 +4,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
-#include <gbdk/platform.h>
 
 #include "coin_animated.h"
 #include "global.h"
@@ -156,7 +154,7 @@ uint8_t block_bump_draw(uint8_t base_sprite) BANKED;
  * update score.
  * update HUD
  */
-void on_get_coin();
+void on_get_coin(void);
 void on_interogation_block_hit(uint8_t x, uint8_t y);
 
 void level_load_objects(uint16_t col) NONBANKED;

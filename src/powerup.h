@@ -6,7 +6,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -19,18 +18,21 @@ BANKREF_EXTERN(powerup)
 enum powerup_type {
   POWERUP_MUSHROOM = 0,
   POWERUP_STAR,
+  POWERUP_FLOWER,
   POWERUP_HEART
 };
 
 typedef struct powerup_t {
   uint16_t x;
   uint16_t y;
+  uint16_t y_origin;
   uint8_t draw_x;
   uint8_t draw_y;
   int8_t vel_x;
   int8_t vel_y;
   uint8_t type;
   uint8_t current_frame;
+  uint8_t move_state;
   bool flip;
 } powerup_t;
 

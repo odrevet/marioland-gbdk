@@ -24,7 +24,7 @@ void platform_moving_new(uint16_t x, uint16_t y,
   }
 }
 
-void platform_moving_update() {
+void platform_moving_update(void) {
   uint8_t index_platform_moving = 0;
   while (index_platform_moving < platform_moving_count) {
     platform_moving_t *platform = &platforms_moving[index_platform_moving];
@@ -61,20 +61,21 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
   SWITCH_ROM(BANK(commonSprites));
 
   uint8_t draw_index = 4;
-  metasprite_t *commonSprites_metasprite =
+  const metasprite_t *commonSprites_metasprite =
       commonSprites_metasprites[draw_index];
 
   for (uint8_t index_platform_moving = 0;
        index_platform_moving < platform_moving_count; index_platform_moving++) {
     platform_moving_t *platform = &platforms_moving[index_platform_moving];
+    // The metasprite origin is the sprite center, so offset by half a tile.
     uint8_t draw_y = platform->draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
-                     MARGIN_TOP_PX + TILE_SIZE;
+                     MARGIN_TOP_PX + (TILE_SIZE / 2);
 
     for (uint8_t i = 0; i < PLATFORMS_MOVING_SIZE; i++) {
       base_sprite += move_metasprite_ex(
           commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, base_sprite,
           platform->draw_x + i * commonSprites_TILE_W +
-              DEVICE_SPRITE_PX_OFFSET_X + TILE_SIZE,
+              DEVICE_SPRITE_PX_OFFSET_X + (TILE_SIZE / 2),
           draw_y);
     }
   }
@@ -83,4 +84,8 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
   return base_sprite;
 }
 
-void platform_falling_new(uint16_t x, uint16_t y) {}
+void platform_falling_new(uint16_t x, uint16_t y) {
+  // Not implemented yet.
+  (void)x;
+  (void)y;
+}

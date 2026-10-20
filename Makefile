@@ -46,6 +46,12 @@ CFLAGS += -Wf-I$(SRCDIR)/$(PORT)
 
 LCCFLAGS += -Wl-j -Wm-yoA -Wm-ya4 -Wb-ext=.rel $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Flags
 
+# The GBDK guidelines recommend -Wf--max-allocs-per-node50000 for better codegen,
+# but enabling it with this toolchain makes the game hang right after the level
+# starts (reproducible; the home bank layout shifts). Re-test it if the toolchain
+# is updated:
+#   LCCFLAGS += -Wf--max-allocs-per-node50000
+
 
 # Configure platform specific LCC flags here:
 LCCFLAGS_gb      = -Wm-ys -Wl-yt0x1B -autobank # Set an MBC for banking (1B-ROM+MBC5+RAM+BATT)
@@ -54,7 +60,7 @@ LCCFLAGS_duck    = -Wm-ys -Wl-yt0x1B -autobank # Usually the same as required fo
 LCCFLAGS_gbc     = -Wm-ys -Wl-yt0x1B -Wm-yc -autobank # Same as .gb with: -Wm-yc (gb & gbc) or Wm-yC (gbc exclusive)
 LCCFLAGS_sms     = -Wm-ys -Wl-yt0x1B -autobank
 LCCFLAGS_gg      = -Wm-ys -Wl-yt0x1B -autobank
-LCCFLAGS_nes     = -Wm-ys -Wl-yt0x1B -autobank
+LCCFLAGS_nes     = -Wm-ys -Wl-yt0x1B -autobank -Wf--no-zp-spill # --no-zp-spill keeps SDCC spills out of the 6502 zero page (ZP area overflowed otherwise)
 
 all: $(TARGETS)
 

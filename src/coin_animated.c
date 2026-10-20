@@ -51,7 +51,7 @@ uint8_t coin_animated_draw(uint8_t base_sprite) {
     if (coin->ttl > 0) {
       uint8_t draw_index = 3 + coin->anim_frame * 5;
 
-      metasprite_t *commonSprites_metasprite =
+      const metasprite_t *commonSprites_metasprite =
           commonSprites_metasprites[draw_index];
 
       base_sprite += move_metasprite_ex(

@@ -58,6 +58,8 @@
 #define LEVEL_1_2 1
 #define LEVEL_1_3 2
 #define LEVEL_2_1 3
+// The submarine level: it is the only level where B fires a missile.
+#define LEVEL_2_3 5
 
 // Constants for collision snapping
 #define TILE_SNAP_MASK (TILE_SIZE - 1)
@@ -74,6 +76,15 @@
     SWITCH_ROM(bank);         \
     body;                     \
     SWITCH_ROM(_saved);       \
+  } while (0)
+
+// Idle the CPU for a number of frames instead of busy-waiting with delay().
+// Per the GBDK coding guidelines, vsync() HALT's the CPU until the next frame,
+// which saves power while still pacing the game at the frame rate.
+#define WAIT_FRAMES(n)                                     \
+  do {                                                     \
+    for (uint16_t _wait_frame = 0; _wait_frame < (n); _wait_frame++) \
+      vsync();                                             \
   } while (0)
 
 #endif

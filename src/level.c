@@ -1,5 +1,7 @@
 #include "level.h"
+#include "block_chunk.h"
 #include "coin_animated.h"
+#include "missile.h"
 #include <gbdk/platform.h>
 
 #include "global.h"
@@ -363,6 +365,14 @@ void on_break_tile(uint8_t x, uint8_t y) {
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTY;
   set_bkg_tile_xy(index_x, index_y, TILE_EMPTY);
 
+  // Spawn the four debris chunks at the block's world position (top-left of
+  // the tile, in pixels).
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(block_chunk));
+  block_chunk_new((uint16_t)((x + camera_x) & ~(TILE_SIZE - 1)),
+                  (uint16_t)(index_y << 3));
+  SWITCH_ROM(_saved_bank);
+
   #ifdef GAMEBOY
   music_play_sfx(BANK(sound_destroyed), sound_destroyed, SFX_MUTE_MASK(sound_destroyed),
                  MUSIC_SFX_PRIORITY_NORMAL);
@@ -444,7 +454,7 @@ uint8_t block_bump_draw(uint8_t base_sprite) BANKED {
   return base_sprite + 1;
 }
 
-void on_get_coin() {
+void on_get_coin(void) {
   #ifdef GAMEBOY
   music_play_sfx(BANK(sound_coin), sound_coin, SFX_MUTE_MASK(sound_coin),
                  MUSIC_SFX_PRIORITY_NORMAL);
@@ -473,7 +483,7 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
   uint8_t index_x = TILE_INDEX_X(x, camera_x);
   uint8_t index_y = TILE_INDEX_Y(y);
 
-  uint8_t world_tile_x = (x + camera_x) >> 3;
+  uint16_t world_tile_x = (x + camera_x) >> 3;
 
   map_buffer[index_y * DEVICE_SCREEN_BUFFER_WIDTH + index_x] = TILE_EMPTIED;
 
@@ -484,12 +494,23 @@ void on_interogation_block_hit(uint8_t x, uint8_t y) {
 
   bool lookup_found = FALSE;
   for (uint16_t i = 0; i < level_lookup_size && !lookup_found; i++) {
-    level_object *obj = &level_lookup[i];
+    const level_object *obj = &level_lookup[i];
     
     if (obj->x == world_tile_x && obj->y == index_y) {
       lookup_found = TRUE;
+      // Read the power-up type while the level lookup bank is still mapped.
+      // Switching to the power-up bank first would make this read the wrong
+      // bank, yielding a garbage type that disables the power-up logic.
+      uint8_t powerup_type = obj->data.enemy.type;
+      // A mushroom block yields a flower when Mario is already big.
+      if (powerup_type == POWERUP_MUSHROOM && player_is_big) {
+        powerup_type = POWERUP_FLOWER;
+      }
       SWITCH_ROM(BANK(powerup));
-      powerup_new((index_x << 3) << 4, ((index_y - 1) << 3) << 4, obj->data.enemy.type);
+      // power-ups move in world coordinates, so spawn them at the block's
+      // world position rather than its on-screen position.
+      powerup_new(((x + camera_x) & ~(TILE_SIZE - 1)) << 4,
+                  ((index_y - 1) << 3) << 4, powerup_type);
       SWITCH_ROM(level_lookup_bank);
     }
   }
@@ -507,7 +528,7 @@ void level_load_objects(uint16_t col) NONBANKED {
   SWITCH_ROM(level_lookup_bank);
 
   for (uint16_t i = col_from; i < level_lookup_size; i++) {
-    level_object *obj = &level_lookup[i];
+    const level_object *obj = &level_lookup[i];
     if (obj->x == col) {
       if (obj->type == OBJECT_TYPE_ENEMY) {
         enemy_new(obj->x * TILE_SIZE,
@@ -599,6 +620,13 @@ void level_set_current(void) NONBANKED {
   enemy_count = 0;
   platform_moving_count = 0;
   col_from = 0;
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(block_chunk));
+  block_chunk_reset();
+  SWITCH_ROM(_saved_bank);
+  SWITCH_ROM(BANK(missile));
+  missile_reset();
+  SWITCH_ROM(_saved_bank);
   hide_sprites_range(1, MAX_HARDWARE_SPRITES);
   load_current_level();
 }
@@ -630,8 +658,8 @@ void load_current_level(void) NONBANKED {
 
 void set_level(uint8_t level_index) NONBANKED {
   uint8_t world = level_index / 3;
-  char major = '1' + world;
-  char minor = '1' + level_index % 3;
+  uint8_t major = '1' + world;
+  uint8_t minor = '1' + level_index % 3;
 
   hud_set_level(major, minor);
 
@@ -667,8 +695,8 @@ void set_level(uint8_t level_index) NONBANKED {
 
 void move_camera(uint16_t x) NONBANKED {
 #ifdef SEGA
-  move_bkg(x, 224 + SCROLL_TOP_OFFSET);
+  move_bkg(x, (uint8_t)(224 + SCROLL_TOP_OFFSET));
 #else
-  move_bkg(x, SCROLL_TOP_OFFSET);
+  move_bkg(x, (uint8_t)SCROLL_TOP_OFFSET);
 #endif
 }
