@@ -551,6 +551,13 @@ void level_load_objects(uint16_t col) NONBANKED {
       else if (obj->type == OBJECT_TYPE_PIPE_HORIZONTAL) {
           pipe_new((uint8_t)obj->x, (uint8_t)obj->y, PIPE_DIRECTION_HORIZONTAL, &obj->data.pipe);
       }
+
+      // Mark this entry as consumed so it cannot be spawned again. This
+      // matters at the end of a level: the spawn column saturates on the
+      // last map column and level_load_objects() can then be called several
+      // times with the same column, which used to spawn the boss (1-3) once
+      // per call and made a trail of bosses jump out of sync.
+      col_from = i + 1;
     } else if (obj->x > col) {
       col_from = i;
       break;
