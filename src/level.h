@@ -163,6 +163,10 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED;
 void level_set_current(void) NONBANKED;
 void load_current_level(void) NONBANKED;
 
+// Advance an auto-scrolling vehicle level independently of the player
+// position.
+void level_auto_scroll(void) NONBANKED;
+
 void set_level(uint8_t level_index) NONBANKED;
 
 void move_camera(uint16_t x) NONBANKED;

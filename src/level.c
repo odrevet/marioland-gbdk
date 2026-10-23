@@ -693,6 +693,38 @@ void set_level(uint8_t level_index) NONBANKED {
   SWITCH_ROM(_saved_bank);
 }
 
+void level_auto_scroll(void) NONBANKED {
+  if (level_end_reached) {
+    return;
+  }
+
+  uint16_t previous_tile = camera_x >> 3;
+
+  // Half walking speed (MAX_WALK_SPEED is in upscaled units): slow enough
+  // that Mario can still move right relative to the screen instead of being
+  // pinned to the left edge by the scroll.
+  camera_x_upscaled += MAX_WALK_SPEED / 2;
+  camera_x = camera_x_upscaled >> 4;
+
+  // Spawn objects ahead of the camera, as the player-driven scroll does.
+  if ((camera_x >> 3) != previous_tile) {
+#if defined(SEGA)
+    level_load_objects((camera_x >> 3) + DEVICE_SCREEN_WIDTH - 1);
+#else
+    level_load_objects(current_page * PAGE_SIZE + current_column_in_page - 7);
+#endif
+  }
+
+  if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
+    level_end_reached = true;
+    camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
+    camera_x_upscaled = camera_x << 4;
+  } else if ((camera_x >> 3) >= load_col_at) {
+    level_load_column(1, levels + current_level);
+    load_col_at++;
+  }
+}
+
 void move_camera(uint16_t x) NONBANKED {
 #ifdef SEGA
   move_bkg(x, (uint8_t)(224 + SCROLL_TOP_OFFSET));

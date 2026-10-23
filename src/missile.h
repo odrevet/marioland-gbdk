@@ -5,11 +5,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// The submarine (world 2-3) can have two missiles in flight at the same time.
-#define NB_MISSILE 2
+// The submarine (world 2-3) can have three missiles in flight at the same time.
+#define NB_MISSILE 3
 // Fixed OAM slots for the missiles. They sit just below the block-chunk slots
 // (32..39) so they never overlap the sequentially allocated gameplay sprites.
-#define MISSILE_HW_SPRITE_BASE 30
+#define MISSILE_HW_SPRITE_BASE 29
 
 BANKREF_EXTERN(missile)
 

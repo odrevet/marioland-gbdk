@@ -70,6 +70,9 @@ bool plane_mode;
 // Sprite frame indices inside marioSprites for big Mario.
 #define PLAYER_FRAME_DUCK 13
 #define PLAYER_FRAME_SUPER_BALL 14
+// Frame 1 holds the vehicle art in both the Marine Pop and Sky Pop sheets.
+#define PLAYER_FRAME_MARINPOP 1
+#define PLAYER_FRAME_SKYPOP 1
 // How long the super ball throwing pose is shown after pressing B.
 #define PLAYER_SUPER_BALL_THROW_FRAMES 10
 // Mario dies once he has fallen more than one screen below the level.
@@ -79,6 +82,10 @@ bool plane_mode;
 // It must stay below 5 tiles: past that the 8-bit sprite Y would wrap around and
 // Mario would be drawn at the bottom of the screen.
 #define PLAYER_MAX_RISE_ABOVE_TOP (4 * TILE_SIZE)
+// Vehicles (the Marine Pop and Sky Pop) stay inside the visible playfield:
+// level Y 0 is the first row below the two HUD rows, and the bottom cap keeps
+// the 16x16 sprite fully on screen.
+#define PLAYER_VEHICLE_MAX_Y ((LEVEL_HEIGHT * TILE_SIZE - MARIO_HEIGHT_BIG) << 4)
 
 #define ENEMY_TOP_MARGIN 8
 #define ENEMY_STOMP_TOLERANCE 4
@@ -138,6 +145,35 @@ uint8_t player_draw(uint8_t base_sprite) NONBANKED {
   }
 
   uint8_t _saved_bank = _current_bank;
+
+#ifdef GAMEBOY
+  // In the vehicle levels Mario pilots the Marine Pop (2-3) or Sky Pop (4-3).
+  // Both use frame 1 of their own sprite sheet and keep facing right.
+  if (current_level == LEVEL_2_3) {
+    SWITCH_ROM(BANK(marinpopSprites));
+
+    const metasprite_t *submarine =
+        marinpopSprites_metasprites[PLAYER_FRAME_MARINPOP];
+    base_sprite += move_metasprite_ex(submarine, MARINPOP_TILE_BASE, 0, 0,
+                                      player_draw_x, player_draw_y);
+
+    SWITCH_ROM(_saved_bank);
+    return base_sprite;
+  }
+
+  if (current_level == LEVEL_4_3) {
+    SWITCH_ROM(BANK(skypopSprites));
+
+    const metasprite_t *plane =
+        skypopSprites_metasprites[PLAYER_FRAME_SKYPOP];
+    base_sprite += move_metasprite_ex(plane, SKYPOP_TILE_BASE, 0, 0,
+                                      player_draw_x, player_draw_y);
+
+    SWITCH_ROM(_saved_bank);
+    return base_sprite;
+  }
+#endif
+
   SWITCH_ROM(BANK(marioSprites));
 
   uint8_t frame_index;
@@ -787,12 +823,15 @@ void player_move_vehicle(void) BANKED {
   int8_t accel = ACCELERATION;
   int8_t decel = DECELERATION;
 
-  // The submarine (2-3) launches a missile from its nose when B is pressed.
-  // missile_fire lives in another bank, the compiler emits the banked call so
-  // no manual bank switch (which is fatal while running from a banked area).
-  if (current_level == LEVEL_2_3 && (joypad_current & J_B) &&
+  // Vehicle levels (2-3 and 4-3) launch a missile from the nose when B is
+  // pressed. missile_fire lives in another bank, the compiler emits the banked
+  // call so no manual bank switch (which is fatal while running from a banked
+  // area).
+  if (IS_MISSILE_LEVEL(current_level) && (joypad_current & J_B) &&
       !(joypad_previous & J_B)) {
-    missile_fire(player_x + MARIO_WIDTH + 4, player_y + 4);
+    // One tile to the left of the old spawn point: the torpedo starts at the
+    // nose instead of appearing ahead of the vehicle.
+    missile_fire(player_x + MARIO_WIDTH - 4, player_y + 4);
 #ifdef GAMEBOY
     music_play_sfx(BANK(sound_fireball), sound_fireball,
                    SFX_MUTE_MASK(sound_fireball), MUSIC_SFX_PRIORITY_NORMAL);
@@ -865,24 +904,29 @@ void player_move_vehicle(void) BANKED {
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
 
-      if (load_col_at == current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
-        level_end_reached = true;
-        camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
-        //EMU_printf("LEVEL END load_col_at=%d map_w_tiles=%d cam=%d\n",
-        //           load_col_at, current_map_width_in_tiles, camera_x);
-      }
+      // In auto-scrolling vehicle levels the camera is advanced by
+      // level_auto_scroll(), so Mario's position must not move it here.
+      if (!IS_AUTO_SCROLL_LEVEL(current_level)) {
+        if (load_col_at ==
+            current_map_width_in_tiles - DEVICE_SCREEN_WIDTH + 1) {
+          level_end_reached = true;
+          camera_x = current_map_width - DEVICE_SCREEN_PX_WIDTH;
+          //EMU_printf("LEVEL END load_col_at=%d map_w_tiles=%d cam=%d\n",
+          //           load_col_at, current_map_width_in_tiles, camera_x);
+        }
 
-      if (!level_end_reached && player_x > scroll_limit) {
-        int16_t player_movement = player_x - scroll_limit;
-        camera_x_upscaled += (player_movement << 4);
-        camera_x = camera_x_upscaled >> 4;
-        scroll_limit = player_x;
-        level_load_objects(OBJECT_SPAWN_COL());
-      }
+        if (!level_end_reached && player_x > scroll_limit) {
+          int16_t player_movement = player_x - scroll_limit;
+          camera_x_upscaled += (player_movement << 4);
+          camera_x = camera_x_upscaled >> 4;
+          scroll_limit = player_x;
+          level_load_objects(OBJECT_SPAWN_COL());
+        }
 
-      if (camera_x >> 3 >= load_col_at && !level_end_reached) {
-        level_load_column(1, levels + current_level);
-        load_col_at++;
+        if (camera_x >> 3 >= load_col_at && !level_end_reached) {
+          level_load_column(1, levels + current_level);
+          load_col_at++;
+        }
       }
     }
   } else if (vel_x < 0 && player_draw_x > PLAYER_SCREEN_LEFT_MARGIN) {
@@ -905,6 +949,18 @@ void player_move_vehicle(void) BANKED {
 
       player_x_upscaled = player_x_next_upscaled;
       player_x = player_x_upscaled >> 4;
+    }
+  }
+
+  // Auto-scrolling vehicle levels carry the vehicle along: if the scroll
+  // reaches Mario, push him right so he stays on screen instead of being
+  // dragged off the left edge.
+  if (IS_AUTO_SCROLL_LEVEL(current_level)) {
+    uint16_t min_x_upscaled = camera_x << 4;
+    if (player_x_upscaled < min_x_upscaled) {
+      // Keep vel_x so holding right can build up speed and leave the edge.
+      player_x_upscaled = min_x_upscaled;
+      player_x = camera_x;
     }
   }
 
@@ -971,6 +1027,17 @@ void player_move_vehicle(void) BANKED {
       player_y_upscaled = player_y_next_upscaled;
       player_y = player_y_upscaled >> 4;
     }
+  }
+
+  // Keep the vehicle inside the playfield. A negative (signed) Y means it
+  // would enter the two HUD rows at the top; the lower cap keeps its 16x16
+  // sprite from leaving through the bottom of the screen.
+  if ((int16_t)player_y_upscaled < 0) {
+    player_y_upscaled = 0;
+    vel_y = 0;
+  } else if (player_y_upscaled > PLAYER_VEHICLE_MAX_Y) {
+    player_y_upscaled = PLAYER_VEHICLE_MAX_Y;
+    vel_y = 0;
   }
 
   player_x = player_x_upscaled >> 4;

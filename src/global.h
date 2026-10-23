@@ -58,8 +58,12 @@
 #define LEVEL_1_2 1
 #define LEVEL_1_3 2
 #define LEVEL_2_1 3
-// The submarine level: it is the only level where B fires a missile.
+// Vehicle levels: B fires a missile and the level scrolls automatically.
 #define LEVEL_2_3 5
+#define LEVEL_4_3 11
+
+#define IS_AUTO_SCROLL_LEVEL(l) ((l) == LEVEL_2_3 || (l) == LEVEL_4_3)
+#define IS_MISSILE_LEVEL(l) IS_AUTO_SCROLL_LEVEL(l)
 
 // Constants for collision snapping
 #define TILE_SNAP_MASK (TILE_SIZE - 1)

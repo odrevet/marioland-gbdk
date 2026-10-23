@@ -24,6 +24,13 @@
 #endif
 
 #include "marioSprites.h"
+#ifdef GAMEBOY
+#include "marinpopSprites.h"
+#include "skypopSprites.h"
+// The vehicle tiles live in a free range of the sprite tile table.
+#define MARINPOP_TILE_BASE marinpopSprites_TILE_ORIGIN
+#define SKYPOP_TILE_BASE skypopSprites_TILE_ORIGIN
+#endif
 #include "textTileset.h"
 #include "level_object.h"
 

@@ -24,7 +24,7 @@
 #include <level_1_2_06.h>
 
 // Level 1_3
-#define level_table_1_3_ENTRY_COUNT 17
+#define level_table_1_3_ENTRY_COUNT 16
 #include <level_1_3_00.h>
 #include <level_1_3_01.h>
 #include <level_1_3_02.h>
@@ -60,7 +60,7 @@
 #include <level_2_2_07.h>
 
 // Level 2_3
-#define level_table_2_3_ENTRY_COUNT 19
+#define level_table_2_3_ENTRY_COUNT 18
 #include <level_2_3_00.h>
 #include <level_2_3_01.h>
 #include <level_2_3_02.h>
@@ -98,7 +98,7 @@
 #include <level_3_2_10.h>
 
 // Level 3_3
-#define level_table_3_3_ENTRY_COUNT 16
+#define level_table_3_3_ENTRY_COUNT 15
 #include <level_3_3_00.h>
 #include <level_3_3_01.h>
 #include <level_3_3_02.h>
@@ -138,7 +138,7 @@
 #include <level_4_2_11.h>
 
 // Level 4_3
-#define level_table_4_3_ENTRY_COUNT 24
+#define level_table_4_3_ENTRY_COUNT 23
 #include <level_4_3_00.h>
 #include <level_4_3_01.h>
 #include <level_4_3_02.h>

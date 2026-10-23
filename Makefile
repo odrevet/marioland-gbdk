@@ -92,6 +92,19 @@ PNG2ASSET_SPRITE_SETTINGS_gbc=
 PNG2ASSET_SPRITE_SETTINGS_duck=
 PNG2ASSET_SPRITE_SETTINGS_pocket=
 
+# The Marine Pop and Sky Pop sheets are currently only available for the
+# Game Boy family. Generate them as their own includes so png2asset does not
+# overwrite marioSprites.c (it only supports one input image per output file).
+# Their tiles are loaded in a free part of the sprite tile table, above the
+# shared enemies/common sheets.
+MARINPOP_TILE_ORIGIN := 200
+SKYPOP_TILE_ORIGIN := 204
+# The boss is 32x24 per frame: two frames side by side in the source PNG.
+BOSS_BIRABUTO_TILE_ORIGIN := 208
+MARINPOP_ASSET = $(if $(wildcard res/graphics/sprites/marinpop-$(SPRITES).png),$(PNG2ASSET) res/graphics/sprites/marinpop-$(SPRITES).png -o $(GENDIR)/marinpopSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(MARINPOP_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255)
+SKYPOP_ASSET = $(if $(wildcard res/graphics/sprites/skypop-$(SPRITES).png),$(PNG2ASSET) res/graphics/sprites/skypop-$(SPRITES).png -o $(GENDIR)/skypopSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(SKYPOP_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255)
+BOSS_BIRABUTO_ASSET = $(if $(wildcard res/graphics/sprites/boss_birabuto-$(SPRITES).png),$(PNG2ASSET) res/graphics/sprites/boss_birabuto-$(SPRITES).png -o $(GENDIR)/bossBirabutoSprites.c -sw 32 -sh 24 -spr8x8 -keep_palette_order -px 4 -py 16 -tile_origin $(BOSS_BIRABUTO_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255)
+
 LEVEL_TILESET_1 = birabuto
 LEVEL_TILESET_2 = muda
 LEVEL_TILESET_3 = easton
@@ -119,6 +132,9 @@ png2asset:
 
 # sprites
 	$(PNG2ASSET) res/graphics/sprites/mario-$(SPRITES).png -o $(GENDIR)/marioSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
+	$(MARINPOP_ASSET)
+	$(SKYPOP_ASSET)
+	$(BOSS_BIRABUTO_ASSET)
 	$(PNG2ASSET) res/graphics/sprites/enemies_common-$(SPRITES).png -o $(GENDIR)/enemiesSprites.c -sw 8 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
 	$(PNG2ASSET) res/graphics/sprites/common-$(SPRITES).png -o $(GENDIR)/commonSprites.c -sw 8 -sh 8 -spr8x8 -keep_palette_order -tile_origin $(COMMON_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255
 	$(PNG2ASSET) res/graphics/sprites/enemies_birabuto-$(SPRITES).png -o $(GENDIR)/enemiesBirabutoSprites.c -sw 16 -sh 16 -spr8x8 -keep_palette_order -tile_origin $(WORLD_ENEMIES_TILE_ORIGIN) $(PNG2ASSET_SPRITE_SETTINGS_$(EXT)) -b 255

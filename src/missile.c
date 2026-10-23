@@ -17,13 +17,16 @@ BANKREF(missile)
 
 missile_t missiles[NB_MISSILE];
 
-// The missile uses the first tile of the shared sprite sheet: metasprite 0 is a
-// single 8x8 tile whose tile index is 0.
-#define MISSILE_TILE commonSprites_TILE_ORIGIN
+// Projectile sprite: frame 11 of the common sprite sheet (the torpedo).
+// That frame is a single 8x8 tile, so it can be drawn with the direct sprite
+// API using its tile index instead of reading the metasprite from another ROM
+// bank (which is not safe from this banked file).
+#define MISSILE_FRAME 11
+#define MISSILE_TILE (commonSprites_TILE_ORIGIN + MISSILE_FRAME)
 #define MISSILE_SIZE TILE_SIZE
-// Horizontal speed, in pixels per frame, at most one tile per frame so the
+// Horizontal speed, in pixels per frame. Kept below one tile per frame so the
 // pre-move tile test below can never skip a block.
-#define MISSILE_SPEED 8
+#define MISSILE_SPEED 4
 // Safety net: the missile is also dropped when it leaves the screen, so this
 // only has to outlive the widest possible flight.
 #define MISSILE_TTL 90
@@ -92,9 +95,8 @@ void missile_update(void) BANKED {
     missile->ttl--;
 
     // The leading edge of the missile (its right side) is what hits the
-    // background. It is tested before the move: the missile travels one tile
-    // per frame, so testing after the move would step over a block whenever
-    // the missile does not sit on the tile grid.
+    // background. It is tested before the move so a missile sitting on the
+    // tile grid cannot enter a solid tile on the frame it starts touching it.
     // Kept signed so the comparison against the (up to 256 pixel wide) screen
     // stays meaningful on every target.
     int16_t front =
@@ -142,10 +144,8 @@ void missile_update(void) BANKED {
   }
 }
 
-// The missile is a single 8x8 sprite, so it is drawn with the direct sprite
-// API rather than move_metasprite_ex. That keeps this function free of banked
-// data reads: switching ROM banks from a banked function would make the CPU
-// fetch the following instructions from the wrong bank.
+// Draw the torpedo with the common sheet's frame 11. The missile positions are
+// in world space so they scroll with the level.
 uint8_t missile_draw(uint8_t base_sprite) BANKED {
   for (uint8_t i = 0; i < NB_MISSILE; i++) {
     uint8_t slot = MISSILE_HW_SPRITE_BASE + i;
@@ -155,7 +155,6 @@ uint8_t missile_draw(uint8_t base_sprite) BANKED {
       continue;
     }
 
-    // Missile positions are in world space so they scroll with the level.
     int16_t screen_x = (int16_t)(missile->x - (int16_t)camera_x);
     int16_t screen_y = (int16_t)(missile->y + MARGIN_TOP_PX);
 
@@ -165,8 +164,8 @@ uint8_t missile_draw(uint8_t base_sprite) BANKED {
       continue;
     }
 
-    // Metasprite 0 of the shared sheet is one tile pivoted on its center, so
-    // the sprite is centered on the missile position.
+    // The torpedo tile is pivoted on its center, so offset the sprite position
+    // by half a tile.
     set_sprite_tile(slot, MISSILE_TILE);
     set_sprite_prop(slot, S_PAL(0));
     move_sprite(slot,

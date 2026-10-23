@@ -54,7 +54,7 @@ const banked_map_t level_1_3_map[level_table_1_3_ENTRY_COUNT] = {
     {level_1_3_09_map, BANK(level_1_3_09)},
     {level_1_3_09_map, BANK(level_1_3_09)},
     {level_1_3_10_map, BANK(level_1_3_10)},
-    {stage_end_map, BANK(stage_end)},
+    //{stage_end_map, BANK(stage_end)},
 };
 
 // Level 2_1 table
@@ -113,7 +113,7 @@ const banked_map_t level_2_3_map[level_table_2_3_ENTRY_COUNT] = {
     {level_2_3_03_map, BANK(level_2_3_03)},
     {level_2_3_03_map, BANK(level_2_3_03)},
     {level_2_3_05_map, BANK(level_2_3_05)},
-    {stage_end_map, BANK(stage_end)},
+    //{stage_end_map, BANK(stage_end)},
 };
 
 // Level 3_1 table
@@ -180,7 +180,7 @@ const banked_map_t level_3_3_map[level_table_3_3_ENTRY_COUNT] = {
     {level_3_3_07_map, BANK(level_3_3_07)},
     {level_3_3_07_map, BANK(level_3_3_07)},
     {level_3_3_08_map, BANK(level_3_3_08)},
-    {stage_end_map, BANK(stage_end)},
+    //{stage_end_map, BANK(stage_end)},
 };
 
 // Level 4_1 table

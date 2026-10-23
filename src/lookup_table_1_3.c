@@ -28,5 +28,9 @@ const level_object level_1_3_lookup[] = {
     {.x = 292,
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GAO}}
+     .data.enemy = {.type = ENEMY_GAO}},
+    {.x = 313,
+     .y = 11,
+     .type = OBJECT_TYPE_ENEMY,
+     .data.enemy = {.type = ENEMY_BOSS_BIRABUTO}}
 };

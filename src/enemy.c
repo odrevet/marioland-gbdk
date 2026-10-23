@@ -16,6 +16,10 @@ enemy_t enemies[ENEMY_MAX];
 #include "enemiesEastonSprites.h"
 #include "enemiesChaiSprites.h"
 
+#ifdef GAMEBOY
+#include "bossBirabutoSprites.h"
+#endif
+
 BANKREF(enemy)
 
 #define ENEMY_WIDTH 8
@@ -802,6 +806,9 @@ void enemy_update(void) BANKED {
     case ENEMY_NYOLOLIN:
       enemy_move_stub(index_enemy);
       break;
+    case ENEMY_BOSS_BIRABUTO:
+      boss_birabuto_update(index_enemy);
+      break;
     case ENEMY_PLANT:
       enemy_move_plant(index_enemy);
       break;
@@ -872,6 +879,13 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
       metasprites = enemiesChaiSprites_metasprites;
       tile_origin = enemiesChaiSprites_TILE_ORIGIN;
       break;
+#ifdef GAMEBOY
+    case ENEMY_BOSS_BIRABUTO:
+      enemy_bank = BANK(bossBirabutoSprites);
+      metasprites = bossBirabutoSprites_metasprites;
+      tile_origin = bossBirabutoSprites_TILE_ORIGIN;
+      break;
+#endif
     case ENEMY_GOOMBO:
     case ENEMY_KOOPA:
     case ENEMY_PLANT:

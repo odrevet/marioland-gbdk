@@ -13,6 +13,11 @@
 #include "enemiesSprites.h"
 #include "enemiesBirabutoSprites.h"
 #include "marioSprites.h"
+#ifdef GAMEBOY
+#include "marinpopSprites.h"
+#include "skypopSprites.h"
+#include "bossBirabutoSprites.h"
+#endif
 #include "commonSprites.h"
 #include "textTileset.h"
 #include "TitleScreen.h"
@@ -169,6 +174,22 @@ void main(void) {
   SWITCH_ROM(BANK(marioSprites));
   set_sprite_data(marioSprites_TILE_ORIGIN, marioSprites_TILE_COUNT, marioSprites_tiles);
 
+#ifdef GAMEBOY
+  // Load the vehicle tiles into their dedicated sprite tile ranges.
+  SWITCH_ROM(BANK(marinpopSprites));
+  set_sprite_data(MARINPOP_TILE_BASE, marinpopSprites_TILE_COUNT,
+                  marinpopSprites_tiles);
+
+  SWITCH_ROM(BANK(skypopSprites));
+  set_sprite_data(SKYPOP_TILE_BASE, skypopSprites_TILE_COUNT,
+                  skypopSprites_tiles);
+
+  SWITCH_ROM(BANK(bossBirabutoSprites));
+  set_sprite_data(bossBirabutoSprites_TILE_ORIGIN,
+                  bossBirabutoSprites_TILE_COUNT,
+                  bossBirabutoSprites_tiles);
+#endif
+
   SWITCH_ROM(BANK(enemiesSprites));
   set_sprite_data(enemiesSprites_TILE_ORIGIN, enemiesSprites_TILE_COUNT, enemiesSprites_tiles);
 
@@ -227,6 +248,11 @@ void main(void) {
 #endif
     }
 
+    // Vehicle levels scroll by themselves, independently of Mario's position.
+    if (IS_AUTO_SCROLL_LEVEL(current_level)) {
+      level_auto_scroll();
+    }
+
     SWITCH_ROM(BANK(player));
     player_check_enemy_collision();
     if (IS_VEHICLE_LEVEL(current_level)) {
@@ -256,7 +282,7 @@ void main(void) {
 
     // Missiles must be updated before anything is drawn: killing an enemy
     // hides every hardware sprite for the frame.
-    if (current_level == LEVEL_2_3) {
+    if (IS_MISSILE_LEVEL(current_level)) {
       SWITCH_ROM(BANK(missile));
       missile_update();
       SWITCH_ROM(_saved_bank);
@@ -282,7 +308,7 @@ void main(void) {
     base_sprite = block_chunk_draw(base_sprite);
     SWITCH_ROM(_saved_bank);
 
-    if (current_level == LEVEL_2_3) {
+    if (IS_MISSILE_LEVEL(current_level)) {
       SWITCH_ROM(BANK(missile));
       base_sprite = missile_draw(base_sprite);
       SWITCH_ROM(_saved_bank);

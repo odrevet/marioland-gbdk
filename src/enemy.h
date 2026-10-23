@@ -35,7 +35,8 @@ enum enemy_type {
   ENEMY_HIYOIHOI,
   ENEMY_PIONPI,
   ENEMY_PONPON,
-  ENEMY_NYOLOLIN
+  ENEMY_NYOLOLIN,
+  ENEMY_BOSS_BIRABUTO
 };
 
 typedef struct {
@@ -66,6 +67,7 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED;
 void enemy_remove(uint8_t index_enemy) NONBANKED;
 void enemy_reset_all(void) BANKED;
 void enemy_stomp(uint8_t index_enemy) BANKED;
+void boss_birabuto_update(uint8_t index_enemy) BANKED;
 void enemy_update(void) BANKED;
 uint8_t enemy_draw(uint8_t base_sprite) NONBANKED;
 
