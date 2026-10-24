@@ -67,6 +67,10 @@ BANKREF(enemy)
 
 #define ENEMY_BULLET_SPEED 6
 
+#define ENEMY_FIREBALL_BIRABUTO_FRAME_A 10
+#define ENEMY_FIREBALL_BIRABUTO_FRAME_B 11
+#define ENEMY_FIREBALL_BIRABUTO_ANIMATION_FRAMES 8
+
 #define ENEMY_TOKOTOKO_SPEED 6
 
 #define ENEMY_SUU_DETECT_RANGE_X 32
@@ -177,6 +181,32 @@ void enemy_new(uint16_t x, uint16_t y, uint8_t type) BANKED {
       if (type == ENEMY_SUU || type == ENEMY_PLANT) {
         enemies[i].y_origin = enemies[i].y;
       }
+
+      enemy_count++;
+      return;
+    }
+  }
+}
+
+void enemy_new_fireball(uint16_t x, uint16_t y, int8_t vel_x) BANKED {
+  for (uint8_t i = 0; i < ENEMY_MAX; i++) {
+    if (!enemies[i].active) {
+      enemies[i].x = x << 4;
+      enemies[i].y = y << 4;
+      enemies[i].vel_x = vel_x;
+      enemies[i].vel_y = 0;
+      enemies[i].type = ENEMY_FIREBALL_BIRABUTO;
+      enemies[i].frame_counter = 0;
+      enemies[i].anim_counter = 0;
+      enemies[i].current_frame = ENEMY_FIREBALL_BIRABUTO_FRAME_A;
+      enemies[i].flip = vel_x > 0;
+      enemies[i].stomped = FALSE;
+      enemies[i].stomped_timer = 0;
+      enemies[i].active = TRUE;
+      enemies[i].move_state = 0;
+      enemies[i].hp = 0;
+      enemies[i].draw_x = (enemies[i].x - camera_x_upscaled) >> 4;
+      enemies[i].draw_y = enemies[i].y >> 4;
 
       enemy_count++;
       return;
@@ -435,6 +465,32 @@ static void enemy_move_bullet(uint8_t index) {
   bullet->x += bullet->vel_x;
 }
 
+static void enemy_move_fireball_birabuto(uint8_t index) {
+  enemy_t *fireball = &enemies[index];
+  int16_t screen_x;
+
+  if (!fireball->active) {
+    return;
+  }
+
+  fireball->x += fireball->vel_x;
+
+  fireball->anim_counter++;
+  if (fireball->anim_counter >= ENEMY_FIREBALL_BIRABUTO_ANIMATION_FRAMES) {
+    fireball->anim_counter = 0;
+    fireball->current_frame =
+        (fireball->current_frame == ENEMY_FIREBALL_BIRABUTO_FRAME_A)
+            ? ENEMY_FIREBALL_BIRABUTO_FRAME_B
+            : ENEMY_FIREBALL_BIRABUTO_FRAME_A;
+  }
+
+  screen_x = (int16_t)(fireball->x >> 4) -
+             (int16_t)(camera_x_upscaled >> 4);
+  if (screen_x < 0 || screen_x > DEVICE_SCREEN_PX_WIDTH + 16) {
+    enemy_remove(index);
+  }
+}
+
 static void enemy_move_tokotoko(uint8_t index) {
   enemy_t *tokotoko = &enemies[index];
 
@@ -648,6 +704,12 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
     return;
   }
 
+  if (enemy->type == ENEMY_FIREBALL_BIRABUTO) {
+    // Boss fireballs are hazards, not stompable enemies.
+    enemy_remove(index_enemy);
+    return;
+  }
+
   if (enemy->type == ENEMY_PIONPI) {
     enemy->hp = ENEMY_PIONPI_STUN_FRAMES;
     enemy->vel_x = 0;
@@ -809,6 +871,9 @@ void enemy_update(void) BANKED {
     case ENEMY_BOSS_BIRABUTO:
       boss_birabuto_update(index_enemy);
       break;
+    case ENEMY_FIREBALL_BIRABUTO:
+      enemy_move_fireball_birabuto(index_enemy);
+      break;
     case ENEMY_PLANT:
       enemy_move_plant(index_enemy);
       break;
@@ -884,6 +949,11 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
       enemy_bank = BANK(bossBirabutoSprites);
       metasprites = bossBirabutoSprites_metasprites;
       tile_origin = bossBirabutoSprites_TILE_ORIGIN;
+      break;
+    case ENEMY_FIREBALL_BIRABUTO:
+      enemy_bank = BANK(enemiesBirabutoSprites);
+      metasprites = enemiesBirabutoSprites_metasprites;
+      tile_origin = enemiesBirabutoSprites_TILE_ORIGIN;
       break;
 #endif
     case ENEMY_GOOMBO:

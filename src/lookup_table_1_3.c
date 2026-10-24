@@ -5,11 +5,11 @@
 BANKREF(level_1_3_lookup)
 
 const level_object level_1_3_lookup[] = {
-    {.x = 155,
+    {.x = 153,
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GAO}},
-    {.x = 187,
+    {.x = 210,
      .y = 10,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_KOOPA}},
@@ -17,10 +17,6 @@ const level_object level_1_3_lookup[] = {
      .y = 11,
      .type = OBJECT_TYPE_POWERUP,
      .data.enemy = {.type = POWERUP_MUSHROOM}},
-    {.x = 251,
-     .y = 12,
-     .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GAO}},
     {.x = 276,
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
@@ -29,7 +25,7 @@ const level_object level_1_3_lookup[] = {
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_GAO}},
-    {.x = 313,
+    {.x = 312,
      .y = 11,
      .type = OBJECT_TYPE_ENEMY,
      .data.enemy = {.type = ENEMY_BOSS_BIRABUTO}}

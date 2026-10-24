@@ -479,7 +479,9 @@ bool player_check_enemy_collision(void) BANKED {
         player_y < enemy_bottom &&
         player_y + marioSprites_HEIGHT > enemy_top + ENEMY_TOP_MARGIN) {
 
-      if (player_y + marioSprites_HEIGHT < enemy_top + ENEMY_TOP_MARGIN + ENEMY_STOMP_TOLERANCE) {
+      if (e->type != ENEMY_FIREBALL_BIRABUTO &&
+          player_y + marioSprites_HEIGHT <
+              enemy_top + ENEMY_TOP_MARGIN + ENEMY_STOMP_TOLERANCE) {
         enemy_stomp(enemy_index);
 
         current_jump = 0;
