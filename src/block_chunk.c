@@ -13,19 +13,25 @@ uint8_t block_chunk_index = 0;
 
 // Frame index of the block chunk sprite in commonSprites.
 #define BLOCK_CHUNK_FRAME 1
-// How long (in frames) the chunks stay on screen before being hidden.
-#define BLOCK_CHUNK_TTL 24
-// Downward acceleration applied to every chunk so they eventually fall.
-#define BLOCK_CHUNK_GRAVITY 2
+// Frames before a chunk is hidden. Long enough to fall off the screen.
+#define BLOCK_CHUNK_TTL 60
+// Gravity (+1 vy) is applied once every this many frames (power of 2 - 1 mask).
+// With a mask of 1, gravity and horizontal movement happen every 2 frames.
+#define BLOCK_CHUNK_TICK_MASK 1
+// Downward acceleration added on each gravity tick.
+#define BLOCK_CHUNK_GRAVITY 1
+// Terminal fall speed in pixels per frame.
+#define BLOCK_CHUNK_MAX_VY 6
 // Number of chunks spawned when a block is broken.
 #define BLOCK_CHUNK_PER_BREAK 4
 
-// The four chunks are spread towards the four diagonals so they "splat" out
-// of the block and then fall. Offsets are relative to the block's top-left.
+// Like Mario Bros: the top pair is thrown higher, the bottom pair lower,
+// all of them spread sideways, then everything falls.
+// Offsets are relative to the block's top-left.
 static const int8_t chunk_offset_x[BLOCK_CHUNK_PER_BREAK] = {-2, 2, -2, 2};
 static const int8_t chunk_offset_y[BLOCK_CHUNK_PER_BREAK] = {-2, -2, 2, 2};
 static const int8_t chunk_vel_x[BLOCK_CHUNK_PER_BREAK] = {-1, 1, -1, 1};
-static const int8_t chunk_vel_y[BLOCK_CHUNK_PER_BREAK] = {-3, -3, -1, -1};
+static const int8_t chunk_vel_y[BLOCK_CHUNK_PER_BREAK] = {-4, -4, -2, -2};
 
 void block_chunk_new(uint16_t world_x, uint16_t world_y) BANKED {
   for (uint8_t i = 0; i < BLOCK_CHUNK_PER_BREAK; i++) {
@@ -62,9 +68,17 @@ void block_chunk_update(void) BANKED {
       continue;
     }
 
-    chunk->vy = (int8_t)(chunk->vy + BLOCK_CHUNK_GRAVITY);
-    chunk->x = (int16_t)(chunk->x + chunk->vx);
+    // Vertical movement every frame.
     chunk->y = (int16_t)(chunk->y + chunk->vy);
+
+    // Gravity and horizontal movement every other frame, which makes the
+    // chunks rise, slow down, hit an apex, then fall (a smooth parabola).
+    if ((chunk->ttl & BLOCK_CHUNK_TICK_MASK) == 0) {
+      chunk->x = (int16_t)(chunk->x + chunk->vx);
+      if (chunk->vy < BLOCK_CHUNK_MAX_VY) {
+        chunk->vy = (int8_t)(chunk->vy + BLOCK_CHUNK_GRAVITY);
+      }
+    }
   }
 }
 
