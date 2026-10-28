@@ -511,6 +511,16 @@ bool player_check_enemy_collision(void) BANKED {
         continue;
       }
 
+      if (player_star_timer > 0) {
+        // Star power: the enemy is killed on contact, Mario takes no damage.
+        enemy_stomp(enemy_index);
+#ifdef GAMEBOY
+        music_play_sfx(BANK(sound_squish), sound_squish,
+                       SFX_MUTE_MASK(sound_squish), MUSIC_SFX_PRIORITY_NORMAL);
+#endif
+        continue;
+      }
+
       if (player_invincible_timer > 0) {
         continue;
       }
