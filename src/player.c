@@ -1108,5 +1108,26 @@ bool player_is_on_platform(void) BANKED {
       return TRUE;
     }
   }
+
+  for (uint8_t index_platform = 0; index_platform < platform_falling_count;
+       index_platform++) {
+    platform_falling_t *platform = &platforms_falling[index_platform];
+
+    // Same one-way landing test as the moving platforms, but a falling platform
+    // is one tile wide. Standing on it makes it drop, carrying Mario down.
+    if (!is_jumping && (int16_t)player_y_upscaled >= 0 &&
+        player_y_upscaled + 256 >= platform->y &&
+        player_y_upscaled + 256 <= platform->y + (8 * 16) &&
+        player_x_upscaled < platform->x + (TILE_SIZE << 4) &&
+        player_x_upscaled + (MARIO_WIDTH << 4) > platform->x) {
+
+      platform->is_falling = TRUE;
+      vel_y = PLATFORM_FALLING_SPEED;
+      player_y_upscaled = platform->y - 256;
+      player_y = player_y_upscaled >> 4;
+      player_on_touch_ground();
+      return TRUE;
+    }
+  }
   return FALSE;
 }

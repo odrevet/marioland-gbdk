@@ -137,11 +137,5 @@ const level_object level_2_1_lookup[] = {
      .y = 5,
      .type = OBJECT_TYPE_PLATFORM_MOVING,
      .data.platform_moving = {.platform_direction = DIRECTION_VERTICAL}},
-    {.x = 313,
-     .y = 3,
-     .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}}, // WIP: falling platform
-    {.x = 314,
-     .y = 3,
-     .type = OBJECT_TYPE_ENEMY,
-     .data.enemy = {.type = ENEMY_GOOMBO}}}; // WIP: falling platform
+    {.x = 313, .y = 3, .type = OBJECT_TYPE_PLATFORM_FALLING},
+    {.x = 314, .y = 3, .type = OBJECT_TYPE_PLATFORM_FALLING}};

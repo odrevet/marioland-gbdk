@@ -7,6 +7,12 @@
 uint8_t platform_moving_count = 0;
 platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
+uint8_t platform_falling_count = 0;
+platform_falling_t platforms_falling[PLATFORM_FALLING_MAX];
+
+// Frame index of the falling platform sprite in commonSprites.
+#define PLATFORM_FALLING_FRAME 9
+
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t platform_direction, uint8_t range,
                          uint8_t width) BANKED {
@@ -87,7 +93,74 @@ uint8_t platform_moving_draw(uint8_t base_sprite) NONBANKED {
 }
 
 void platform_falling_new(uint16_t x, uint16_t y) BANKED {
-  // Not implemented yet.
-  (void)x;
-  (void)y;
+  if (platform_falling_count < PLATFORM_FALLING_MAX) {
+    platform_falling_t *platform =
+        &platforms_falling[platform_falling_count];
+
+    platform->x = x << 4;
+    platform->y = y << 4;
+    platform->is_falling = FALSE;
+    platform->draw_x = (platform->x - camera_x_upscaled) >> 4;
+    platform->draw_y = platform->y >> 4;
+
+    platform_falling_count++;
+  }
+}
+
+void platform_falling_update(void) NONBANKED {
+  uint8_t index_platform_falling = 0;
+
+  while (index_platform_falling < platform_falling_count) {
+    platform_falling_t *platform =
+        &platforms_falling[index_platform_falling];
+
+    // Once Mario has stepped on it, the platform drops at a constant speed and
+    // keeps falling even if he jumps off.
+    if (platform->is_falling) {
+      platform->y += PLATFORM_FALLING_SPEED;
+    }
+
+    platform->draw_x = (platform->x - camera_x_upscaled) >> 4;
+    platform->draw_y = platform->y >> 4;
+
+    if (platform->x + (DEVICE_SCREEN_PX_WIDTH << 4) <= camera_x_upscaled ||
+        (platform->is_falling &&
+         platform->draw_y > DEVICE_SCREEN_PX_HEIGHT)) {
+      for (uint8_t j = index_platform_falling;
+           j < platform_falling_count - 1; j++) {
+        platforms_falling[j] = platforms_falling[j + 1];
+      }
+      platform_falling_count--;
+      hide_sprites_range(1, MAX_HARDWARE_SPRITES);
+      continue;
+    }
+
+    index_platform_falling++;
+  }
+}
+
+uint8_t platform_falling_draw(uint8_t base_sprite) NONBANKED {
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(commonSprites));
+
+  const metasprite_t *commonSprites_metasprite =
+      commonSprites_metasprites[PLATFORM_FALLING_FRAME];
+
+  for (uint8_t index_platform_falling = 0;
+       index_platform_falling < platform_falling_count;
+       index_platform_falling++) {
+    platform_falling_t *platform =
+        &platforms_falling[index_platform_falling];
+    // The metasprite origin is the sprite center, so offset by half a tile.
+    uint8_t draw_y = platform->draw_y + DEVICE_SPRITE_PX_OFFSET_Y +
+                     MARGIN_TOP_PX + (TILE_SIZE / 2);
+
+    base_sprite += move_metasprite_ex(
+        commonSprites_metasprite, commonSprites_TILE_ORIGIN, 0, base_sprite,
+        platform->draw_x + DEVICE_SPRITE_PX_OFFSET_X + (TILE_SIZE / 2),
+        draw_y);
+  }
+  SWITCH_ROM(_saved_bank);
+
+  return base_sprite;
 }

@@ -626,6 +626,7 @@ void level_set_current(void) NONBANKED {
   scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
   enemy_count = 0;
   platform_moving_count = 0;
+  platform_falling_count = 0;
   col_from = 0;
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(block_chunk));

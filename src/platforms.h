@@ -21,6 +21,12 @@ typedef enum {
 #define PLATFORMS_MOVING_SIZE 3
 #define PLATFORMS_MOVING_RANGE 6
 
+// Falling platforms are a single tile wide and drop at a constant speed once
+// Mario stands on them. The speed is in the same upscaled 1/16 px units as the
+// other movement velocities.
+#define PLATFORM_FALLING_SPEED 16
+#define PLATFORM_FALLING_MAX 16
+
 typedef struct {
   uint16_t x;
   uint16_t y;
@@ -48,6 +54,9 @@ typedef struct {
 extern uint8_t platform_moving_count;
 extern platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
+extern uint8_t platform_falling_count;
+extern platform_falling_t platforms_falling[PLATFORM_FALLING_MAX];
+
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t plateform_direction,
                          uint8_t range, uint8_t width) BANKED;
@@ -55,5 +64,7 @@ void platform_moving_update(void) NONBANKED;
 uint8_t platform_moving_draw(uint8_t base_sprite) NONBANKED;
 
 void platform_falling_new(uint16_t x, uint16_t y) BANKED;
+void platform_falling_update(void) NONBANKED;
+uint8_t platform_falling_draw(uint8_t base_sprite) NONBANKED;
 
 #endif

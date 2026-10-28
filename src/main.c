@@ -289,9 +289,11 @@ void main(void) {
     }
 
     platform_moving_update();
+    platform_falling_update();
     base_sprite = player_draw(0);
     base_sprite = enemy_draw(base_sprite);
     base_sprite = platform_moving_draw(base_sprite);
+    base_sprite = platform_falling_draw(base_sprite);
     if (powerup_active) {
       SWITCH_ROM(BANK(powerup));
       powerup_update();
