@@ -234,15 +234,22 @@ bool player_check_pipe_entry(void) NONBANKED {
   return FALSE;
 }
 
-void player_enter_pipe(pipe_params *pipe) NONBANKED {
+// Reads the destination level lookup table. NONBANKED because it switches
+// ROM banks: a BANKED function must never do that while it is running.
+void player_pipe_set_lookup(level *destination_level) NONBANKED {
   uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(pipe->destination_level->lookup_bank);
-  level_lookup_bank = pipe->destination_level->lookup_bank;
-  level_lookup = pipe->destination_level->lookup;
-  level_lookup_size = pipe->destination_level->lookup_size;
+  SWITCH_ROM(destination_level->lookup_bank);
+  level_lookup_bank = destination_level->lookup_bank;
+  level_lookup = destination_level->lookup;
+  level_lookup_size = destination_level->lookup_size;
   SWITCH_ROM(_saved_bank);
+}
 
 #ifdef GAMEBOY
+// Pipe entry animation. NONBANKED for the same reason as above: it switches
+// to the marioSprites bank and calls vsync() while doing so.
+void player_pipe_animate(void) NONBANKED {
+  uint8_t _saved_bank = _current_bank;
   uint8_t frame_index = player_is_big ? player_frame + 7 : player_frame;
   SWITCH_ROM(BANK(marioSprites));
 
@@ -275,6 +282,16 @@ void player_enter_pipe(pipe_params *pipe) NONBANKED {
   }
 
   SWITCH_ROM(_saved_bank);
+}
+#endif
+
+void player_enter_pipe(pipe_params *pipe) BANKED {
+  // No manual SWITCH_ROM here: this function runs from a banked area. The
+  // bank switching is done by the NONBANKED helpers.
+  player_pipe_set_lookup(pipe->destination_level);
+
+#ifdef GAMEBOY
+  player_pipe_animate();
 
   music_play_sfx(BANK(sound_pipe), sound_pipe, SFX_MUTE_MASK(sound_pipe),
                  MUSIC_SFX_PRIORITY_NORMAL);
@@ -324,7 +341,7 @@ bool player_check_horizontal_pipe_entry(void) NONBANKED {
 }
 
 void player_warp_to(level *destination_level, uint8_t destination_page,
-                    uint8_t destination_x, uint8_t destination_y) NONBANKED {
+                    uint8_t destination_x, uint8_t destination_y) BANKED {
   pipe_clear();
 
   level_page_x_offset = destination_page * PAGE_SIZE;
@@ -340,13 +357,11 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
   }
 
   enemy_reset_all();
-  uint8_t _saved_bank = _current_bank;
-  SWITCH_ROM(BANK(block_chunk));
+  // No manual SWITCH_ROM here: this function runs from a banked area, so
+  // switching banks under its feet is fatal. block_chunk_reset and
+  // missile_reset are BANKED, the compiler emits the bank switch itself.
   block_chunk_reset();
-  SWITCH_ROM(_saved_bank);
-  SWITCH_ROM(BANK(missile));
   missile_reset();
-  SWITCH_ROM(_saved_bank);
   hide_sprites_range(0, MAX_HARDWARE_SPRITES);
   // ~0.5 s pause while idling the CPU.
   WAIT_FRAMES(30);

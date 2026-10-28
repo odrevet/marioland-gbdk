@@ -23,9 +23,9 @@
 #include "musics.h"
 #endif
 
-void init(void);
-void state_title(void); 
-void state_pause(void); 
-void die(void);
+void init(void) BANKED;
+void state_title(void) BANKED;
+void state_pause(void) BANKED;
+void die(void) BANKED;
 
 #endif

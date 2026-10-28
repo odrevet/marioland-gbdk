@@ -27,7 +27,7 @@ extern uint8_t block_chunk_index;
 // position (top-left of the tile, in pixels).
 void block_chunk_new(uint16_t world_x, uint16_t world_y) BANKED;
 void block_chunk_update(void) BANKED;
-uint8_t block_chunk_draw(uint8_t base_sprite) BANKED;
+uint8_t block_chunk_draw(uint8_t base_sprite) NONBANKED;
 void block_chunk_reset(void) BANKED;
 
 #endif

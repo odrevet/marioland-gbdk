@@ -1,3 +1,5 @@
+#pragma bank 255
+
 #include "platforms.h"
 #include "global.h"
 #include "commonSprites.h"
@@ -7,7 +9,7 @@ platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t platform_direction, uint8_t range,
-                         uint8_t width) {
+                         uint8_t width) BANKED {
   //EMU_printf("new platform at %d:%d", x, y);
   if (platform_moving_count < PLATFORM_MOVING_MAX) {
     platform_moving_t platform_moving = {
@@ -24,7 +26,7 @@ void platform_moving_new(uint16_t x, uint16_t y,
   }
 }
 
-void platform_moving_update(void) {
+void platform_moving_update(void) NONBANKED {
   uint8_t index_platform_moving = 0;
   while (index_platform_moving < platform_moving_count) {
     platform_moving_t *platform = &platforms_moving[index_platform_moving];
@@ -56,7 +58,7 @@ void platform_moving_update(void) {
   }
 }
 
-uint8_t platform_moving_draw(uint8_t base_sprite) {
+uint8_t platform_moving_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(commonSprites));
 
@@ -84,7 +86,7 @@ uint8_t platform_moving_draw(uint8_t base_sprite) {
   return base_sprite;
 }
 
-void platform_falling_new(uint16_t x, uint16_t y) {
+void platform_falling_new(uint16_t x, uint16_t y) BANKED {
   // Not implemented yet.
   (void)x;
   (void)y;

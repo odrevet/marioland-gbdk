@@ -1,3 +1,5 @@
+#pragma bank 255
+
 #include "coin_animated.h"
 #include <gbdk/platform.h>
 #include "level.h"
@@ -6,7 +8,7 @@
 coin_animated_t coin_animated_array[NB_COIN_ANIMATED];
 uint8_t coin_index = 0;
 
-void coin_animated_new(uint8_t index_x, uint8_t index_y) {
+void coin_animated_new(uint8_t index_x, uint8_t index_y) BANKED {
   coin_animated_array[coin_index].draw_x = index_x << 3;
   coin_animated_array[coin_index].draw_y = index_y << 3;
   coin_animated_array[coin_index].ttl = COIN_ANIMATED_INITIAL_TTL;
@@ -19,7 +21,7 @@ void coin_animated_new(uint8_t index_x, uint8_t index_y) {
   }
 }
 
-void coin_animated_update(void) {
+void coin_animated_update(void) NONBANKED {
   uint8_t i;
 
   for (i = 0; i < NB_COIN_ANIMATED; i++) {
@@ -39,7 +41,7 @@ void coin_animated_update(void) {
   }
 }
 
-uint8_t coin_animated_draw(uint8_t base_sprite) {
+uint8_t coin_animated_draw(uint8_t base_sprite) NONBANKED {
   uint8_t _saved_bank = _current_bank;
   SWITCH_ROM(BANK(commonSprites));
 

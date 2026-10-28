@@ -24,9 +24,9 @@ extern uint8_t coin_index;
 #define COIN_HW_SPRITE_BASE 10
 #define COIN_ANIMATED_INITIAL_TTL 20
 
-void coin_animated_new(uint8_t index_x, uint8_t index_y);
-void coin_animated_update(void);
-uint8_t coin_animated_draw(uint8_t base_sprite);
+void coin_animated_new(uint8_t index_x, uint8_t index_y) BANKED;
+void coin_animated_update(void) NONBANKED;
+uint8_t coin_animated_draw(uint8_t base_sprite) NONBANKED;
 
 
 #endif

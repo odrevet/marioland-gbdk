@@ -1,6 +1,8 @@
+#pragma bank 255
+
 #include "text.h"
 
-void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
+void text_print_char(uint8_t x, uint8_t y, unsigned char chr) BANKED {
   uint8_t tile;
 
   if (chr >= '1' && chr <= '9') {
@@ -112,7 +114,7 @@ void text_print_char(uint8_t x, uint8_t y, unsigned char chr) {
   #endif
 }
 
-void text_print_string(uint8_t x, uint8_t y, unsigned char *string) {
+void text_print_string(uint8_t x, uint8_t y, unsigned char *string) BANKED {
   uint8_t offset_x = 0;
   uint8_t offset_y = 0;
 

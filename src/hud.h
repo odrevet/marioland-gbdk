@@ -12,10 +12,10 @@
 #include "text.h"
 
 
-void hud_set_level(uint8_t major, uint8_t minor);
-void hud_update_coins(void);
-void hud_update_score(void);
-void hud_update_time(void);
-void hud_update_lives(void);
+void hud_set_level(uint8_t major, uint8_t minor) BANKED;
+void hud_update_coins(void) BANKED;
+void hud_update_score(void) BANKED;
+void hud_update_time(void) BANKED;
+void hud_update_lives(void) BANKED;
 
 #endif

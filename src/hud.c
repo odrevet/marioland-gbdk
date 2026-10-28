@@ -1,6 +1,8 @@
+#pragma bank 255
+
 #include "hud.h"
 
-void hud_set_level(uint8_t major, uint8_t minor) {
+void hud_set_level(uint8_t major, uint8_t minor) BANKED {
     char major_str[2] = {major, '\0'};
     char minor_str[2] = {minor, '\0'};
     
@@ -8,7 +10,7 @@ void hud_set_level(uint8_t major, uint8_t minor) {
     text_print_string(14, 1, minor_str);
   }
   
-  void hud_update_coins(void) {
+  void hud_update_coins(void) BANKED {
     char coins_str[3];
   
     if (coins < 10) {
@@ -21,20 +23,20 @@ void hud_set_level(uint8_t major, uint8_t minor) {
     text_print_string(9, 1, coins_str);
   }
   
-  void hud_update_score(void) {
+  void hud_update_score(void) BANKED {
     char score_str[6];  // 5 digits + \0. the units digit is always 0
     itoa(score, score_str, 10);
     text_print_string(5 - strlen(score_str), 1, score_str);
   }
   
-  void hud_update_time(void) {
+  void hud_update_time(void) BANKED {
     char time_str[4];
     itoa(time >> TIME_SHIFT, time_str, 10);
     text_print_string(DEVICE_SCREEN_WIDTH - 3, 1, "000");
     text_print_string(DEVICE_SCREEN_WIDTH - strlen(time_str), 1, time_str);
   }
   
-  void hud_update_lives(void) {
+  void hud_update_lives(void) BANKED {
     char lives_str[4];
     itoa(lives, lives_str, 10);
     text_print_string(7, 0, lives_str);

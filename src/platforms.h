@@ -50,10 +50,10 @@ extern platform_moving_t platforms_moving[PLATFORM_MOVING_MAX];
 
 void platform_moving_new(uint16_t x, uint16_t y,
                          platform_direction_t plateform_direction,
-                         uint8_t range, uint8_t width);
-void platform_moving_update(void);
-uint8_t platform_moving_draw(uint8_t base_sprite);
+                         uint8_t range, uint8_t width) BANKED;
+void platform_moving_update(void) NONBANKED;
+uint8_t platform_moving_draw(uint8_t base_sprite) NONBANKED;
 
-void platform_falling_new(uint16_t x, uint16_t y);
+void platform_falling_new(uint16_t x, uint16_t y) BANKED;
 
 #endif
