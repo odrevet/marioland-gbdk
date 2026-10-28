@@ -114,7 +114,7 @@ void text_print_char(uint8_t x, uint8_t y, unsigned char chr) BANKED {
   #endif
 }
 
-void text_print_string(uint8_t x, uint8_t y, unsigned char *string) BANKED {
+void text_print_string(uint8_t x, uint8_t y, unsigned char *string) NONBANKED {
   uint8_t offset_x = 0;
   uint8_t offset_y = 0;
 
