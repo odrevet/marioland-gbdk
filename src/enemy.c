@@ -36,6 +36,12 @@ BANKREF(enemy)
 #define ENEMY_BUNBUN_MOVE_FRAMES 60
 #define ENEMY_BUNBUN_STOP_FRAMES 40
 
+// Bunbun drops a spear straight down whenever it comes to a stop. The spear
+// ignores the background and falls at a constant speed until it leaves the
+// screen.
+#define ENEMY_SPEAR_FRAME 9
+#define ENEMY_SPEAR_FALL_SPEED 16
+
 #define ENEMY_GAO_ATTACK_WAIT_FRAMES 240
 #define ENEMY_GAO_ATTACK_DURATION_FRAMES 20
 
@@ -214,6 +220,32 @@ void enemy_new_fireball(uint16_t x, uint16_t y, int8_t vel_x) BANKED {
   }
 }
 
+static void enemy_new_spear(uint16_t x, uint16_t y) {
+  for (uint8_t i = 0; i < ENEMY_MAX; i++) {
+    if (!enemies[i].active) {
+      enemies[i].x = x;
+      enemies[i].y = y;
+      enemies[i].vel_x = 0;
+      enemies[i].vel_y = ENEMY_SPEAR_FALL_SPEED;
+      enemies[i].type = ENEMY_SPEAR_BIRABUTO;
+      enemies[i].frame_counter = 0;
+      enemies[i].anim_counter = 0;
+      enemies[i].current_frame = ENEMY_SPEAR_FRAME;
+      enemies[i].flip = FALSE;
+      enemies[i].stomped = FALSE;
+      enemies[i].stomped_timer = 0;
+      enemies[i].active = TRUE;
+      enemies[i].move_state = 0;
+      enemies[i].hp = 0;
+      enemies[i].draw_x = (enemies[i].x - camera_x_upscaled) >> 4;
+      enemies[i].draw_y = enemies[i].y >> 4;
+
+      enemy_count++;
+      return;
+    }
+  }
+}
+
 static void enemy_move_goomba(uint8_t index) {
   enemy_t *goomba = &enemies[index];
 
@@ -291,10 +323,24 @@ static void enemy_move_bunbun(uint8_t index) {
     if (bunbun->frame_counter >= ENEMY_BUNBUN_MOVE_FRAMES) {
       bunbun->vel_x = 0;
       bunbun->frame_counter = 0;
+      // Drop the spear from just below Bunbun's body.
+      enemy_new_spear(bunbun->x,
+                      bunbun->y + (ENEMY_HEIGHT << 4));
     }
   }
 
   bunbun->x += bunbun->vel_x;
+}
+
+static void enemy_move_spear(uint8_t index) {
+  enemy_t *spear = &enemies[index];
+
+  if (!spear->active) {
+    return;
+  }
+
+  // No background collision: the spear falls straight through everything.
+  spear->y += ENEMY_SPEAR_FALL_SPEED;
 }
 
 static void enemy_move_gao(uint8_t index) {
@@ -704,8 +750,9 @@ void enemy_stomp(uint8_t index_enemy) BANKED {
     return;
   }
 
-  if (enemy->type == ENEMY_FIREBALL_BIRABUTO) {
-    // Boss fireballs are hazards, not stompable enemies.
+  if (enemy->type == ENEMY_FIREBALL_BIRABUTO ||
+      enemy->type == ENEMY_SPEAR_BIRABUTO) {
+    // Boss fireballs and Bunbun's spears are hazards, not stompable enemies.
     enemy_remove(index_enemy);
     return;
   }
@@ -824,6 +871,9 @@ void enemy_update(void) BANKED {
         e->current_frame = ((e->current_frame - 3 + 1) & 1) + 3;
       }
       break;
+    case ENEMY_SPEAR_BIRABUTO:
+      enemy_move_spear(index_enemy);
+      break;
     case ENEMY_GAO:
       enemy_move_gao(index_enemy);
       break;
@@ -918,6 +968,7 @@ uint8_t enemy_draw(uint8_t base_sprite) NONBANKED {
     case ENEMY_BUNBUN:
     case ENEMY_GAO:
     case ENEMY_FLY:
+    case ENEMY_SPEAR_BIRABUTO:
       enemy_bank = BANK(enemiesBirabutoSprites);
       metasprites = enemiesBirabutoSprites_metasprites;
       tile_origin = enemiesBirabutoSprites_TILE_ORIGIN;
