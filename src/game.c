@@ -172,16 +172,28 @@ init();
 level_set_current();
       }
 
-      // Debug: advance one page of the current level with Right. Can be
-      // pressed several times. The page is derived from Mario's position
-      // (current_page runs ahead of the camera because of column preloading).
+      // Debug: Right advances one page of the current level, Left goes back
+      // one page. Both wrap around at the ends. The page is derived from
+      // Mario's position (current_page runs ahead of the camera because of
+      // column preloading).
 if (joypad_current & J_RIGHT && !(joypad_previous & J_RIGHT)) {
         uint8_t page_count = levels[current_level].page_count;
-        uint8_t next_page = (uint8_t)(player_x / (PAGE_SIZE * TILE_SIZE)) + 1;
-if (next_page >= page_count) {
+        uint8_t next_page = player_x / (PAGE_SIZE * TILE_SIZE);
+        if (next_page >= page_count) {
           next_page = page_count - 1;
         }
+        next_page = (next_page + 1) % page_count;
         player_warp_to(levels + current_level, next_page, 5, 12);
+      }
+
+if (joypad_current & J_LEFT && !(joypad_previous & J_LEFT)) {
+        uint8_t page_count = levels[current_level].page_count;
+        uint8_t page = player_x / (PAGE_SIZE * TILE_SIZE);
+        if (page >= page_count) {
+          page = page_count - 1;
+        }
+        page = (page == 0) ? page_count - 1 : page - 1;
+        player_warp_to(levels + current_level, page, 5, 12);
       }
 
       // Start enters placement mode, a second Start unpauses.
