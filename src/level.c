@@ -1,6 +1,7 @@
 #include "level.h"
 #include "block_chunk.h"
 #include "coin_animated.h"
+#include "enemy.h"
 #include "missile.h"
 #include <gbdk/platform.h>
 
@@ -644,6 +645,14 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
 void level_on_switch_hit(void) NONBANKED {
   stage_end_next_page = &stage_end_page;
 
+  // The scroll runs while the main loop is blocked, so update and draw
+  // never run again in this level: drop every enemy and hide their sprites
+  // right away instead of leaving them frozen on screen during the pan.
+  uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(enemy));
+  enemy_reset_all();
+  SWITCH_ROM(_saved_bank);
+
   uint16_t target_x = camera_x + PAGE_SIZE * TILE_SIZE;
 
   while (camera_x < target_x) {
@@ -666,11 +675,29 @@ void level_on_switch_hit(void) NONBANKED {
 void level_set_current(void) NONBANKED {
   set_level(current_level);
   scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
-  enemy_count = 0;
   platform_moving_count = 0;
   platform_falling_count = 0;
   col_from = 0;
+
+  // Clear everything that could still be on screen from the previous
+  // level. enemy_draw() walks all ENEMY_MAX entries and only skips the
+  // inactive ones, so resetting enemy_count alone would keep leftover
+  // enemies visible in the next level; enemy_reset_all() also clears the
+  // per-enemy state and hides their sprites.
   uint8_t _saved_bank = _current_bank;
+  SWITCH_ROM(BANK(enemy));
+  enemy_reset_all();
+  SWITCH_ROM(_saved_bank);
+
+  // A power-up, the animated pop-up coins and a block bump in flight must
+  // not carry over either: their draw code runs on subscriptions such as
+  // "active"/"ttl > 0" flags that outlive level_set_current().
+  powerup_active = FALSE;
+  block_bump_state.active = false;
+  for (uint8_t i = 0; i < NB_COIN_ANIMATED; i++) {
+    coin_animated_array[i].ttl = 0;
+  }
+
   SWITCH_ROM(BANK(block_chunk));
   block_chunk_reset();
   SWITCH_ROM(_saved_bank);
