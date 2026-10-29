@@ -344,6 +344,10 @@ void player_warp_to(level *destination_level, uint8_t destination_page,
                     uint8_t destination_x, uint8_t destination_y) BANKED {
   pipe_clear();
 
+  // A pipe warp must never inherit the stage_end page appended after the
+  // last page of the previous level.
+  stage_end_next_page = NULL;
+
   level_page_x_offset = destination_page * PAGE_SIZE;
 
   uint16_t page_start_col = destination_page * PAGE_SIZE;
@@ -672,12 +676,9 @@ void player_move(void) BANKED {
       }
 
       if (tile_next_1 == SWITCH) {
-        // Advance the level before init() so the new level's spawn
-        // coordinates are used (init() reads current_level).
-        current_level = (++current_level) % NB_LEVELS;
-        map_column = 0;
-        init();
-        level_set_current();
+        // Scroll one page into the stage_end screen; the stage clear
+        // sequence (see main.c) then advances to the next level.
+        level_on_switch_hit();
       }
 
       player_x_upscaled = player_x_next_upscaled;
@@ -921,12 +922,9 @@ void player_move_vehicle(void) BANKED {
       }
 
       if (tile_next_1 == SWITCH) {
-        // Advance the level before init() so the new level's spawn
-        // coordinates are used (init() reads current_level).
-        current_level = (++current_level) % NB_LEVELS;
-        map_column = 0;
-        init();
-        level_set_current();
+        // Scroll one page into the stage_end screen; the stage clear
+        // sequence (see main.c) then advances to the next level.
+        level_on_switch_hit();
       }
 
       player_x_upscaled = player_x_next_upscaled;

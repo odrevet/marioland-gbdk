@@ -183,6 +183,10 @@ extern const banked_map_t level_4_1_map[level_table_4_1_ENTRY_COUNT];
 extern const banked_map_t level_4_2_map[level_table_4_2_ENTRY_COUNT];
 extern const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT];
 
+// Virtual page appended after the last page of a level when the switch tile
+// is hit. Never part of a level's page array.
+extern const banked_map_t stage_end_page;
+
 extern const banked_map_t underground_0_map_pages[1];
 extern const banked_map_t underground_1_map_pages[1];
 extern const banked_map_t underground_2_map_pages[1];

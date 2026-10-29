@@ -343,7 +343,8 @@ void main(void) {
       hud_update_lives();
     }
 
-    if (level_end_reached && player_draw_x >= DEVICE_SCREEN_WIDTH << 3) {
+    if (level_end_reached &&
+        (level_switch_hit || player_draw_x >= DEVICE_SCREEN_WIDTH << 3)) {
 #ifdef GAMEBOY
       music_load(BANK(music_stage_clear), &music_stage_clear);
 #endif

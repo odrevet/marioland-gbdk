@@ -75,6 +75,7 @@ extern uint16_t camera_x;
 extern uint16_t camera_x_upscaled;
 extern uint16_t load_col_at;
 extern bool level_end_reached;
+extern bool level_switch_hit;
 extern uint8_t current_level;
 
 extern const unsigned char *current_map;
@@ -94,6 +95,13 @@ extern size_t level_lookup_size;
 extern uint8_t current_page;
 
 extern uint8_t cached_page_index;
+
+/**
+ * The page handed out by level_load_column() right after the last page of
+ * the level while the camera scrolls into the stage_end screen. NULL when
+ * the switch has not been hit (and for every normal page load).
+ */
+extern const banked_map_t *stage_end_next_page;
 
 extern uint16_t col_from;
 extern uint16_t level_page_x_offset;
@@ -159,6 +167,13 @@ void on_interogation_block_hit(uint8_t x, uint8_t y);
 
 void level_load_objects(uint16_t col) NONBANKED;
 uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED;
+
+/**
+ * Mario hit the switch tile ($3D): append the stage_end page after the last
+ * page of the level and scroll the camera one page while loading it column
+ * by column, then start the stage clear sequence.
+ */
+void level_on_switch_hit(void) NONBANKED;
                          
 void level_set_current(void) NONBANKED;
 void load_current_level(void) NONBANKED;

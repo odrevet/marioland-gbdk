@@ -32,6 +32,7 @@ const unsigned char *current_map;
 uint8_t map_buffer[MAP_BUFFER_HEIGHT * DEVICE_SCREEN_BUFFER_WIDTH] = {TILE_EMPTY};
 uint8_t coldata[MAP_BUFFER_HEIGHT];
 bool level_end_reached;
+bool level_switch_hit;
 uint8_t current_level;
 uint8_t map_column = 0;
 uint8_t current_column_in_page = 0;
@@ -39,6 +40,9 @@ uint8_t current_column_in_page = 0;
 uint16_t level_page_x_offset = 0;
 uint16_t col_from = 0;
 uint8_t current_page = 0;
+
+// See level_tables.c / level_load_column()/level_on_switch_hit().
+const banked_map_t *stage_end_next_page = NULL;
 
 typedef struct {
   uint8_t bg_bank;
@@ -580,12 +584,19 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
       #endif
     }
 
-    if (current_page >= level_to_load->page_count) {
+    const banked_map_t *page_entry;
+
+    if (current_page < level_to_load->page_count) {
+      page_entry = level_to_load->map_pages + current_page;
+    } else if (current_page == level_to_load->page_count &&
+               stage_end_next_page != NULL) {
+      // The switch page: the stage_end screen, served as the page right
+      // after the last page of the level.
+      page_entry = stage_end_next_page;
+    } else {
       SWITCH_ROM(_saved_bank);
       return col;
     }
-
-    const banked_map_t *page_entry = level_to_load->map_pages + current_page;
 
     SWITCH_ROM(page_entry->bank);
     const unsigned char *current_page_data;
@@ -621,6 +632,37 @@ uint8_t level_load_column(uint8_t nb, level *level_to_load) NONBANKED {
   return col;
 }
 
+/**
+ * Mario hit the switch tile ($3D) at the end of the level.
+ *
+ * The stage_end page is appended as the page right after the last page of
+ * the level (without touching the level's page array), then the camera is
+ * scrolled by a full page while the stage_end tiles are loaded column by
+ * column. Once the scroll is done, the stage clear sequence takes over
+ * (see main.c) and advances to the next level.
+ */
+void level_on_switch_hit(void) NONBANKED {
+  stage_end_next_page = &stage_end_page;
+
+  uint16_t target_x = camera_x + PAGE_SIZE * TILE_SIZE;
+
+  while (camera_x < target_x) {
+    camera_x += 2;
+    if (camera_x > target_x) {
+      camera_x = target_x;
+    }
+    if ((camera_x >> 3) >= load_col_at) {
+      level_load_column(1, levels + current_level);
+      load_col_at++;
+    }
+    vsync();
+    move_camera(camera_x);
+  }
+
+  level_end_reached = true;
+  level_switch_hit = true;
+}
+
 void level_set_current(void) NONBANKED {
   set_level(current_level);
   scroll_limit = DEVICE_SCREEN_PX_WIDTH_HALF;
@@ -644,6 +686,8 @@ void load_current_level(void) NONBANKED {
   move_camera(camera_x);
   camera_x_upscaled = 0;
   level_end_reached = false;
+  level_switch_hit = false;
+  stage_end_next_page = NULL;
   current_page = 0;
   current_column_in_page = 0;
   map_column = 0;

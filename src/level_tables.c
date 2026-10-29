@@ -262,6 +262,12 @@ const banked_map_t level_4_3_map[level_table_4_3_ENTRY_COUNT] = {
     {level_4_3_09_map, BANK(level_4_3_09)}
 };
 
+// The stage_end page is deliberately kept out of every level page array:
+// when Mario hits the switch tile ($3D, the button at the end of a castle
+// level), it is served by level_load_column() as a virtual page right after
+// the last page of the level while the camera scrolls one page further.
+const banked_map_t stage_end_page = {stage_end_map, BANK(stage_end)};
+
 // Underground pages
 const banked_map_t underground_0_map_pages[1] = {
     {underground_0_map, BANK(underground_0)},
